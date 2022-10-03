@@ -72,7 +72,7 @@ const CreatorProfile = () => {
                     </StatWrapper>
                     <p>Send Offer to this creator by clicking on the button.</p>
                     <button onClick={() => setShowEngagePopup(!showEngagePopup)}>
-                        <span>Engage Creator</span> <Image src="/down-chev.svg" height={10} width={10} />
+                        <span>Engage Influencer</span> <Image src="/down-chev.svg" height={10} width={10} />
                         <Popup show={showEngagePopup}>
                             <Link href="/">
                                 <a><span>Send a message</span><Image src="/arr-r.svg" height={10} width={10} /></a>

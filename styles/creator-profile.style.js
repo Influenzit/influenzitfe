@@ -84,6 +84,10 @@ export const ProfileDetails = styled.div`
             margin-left: 15px;
         }
     }
+    p {
+        color: #333;
+        font-size: 15px;
+    }
 `;
 export const ProfileCategory = styled.div`
     display: flex;
