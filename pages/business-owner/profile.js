@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import LandingLayout from '../../layouts/Landing.layout'
-import { BackImage, Bottom, Controls, CreatorDetails, CreatorsCard, CreatorsWrapper, HeroSectionOne, ProfileDetails, ProfileImgCont, SocialCard, SocialHandle, SocialWrapper, Top, TopImg, UserCard, Wrapper } from '../../styles/business-owner'
+import { BackImage, Bottom, Controls, CreatorDetails, CreatorsCard, CreatorsWrapper, HeroSectionOne, ProfileDetails, ProfileImgCont, SocialCard, SocialHandle, SocialWrapper, Top, TopImg, UserCard, Wrapper } from '../../styles/business-owner.style'
 
 const BusinessProfile = () => {
    const router = useRouter()

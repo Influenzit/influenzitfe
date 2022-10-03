@@ -9,7 +9,7 @@ const Nav = () => {
     <Container>
         <Wrapper>
             <Logo href="/">
-                <Image src="/influenzit.svg" alt="logo" height={25} width={120} style={{cursor: "pointer"}}/>
+                <Image src="/influenzit.svg" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
             </Logo>
             <Right>
                 <NavLinks>
