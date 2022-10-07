@@ -25,7 +25,7 @@ const Nav = () => {
                     <Link href="/login" passHref>
                         <LoginBtn>Login</LoginBtn>
                     </Link>
-                    <Link href="/register" passHref>
+                    <Link href="/register/account-type" passHref>
                         <GetStartedBtn>Get Started</GetStartedBtn>
                     </Link>
                 </Controls>

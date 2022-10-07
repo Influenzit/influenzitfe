@@ -76,15 +76,17 @@ export const Bottom = styled.div`
     padding: 10px;
 `;
 export const CreatorsWrapper = styled.div`
-    padding: 20px 0;
+    padding: 20px 15px;
+    margin-top: 10px;
     display: flex;
     column-gap: 15px;
     flex-wrap: wrap;
     justify-content: space-between;
+    background: #fff;
 `;
 export const CreatorsCard = styled.div`
-    height: 370px;
-    width: 290px;
+    height: auto;
+    width: 285px;
     border: 1px solid #D2D2D2;
     text-align: center;
     p {
@@ -93,7 +95,8 @@ export const CreatorsCard = styled.div`
     }
 `;
 export const TopImg = styled.div`
-    height: 50%;
+    height: 50%; 
+    min-height: 210px;
     width: 100%;
     position: relative;
 `;
@@ -132,4 +135,7 @@ export const Controls = styled.div`
         background: transparent;
         border: none;
     }
+`;
+export const DataSection = styled.div`
+    padding-bottom: 20px;
 `;

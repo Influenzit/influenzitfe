@@ -95,7 +95,16 @@ export const ProfileCategory = styled.div`
     div {
         display: flex;
         margin-right: 25px;
+        align-items: center;
         p {
+            margin-left: 10px;
+        }
+        p + span {
+            padding: 2px 4px;
+            border-radius: 99px;
+            color: #fff;
+            background: #666;
+            font-size: 10px;
             margin-left: 10px;
         }
     }

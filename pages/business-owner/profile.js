@@ -3,13 +3,15 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import LandingLayout from '../../layouts/Landing.layout'
-import { BackImage, Bottom, Controls, CreatorDetails, CreatorsCard, CreatorsWrapper, HeroSectionOne, ProfileDetails, ProfileImgCont, SocialCard, SocialHandle, SocialWrapper, Top, TopImg, UserCard, Wrapper } from '../../styles/business-owner.style'
+import { BackImage, Bottom, Controls, CreatorDetails, CreatorsCard, CreatorsWrapper, DataSection, HeroSectionOne, ProfileDetails, ProfileImgCont, SocialCard, SocialHandle, SocialWrapper, Top, TopImg, UserCard, Wrapper } from '../../styles/business-owner.style'
+import { Container } from '../../styles/creator-profile.style'
+import { TabBtn, Tabs } from '../../styles/influencer-profile'
 
 const BusinessProfile = () => {
    const router = useRouter()
    const {id} = router.query
   return (
-    <div>
+    <Container>
       <HeroSectionOne>
         <BackImage>
           <Image src="/profile.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
@@ -29,7 +31,7 @@ const BusinessProfile = () => {
           </UserCard>
         </BackImage>
         <Wrapper>
-          <h3>Social Profiles</h3>
+          {/* <h3>Social Profiles</h3>
           <SocialWrapper>
             <SocialCard>
               <Top>
@@ -75,98 +77,105 @@ const BusinessProfile = () => {
                 </Link>
               </Bottom>
             </SocialCard>
-          </SocialWrapper>
-          <h3>Creators we&apos;ve worked with</h3>
-          <CreatorsWrapper>
-            <CreatorsCard>
-              <TopImg>
-                <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center"/>
-              </TopImg>
-              <CreatorDetails>
-                <h4>Ezekiel Phoenixgold</h4>
-                <p>Male | Lagos, Nigeria</p>
-                <SocialHandle>
-                  <Link href="/" targer="_blank" passHref>
-                    <a><Image src="/twitter.svg" alt="" height={30} width={30}/><span>itzphoenixgold | 16k reach</span></a>
-                  </Link>
-                </SocialHandle>
-                <p>Laptop Lifestyle | Photography | Fashion</p>
-                <Controls>
-                  <Link href="/" passHref>
-                    <a>Engage</a>
-                  </Link>
-                  <button><Image src="/list.svg" alt="" height={24} width={24}/></button>
-                </Controls>
-              </CreatorDetails>
-            </CreatorsCard>
-            <CreatorsCard>
-              <TopImg>
-                <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center"/>
-              </TopImg>
-              <CreatorDetails>
-                <h4>Ezekiel Phoenixgold</h4>
-                <p>Male | Lagos, Nigeria</p>
-                <SocialHandle>
-                  <Link href="/" targer="_blank" passHref>
-                    <a><Image src="/twitter.svg" alt="" height={30} width={30}/><span>itzphoenixgold | 16k reach</span></a>
-                  </Link>
-                </SocialHandle>
-                <p>Laptop Lifestyle | Photography | Fashion</p>
-                <Controls>
-                  <Link href="/" passHref>
-                    <a>Engage</a>
-                  </Link>
-                  <button><Image src="/list.svg" alt="" height={24} width={24}/></button>
-                </Controls>
-              </CreatorDetails>
-            </CreatorsCard>
-            <CreatorsCard>
-              <TopImg>
-                <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center"/>
-              </TopImg>
-              <CreatorDetails>
-                <h4>Ezekiel Phoenixgold</h4>
-                <p>Male | Lagos, Nigeria</p>
-                <SocialHandle>
-                  <Link href="/" targer="_blank" passHref>
-                    <a><Image src="/twitter.svg" alt="" height={30} width={30}/><span>itzphoenixgold | 16k reach</span></a>
-                  </Link>
-                </SocialHandle>
-                <p>Laptop Lifestyle | Photography | Fashion</p>
-                <Controls>
-                  <Link href="/" passHref>
-                    <a>Engage</a>
-                  </Link>
-                  <button><Image src="/list.svg" alt="" height={24} width={24}/></button>
-                </Controls>
-              </CreatorDetails>
-            </CreatorsCard>
-            <CreatorsCard>
-              <TopImg>
-                <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center"/>
-              </TopImg>
-              <CreatorDetails>
-                <h4>Ezekiel Phoenixgold</h4>
-                <p>Male | Lagos, Nigeria</p>
-                <SocialHandle>
-                  <Link href="/" targer="_blank" passHref>
-                    <a><Image src="/twitter.svg" alt="" height={30} width={30}/><span>itzphoenixgold | 16k reach</span></a>
-                  </Link>
-                </SocialHandle>
-                <p>Laptop Lifestyle | Photography | Fashion</p>
-                <Controls>
-                  <Link href="/" passHref>
-                    <a>Engage</a>
-                  </Link>
-                  <button><Image src="/list.svg" alt="" height={24} width={24}/></button>
-                </Controls>
-              </CreatorDetails>
-            </CreatorsCard>
-          </CreatorsWrapper>
+          </SocialWrapper> */}
+          <DataSection>
+            <Tabs>
+                <TabBtn>Influencer</TabBtn>
+                <TabBtn>Creator</TabBtn>
+                <TabBtn>Collaboration</TabBtn>
+            </Tabs>
+            <CreatorsWrapper>
+              <CreatorsCard>
+                <TopImg>
+                  <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center"/>
+                </TopImg>
+                <CreatorDetails>
+                  <h4>Ezekiel Phoenixgold</h4>
+                  <p>Male | Lagos, Nigeria</p>
+                  <SocialHandle>
+                    <Link href="/" targer="_blank" passHref>
+                      <a><Image src="/twitter.svg" alt="" height={30} width={30}/><span>itzphoenixgold | 16k reach</span></a>
+                    </Link>
+                  </SocialHandle>
+                  <p>Laptop Lifestyle | Photography | Fashion</p>
+                  <Controls>
+                    <Link href="/" passHref>
+                      <a>Engage</a>
+                    </Link>
+                    <button><Image src="/list.svg" alt="" height={24} width={24}/></button>
+                  </Controls>
+                </CreatorDetails>
+              </CreatorsCard>
+              <CreatorsCard>
+                <TopImg>
+                  <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center"/>
+                </TopImg>
+                <CreatorDetails>
+                  <h4>Ezekiel Phoenixgold</h4>
+                  <p>Male | Lagos, Nigeria</p>
+                  <SocialHandle>
+                    <Link href="/" targer="_blank" passHref>
+                      <a><Image src="/twitter.svg" alt="" height={30} width={30}/><span>itzphoenixgold | 16k reach</span></a>
+                    </Link>
+                  </SocialHandle>
+                  <p>Laptop Lifestyle | Photography | Fashion</p>
+                  <Controls>
+                    <Link href="/" passHref>
+                      <a>Engage</a>
+                    </Link>
+                    <button><Image src="/list.svg" alt="" height={24} width={24}/></button>
+                  </Controls>
+                </CreatorDetails>
+              </CreatorsCard>
+              <CreatorsCard>
+                <TopImg>
+                  <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center"/>
+                </TopImg>
+                <CreatorDetails>
+                  <h4>Ezekiel Phoenixgold</h4>
+                  <p>Male | Lagos, Nigeria</p>
+                  <SocialHandle>
+                    <Link href="/" targer="_blank" passHref>
+                      <a><Image src="/twitter.svg" alt="" height={30} width={30}/><span>itzphoenixgold | 16k reach</span></a>
+                    </Link>
+                  </SocialHandle>
+                  <p>Laptop Lifestyle | Photography | Fashion</p>
+                  <Controls>
+                    <Link href="/" passHref>
+                      <a>Engage</a>
+                    </Link>
+                    <button><Image src="/list.svg" alt="" height={24} width={24}/></button>
+                  </Controls>
+                </CreatorDetails>
+              </CreatorsCard>
+              <CreatorsCard>
+                <TopImg>
+                  <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center"/>
+                </TopImg>
+                <CreatorDetails>
+                  <h4>Ezekiel Phoenixgold</h4>
+                  <p>Male | Lagos, Nigeria</p>
+                  <SocialHandle>
+                    <Link href="/" targer="_blank" passHref>
+                      <a><Image src="/twitter.svg" alt="" height={30} width={30}/><span>itzphoenixgold | 16k reach</span></a>
+                    </Link>
+                  </SocialHandle>
+                  <p>Laptop Lifestyle | Photography | Fashion</p>
+                  <Controls>
+                    <Link href="/" passHref>
+                      <a>Engage</a>
+                    </Link>
+                    <button><Image src="/list.svg" alt="" height={24} width={24}/></button>
+                  </Controls>
+                </CreatorDetails>
+              </CreatorsCard>
+            </CreatorsWrapper>
+          </DataSection>
+          
         </Wrapper>
       </HeroSectionOne>
       
-    </div>
+    </Container>
   )
 }
 BusinessProfile.getLayout = (page) => (
