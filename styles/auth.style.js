@@ -52,6 +52,7 @@ export const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
     padding: 50px 0;
+    min-height: calc(100vh - 320px);
 `;
 export const FormWrapper = styled.div`
     background: #fff;
