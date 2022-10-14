@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import LandingLayout from "../layouts/Landing.layout"
+import LandingLayout from "../layouts/landing.layout"
 import { CustomSelect, HeroSectionFive, HeroSectionFour, HeroSectionOne, HeroSectionThree, HeroSectionTwo, ImgSlider, ImgWrapper, InfoCard, InfoDetails, InfoList, InfoSectOne, ListItem, NicheCard, NicheWrapper, ReviewCard, ReviewWrapper, SlideBtn, SlideControl, UserCard, UserDetails, UserImage, WrapperFive, WrapperFour, WrapperThree, WrapperTwo } from "../styles/home.style"
 
 const Home = () => {

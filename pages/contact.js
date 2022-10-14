@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import LandingLayout from '../layouts/Landing.layout'
+import LandingLayout from '../layouts/landing.layout'
 import { Container, FormContainer, InputContainer, InputSection, SocialLinks, TextAreaContainer, Wrapper } from '../styles/contact.style'
 
 const Contact = () => {

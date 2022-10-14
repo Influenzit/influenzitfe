@@ -1,6 +1,6 @@
 import React from 'react'
 import NotifyCard from '../../components/notify-card'
-import LandingLayout from '../../layouts/Landing.layout'
+import LandingLayout from '../../layouts/landing.layout'
 import { Container, Wrapper } from '../../styles/notify.style'
 
 const EmailSent = () => {

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import LandingLayout from '../../layouts/Landing.layout'
+import LandingLayout from '../../layouts/landing.layout'
 import { HeroSectionOne, HeroSectionTwo, ImageWrapper, Info, InfoCard, LastInfo, WrapperTwo } from '../../styles/creator.style'
 
 const ForCreators = () => {

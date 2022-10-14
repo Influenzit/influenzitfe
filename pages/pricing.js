@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import LandingLayout from '../layouts/Landing.layout'
+import LandingLayout from '../layouts/landing.layout'
 import { Bottom, HeroSectionOne, HeroSectionTwo, PricingContainer, PricingContent, PricingItem, PricingListCont, PricingType, PricingWrapper, SocialLinks, Top, Wrapper } from '../styles/pricing.style'
 
 const Pricing = () => {

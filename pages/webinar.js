@@ -1,5 +1,5 @@
 import React from 'react'
-import LandingLayout from '../layouts/Landing.layout'
+import LandingLayout from '../layouts/landing.layout'
 import { HeroSectionOne } from '../styles/pricing.style'
 
 const Webinar = () => {

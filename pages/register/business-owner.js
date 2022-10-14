@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
-import LandingLayout from '../../layouts/Landing.layout';
+import LandingLayout from '../../layouts/landing.layout';
 import { Bottom, Center, Container, FormFields, FormHeader, FormWrapper, Input, InputContainer, SubmitButton, Wrapper } from '../../styles/auth.style'
 
 const BusinessOwner = () => {

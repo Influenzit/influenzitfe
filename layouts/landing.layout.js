@@ -3,7 +3,9 @@ import Head from 'next/head'
 import Nav from '../components/nav'
 import Footer from '../components/footer'
 import { Container } from '../styles/landing.style'
+import DashboardFooter from '../components/dashboard-footer'
 const LandingLayout = ({children, title, description}) => {
+  const isLoggedIn = true;
   return (
     <Container>
        <Head>
@@ -13,7 +15,7 @@ const LandingLayout = ({children, title, description}) => {
       </Head>
       <Nav />
         <main>{children}</main>
-      <Footer />
+      {isLoggedIn ? (<DashboardFooter />) : (<Footer />)}
     </Container>
   )
 }

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import LandingLayout from '../layouts/Landing.layout'
+import LandingLayout from '../layouts/landing.layout'
 import { EbookCard, EbookWrapper, HeroSectionTwo, ImgSect, Wrapper } from '../styles/ebooks.style'
 import { HeroSectionOne } from '../styles/pricing.style'
 
