@@ -19,14 +19,14 @@ const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink}) => {
             </SocialHandle>
             <p>Laptop Lifestyle | Photography | Fashion</p>
             <Controls>
-            <Link href={profileLink} passHref>
-                <a>View Profile</a>
-            </Link>
-            <button><Image src="/list.svg" alt="" height={24} width={24}/></button>
+                <Link href={profileLink} passHref>
+                    <a>View Profile</a>
+                </Link>
+                <button><Image src="/list.svg" alt="" height={24} width={24}/></button>
             </Controls>
         </CreatorDetails>
     </Container>
   )
 }
 
-export default ProfileCard
+export default ProfileCard;

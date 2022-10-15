@@ -1,1 +1,1 @@
-export { default } from "./profile-card"
+export { default } from "./profile-card";
