@@ -4,14 +4,14 @@ import { colors, sizes } from "./theme";
 export const Container = styled.div`
     width: 100%;
     min-height: calc(100vh - 150px);
-    background: #E5E5E5;
+    background: #F7FAFC;
     padding: 25px 0;
 `;
 export const Wrapper = styled.div`
     max-width: ${sizes.wrapperWidth};
     width: 98%;
     margin: 0 auto;
-    background: #E5E5E5;
+    background: #F7FAFC;
 `;
 export const Content = styled.div`
     background: #fff;

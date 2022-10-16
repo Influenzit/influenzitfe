@@ -77,7 +77,7 @@ const Nav = () => {
                                 showDropdown && <UserDropdown>
                                     <button onClick={() => router.push("/influencer/profile")}><UserIcon /><span>Profile</span></button>
                                     <button><WalletIcon /><span>Wallet</span></button>
-                                    <button onClick={() => router.push("/dashboard/information")}><SettingsIcon /><span>Settings</span></button>
+                                    <button onClick={() => router.push("/dashboard/profile/information")}><SettingsIcon /><span>Settings</span></button>
                                     <button><LogoutIcon /><span>Logout</span></button>
                                 </UserDropdown>
                             }

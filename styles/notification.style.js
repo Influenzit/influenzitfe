@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { sizes } from "./theme";
 
 export const Container = styled.div`
-    background: #E5E5E5;
+    background: #F7FAFC;
     padding: 50px 0;
     min-height: calc(100vh - 140px);
 `;
