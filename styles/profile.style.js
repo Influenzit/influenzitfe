@@ -93,3 +93,47 @@ export const AddSocialBtn = styled.button`
         color: ${colors.primaryColor};
     }
 `;
+export const PasswordContainer = styled.div`
+    display: flex;
+    column-gap: 30px;
+    padding: 15px 0;
+`;
+export const Left = styled.div`
+    width: 50%;
+    max-width: 50%;
+`;
+export const Right = styled.div`
+    width: 50%;
+    max-width: 50%;
+    padding: 15px;
+    background: #F7FAFC;
+    border-radius: 5px;
+    h3 {
+        font-size: 15px;
+        font-weight: 500;
+        color: #333;
+    }
+    .pri {
+        svg {
+            color: ${colors.primaryColor};
+        }
+    }
+    .red {
+        svg {
+            color: red;
+        }
+    }
+    p {
+        font-size: 14px;
+        color: #333;
+        padding: 5px 0;
+        display: flex;
+        align-items: center;
+        svg {
+            width: 20px;
+        }
+        span {
+            padding-left: 10px;
+        }
+    }
+`;

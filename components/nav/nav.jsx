@@ -4,6 +4,7 @@ import { ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, G
 import Image from 'next/image'
 import Link from 'next/link'
 import { BagIcon, BellIcon, CollaborationIcon, HashTagIcon, LogoutIcon, MailIcon, SettingsIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
+import { useRouter } from 'next/router'
 
 const Nav = () => {
   const isLoggedIn = true;
@@ -11,6 +12,7 @@ const Nav = () => {
   const [showSearchOption, setShowSearchOption] = useState(false);
   const [showConnect, setShowConnect] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const router = useRouter()
   const handleSearchOption = (val) => {
     setSearchBy(val)
     setShowSearchOption(false)
@@ -73,9 +75,9 @@ const Nav = () => {
                             </ProfilePicWrapper>
                             {
                                 showDropdown && <UserDropdown>
-                                    <button><UserIcon /><span>Profile</span></button>
+                                    <button onClick={() => router.push("/influencer/profile")}><UserIcon /><span>Profile</span></button>
                                     <button><WalletIcon /><span>Wallet</span></button>
-                                    <button><SettingsIcon /><span>Settings</span></button>
+                                    <button onClick={() => router.push("/dashboard/information")}><SettingsIcon /><span>Settings</span></button>
                                     <button><LogoutIcon /><span>Logout</span></button>
                                 </UserDropdown>
                             }
