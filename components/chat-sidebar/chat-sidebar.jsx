@@ -2,7 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 import { Bottom, ChatBottom, ChatDetails, ChatTop, Container, ProfilePicWrapper, SearchContainer, Top, UserCard, UserSect } from './style'
 
-const ChatSidebar = () => {
+const ChatSidebar = ({setUserId}) => {
   return (
     <Container>
         <Top>
@@ -15,7 +15,7 @@ const ChatSidebar = () => {
             </SearchContainer>
         </Top>
         <Bottom>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
@@ -32,7 +32,7 @@ const ChatSidebar = () => {
                     </ChatBottom>
                 </ChatDetails>
             </UserCard>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
@@ -49,7 +49,7 @@ const ChatSidebar = () => {
                     </ChatBottom>
                 </ChatDetails>
             </UserCard>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
@@ -66,7 +66,7 @@ const ChatSidebar = () => {
                     </ChatBottom>
                 </ChatDetails>
             </UserCard>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
@@ -83,7 +83,7 @@ const ChatSidebar = () => {
                     </ChatBottom>
                 </ChatDetails>
             </UserCard>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
@@ -100,7 +100,7 @@ const ChatSidebar = () => {
                     </ChatBottom>
                 </ChatDetails>
             </UserCard>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
@@ -117,7 +117,7 @@ const ChatSidebar = () => {
                     </ChatBottom>
                 </ChatDetails>
             </UserCard>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
@@ -134,7 +134,7 @@ const ChatSidebar = () => {
                     </ChatBottom>
                 </ChatDetails>
             </UserCard>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
@@ -151,7 +151,7 @@ const ChatSidebar = () => {
                     </ChatBottom>
                 </ChatDetails>
             </UserCard>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
@@ -168,7 +168,7 @@ const ChatSidebar = () => {
                     </ChatBottom>
                 </ChatDetails>
             </UserCard>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
@@ -185,7 +185,7 @@ const ChatSidebar = () => {
                     </ChatBottom>
                 </ChatDetails>
             </UserCard>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
@@ -202,7 +202,7 @@ const ChatSidebar = () => {
                     </ChatBottom>
                 </ChatDetails>
             </UserCard>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
@@ -219,7 +219,7 @@ const ChatSidebar = () => {
                     </ChatBottom>
                 </ChatDetails>
             </UserCard>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
@@ -236,7 +236,7 @@ const ChatSidebar = () => {
                     </ChatBottom>
                 </ChatDetails>
             </UserCard>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
@@ -253,7 +253,7 @@ const ChatSidebar = () => {
                     </ChatBottom>
                 </ChatDetails>
             </UserCard>
-            <UserCard>
+            <UserCard onClick={() => setUserId("123")}>
                 <UserSect>
                     <ProfilePicWrapper>
                         <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
