@@ -104,7 +104,7 @@ export const SearchContainer = styled.div`
         font-size: 15px;
     }
 `;
-export const SearchByBtn = styled.button`
+export const SearchByBtn = styled.div`
     padding: 0 10px;
     width: 160px;
     display: flex;
@@ -139,7 +139,7 @@ export const SearchBtnC = styled.button`
     display: flex;
     align-items: center;
 `;
-export const ConnectDropdown = styled.button`
+export const ConnectDropdown = styled.div`
     border: none;
     background: #fff;
     padding: 0 10px;
@@ -215,7 +215,7 @@ export const ControlsA = styled.div`
         }
     }
 `;
-export const UserBtn = styled.button`
+export const UserBtn = styled.div`
     border: none;
     background: transparent;
     cursor: pointer;

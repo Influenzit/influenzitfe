@@ -92,11 +92,16 @@ export const TBody = styled.tbody`
     width: 100%;
     color: #333333;
 `;
-export const Th = styled.th`
+export const TrH = styled.tr`
     display: flex;
     align-items: center;
     padding: 15px 0;
     border-bottom: 1px solid #D2D2D2;
+`;
+export const Th = styled.th`
+    flex-grow: 1;
+    width: ${(props) => props.cellWidth && props.cellWidth};
+    text-align: left;
 `;
 export const Td = styled.td`
     flex-grow: 1;

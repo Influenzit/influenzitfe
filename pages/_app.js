@@ -1,8 +1,21 @@
 import '../styles/globals.css'
-
+import { Provider } from "react-redux"; 
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
+import { store } from '../app/store';
 function MyApp({ Component, pageProps }) {
+  const queryClient = new QueryClient();
   const getLayout = Component.getLayout || ((page) => page)
-  return getLayout(<Component {...pageProps} />)
+  return (
+    <Provider store={store}>
+      {
+       getLayout(
+        <QueryClientProvider client={queryClient}>
+            <Component {...pageProps} />
+        </QueryClientProvider>
+       )
+      }
+    </Provider>
+    )
 }
 
 export default MyApp

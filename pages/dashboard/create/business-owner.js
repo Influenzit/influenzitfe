@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
-import LandingLayout from '../../layouts/landing.layout';
-import { Bottom, Center, Container, FormFields, FormHeader, FormWrapper, Input, InputContainer, SubmitButton, Wrapper } from '../../styles/auth.style'
+import LandingLayout from '../../../layouts/landing.layout';
+import { Bottom, Center, Container, FormFields, FormHeader, FormWrapper, Input, InputContainer, SubmitButton, Wrapper } from '../../../styles/auth.style'
 
 const BusinessOwner = () => {
   const [formVal, setFormVal] = useState({})
@@ -16,7 +16,7 @@ const BusinessOwner = () => {
       <Wrapper>
         <FormWrapper>
           <FormHeader>
-            <h2>Create an Account</h2>
+            <h2>Create Business</h2>
           </FormHeader>
           <Center>
             <FormFields>
@@ -77,12 +77,9 @@ const BusinessOwner = () => {
                 required
                 />
               </InputContainer>
-              <SubmitButton type="submit">Register</SubmitButton>
+              <SubmitButton type="submit">Create</SubmitButton>
             </FormFields>
           </Center>
-          <Bottom>
-            <p>Already have an account? <Link href="/login"><a>Login Here</a></Link></p>
-          </Bottom>
         </FormWrapper>
       </Wrapper>
     </Container>

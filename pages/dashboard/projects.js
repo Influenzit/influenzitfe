@@ -2,7 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 import { ChevronLeft, ChevronRight } from '../../assets/svgIcons'
 import LandingLayout from '../../layouts/landing.layout'
-import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, Wrapper } from '../../styles/connect-pages.style'
+import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../styles/connect-pages.style'
 
 const Projects = () => {
   return (
@@ -28,18 +28,18 @@ const Projects = () => {
                     </TableControls>
                     <Table>
                         <THead>
-                            <Th>
-                                <Td cellWidth="50px">
+                            <TrH>
+                                <Th cellWidth="50px">
                                     <Checkbox>
                                     </Checkbox>
-                                </Td>
-                                <Td cellWidth="300px">Creator</Td>
-                                <Td cellWidth="200px">Project Type</Td>
-                                <Td cellWidth="150px">Start Date</Td>
-                                <Td cellWidth="150px">Duration</Td>
-                                <Td cellWidth="120px">Status</Td>
-                                <Td cellWidth="120px">Action</Td>
-                            </Th>
+                                </Th>
+                                <Th cellWidth="300px">Creator</Th>
+                                <Th cellWidth="200px">Project Type</Th>
+                                <Th cellWidth="150px">Start Date</Th>
+                                <Th cellWidth="150px">Duration</Th>
+                                <Th cellWidth="120px">Status</Th>
+                                <Th cellWidth="120px">Action</Th>
+                            </TrH>
                         </THead>
                         <TBody>
                             <Tr>

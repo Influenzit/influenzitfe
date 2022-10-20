@@ -1,14 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, GetStartedBtn, LoginBtn, Logo, NavLinks, ProfilePicWrapper, Right, SearchBtn, SearchBtnC, SearchByBtn, SearchByOption, SearchContainer, UserBtn, UserDropdown, Wrapper } from './style'
 
 import Image from 'next/image'
 import Link from 'next/link'
 import { BagIcon, BellIcon, CollaborationIcon, HashTagIcon, LogoutIcon, MailIcon, SettingsIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
 import { useRouter } from 'next/router'
+import { useDispatch, useSelector } from 'react-redux'
+import { clearUser, getUser } from '../../app/reducers/user'
+import { hasAValidAccount } from '../../helpers/helper'
 
 const Nav = () => {
-  const isLoggedIn = true;
+  const user = useSelector(getUser);
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [searchBy, setSearchBy] = useState("influencer");
+  const dispatch = useDispatch();
   const [showSearchOption, setShowSearchOption] = useState(false);
   const [showConnect, setShowConnect] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -16,6 +21,22 @@ const Nav = () => {
   const handleSearchOption = (val) => {
     setSearchBy(val)
     setShowSearchOption(false)
+  }
+  useEffect(() => {
+    setIsLoggedIn(!!user);
+  }, [user])
+  
+  
+  const logout = () => {
+    sessionStorage.clear()
+    dispatch(clearUser());
+    router.push("/login");
+  }
+  
+  if (isLoggedIn && !hasAValidAccount(user)) {
+    if((router.pathname !== "/dashboard/account-type") && router.pathname.includes("dashboard") && !router.pathname.includes("create/")) {
+        router.push("/dashboard/account-type")
+    }
   }
   return (
     <Container>
@@ -76,9 +97,9 @@ const Nav = () => {
                             {
                                 showDropdown && <UserDropdown>
                                     <button onClick={() => router.push("/influencer/profile")}><UserIcon /><span>Profile</span></button>
-                                    <button><WalletIcon /><span>Wallet</span></button>
+                                    <button onClick={() => {}}><WalletIcon /><span>Wallet</span></button>
                                     <button onClick={() => router.push("/dashboard/profile/information")}><SettingsIcon /><span>Settings</span></button>
-                                    <button><LogoutIcon /><span>Logout</span></button>
+                                    <button onClick={logout}><LogoutIcon /><span>Logout</span></button>
                                 </UserDropdown>
                             }
                         </UserBtn>
@@ -98,7 +119,7 @@ const Nav = () => {
                             <Link href="/login" passHref>
                                 <LoginBtn>Login</LoginBtn>
                             </Link>
-                            <Link href="/register/account-type" passHref>
+                            <Link href="/register" passHref>
                                 <GetStartedBtn>Get Started</GetStartedBtn>
                             </Link>
                         </Controls>

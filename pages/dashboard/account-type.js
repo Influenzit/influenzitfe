@@ -1,10 +1,15 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { getUser } from '../../app/reducers/user'
+import { hasAValidAccount } from '../../helpers/helper'
 import LandingLayout from '../../layouts/landing.layout'
 import { Container, FirstIcon, IconContainer, Option, OptionWrapper, SecondIcon, Wrapper } from '../../styles/choose-profile'
 
 const ChooseProfile = () => {
+  const user = useSelector(getUser);
+  if (hasAValidAccount(user)) return; 
   return (
     <Container>
       <Wrapper>
@@ -21,7 +26,7 @@ const ChooseProfile = () => {
             </IconContainer>
             <h2>Business Owners</h2>
             <p>Business looking to work with influencers and creators</p>
-            <Link href="/register/business-owner">
+            <Link href="/dashboard/create/business-owner">
               <a>Get Started</a>
             </Link>
           </Option>
