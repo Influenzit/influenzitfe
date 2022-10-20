@@ -40,7 +40,6 @@ const BusinessOwner = () => {
   if (mutation.isLoading) dispatch(setLoading(true));
   if (mutation.isSuccess) {
     const res = mutation.data.data;
-    console.log(res);
     if(res.errors) {
       dispatch(setLoading(false));
       dispatch(setError({error: true, message: res.message}));

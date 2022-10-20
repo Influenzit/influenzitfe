@@ -233,3 +233,31 @@ export const Bottom = styled.div`
         color: ${colors.primaryColor}
     }
 `;
+export const UploadContainer = styled.div`
+    display: flex;
+    padding: 10px 0;
+    align-items: center;
+    justify-content: space-between;
+    label {
+        cursor: pointer;
+        display: inline-flex;
+        border: 5px;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        background: ${colors.primaryColor};
+    }
+`;
+export const ImagePreview = styled.div`
+    border: 3px dashed ${colors.primaryColor};
+    background-color: white;
+    border-radius: 10px;
+    height: 150px;
+    margin: 15px 0;
+    padding: 10px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;

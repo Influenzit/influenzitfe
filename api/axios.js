@@ -7,6 +7,6 @@ const token = typeof window !== "undefined" && sessionStorage && sessionStorage.
 export const axiosInstance = axios.create({
     baseURL: "https://influenzitbe.up.railway.app/api/v1",
     headers: {
-        authoraization: token ? `Bearer ${token}` : ""
+        Authorization: token ? `Bearer ${token}` : ""
     }
 })

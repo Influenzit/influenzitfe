@@ -1,14 +1,57 @@
-import Link from 'next/link'
+import { useMutation } from '@tanstack/react-query';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { createBusiness } from '../../../api/auth';
+import { setError, setLoading } from '../../../app/reducers/status';
 import LandingLayout from '../../../layouts/landing.layout';
-import { Bottom, Center, Container, FormFields, FormHeader, FormWrapper, Input, InputContainer, SubmitButton, Wrapper } from '../../../styles/auth.style'
+import { Center, Container, FormFields, FormHeader, FormWrapper, ImagePreview, Input, InputContainer, SubmitButton, UploadContainer, Wrapper } from '../../../styles/auth.style'
 
 const BusinessOwner = () => {
-  const [formVal, setFormVal] = useState({})
+  const router = useRouter();
+  const [formVal, setFormVal] = useState({
+    businessName: "",
+    rc: "",
+    tin: "",
+    email: "",
+    tel: "",
+    website: "",
+    file: null,
+  })
   const handleInputChange = (val, field) => {
     setFormVal((prevVal) => {
       return {...prevVal, [field]: val};
     })
+  }
+  const dispatch = useDispatch();
+  const mutation = useMutation(businessData => {
+    return createBusiness(businessData);
+  })
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formdata = new FormData();
+
+    formdata.append("name", formVal.businessName);
+    formdata.append("rc", formVal.rc);
+    formdata.append("tin", formVal.tin);
+    formdata.append("email", formVal.email);
+    formdata.append("website", formVal.website);
+    formdata.append("is_registered", 1);
+    formdata.append("thumbnail", formVal.file);
+    formdata.append("phone", formVal.tel);
+    mutation.mutate(formdata);
+  }
+  if (mutation.isLoading) dispatch(setLoading(true));
+  if (mutation.isSuccess) {
+    const res = mutation.data.data;
+    if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+      dispatch(setLoading(false));
+      dispatch(setError({error: true, message: res.message}));
+    } else {
+      dispatch(setLoading(false));
+      router.push("/dashboard/projects");
+    }
   }
 
   return (
@@ -19,7 +62,7 @@ const BusinessOwner = () => {
             <h2>Create Business</h2>
           </FormHeader>
           <Center>
-            <FormFields>
+            <FormFields onSubmit={handleSubmit}>
               <InputContainer hasContent={formVal.businessName}>
                 <label>Business Name</label>
                 <Input
@@ -29,54 +72,68 @@ const BusinessOwner = () => {
                 required
                 />
               </InputContainer>
-              <InputContainer hasContent={formVal.username}>
-                <label>Username</label>
+              <InputContainer hasContent={formVal.rc}>
+                <label>RC Number</label>
                 <Input
                 type="text"
-                value={formVal.username}
-                onChange={(e) => handleInputChange(e.target.value, "username")}
+                value={formVal.rc}
+                onChange={(e) => handleInputChange(e.target.value, "rc")}
                 required
                 />
               </InputContainer>
-              <InputContainer hasContent={formVal.industry}>
-                <label>Choose an industry</label>
-                <select
-                  value={formVal.industry}
-                  onChange={(e) => handleInputChange(e.target.value, "industry")}
+              <InputContainer hasContent={formVal.tin}>
+                <label>TIN Number</label>
+                  <Input
+                  type="text"
+                  value={formVal.tin}
+                  onChange={(e) => handleInputChange(e.target.value, "tin")}
                   required
-                >
-                  <option></option>
-                  <option value="ind1">Industry 1</option>
-                  <option value="ind2">Industry 2</option>
-                </select>
+                  />
               </InputContainer>
-              <InputContainer hasContent={formVal.businessEmail}>
+              <InputContainer hasContent={formVal.email}>
                 <label>Business Email</label>
                 <Input
                 type="email"
-                value={formVal.businessEmail}
-                onChange={(e) => handleInputChange(e.target.value, "businessEmail")}
+                value={formVal.email}
+                onChange={(e) => handleInputChange(e.target.value, "email")}
                 required
                 />
               </InputContainer>
-              <InputContainer hasContent={formVal.address}>
-                <label>Address</label>
+              <InputContainer hasContent={formVal.website}>
+                <label>Business Website</label>
                 <Input
                 type="text"
-                value={formVal.address}
-                onChange={(e) => handleInputChange(e.target.value, "address")}
+                value={formVal.website}
+                onChange={(e) => handleInputChange(e.target.value, "website")}
                 required
                 />
               </InputContainer>
-              <InputContainer hasContent={formVal.password}>
-                <label>Password</label>
+              <InputContainer hasContent={formVal.tel}>
+                <label>Phone Number</label>
                 <Input
-                type="password"
-                value={formVal.password}
-                onChange={(e) => handleInputChange(e.target.value, "password")}
+                type="tel"
+                value={formVal.tel}
+                onChange={(e) => handleInputChange(e.target.value, "tel")}
                 required
                 />
               </InputContainer>
+              <UploadContainer>
+                <p>{formVal.file && formVal.file.name}</p>
+                <label htmlFor='file-input-id'>Upload Thumbnail</label>
+                <Input
+                type="file"
+                accept='image/*'
+                id="file-input-id"
+                onChange={(e) => handleInputChange(e.target.files[0], "file")}
+                required
+                hidden
+                />
+              </UploadContainer>
+              {
+                formVal.file && <ImagePreview>
+                  <Image src={URL.createObjectURL(formVal.file)} height={120} width={300}/>
+                </ImagePreview>
+              }
               <SubmitButton type="submit">Create</SubmitButton>
             </FormFields>
           </Center>
