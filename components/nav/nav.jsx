@@ -12,7 +12,7 @@ import { hasAValidAccount } from '../../helpers/helper'
 const Nav = () => {
   const user = useSelector(getUser);
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [searchBy, setSearchBy] = useState("influencer");
+  const [searchBy, setSearchBy] = useState("influencers");
   const dispatch = useDispatch();
   const [showSearchOption, setShowSearchOption] = useState(false);
   const [showConnect, setShowConnect] = useState(false);

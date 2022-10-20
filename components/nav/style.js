@@ -84,7 +84,7 @@ export const SearchContainer = styled.div`
     border: 1px solid #D2D2D2;
     background: #fafafa;
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     height: 44px;
     display: flex;
     align-items: center;
@@ -107,12 +107,14 @@ export const SearchContainer = styled.div`
 export const SearchByBtn = styled.div`
     padding: 0 10px;
     width: 160px;
+    min-width: 140px;
     display: flex;
     height: 100%;
     align-items: center;
     justify-content: space-between;
     border-right: 1px solid #D2D2D2 !important;
     position: relative;
+    cursor: pointer;
 `;
 export const SearchByOption = styled.div`
     position: absolute;
