@@ -2,13 +2,16 @@ import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { createBusiness } from '../../../api/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserAccount } from '../../../api/auth';
+import { createBusiness } from '../../../api/business';
 import { setError, setLoading } from '../../../app/reducers/status';
+import { getUser } from '../../../app/reducers/user';
 import LandingLayout from '../../../layouts/landing.layout';
 import { Center, Container, FormFields, FormHeader, FormWrapper, ImagePreview, Input, InputContainer, SubmitButton, UploadContainer, Wrapper } from '../../../styles/auth.style'
 
 const BusinessOwner = () => {
+  const user = useSelector(getUser);
   const router = useRouter();
   const [formVal, setFormVal] = useState({
     businessName: "",
@@ -38,7 +41,7 @@ const BusinessOwner = () => {
     formdata.append("email", formVal.email);
     formdata.append("website", formVal.website);
     formdata.append("is_registered", 1);
-    formdata.append("thumbnail", formVal.file);
+    // formdata.append("thumbnail", formVal.file);
     formdata.append("phone", formVal.tel);
     mutation.mutate(formdata);
   }
@@ -49,11 +52,22 @@ const BusinessOwner = () => {
       dispatch(setLoading(false));
       dispatch(setError({error: true, message: res.message}));
     } else {
+      getUserAccount(res.data.user_id).then((userRes) => {
+        if(userRes.data.data) {
+          dispatch(updateUser(userRes.data.data[0]));
+          sessionStorage.setItem("user", JSON.stringify(userRes.data.data[0]));
+        }
+      }).catch(err => {
+        console.log(err)
+      })
       dispatch(setLoading(false));
       router.push("/dashboard/projects");
     }
   }
-
+  if (user && user.account.is_businessowner) {
+    router.push("/dashboard/projects");
+    return;
+  }
   return (
     <Container>
       <Wrapper>

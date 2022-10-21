@@ -7,9 +7,9 @@ export const createAccount = (data) => {
 export const loginUser = (data) => {
     return axiosInstance.post("/auth/login", data);
 }
-export const createBusiness = (data) => {
-    return axiosInstance.post("/businesses", data);
-}
 export const forgotPassword = (data) => {
     return axiosInstance.post("/auth/password/forgot-password", data);
+}
+export const getUserAccount = (userId) => {
+    return axiosInstance.get(`/accounts/${userId}`)
 }

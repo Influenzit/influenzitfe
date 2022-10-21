@@ -1,10 +1,23 @@
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { getBusiness } from '../../../api/business'
+import { getUser } from '../../../app/reducers/user'
 import ProfileSidebar from '../../../components/profile-sidebar'
 import LandingLayout from '../../../layouts/landing.layout'
 import { AddSocialBtn, Bottom, Container, Content, FormContainer, Heading, InputContainer, InputFlex, Wrapper } from '../../../styles/profile.style'
 
 const Information = () => {
+//   const user = useSelector(getUser);
+//   const [name, setName] = useState("");
+//   const { isLoading, error, data } = useQuery(['businessData'], () => {
+//     getBusiness(user.account.user_id)
+// })
+//   useEffect(() => {
+//     console.log(data)
+//   }, [data])
+  
   return (
     <Container>
         <Wrapper>
