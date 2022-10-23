@@ -8,36 +8,46 @@ import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearUser, getUser } from '../../app/reducers/user'
 import { hasAValidAccount } from '../../helpers/helper'
+import { clearBusiness } from '../../app/reducers/business'
 
 const Nav = () => {
   const user = useSelector(getUser);
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchBy, setSearchBy] = useState("influencers");
   const dispatch = useDispatch();
   const [showSearchOption, setShowSearchOption] = useState(false);
   const [showConnect, setShowConnect] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   const handleSearchOption = (val) => {
     setSearchBy(val)
     setShowSearchOption(false)
   }
-  useEffect(() => {
-    setIsLoggedIn(!!user);
-  }, [user])
   
   
   const logout = () => {
-    sessionStorage.clear()
+    setIsLoggedIn(false);
+    localStorage.clear();
     dispatch(clearUser());
+    dispatch(clearBusiness());
     router.push("/login");
   }
-  
-  if (isLoggedIn && !hasAValidAccount(user)) {
-    if((router.pathname !== "/dashboard/account-type") && router.pathname.includes("dashboard") && !router.pathname.includes("create/")) {
-        router.push("/dashboard/account-type")
+  useEffect(() => {
+    console.log(router.pathname)
+    const authRoutes = ["/login", "/register", "/reset-password"];
+    setIsLoggedIn(!!user);
+    if (!!user && !hasAValidAccount(user)) {
+        if((router.pathname !== "/dashboard/account-type") && router.pathname.includes("dashboard") && !router.pathname.includes("create/")) {
+            router.push("/dashboard/account-type")
+        }
     }
-  }
+    if (!!user && authRoutes.includes(router.pathname)) {
+        router.push("/dashboard/projects")
+    }
+    if (!user) {
+        router.push("/login")
+    }
+  }, [user, router.pathname])
   return (
     <Container>
         <Wrapper>

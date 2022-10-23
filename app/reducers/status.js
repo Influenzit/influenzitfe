@@ -22,5 +22,9 @@ const statusSlice = createSlice({
         },
     }
 });
+export const isLoading = (state) => state.status.loading;
+export const isError = (state) => state.status.error;
+export const getMessage = (state) => state.status.message;
+export const isSuccess = (state) => state.status.success;
 export const { setLoading, setError, setSuccess } = statusSlice.actions
 export default statusSlice.reducer

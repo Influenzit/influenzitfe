@@ -1,9 +1,12 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 import NotifyCard from '../../components/notify-card'
 import LandingLayout from '../../layouts/landing.layout'
 import { Container, Wrapper } from '../../styles/notify.style'
 
 const EmailSent = () => {
+  const router = useRouter();
+  const { email } = router.query
   return (
     <Container>
         <Wrapper>
@@ -13,7 +16,7 @@ const EmailSent = () => {
                 link="mailto:"
                 linkDisplay="Open your Email"
                 body={<p>
-                    We&apos;ve sent an email containing the verification link to <span>mailaddress@email.com</span>. If you can&apos;t fine it in inbox kindly check spam and other folder.
+                    We&apos;ve sent an email containing the verification link to <span>{email}</span>. If you can&apos;t find it in inbox kindly check spam and other folder.
                 </p>}
             />
         </Wrapper>

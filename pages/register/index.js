@@ -45,8 +45,13 @@ const BusinessOwner = () => {
       dispatch(setError({error: true, message: res.message}));
     } else {
       dispatch(setLoading(false));
-      router.push("/register/email-sent");
+      router.push(`/register/email-sent?email=${formVal.email}&time=${Date.now()}`);
     }
+  }
+  if(mutation.isError) {
+    const res = mutation.error.response.data;
+    dispatch(setLoading(false));
+    dispatch(setError({error: true, message: res.message}));
   }
   return (
     <Container>

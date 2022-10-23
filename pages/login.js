@@ -5,6 +5,8 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../api/auth'
+import { getBusinesses } from '../api/business'
+import { setBusinesses } from '../app/reducers/business'
 import { setError, setLoading } from '../app/reducers/status'
 import { updateUser } from '../app/reducers/user'
 import LandingLayout from '../layouts/landing.layout'
@@ -18,6 +20,40 @@ const Login = () => {
   const dispatch = useDispatch();
   const mutation = useMutation(userData => {
     return loginUser(userData);
+  }, {
+    onSuccess(successRes) {
+      const res = successRes.data
+      if(res.errors || res.status === "error") {
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: res.message}));
+      } else {
+        sessionStorage.setItem("token", res.token);
+        getBusinesses(res.token).then((bizRes) => {
+          if(bizRes.data && res) {
+            dispatch(setLoading(false));
+            dispatch(setBusinesses(bizRes.data.data))
+            dispatch(updateUser(res.user));
+            dispatch(setError({error: false, message: ""}));
+            localStorage.setItem("token", res.token);
+            localStorage.setItem("user", JSON.stringify(res.user));
+  
+            router.push("/dashboard/projects");
+          }
+        }).catch( _ => {
+          dispatch({error: true, message: "An error occured"})
+        })
+      }
+    },
+    onError(error) {
+      const res = error.response.data;
+      if(res){
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: res.message}));
+        return;
+      }
+      dispatch(setLoading(false));
+      dispatch(setError({error: true, message: "Check your internet connection"}));
+    }
   })
 
   const handlePasswordChange = (e) => {
@@ -33,20 +69,6 @@ const Login = () => {
         email,
         password,
     })
-  }
-  if (mutation.isLoading) dispatch(setLoading(true));
-  if (mutation.isSuccess) {
-    const res = mutation.data.data;
-    if(res.errors || res.status === "error") {
-      dispatch(setLoading(false));
-      dispatch(setError({error: true, message: res.message}));
-    } else {
-      dispatch(setLoading(false));
-      dispatch(updateUser(res.user));
-      sessionStorage.setItem("token", res.token);
-      sessionStorage.setItem("user", JSON.stringify(res.user));
-      router.push("/dashboard/projects");
-    }
   }
   return (
     <Container>

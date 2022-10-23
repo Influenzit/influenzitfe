@@ -1,12 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAccount } from '../../../api/auth';
 import { createBusiness } from '../../../api/business';
 import { setError, setLoading } from '../../../app/reducers/status';
-import { getUser } from '../../../app/reducers/user';
+import { getUser, updateUser } from '../../../app/reducers/user';
 import LandingLayout from '../../../layouts/landing.layout';
 import { Center, Container, FormFields, FormHeader, FormWrapper, ImagePreview, Input, InputContainer, SubmitButton, UploadContainer, Wrapper } from '../../../styles/auth.style'
 
@@ -30,8 +30,47 @@ const BusinessOwner = () => {
   const dispatch = useDispatch();
   const mutation = useMutation(businessData => {
     return createBusiness(businessData);
+  }, {
+    onSuccess(successRes) {
+      const res = successRes.data;
+      if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: res.message}));
+      } else {
+        getUserAccount(res.data.user_id).then((userRes) => {
+          if(userRes.data.data) {
+            dispatch(updateUser(userRes.data.data[0].user));
+            sessionStorage.setItem("user", JSON.stringify(userRes.data.data[0]));
+          }
+        }).then(() => {
+          getBusinesses().then((bizRes) => {
+            if(bizRes.data && res) {
+              dispatch(setLoading(false));
+              dispatch(setBusinesses(bizRes.data.data));
+              dispatch(setError({error: false, message: ""}));
+              router.push("/dashboard/projects");
+            }
+          }).catch(err => {
+            dispatch(setError({error: true, message: "An error occured"}));
+          })
+        }).catch(err => {
+          dispatch(setError({error: true, message: "An error occured"}));
+        })
+      }
+    },
+    onError(error) {
+      const res = error.response.data;
+      if(res){
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: res.message}));
+        return;
+      }
+      dispatch(setLoading(false));
+      dispatch(setError({error: true, message: "Check your internet connection"}));
+    }
   })
   const handleSubmit = (e) => {
+    dispatch(setLoading(true));
     e.preventDefault();
     const formdata = new FormData();
 
@@ -45,29 +84,13 @@ const BusinessOwner = () => {
     formdata.append("phone", formVal.tel);
     mutation.mutate(formdata);
   }
-  if (mutation.isLoading) dispatch(setLoading(true));
-  if (mutation.isSuccess) {
-    const res = mutation.data.data;
-    if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
-      dispatch(setLoading(false));
-      dispatch(setError({error: true, message: res.message}));
-    } else {
-      getUserAccount(res.data.user_id).then((userRes) => {
-        if(userRes.data.data) {
-          dispatch(updateUser(userRes.data.data[0]));
-          sessionStorage.setItem("user", JSON.stringify(userRes.data.data[0]));
-        }
-      }).catch(err => {
-        console.log(err)
-      })
-      dispatch(setLoading(false));
+ 
+  useEffect(() => {
+    if (user && user.account.is_businessowner) {
       router.push("/dashboard/projects");
+      return;
     }
-  }
-  if (user && user.account.is_businessowner) {
-    router.push("/dashboard/projects");
-    return;
-  }
+  }, [user])
   return (
     <Container>
       <Wrapper>
