@@ -44,7 +44,7 @@ const Nav = () => {
     if (!!user && authRoutes.includes(router.pathname)) {
         router.push("/dashboard/projects")
     }
-    if (!user) {
+    if (!user && router.pathname.includes("/dashboard")) {
         router.push("/login")
     }
   }, [user, router.pathname])
