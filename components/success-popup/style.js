@@ -15,7 +15,9 @@ export const Container = styled.div`
 export const LoaderCard = styled.div`
     color: #444;
     padding: 20px 25px;
-    width: 370px;
+    width: 350px;
+    min-width: 350px;
+    max-width: 350px;
     border-radius: 10px;
     display: flex;
     align-items: center;
