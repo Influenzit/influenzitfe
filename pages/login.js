@@ -136,7 +136,7 @@ const Login = () => {
             </SocialLogin>
           </Center>
           <Bottom>
-            <p>Don&apos;t have an account? <Link href="/register/account-type"><a>Register Here</a></Link></p>
+            <p>Don&apos;t have an account? <Link href="/register"><a>Register Here</a></Link></p>
           </Bottom>
         </FormWrapper>
       </Wrapper>

@@ -6,6 +6,6 @@ const token = typeof window !== "undefined" && localStorage && localStorage.getI
 export const axiosInstance = axios.create({
     baseURL: "https://influenzitbe.herokuapp.com/api/v1",
     headers: {
-        Authorization: token ? `Bearer ${token}` : ""
+        Authorization: !!token ? `Bearer ${token}` : ""
     }
 })
