@@ -28,6 +28,7 @@ export const LoaderCard = styled.div`
         margin-top: 10px;
         font-weight: 600;
         font-size: 20px;
+        text-align: center;
     }
     button {
         color: #fff;
