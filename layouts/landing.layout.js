@@ -11,6 +11,7 @@ import { useRouter } from 'next/router'
 import { getMessage, isError, isLoading, isSuccess } from '../app/reducers/status'
 import ErrorPopup from '../components/error-popup'
 import SuccessPopup from '../components/success-popup'
+import { hasAValidAccount } from '../helpers/helper'
 
 const LandingLayout = ({children, title, description}) => {
   const user = useSelector(getUser);
@@ -23,6 +24,21 @@ const LandingLayout = ({children, title, description}) => {
   useEffect(() => {
     setIsLoggedIn(!!user);
   }, [user]);
+  useEffect(() => {
+    const authRoutes = ["/login", "/register", "/reset-password"];
+    setIsLoggedIn(!!user);
+    if (!!user && !hasAValidAccount(user)) {
+        if((router.pathname !== "/dashboard/account-type") && router.pathname.includes("dashboard") && !router.pathname.includes("create/")) {
+            router.push("/dashboard/account-type")
+        }
+    }
+    if (!!user && authRoutes.includes(router.pathname)) {
+        router.push("/dashboard/projects")
+    }
+    if (!user && router.pathname.includes("/dashboard")) {
+        router.push("/login")
+    }
+  }, [user, router.pathname])
   return (
     <Container>
        <Head>

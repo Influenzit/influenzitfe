@@ -7,7 +7,6 @@ import { BagIcon, BellIcon, CollaborationIcon, HashTagIcon, LogoutIcon, MailIcon
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearUser, getUser } from '../../app/reducers/user'
-import { hasAValidAccount } from '../../helpers/helper'
 import { clearBusiness } from '../../app/reducers/business'
 
 const Nav = () => {
@@ -33,20 +32,7 @@ const Nav = () => {
     router.push("/login");
   }
   useEffect(() => {
-    console.log(router.pathname)
-    const authRoutes = ["/login", "/register", "/reset-password"];
     setIsLoggedIn(!!user);
-    if (!!user && !hasAValidAccount(user)) {
-        if((router.pathname !== "/dashboard/account-type") && router.pathname.includes("dashboard") && !router.pathname.includes("create/")) {
-            router.push("/dashboard/account-type")
-        }
-    }
-    if (!!user && authRoutes.includes(router.pathname)) {
-        router.push("/dashboard/projects")
-    }
-    if (!user && router.pathname.includes("/dashboard")) {
-        router.push("/login")
-    }
   }, [user, router.pathname])
   return (
     <Container>

@@ -9,7 +9,7 @@ export const Container = styled.div`
     position: fixed;
     top: 0;
     left: 0;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.4);
     z-index: 999999;
 `;
 export const LoaderCard = styled.div`
@@ -33,11 +33,12 @@ export const LoaderCard = styled.div`
         text-align: center;
     }
     button {
-        color: #fff;
-        background: crimson;
+        border: 2px solid #ddd;
+        background: white;
         padding: 10px 25px;
         border-radius: 99px;
-        border: none;
+        color: #dc143ca3;
+        border-radius: 99px;
         font-size: 18px;
         font-weight: 500;
         cursor: pointer;
