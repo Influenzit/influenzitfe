@@ -10,8 +10,8 @@ const EmailSent = () => {
             <NotifyCard 
                 imgSrc="/mail-icon.svg"
                 header="Email sent!"
-                link="mailto:"
-                linkDisplay="Open your Email"
+                link="/"
+                linkDisplay="Resend Email"
                 body={<p>We&apos;ve sent an email to your email address. Follow the steps provided in the email to update your password.</p>}
             />
         </Wrapper>

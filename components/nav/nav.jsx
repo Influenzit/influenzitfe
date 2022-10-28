@@ -94,7 +94,7 @@ const Nav = () => {
                                 showDropdown && <UserDropdown>
                                     <button onClick={() => router.push("/influencer/profile")}><UserIcon /><span>Profile</span></button>
                                     <button onClick={() => {}}><WalletIcon /><span>Wallet</span></button>
-                                    <button onClick={() => router.push("/dashboard/profile/information")}><SettingsIcon /><span>Settings</span></button>
+                                    <button onClick={() => router.push(`${user.account.is_businessowner ? "/dashboard/profile/information" : "/dashboard/profile/influencer"}`)}><SettingsIcon /><span>Settings</span></button>
                                     <button onClick={logout}><LogoutIcon /><span>Logout</span></button>
                                 </UserDropdown>
                             }

@@ -38,7 +38,6 @@ export const LoaderCard = styled.div`
         padding: 10px 25px;
         border-radius: 99px;
         color: #dc143ca3;
-        border-radius: 99px;
         font-size: 18px;
         font-weight: 500;
         cursor: pointer;

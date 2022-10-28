@@ -39,8 +39,8 @@ const BusinessOwner = () => {
       } else {
         getUserAccount(res.data.user_id).then((userRes) => {
           if(userRes.data.data) {
-            dispatch(updateUser(userRes.data.data[0].user));
-            sessionStorage.setItem("user", JSON.stringify(userRes.data.data[0]));
+            dispatch(updateUser(userRes.data.data));
+            localStorage.setItem("user", JSON.stringify(userRes.data.data[0]));
           }
         }).then(() => {
           getBusinesses().then((bizRes) => {

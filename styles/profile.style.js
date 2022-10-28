@@ -30,9 +30,14 @@ export const Heading = styled.div`
 export const FormContainer = styled.div`
     padding: 20px 30px;
 `;
+export const List = styled.div`
+    display: flex;
+    align-items: center;
+`;
 export const InputFlex = styled.div`
     display: flex;
     column-gap: 15px;
+    width: 100%;
 `;
 export const InputContainer = styled.div`
     display: flex;
@@ -79,6 +84,45 @@ export const Bottom = styled.div`
         border-radius: 3px;
     }
 `;
+export const BottomAdd = styled.div`
+    padding: 20px 0px;
+    display: flex;
+    justify-content: right;
+    button {
+        background: ${colors.primaryColor};
+        color: white;
+        padding: 12px 25px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        border-radius: 3px;
+    }
+`;
+export const CreateContainer = styled.div`
+    padding: 20px 30px;
+`;
+export const ListContainer = styled.div`
+    padding: 20px 30px;
+    h4 {
+        color: #444;
+        text-align: center;
+    }
+`;
+export const DeleteBtn = styled.button`
+    padding: 10px;
+    background: white;
+    border: none;
+    padding-top: 14px;
+    font-size: 24px;
+    color: #dc143ca3;
+    font-weight: 500;
+    cursor: pointer;
+    height: 40px;
+    display: inline-flex;
+    margin: 10px 0;
+`;
+
 export const AddSocialBtn = styled.button`
     cursor: pointer;
     background: transparent;

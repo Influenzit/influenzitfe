@@ -26,23 +26,26 @@ const LandingLayout = ({children, title, description}) => {
   }, [user]);
   useEffect(() => {
     const authRoutes = ["/login", "/register", "/reset-password"];
-    setIsLoggedIn(!!user);
-    if (!!user && !hasAValidAccount(user)) {
-        if((router.pathname !== "/dashboard/account-type") && router.pathname.includes("dashboard") && !router.pathname.includes("create/")) {
-            router.push("/dashboard/account-type")
-        }
-    }
-    if (!!user && authRoutes.includes(router.pathname)) {
-        router.push("/dashboard/projects")
-    }
-    if (!user && router.pathname.includes("/dashboard")) {
+    if(user) {
+      setIsLoggedIn(!!user);
+      if (!!user && !hasAValidAccount(user)) {
+          if((router.pathname !== "/dashboard/account-type") && router.pathname.includes("/dashboard") && !router.pathname.includes("create/")) {
+              router.push("/dashboard/account-type")
+          }
+      }
+      if (!!user && authRoutes.includes(router.pathname)) {
+          router.push("/dashboard/projects")
+      }
+    } else {
+      if (router.pathname.includes("/dashboard")) {
         router.push("/login")
+      }
     }
   }, [user, router.pathname])
   return (
     <Container>
        <Head>
-        <title>{title}</title>
+        <title>{title ? title : "Influenzit"}</title>
         <meta name="description" content={description} />
         <link rel="icon" href="/favicon.ico" />
       </Head>

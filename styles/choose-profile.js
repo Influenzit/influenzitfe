@@ -51,6 +51,23 @@ export const Option = styled.div`
         border: 1px solid ${colors.primaryColor};
         font-size: 16px;
         padding: 12px 23px;
+        height: 50px;
+        border-radius: 3px;
+        background: #fff;
+        cursor: pointer;
+        transition: .3s ease;
+        :hover {
+            background: ${colors.primaryColor};
+            color: #fff;
+        }
+    }
+    button {
+        display: inline-block;
+        color: ${colors.primaryColor};
+        border: 1px solid ${colors.primaryColor};
+        font-size: 16px;
+        height: 50px;
+        padding: 12px 23px;
         border-radius: 3px;
         background: #fff;
         cursor: pointer;

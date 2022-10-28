@@ -1,8 +1,9 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getBusiness, getBusinesses, updateBusiness } from '../../../api/business'
+import { getBusinesses, updateBusiness } from '../../../api/business'
 import { getBusinessesFromState, setBusinesses } from '../../../app/reducers/business'
 import { setError, setLoading, setSuccess } from '../../../app/reducers/status'
 import { getUser } from '../../../app/reducers/user'
@@ -11,6 +12,8 @@ import LandingLayout from '../../../layouts/landing.layout'
 import { AddSocialBtn, Bottom, Container, Content, FormContainer, Heading, InputContainer, InputFlex, Wrapper } from '../../../styles/profile.style'
 
 const Information = () => {
+    const router = useRouter();
+    const user = useSelector(getUser);
     const business = useSelector(getBusinessesFromState)[0]
     const [formVal, setFormVal] = useState({
         businessName: "",
@@ -36,12 +39,12 @@ const Information = () => {
                 dispatch(setLoading(false));
                 dispatch(setError({error: true, message: res.message}));
             } else {
-                dispatch(setSuccess({success: true, message: "Update successful"}))
+                dispatch(setSuccess({success: true, message: "Update successful"}));
                 getBusinesses().then((bizRes) => {
                     if(bizRes.data && res) {
                     dispatch(setLoading(false));
                     dispatch(setBusinesses(bizRes.data.data));
-                    dispatch(setError({error: false, message: "Update successful"}));
+                    dispatch(setError({error: false, message: ""}));
                     }
                 }).catch( _ => {
                     dispatch(setError({error: true, message: "An error occured"}));
@@ -92,7 +95,13 @@ const Information = () => {
             })
         }
       }, [business])
-      
+      useEffect(() => {
+        if(user) {
+            if(user.account && !user.account.is_businessowner) {
+                router.push("/dashboard/profile/influencer");
+            }
+        }
+      }, [user, router.pathname])
   return (
     <Container>
         <Wrapper>

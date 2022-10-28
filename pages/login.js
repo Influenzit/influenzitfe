@@ -22,26 +22,41 @@ const Login = () => {
     return loginUser(userData);
   }, {
     onSuccess(successRes) {
-      const res = successRes.data
+      const res = successRes.data.data
       if(res.errors || res.status === "error") {
         dispatch(setLoading(false));
         dispatch(setError({error: true, message: res.message}));
       } else {
-        sessionStorage.setItem("token", res.token);
-        getBusinesses(res.token).then((bizRes) => {
-          if(bizRes.data && res) {
+        localStorage.setItem("token", res.token);
+        const { is_influencer, is_creator, is_businessowner } = res.user.account;
+        if (is_businessowner) {
+          getBusinesses(res.token).then((bizRes) => {
+            if (bizRes.data && res) {
+              dispatch(setLoading(false));
+              dispatch(setBusinesses(bizRes.data.data))
+              dispatch(updateUser(res.user));
+              dispatch(setError({error: false, message: ""}));
+              localStorage.setItem("user", JSON.stringify(res.user));
+              router.push("/dashboard/projects");
+            }
+          }).catch( _ => {
             dispatch(setLoading(false));
-            dispatch(setBusinesses(bizRes.data.data))
-            dispatch(updateUser(res.user));
-            dispatch(setError({error: false, message: ""}));
-            localStorage.setItem("token", res.token);
-            localStorage.setItem("user", JSON.stringify(res.user));
-  
+            dispatch(setError({error: true, message: "An error occured"}))
+          })
+        } else {
+          dispatch(setLoading(false));
+          console.log(res)
+          dispatch(updateUser(res.user));
+          dispatch(setError({error: false, message: ""}));
+          localStorage.setItem("token", res.token);
+          localStorage.setItem("user", JSON.stringify(res.user));
+          
+          if (is_influencer || is_creator) {
             router.push("/dashboard/projects");
+          } else {
+            router.push("/dashboard/account-type");
           }
-        }).catch( _ => {
-          dispatch({error: true, message: "An error occured"})
-        })
+        }
       }
     },
     onError(error) {

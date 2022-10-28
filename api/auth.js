@@ -10,6 +10,15 @@ export const loginUser = (data) => {
 export const forgotPassword = (data) => {
     return axiosInstance.post("/auth/password/forgot-password", data);
 }
+export const resetPassword = (data) => {
+    return axiosInstance.post("/auth/password/reset", data);
+}
+export const resendEmail = (data) => {
+    return axiosInstance.post("/auth/email/resend", data);
+}
 export const getUserAccount = (userId) => {
-    return axiosInstance.get(`/accounts/${userId}`)
+    return axiosInstance.get(`/users/${userId}`)
+}
+export const accountTypeUpdate = (data, userId) => {
+    return axiosInstance.patch(`/accounts/${userId}/toggle-type`, data);
 }

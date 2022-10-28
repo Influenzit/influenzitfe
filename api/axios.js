@@ -1,6 +1,6 @@
 import axios from "axios"
 
-// fetches token from session storage 
+// fetches token from local storage 
 const token = typeof window !== "undefined" && localStorage.getItem("token");
 // creates an instance of axios
 export const axiosInstance = axios.create({
