@@ -26,7 +26,7 @@ const Information = () => {
         staleTime: Infinity
     })
     const createSkillsMutation = useMutation( skillsData => {
-        return createSkills(skillsData, user.account.id)
+        return createSkills(skillsData)
     }, {
         onSuccess(successRes) {
             const res = successRes.data;
@@ -56,7 +56,7 @@ const Information = () => {
         }
     })
     const deleteSkillMutation = useMutation( skillId => {
-        return deleteSkill(user.account.id, skillId);
+        return deleteSkill(skillId);
     }, {
         onSuccess(successRes) {
             const res = successRes.data;
@@ -81,7 +81,7 @@ const Information = () => {
         }
     })
     const updateSkillsMutation = useMutation( skillsData => {
-        return createSkills(skillsData, user.account.id)
+        return createSkills(skillsData)
     }, {
         onSuccess(successRes) {
             const res = successRes.data;
