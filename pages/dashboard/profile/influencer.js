@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createSkills, deleteSkill, getSkills, updateSkills } from '../../../api/influencer'
-import { setLoading, setSuccess } from '../../../app/reducers/status'
+import { setError, setLoading, setSuccess } from '../../../app/reducers/status'
 import { getUser } from '../../../app/reducers/user'
 import ProfileSidebar from '../../../components/profile-sidebar'
 import LandingLayout from '../../../layouts/landing.layout'
@@ -107,7 +107,7 @@ const Information = () => {
               return;
             }
             dispatch(setLoading(false));
-            dispatch(setError({error: true, message: "Check your internet connection"}));
+            dispatch(setError({error: true, message: "An error occured"}));
         }
     })
 
@@ -131,7 +131,8 @@ const Information = () => {
     }
 
     const handleUpdateSkills = () => {
-        updateSkillsMutation.mutate(skillsList)
+        dispatch(setLoading(true));
+        updateSkillsMutation.mutate(skillsList);
     }
     
     // handles new skills change
