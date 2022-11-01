@@ -280,7 +280,7 @@ const Information = () => {
                     rate: "",
                 })
                 dispatch(setLoading(false));
-                dispatch(setSuccess({success: true, message: "Skill updated successful"}));
+                dispatch(setSuccess({success: true, message: "Experience updated successful"}));
 
             }
         },
@@ -853,14 +853,14 @@ const Information = () => {
                     </Control>
                 </ControlFlex>
                 </FormContainer>
-                <Heading>
+                {/* <Heading>
                     <h2>Portfolios</h2>
                 </Heading>
                 <FormContainer>
                     <BottomAdd>
                         <button onClick={() => {}}>Add Portfolio</button>
                     </BottomAdd>
-                </FormContainer>
+                </FormContainer> */}
             </Content>
         </Wrapper>
     </Container>

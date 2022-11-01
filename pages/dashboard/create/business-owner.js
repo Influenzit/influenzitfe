@@ -4,7 +4,8 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAccount } from '../../../api/auth';
-import { createBusiness } from '../../../api/business';
+import { createBusiness, getBusinesses } from '../../../api/business';
+import { setBusinesses } from '../../../app/reducers/business';
 import { setError, setLoading } from '../../../app/reducers/status';
 import { getUser, updateUser } from '../../../app/reducers/user';
 import LandingLayout from '../../../layouts/landing.layout';
@@ -40,7 +41,7 @@ const BusinessOwner = () => {
         getUserAccount(res.data.user_id).then((userRes) => {
           if(userRes.data.data) {
             dispatch(updateUser(userRes.data.data));
-            localStorage.setItem("user", JSON.stringify(userRes.data.data[0]));
+            localStorage.setItem("user", JSON.stringify(userRes.data.data));
           }
         }).then(() => {
           getBusinesses().then((bizRes) => {
@@ -66,7 +67,7 @@ const BusinessOwner = () => {
         return;
       }
       dispatch(setLoading(false));
-      dispatch(setError({error: true, message: "Check your internet connection"}));
+      dispatch(setError({error: true, message: "An error occured"}));
     }
   })
   const handleSubmit = (e) => {

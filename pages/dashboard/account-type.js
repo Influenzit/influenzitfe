@@ -28,8 +28,7 @@ const ChooseProfile = () => {
           if(userRes.data.data) {
             dispatch(setLoading(false));
             dispatch(updateUser(userRes.data.data));
-            console.log(JSON.stringify(userRes.data.data))
-            localStorage.setItem("user", JSON.stringify(userRes.data.data[0]));
+            localStorage.setItem("user", JSON.stringify(userRes.data.data));
             router.push("/dashboard/projects");
           }
         }).catch(_ => {
@@ -44,7 +43,7 @@ const ChooseProfile = () => {
         return;
       }
       dispatch(setLoading(false));
-      dispatch(setError({error: true, message: "Check your internet connection"}));
+      dispatch(setError({error: true, message: "An error occured"}));
     }
   }
   )
@@ -54,7 +53,6 @@ const ChooseProfile = () => {
       type
     })
   }
-  if (hasAValidAccount(user)) return; 
   return (
     <Container>
       <Wrapper>

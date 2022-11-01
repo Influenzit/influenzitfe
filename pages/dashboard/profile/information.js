@@ -9,7 +9,7 @@ import { setError, setLoading, setSuccess } from '../../../app/reducers/status'
 import { getUser } from '../../../app/reducers/user'
 import ProfileSidebar from '../../../components/profile-sidebar'
 import LandingLayout from '../../../layouts/landing.layout'
-import { AddSocialBtn, Bottom, Container, Content, FormContainer, Heading, InputContainer, InputFlex, Wrapper } from '../../../styles/profile.style'
+import { AddSocialBtn, Bottom, Container, Content, FormContainerM, Heading, InputContainer, InputFlex, Wrapper } from '../../../styles/profile.style'
 
 const Information = () => {
     const router = useRouter();
@@ -59,7 +59,7 @@ const Information = () => {
               return;
             }
             dispatch(setLoading(false));
-            dispatch(setError({error: true, message: "Check your internet connection"}));
+            dispatch(setError({error: true, message: "An error occured"}));
         }
       })
       const handleSubmit = () => {
@@ -110,7 +110,7 @@ const Information = () => {
                 <Heading>
                     <h2>Business Information</h2>
                 </Heading>
-                <FormContainer>
+                <FormContainerM>
                     <InputFlex>
                         <InputContainer>
                             <label>Business Name</label>
@@ -169,11 +169,11 @@ const Information = () => {
                         <label>About the business</label>
                         <textarea />
                     </InputContainer>
-                </FormContainer>
+                </FormContainerM>
                 <Heading>
                     <h2>Social Media Profiles</h2>
                 </Heading>
-                <FormContainer>
+                <FormContainerM>
                     <InputFlex>
                         <InputContainer>
                             <label>Facebook</label>
@@ -194,7 +194,7 @@ const Information = () => {
                             <input type="text" />
                         </InputContainer>
                     </InputFlex>
-                </FormContainer>
+                </FormContainerM>
                 <AddSocialBtn><Image src="/plus.svg" alt="plus" height={22} width={22} /><span>Add another social media profile</span></AddSocialBtn>
                 <Bottom>
                     <button onClick={handleSubmit}>Save Changes</button>

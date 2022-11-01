@@ -18,6 +18,7 @@ export const Content =  styled.div`
     background: #fff;
     border: 1px solid #D2D2D2;
     border-radius: 5px;
+    padding-bottom: 20px;
 `;
 export const Heading = styled.div`
     padding: 20px 30px;
@@ -29,6 +30,9 @@ export const Heading = styled.div`
 `;
 export const FormContainer = styled.div`
     padding: 0px 30px;
+`;
+export const FormContainerM = styled.div`
+    padding: 20px 30px;
 `;
 export const List = styled.div`
     display: flex;

@@ -66,7 +66,7 @@ const Login = () => {
         return;
       }
       dispatch(setLoading(false));
-      dispatch(setError({error: true, message: "Check your internet connection"}));
+      dispatch(setError({error: true, message: "An error occured"}));
     }
   })
 

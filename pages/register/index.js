@@ -20,6 +20,22 @@ const BusinessOwner = () => {
   const dispatch = useDispatch();
   const mutation = useMutation(userData => {
     return createAccount(userData);
+  }, {
+    onSuccess(successRes) {
+      const res = successRes.data;
+      if(res.errors) {
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: res.message}));
+      } else {
+        dispatch(setLoading(false));
+        router.push(`/register/email-sent?email=${formVal.email}&time=${Date.now()}`);
+      }
+    },
+    onError(error) {
+      const res = error.response.data;
+      dispatch(setLoading(false));
+      dispatch(setError({error: true, message: res.message}));
+    }
   })
   const handleInputChange = (val, field) => {
     setFormVal((prevVal) => {
@@ -38,21 +54,6 @@ const BusinessOwner = () => {
     })
   }
   if (mutation.isLoading) dispatch(setLoading(true));
-  if (mutation.isSuccess) {
-    const res = mutation.data.data;
-    if(res.errors) {
-      dispatch(setLoading(false));
-      dispatch(setError({error: true, message: res.message}));
-    } else {
-      dispatch(setLoading(false));
-      router.push(`/register/email-sent?email=${formVal.email}&time=${Date.now()}`);
-    }
-  }
-  if(mutation.isError) {
-    const res = mutation.error.response.data;
-    dispatch(setLoading(false));
-    dispatch(setError({error: true, message: res.message}));
-  }
   return (
     <Container>
       <Wrapper>
