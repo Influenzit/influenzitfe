@@ -3,13 +3,14 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createExperiences, createSkills, deleteSkill, getCertifications, getSkills, updateExperiences, updateSkills } from '../../../api/influencer'
+import { createExperiences, createSkills, deleteSkill, getCertifications, getExperiences, getSkills, updateExperiences, updateSkills } from '../../../api/influencer'
 import { isLoading, setError, setLoading, setSuccess } from '../../../app/reducers/status'
 import { getUser } from '../../../app/reducers/user'
 import { CancelIcon, DeleteIcon } from '../../../assets/svgIcons'
 import ProfileSidebar from '../../../components/profile-sidebar';
 import LandingLayout from '../../../layouts/landing.layout';
-import { BottomAdd,  Container, Content, DeleteBtn, FormContainer, Heading, InputContainer, InputFlex, List, ListContainer, Wrapper } from '../../../styles/profile.style'
+import { CheckContainer, FrameContainer } from '../../../styles/auth.style'
+import { BottomAdd,  Container, Content, Control, ControlFlex, CurrentToggle, DeleteBtn, FormContainer, Heading, InputContainer, InputFlex, List, ListB, ListContainer, Wrapper } from '../../../styles/profile.style'
 
 const Information = () => {
     const router = useRouter();
@@ -201,14 +202,17 @@ const Information = () => {
     }, {
         onSuccess(successRes) {
             const res = successRes.data;
-            refetchSkillData();
+            refetchExperienceData();
             if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
                 dispatch(setLoading(false));
                 dispatch(setError({error: true, message: res.message}));
             } else { 
-                setNewSkills({
-                    name: "",
-                    rate: "",
+                setNewExperience({
+                    position: "",
+                    company: "",
+                    startDate: "",
+                    endDate: "",
+                    isPresent: true,
                 })
                 dispatch(setLoading(false));
                 dispatch(setSuccess({success: true, message: "Experience created"}));
@@ -231,7 +235,7 @@ const Information = () => {
     }, {
         onSuccess(successRes) {
             const res = successRes.data;
-            refetchSkillData();
+            refetchExperienceData();
             if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
                 dispatch(setLoading(false));
                 dispatch(setError({error: true, message: res.message}));
@@ -315,12 +319,19 @@ const Information = () => {
         })
     }
 
+    // handles new experience change
+    const handleNewExperienceChange = (val, field) => {
+        setNewExperience((prevVal) => {
+            return {...prevVal, [field]: val};
+        })
+    }
     useEffect(() => {
     if(user) {
         if(user.account && user.account.is_businessowner) {
             router.push("/dashboard/profile/information");
         }
         refetchSkillData();
+        refetchExperienceData();
     }
     }, [user, router.pathname]);
 
@@ -336,7 +347,7 @@ const Information = () => {
                     {
                         skillsList.length > 0 ? (
                             skillsList.map((val, i) => (
-                                <List>
+                                <List key={i}>
                                     <InputFlex>
                                         <InputContainer>
                                             <label>Name</label>
@@ -399,13 +410,13 @@ const Information = () => {
                     {
                         experienceList.length > 0 ? (
                             experienceList.map((val, i) => (
-                                <List>
+                                <ListB key={i}>
                                     <InputFlex>
                                         <InputContainer>
                                             <label>Position</label>
                                             <input
                                             type="text"
-                                            value={val.name}
+                                            value={val.position}
                                             onChange={(e) => handleExperienceChange(e.target.value, "position", i)}
                                             />
                                         </InputContainer>
@@ -413,7 +424,7 @@ const Information = () => {
                                             <label>Company</label>
                                             <input
                                             type="text"
-                                            value={val.rate}
+                                            value={val.company}
                                             onChange={(e) => handleExperienceChange(e.target.value, "company", i)}
                                             />
                                         </InputContainer>
@@ -423,29 +434,100 @@ const Information = () => {
                                             <label>Start Date</label>
                                             <input
                                             type="date"
-                                            value={val.name}
-                                            onChange={(e) => handleExperienceChange(e.target.value, "position", i)}
+                                            value={val.start_date}
+                                            onChange={(e) => handleExperienceChange(e.target.value, "start_date", i)}
                                             />
                                         </InputContainer>
                                         <InputContainer>
                                             <label>End Date</label>
                                             <input
                                             type="date"
-                                            value={val.rate}
-                                            onChange={(e) => handleExperienceChange(e.target.value, "company", i)}
+                                            value={val.end_date}
+                                            onChange={(e) => handleExperienceChange(e.target.value, "end_date", i)}
                                             />
                                         </InputContainer>
                                     </InputFlex>
-                                    <DeleteBtn onClick={() => handleSkillDelete(val.id)}><DeleteIcon /></DeleteBtn>
-                                </List> 
+                                    <ControlFlex>
+                                        <CurrentToggle>
+                                            <button onClick={() => handleExperienceChange(!experienceList[i].is_present, "is_present", i)}>
+                                            <FrameContainer>
+                                                <Image src="/check-frame.svg" alt="" height={18} width={18} />
+                                            </FrameContainer>
+                                            {
+                                                experienceList[i].is_present && <CheckContainer>
+                                                <Image src="/check-b.svg" alt="" height={10} width={13} />
+                                                </CheckContainer>
+                                            }
+                                            </button>
+                                            <span>Present</span>
+                                        </CurrentToggle>
+                                        <Control>
+                                            <button onClick={() => handleDeleteExperience(val.id)}><DeleteIcon /></button>
+                                            <BottomAdd>
+                                                <button onClick={() => handleUpdateExperience(val.id)}>Update Experience</button>
+                                            </BottomAdd>
+                                        </Control>
+                                    </ControlFlex>
+                                </ListB> 
                             ))
                         ) : <h4>No Experience</h4>
                     }
                 </ListContainer>
                 <FormContainer>
-                    <BottomAdd>
-                        <button onClick={() => {}}>Add Experience</button>
-                    </BottomAdd>
+                <InputFlex>
+                    <InputContainer>
+                        <label>Position</label>
+                        <input
+                        type="text"
+                        value={newExperience.position}
+                        onChange={(e) => handleNewExperienceChange(e.target.value, "position")}
+                        />
+                    </InputContainer>
+                    <InputContainer>
+                        <label>Company</label>
+                        <input
+                        type="text"
+                        value={newExperience.company}
+                        onChange={(e) => handleNewExperienceChange(e.target.value, "company")}
+                        />
+                    </InputContainer>
+                </InputFlex>
+                <InputFlex>
+                    <InputContainer>
+                        <label>Start Date</label>
+                        <input
+                        type="date"
+                        value={newExperience.startDate}
+                        onChange={(e) => handleNewExperienceChange(e.target.value, "startDate")}
+                        />
+                    </InputContainer>
+                    <InputContainer>
+                        <label>End Date</label>
+                        <input
+                        type="date"
+                        value={newExperience.endDate}
+                        onChange={(e) => handleNewExperienceChange(e.target.value, "endDate")}
+                        />
+                    </InputContainer>
+                </InputFlex>
+                <ControlFlex>
+                    <CurrentToggle>
+                        <button onClick={() => handleNewExperienceChange(!newExperience.isPresent, "isPresent")}>
+                        <FrameContainer>
+                            <Image src="/check-frame.svg" alt="" height={18} width={18} />
+                        </FrameContainer>
+                        {
+                            newExperience.isPresent && <CheckContainer>
+                            <Image src="/check-b.svg" alt="" height={10} width={13} />
+                            </CheckContainer>
+                        }
+                        </button>
+                        <span>Present</span>
+                    </CurrentToggle>
+                    <Control>
+                        <button onClick={() => handleCreateExperience()}>Create Experience</button>
+                    </Control>
+                </ControlFlex>
                 </FormContainer>
                 <Heading>
                     <h2>Certifications</h2>

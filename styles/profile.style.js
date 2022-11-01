@@ -124,6 +124,49 @@ export const DeleteBtn = styled.button`
     display: inline-flex;
     margin: 10px 0;
 `;
+export const CurrentToggle = styled.div`
+    display: flex;
+    font-size: 14px;
+    button {
+        background: transparent;
+        position: relative;
+        width: 24px;
+        height: 24px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    span {
+        padding-left: 8px;
+    }
+`;
+
+export const ControlFlex = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+export const Control = styled.div`
+     display: flex;
+     column-gap: 10px;
+     button {
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        padding: 10px 18px;
+     }
+     button:last-child {
+        background: ${colors.primaryColor};
+        color: white;
+        padding: 12px 25px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        border-radius: 3px;
+    }
+`;
 
 export const AddSocialBtn = styled.button`
     cursor: pointer;
