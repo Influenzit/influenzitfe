@@ -29,8 +29,8 @@ export const deleteExperience = (index) => {
 export const createCertifications = (data) => {
     return axiosInstance().post(`/accounts/certifications`, data)
 }
-export const updateCertifications = (data) => {
-    return axiosInstance().patch(`/accounts/certifications`, data)
+export const updateCertifications = (data, certificationId) => {
+    return axiosInstance().patch(`/accounts/certifications/${certificationId}`, data)
 }
 export const getCertifications = () => {
     return axiosInstance().get(`/accounts/certifications`)

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createExperiences, createSkills, deleteExperience, deleteSkill, getCertifications, getExperiences, getSkills, updateExperiences, updateSkills } from '../../../api/influencer'
+import { createCertifications, createExperiences, createSkills, deleteCertification, deleteExperience, deleteSkill, getCertifications, getExperiences, getSkills, updateCertifications, updateExperiences, updateSkills } from '../../../api/influencer'
 import { isLoading, setError, setLoading, setSuccess } from '../../../app/reducers/status'
 import { getUser } from '../../../app/reducers/user'
 import { CancelIcon, DeleteIcon } from '../../../assets/svgIcons'
@@ -189,11 +189,21 @@ const Information = () => {
         enabled: false,
         staleTime: Infinity
     });
+    const formatDate = (date) => {
+        return date.split(" ")[0]
+    }
 
     // updates experience list
     useEffect(() => {
         if(experienceData) {
-            setExperienceList(experienceData.data.data);
+            const formattedExperienceList = experienceData.data.data.map((val) => {
+                if (val.start_date && val.end_date) {
+                    return {...val, start_date: formatDate(val.start_date), end_date: formatDate(val.end_date)};
+                } else {
+                    return {...val, start_date: formatDate(val.start_date), end_date: ""};
+                }
+            })
+            setExperienceList(formattedExperienceList);
         }
     }, [experienceData]);
     
@@ -288,7 +298,7 @@ const Information = () => {
 
     // handles create experience
     const handleCreateExperience = () => {
-        if(newExperience.company && newExperience.position && newExperience.startDate && newExperience.endDate) {
+        if(newExperience.company && newExperience.position && newExperience.startDate && (newExperience.endDate || newExperience.isPresent)) {
             dispatch(setLoading(true));
             createExperienceMutation.mutate({
                 position: newExperience.position,
@@ -297,6 +307,8 @@ const Information = () => {
                 end_date: newExperience.endDate,
                 is_present: newExperience.isPresent,
             });
+        } else {
+            dispatch(setError({message: "Enter required fields", error: true}));
         }
     }
     // handles delete experience
@@ -307,7 +319,12 @@ const Information = () => {
 
     // handles update experience
     const handleUpdateExperience = (index) => {
-
+        if(experienceList[index].company && experienceList[index] && experienceList[index].start_date && (experienceList[index].end_date || experienceList[index].is_present)) {
+            dispatch(setLoading(true));
+            updateExperienceMutation.mutate({ data: experienceList[index], id: experienceList[index].id } );
+        } else {
+            dispatch(setError({message: "Enter required fields", error: true}));
+        }
     } 
 
     // handles experience input change
@@ -325,11 +342,183 @@ const Information = () => {
             return {...prevVal, [field]: val};
         })
     }
+
+
+        // certification list state
+        const [certificationList, setCertificationList] = useState([]);
+
+        // new certification state
+        const [newCertification, setNewCertification] = useState({
+            name: "",
+            issuer: "",
+            date: "",
+            reference: "",
+            link: "",
+        })
+    
+        // gets certifications
+        const { data: certificationData, refetch: refetchCertificationData } = useQuery(["get-certifications"], async () => {
+            return await getCertifications();
+        }, {
+            enabled: false,
+            staleTime: Infinity
+        });
+    
+        // updates certification list
+        useEffect(() => {
+            if(certificationData) {
+                const formattedCertificationList = certificationData.data.data.map((val) => {
+                    return {...val, date: formatDate(val.date)};
+                })
+                setCertificationList(formattedCertificationList);
+            }
+        }, [certificationData]);
+        
+        const createCertificationMutation = useMutation( certificationData => {
+            return createCertifications(certificationData);
+        }, {
+            onSuccess(successRes) {
+                const res = successRes.data;
+                refetchCertificationData();
+                if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+                    dispatch(setLoading(false));
+                    dispatch(setError({error: true, message: res.message}));
+                } else { 
+                    setNewCertification({
+                        name: "",
+                        issuer: "",
+                        date: "",
+                        reference: "",
+                        link: "",
+                    })
+                    dispatch(setLoading(false));
+                    dispatch(setSuccess({success: true, message: "Certification created"}));
+    
+                }
+            },
+            onError(error) {
+                const res = error.response.data;
+                if(res){
+                  dispatch(setLoading(false));
+                  dispatch(setError({error: true, message: res.message}));
+                  return;
+                }
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: "An error occured"}));
+            }
+        });
+        const deleteCertificationMutation = useMutation( certificationId => {
+            return deleteCertification(certificationId);
+        }, {
+            onSuccess(successRes) {
+                const res = successRes.data;
+                refetchCertificationData();
+                if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+                    dispatch(setLoading(false));
+                    dispatch(setError({error: true, message: res.message}));
+                } else { 
+                    dispatch(setLoading(false));
+                    dispatch(setSuccess({success: true, message: "Certification deleted successfully"}));
+                }
+            },
+            onError(error) {
+                const res = error.response.data;
+                if(res){
+                  dispatch(setLoading(false));
+                  dispatch(setError({error: true, message: res.message}));
+                  return;
+                }
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: "An error occured"}));
+            }
+        });
+        const updateCertificationMutation = useMutation((certification) => {
+            return updateCertifications(certification.data, certification.id);
+        }, {
+            onSuccess(successRes) {
+                const res = successRes.data;
+                refetchCertificationData();
+                if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+                    dispatch(setLoading(false));
+                    dispatch(setError({error: true, message: res.message}));
+                } else { 
+                    setNewSkills({
+                        name: "",
+                        rate: "",
+                    })
+                    dispatch(setLoading(false));
+                    dispatch(setSuccess({success: true, message: "Certification updated successful"}));
+    
+                }
+            },
+            onError(error) {
+                const res = error.response.data;
+                if(res){
+                  dispatch(setLoading(false));
+                  dispatch(setError({error: true, message: res.message}));
+                  return;
+                }
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: "An error occured"}));
+            }
+        });
+    
+        // handles create certification
+        const handleCreateCertification = () => {
+            if(newCertification.name && newCertification.issuer && newCertification.date && newCertification.reference && newCertification.link ) {
+                dispatch(setLoading(true));
+                createCertificationMutation.mutate({
+                    name: newCertification.name,
+                    issuer: newCertification.issuer,
+                    date: newCertification.date,
+                    reference: newCertification.reference,
+                    link: newCertification.link,
+                });
+            } else {
+                dispatch(setError({message: "Enter required fields", error: true}));
+            }
+        }
+        // handles delete certification
+        const handleDeleteCertification = (certificationId) => {
+            dispatch(setLoading(true));
+            deleteCertificationMutation.mutate(certificationId);
+        }
+    
+        // handles update certification
+        const handleUpdateCertification = (index) => {
+            if(certificationList[index].name && certificationList[index].issuer && certificationList[index].date && certificationList[index].reference && certificationList[index].link ) {
+                dispatch(setLoading(true));
+                updateCertificationMutation.mutate({ data: certificationList[index], id: certificationList[index].id } );
+            } else {
+                dispatch(setError({message: "Enter required fields", error: true}));
+            }
+        } 
+    
+        // handles certification input change
+        const handleCertificationChange = (val, field, index) => {
+            setCertificationList((prevList) => {
+                const copyOfList = JSON.parse(JSON.stringify(prevList));
+                copyOfList[index][field] = val;
+                return copyOfList;
+            })
+        }
+    
+        // handles new certification change
+        const handleNewCertificationChange = (val, field) => {
+            setNewCertification((prevVal) => {
+                return {...prevVal, [field]: val};
+            })
+        }
+
+
+
+
     useEffect(() => {
     if(user) {
         if(user.account && user.account.is_businessowner) {
             router.push("/dashboard/profile/information");
         }
+        refetchCertificationData();
         refetchSkillData();
         refetchExperienceData();
     }
@@ -439,12 +628,15 @@ const Information = () => {
                                             />
                                         </InputContainer>
                                         <InputContainer>
-                                            <label>End Date</label>
-                                            <input
-                                            type="date"
-                                            value={val.end_date}
-                                            onChange={(e) => handleExperienceChange(e.target.value, "end_date", i)}
-                                            />
+                                            {!experienceList[i].is_present && <>
+                                                <label>End Date</label>
+                                                <input
+                                                type="date"
+                                                value={val.end_date}
+                                                onChange={(e) => handleExperienceChange(e.target.value, "end_date", i)}
+                                                />
+                                            </>
+                                            }
                                         </InputContainer>
                                     </InputFlex>
                                     <ControlFlex>
@@ -464,7 +656,7 @@ const Information = () => {
                                         <Control>
                                             <button onClick={() => handleDeleteExperience(val.id)}><DeleteIcon /></button>
                                             <BottomAdd>
-                                                <button onClick={() => handleUpdateExperience(val.id)}>Update Experience</button>
+                                                <button onClick={() => handleUpdateExperience(i)}>Update Experience</button>
                                             </BottomAdd>
                                         </Control>
                                     </ControlFlex>
@@ -502,12 +694,16 @@ const Information = () => {
                         />
                     </InputContainer>
                     <InputContainer>
+                    { !newExperience.isPresent && <>
                         <label>End Date</label>
                         <input
                         type="date"
                         value={newExperience.endDate}
                         onChange={(e) => handleNewExperienceChange(e.target.value, "endDate")}
                         />
+                    </>
+                    }
+
                     </InputContainer>
                 </InputFlex>
                 <ControlFlex>
@@ -532,18 +728,130 @@ const Information = () => {
                 <Heading>
                     <h2>Certifications</h2>
                 </Heading>
+                <ListContainer>
+                    {
+                        certificationList.length > 0 ? (
+                            certificationList.map((val, i) => (
+                                <ListB key={i}>
+                                    <InputFlex>
+                                        <InputContainer>
+                                            <label>Name</label>
+                                            <input
+                                            type="text"
+                                            value={val.name}
+                                            onChange={(e) => handleCertificationChange(e.target.value, "name", i)}
+                                            />
+                                        </InputContainer>
+                                        <InputContainer>
+                                            <label>Issuer</label>
+                                            <input
+                                            type="text"
+                                            value={val.issuer}
+                                            onChange={(e) => handleCertificationChange(e.target.value, "issuer", i)}
+                                            />
+                                        </InputContainer>
+                                    </InputFlex>
+                                    <InputFlex>
+                                        <InputContainer>
+                                            <label>Date</label>
+                                            <input
+                                            type="date"
+                                            value={val.date}
+                                            onChange={(e) => handleCertificationChange(e.target.value, "date", i)}
+                                            />
+                                        </InputContainer>
+                                        <InputContainer>
+                                            <label>Link</label>
+                                            <input
+                                            type="text"
+                                            value={val.link}
+                                            onChange={(e) => handleCertificationChange(e.target.value, "link", i)}
+                                            />
+                                        </InputContainer>
+                                    </InputFlex>
+                                    <InputFlex>
+                                        <InputContainer>
+                                            <label>Reference</label>
+                                            <input
+                                            type="reference"
+                                            value={val.reference}
+                                            onChange={(e) => handleCertificationChange(e.target.value, "reference", i)}
+                                            />
+                                        </InputContainer>
+                                        <InputContainer>
+                                        </InputContainer>
+                                    </InputFlex>
+                                    <ControlFlex>
+                                        <CurrentToggle>
+                                        </CurrentToggle>
+                                        <Control>
+                                            <button onClick={() => handleDeleteCertification(val.id)}><DeleteIcon /></button>
+                                            <BottomAdd>
+                                                <button onClick={() => handleUpdateCertification(i)}>Update Certification</button>
+                                            </BottomAdd>
+                                        </Control>
+                                    </ControlFlex>
+                                </ListB> 
+                            ))
+                        ) : <h4>No Certifications</h4>
+                    }
+                </ListContainer>
                 <FormContainer>
-                    <BottomAdd>
-                        <button onClick={() => {}}>Add Certification</button>
-                    </BottomAdd>
-                </FormContainer>
-                <Heading>
-                    <h2>Services</h2>
-                </Heading>
-                <FormContainer>
-                    <BottomAdd>
-                        <button onClick={() => {}}>Add Service</button>
-                    </BottomAdd>
+                <InputFlex>
+                    <InputContainer>
+                        <label>Name</label>
+                        <input
+                        type="text"
+                        value={newCertification.name}
+                        onChange={(e) => handleNewCertificationChange(e.target.value, "name")}
+                        />
+                    </InputContainer>
+                    <InputContainer>
+                        <label>Issuer</label>
+                        <input
+                        type="text"
+                        value={newCertification.issuer}
+                        onChange={(e) => handleNewCertificationChange(e.target.value, "issuer")}
+                        />
+                    </InputContainer>
+                </InputFlex>
+                <InputFlex>
+                    <InputContainer>
+                        <label>Date</label>
+                        <input
+                        type="date"
+                        value={newCertification.date}
+                        onChange={(e) => handleNewCertificationChange(e.target.value, "date")}
+                        />
+                    </InputContainer>
+                    <InputContainer>
+                        <label>Link</label>
+                        <input
+                        type="text"
+                        value={newCertification.link}
+                        onChange={(e) => handleNewCertificationChange(e.target.value, "link")}
+                        />
+                    </InputContainer>
+                </InputFlex>
+                <InputFlex>
+                    <InputContainer>
+                        <label>Reference</label>
+                        <input
+                        type="reference"
+                        value={newCertification.reference}
+                        onChange={(e) => handleNewCertificationChange(e.target.value, "reference")}
+                        />
+                    </InputContainer>
+                    <InputContainer>
+                    </InputContainer>
+                </InputFlex>
+                <ControlFlex>
+                    <CurrentToggle>
+                    </CurrentToggle>
+                    <Control>
+                        <button onClick={() => handleCreateCertification()}>Create Certification</button>
+                    </Control>
+                </ControlFlex>
                 </FormContainer>
                 <Heading>
                     <h2>Portfolios</h2>

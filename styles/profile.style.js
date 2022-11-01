@@ -28,7 +28,7 @@ export const Heading = styled.div`
     border-bottom: 1px solid #D2D2D2;
 `;
 export const FormContainer = styled.div`
-    padding: 20px 30px;
+    padding: 0px 30px;
 `;
 export const List = styled.div`
     display: flex;
@@ -87,7 +87,7 @@ export const Bottom = styled.div`
     }
 `;
 export const BottomAdd = styled.div`
-    padding: 20px 0px;
+    padding: 3px 0px;
     display: flex;
     justify-content: right;
     button {
@@ -146,6 +146,7 @@ export const CurrentToggle = styled.div`
 export const ControlFlex = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
 `;
 export const Control = styled.div`
      display: flex;
