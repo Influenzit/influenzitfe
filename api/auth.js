@@ -19,6 +19,6 @@ export const resendEmail = (data) => {
 export const getUserAccount = (userId) => {
     return axiosInstance.get(`/users/${userId}`)
 }
-export const accountTypeUpdate = (data, userId) => {
-    return axiosInstance.patch(`/accounts/${userId}/toggle-type`, data);
+export const accountTypeUpdate = (data) => {
+    return axiosInstance.patch(`/accounts/toggle-type`, data);
 }

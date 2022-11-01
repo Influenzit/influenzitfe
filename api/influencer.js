@@ -16,8 +16,8 @@ export const deleteSkill = (index) => {
 export const createExperiences = (data) => {
     return axiosInstance.post(`/accounts/experiences`, data)
 }
-export const updateExperiences = (data) => {
-    return axiosInstance.post(`/accounts/experiences`, data)
+export const updateExperiences = (data, experienceId) => {
+    return axiosInstance.patch(`/accounts/experiences/${experienceId}`, data)
 }
 export const getExperiences = () => {
     return axiosInstance.get(`/accounts/experiences`)
@@ -30,7 +30,7 @@ export const createCertifications = (data) => {
     return axiosInstance.post(`/accounts/certifications`, data)
 }
 export const updateCertifications = (data) => {
-    return axiosInstance.post(`/accounts/certifications`, data)
+    return axiosInstance.patch(`/accounts/certifications`, data)
 }
 export const getCertifications = () => {
     return axiosInstance.get(`/accounts/certifications`)
@@ -43,7 +43,7 @@ export const createServices = (data) => {
     return axiosInstance.post(`/accounts/services`, data)
 }
 export const updateServices = (data) => {
-    return axiosInstance.post(`/accounts/services`, data)
+    return axiosInstance.patch(`/accounts/services`, data)
 }
 export const getServices = () => {
     return axiosInstance.get(`/accounts/services`)
@@ -56,7 +56,7 @@ export const createPortfolios = (data) => {
     return axiosInstance.post(`/accounts/portfolios`, data)
 }
 export const updatePortfolios = (data) => {
-    return axiosInstance.post(`/accounts/portfolios`, data)
+    return axiosInstance.patch(`/accounts/portfolios`, data)
 }
 export const getPortfolios = () => {
     return axiosInstance.get(`/accounts/portfolios`)

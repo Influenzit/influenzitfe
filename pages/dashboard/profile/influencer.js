@@ -3,11 +3,12 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createSkills, deleteSkill, getSkills, updateSkills } from '../../../api/influencer'
-import { setError, setLoading, setSuccess } from '../../../app/reducers/status'
+import { createExperiences, createSkills, deleteSkill, getCertifications, getSkills, updateExperiences, updateSkills } from '../../../api/influencer'
+import { isLoading, setError, setLoading, setSuccess } from '../../../app/reducers/status'
 import { getUser } from '../../../app/reducers/user'
-import ProfileSidebar from '../../../components/profile-sidebar'
-import LandingLayout from '../../../layouts/landing.layout'
+import { CancelIcon, DeleteIcon } from '../../../assets/svgIcons'
+import ProfileSidebar from '../../../components/profile-sidebar';
+import LandingLayout from '../../../layouts/landing.layout';
 import { BottomAdd,  Container, Content, DeleteBtn, FormContainer, Heading, InputContainer, InputFlex, List, ListContainer, Wrapper } from '../../../styles/profile.style'
 
 const Information = () => {
@@ -20,11 +21,11 @@ const Information = () => {
         rate: "",
     });
     const { data: skillsData, refetch: refetchSkillData } = useQuery(["get-skills"], async () => {
-        return await getSkills(user.account.id);
+        return await getSkills();
     }, {
         enabled: false,
         staleTime: Infinity
-    })
+    });
     const createSkillsMutation = useMutation( skillsData => {
         return createSkills(skillsData)
     }, {
@@ -40,7 +41,7 @@ const Information = () => {
                     rate: "",
                 })
                 dispatch(setLoading(false));
-                dispatch(setSuccess({success: true, message: "Skill added successful"}));
+                dispatch(setSuccess({success: true, message: "Skill created"}));
 
             }
         },
@@ -52,7 +53,7 @@ const Information = () => {
               return;
             }
             dispatch(setLoading(false));
-            dispatch(setError({error: true, message: "Check your internet connection"}));
+            dispatch(setError({error: true, message: "An error occured"}));
         }
     })
     const deleteSkillMutation = useMutation( skillId => {
@@ -130,6 +131,7 @@ const Information = () => {
        deleteSkillMutation.mutate(index);
     }
 
+    // handles update skills
     const handleUpdateSkills = () => {
         dispatch(setLoading(true));
         updateSkillsMutation.mutate(skillsList);
@@ -148,9 +150,8 @@ const Information = () => {
 
     // handles add skill
     const handleAddSkill = () => {
-        dispatch(setLoading(true));
         if(newSkills.name && newSkills.rate) {
-            console.log(skillsList)
+            dispatch(setLoading(true));
             const formattedList = skillsList.map(val => (
                 {
                     ...val,
@@ -164,11 +165,155 @@ const Information = () => {
     // updates the skills list 
     useEffect(() => {
       if(skillsData) {
-        setSkillsList(skillsData.data.data)
-        console.log(skillsData.data.data)
+        setSkillsList(skillsData.data.data);
       }
-    }, [skillsData])
+    }, [skillsData]);
+
+    // experience list state
+    const [experienceList, setExperienceList] = useState([]);
+
+    // new experience state
+    const [newExperience, setNewExperience] = useState({
+        position: "",
+        company: "",
+        startDate: "",
+        endDate: "",
+        isPresent: true,
+    })
+
+    // gets experiences
+    const { data: experienceData, refetch: refetchExperienceData } = useQuery(["get-experiences"], async () => {
+        return await getExperiences();
+    }, {
+        enabled: false,
+        staleTime: Infinity
+    });
+
+    // updates experience list
+    useEffect(() => {
+        if(experienceData) {
+            setExperienceList(experienceData.data.data);
+        }
+    }, [experienceData]);
     
+    const createExperienceMutation = useMutation( experienceData => {
+        return createExperiences(experienceData);
+    }, {
+        onSuccess(successRes) {
+            const res = successRes.data;
+            refetchSkillData();
+            if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: res.message}));
+            } else { 
+                setNewSkills({
+                    name: "",
+                    rate: "",
+                })
+                dispatch(setLoading(false));
+                dispatch(setSuccess({success: true, message: "Experience created"}));
+
+            }
+        },
+        onError(error) {
+            const res = error.response.data;
+            if(res){
+              dispatch(setLoading(false));
+              dispatch(setError({error: true, message: res.message}));
+              return;
+            }
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: "An error occured"}));
+        }
+    });
+    const deleteExperienceMutation = useMutation( experienceId => {
+        return deleteSkill(experienceId);
+    }, {
+        onSuccess(successRes) {
+            const res = successRes.data;
+            refetchSkillData();
+            if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: res.message}));
+            } else { 
+                dispatch(setLoading(false));
+                dispatch(setSuccess({success: true, message: "Experience deleted successfully"}));
+            }
+        },
+        onError(error) {
+            const res = error.response.data;
+            if(res){
+              dispatch(setLoading(false));
+              dispatch(setError({error: true, message: res.message}));
+              return;
+            }
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: "Check your internet connection"}));
+        }
+    });
+    const updateExperienceMutation = useMutation((experience) => {
+        return updateExperiences(experience.data, experience.id);
+    }, {
+        onSuccess(successRes) {
+            const res = successRes.data;
+            refetchSkillData();
+            if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: res.message}));
+            } else { 
+                setNewSkills({
+                    name: "",
+                    rate: "",
+                })
+                dispatch(setLoading(false));
+                dispatch(setSuccess({success: true, message: "Skill updated successful"}));
+
+            }
+        },
+        onError(error) {
+            const res = error.response.data;
+            if(res){
+              dispatch(setLoading(false));
+              dispatch(setError({error: true, message: res.message}));
+              return;
+            }
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: "An error occured"}));
+        }
+    });
+
+    // handles create experience
+    const handleCreateExperience = () => {
+        if(newExperience.company && newExperience.position && newExperience.startDate && newExperience.endDate) {
+            dispatch(setLoading(true));
+            createExperienceMutation.mutate({
+                position: newExperience.position,
+                company: newExperience.company,
+                start_date: newExperience.startDate,
+                end_date: newExperience.endDate,
+                is_present: newExperience.isPresent,
+            });
+        }
+    }
+    // handles delete experience
+    const handleDeleteExperience = (experienceId) => {
+        dispatch(setLoading(true));
+        deleteExperienceMutation.mutate(experienceId);
+    }
+
+    // handles update experience
+    const handleUpdateExperience = (index) => {
+
+    } 
+
+    // handles experience input change
+    const handleExperienceChange = (val, field, index) => {
+        setExperienceList((prevList) => {
+            const copyOfList = JSON.parse(JSON.stringify(prevList));
+            copyOfList[index][field] = val;
+            return copyOfList;
+        })
+    }
 
     useEffect(() => {
     if(user) {
@@ -177,7 +322,8 @@ const Information = () => {
         }
         refetchSkillData();
     }
-    }, [user, router.pathname])
+    }, [user, router.pathname]);
+
   return (
     <Container>
         <Wrapper>
@@ -209,7 +355,7 @@ const Information = () => {
                                             />
                                         </InputContainer>
                                     </InputFlex>
-                                    <DeleteBtn onClick={() => handleSkillDelete(val.id)}>x</DeleteBtn>
+                                    <DeleteBtn onClick={() => handleSkillDelete(val.id)}><DeleteIcon /></DeleteBtn>
                                 </List> 
                             )) 
                         ): <h4>No Skills</h4>
@@ -249,6 +395,53 @@ const Information = () => {
                 <Heading>
                     <h2>Experiences</h2>
                 </Heading>
+                <ListContainer>
+                    {
+                        experienceList.length > 0 ? (
+                            experienceList.map((val, i) => (
+                                <List>
+                                    <InputFlex>
+                                        <InputContainer>
+                                            <label>Position</label>
+                                            <input
+                                            type="text"
+                                            value={val.name}
+                                            onChange={(e) => handleExperienceChange(e.target.value, "position", i)}
+                                            />
+                                        </InputContainer>
+                                        <InputContainer>
+                                            <label>Company</label>
+                                            <input
+                                            type="text"
+                                            value={val.rate}
+                                            onChange={(e) => handleExperienceChange(e.target.value, "company", i)}
+                                            />
+                                        </InputContainer>
+                                    </InputFlex>
+                                    <InputFlex>
+                                        <InputContainer>
+                                            <label>Start Date</label>
+                                            <input
+                                            type="date"
+                                            value={val.name}
+                                            onChange={(e) => handleExperienceChange(e.target.value, "position", i)}
+                                            />
+                                        </InputContainer>
+                                        <InputContainer>
+                                            <label>End Date</label>
+                                            <input
+                                            type="date"
+                                            value={val.rate}
+                                            onChange={(e) => handleExperienceChange(e.target.value, "company", i)}
+                                            />
+                                        </InputContainer>
+                                    </InputFlex>
+                                    <DeleteBtn onClick={() => handleSkillDelete(val.id)}><DeleteIcon /></DeleteBtn>
+                                </List> 
+                            ))
+                        ) : <h4>No Experience</h4>
+                    }
+                </ListContainer>
                 <FormContainer>
                     <BottomAdd>
                         <button onClick={() => {}}>Add Experience</button>

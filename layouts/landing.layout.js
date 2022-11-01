@@ -26,7 +26,8 @@ const LandingLayout = ({children, title, description}) => {
   }, [user]);
   useEffect(() => {
     const authRoutes = ["/login", "/register", "/reset-password"];
-    if(user) {
+    const token = localStorage.getItem("token");
+    if(user && token) {
       setIsLoggedIn(!!user);
       if (!!user && !hasAValidAccount(user)) {
           if((router.pathname !== "/dashboard/account-type") && router.pathname.includes("/dashboard") && !router.pathname.includes("create/")) {

@@ -45,7 +45,6 @@ const Login = () => {
           })
         } else {
           dispatch(setLoading(false));
-          console.log(res)
           dispatch(updateUser(res.user));
           dispatch(setError({error: false, message: ""}));
           localStorage.setItem("token", res.token);

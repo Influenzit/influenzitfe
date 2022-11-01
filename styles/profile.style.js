@@ -34,6 +34,8 @@ export const List = styled.div`
     display: flex;
     align-items: center;
 `;
+export const ListB = styled.div`
+`;
 export const InputFlex = styled.div`
     display: flex;
     column-gap: 15px;
