@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createExperiences, createSkills, deleteSkill, getCertifications, getExperiences, getSkills, updateExperiences, updateSkills } from '../../../api/influencer'
+import { createExperiences, createSkills, deleteExperience, deleteSkill, getCertifications, getExperiences, getSkills, updateExperiences, updateSkills } from '../../../api/influencer'
 import { isLoading, setError, setLoading, setSuccess } from '../../../app/reducers/status'
 import { getUser } from '../../../app/reducers/user'
 import { CancelIcon, DeleteIcon } from '../../../assets/svgIcons'
@@ -231,7 +231,7 @@ const Information = () => {
         }
     });
     const deleteExperienceMutation = useMutation( experienceId => {
-        return deleteSkill(experienceId);
+        return deleteExperience(experienceId);
     }, {
         onSuccess(successRes) {
             const res = successRes.data;
