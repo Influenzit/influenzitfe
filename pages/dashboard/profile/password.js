@@ -1,4 +1,6 @@
+import { useMutation } from '@tanstack/react-query'
 import React, { useState } from 'react'
+import { resetPassword } from '../../../api/auth'
 import { CancelIcon, CheckIcon } from '../../../assets/svgIcons'
 import ProfileSidebar from '../../../components/profile-sidebar'
 import LandingLayout from '../../../layouts/landing.layout'
@@ -63,7 +65,7 @@ const Password = () => {
                     if (i === asciiList.length - 1) {
                         setOneNum(false)
                     }
-                    return true
+                    return true;
                 }
             })
             if (value === confirmNewPassword) {
@@ -83,6 +85,17 @@ const Password = () => {
                 setPasswordMatch(false)
             }
         }
+    }
+    const muation = useMutation(passwordData => (
+        resetPassword(passwordData)
+    ))
+    const handleSubmit = () => {
+        dispatch(setLoading(true));
+        muation.mutate({
+            old_password: oldPassword,
+            password: newPassword,
+            password_confirmation: confirmNewPassword,
+        })
     }
   return (
     <Container>
@@ -122,7 +135,7 @@ const Password = () => {
                     </PasswordContainer>
                 </FormContainer>
                 <Bottom>
-                    <button>Save Changes</button>
+                    <button onClick={handleSubmit}>Save Changes</button>
                 </Bottom>
             </Content>
         </Wrapper>

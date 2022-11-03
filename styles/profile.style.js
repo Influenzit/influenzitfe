@@ -95,13 +95,13 @@ export const BottomAdd = styled.div`
     display: flex;
     justify-content: right;
     button {
-        background: ${colors.primaryColor};
-        color: white;
-        padding: 12px 25px;
+        color: ${colors.primaryColor};
+        background: white;
+        border: 2px solid ${colors.primaryColor};
+        padding: 10px 25px;
         font-size: 15px;
         font-weight: 500;
         cursor: pointer;
-        border: none;
         border-radius: 3px;
     }
 `;
@@ -162,13 +162,13 @@ export const Control = styled.div`
         padding: 10px 18px;
      }
      button:last-child {
-        background: ${colors.primaryColor};
-        color: white;
-        padding: 12px 25px;
+        color: ${colors.primaryColor};
+        background: white;
+        border: 2px solid ${colors.primaryColor};
+        padding: 10px 25px;
         font-size: 15px;
         font-weight: 500;
         cursor: pointer;
-        border: none;
         border-radius: 3px;
     }
 `;

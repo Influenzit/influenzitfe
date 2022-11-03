@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { loginUser } from '../api/auth'
 import { getBusinesses } from '../api/business'
 import { setBusinesses } from '../app/reducers/business'
-import { setError, setLoading } from '../app/reducers/status'
+import { setError, setLoading, setUserType } from '../app/reducers/status'
 import { updateUser } from '../app/reducers/user'
 import LandingLayout from '../layouts/landing.layout'
 import { Bottom, Center, CheckContainer, Container, FacebookBtn, FormFields, FormHeader, FormWrapper, FrameContainer, GoogleBtn, HelpSection, Input, InputContainer, OrContainer, RememberMe, SocialIcon, SocialLogin, SubmitButton, Wrapper } from '../styles/auth.style'
@@ -30,6 +30,7 @@ const Login = () => {
         localStorage.setItem("token", res.token);
         const { is_influencer, is_creator, is_businessowner } = res.user.account;
         if (is_businessowner) {
+          dispatch(setUserType("Business Owner"));
           getBusinesses(res.token).then((bizRes) => {
             if (bizRes.data && res) {
               dispatch(setLoading(false));
@@ -51,6 +52,7 @@ const Login = () => {
           localStorage.setItem("user", JSON.stringify(res.user));
           
           if (is_influencer || is_creator) {
+            is_influencer ? dispatch(setUserType("Influencer")) : (is_creator && dispatch(setUserType("Creator")))
             router.push("/dashboard/projects");
           } else {
             router.push("/dashboard/account-type");

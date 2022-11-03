@@ -2,12 +2,14 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { getUserType } from '../../app/reducers/status'
 import { getUser } from '../../app/reducers/user'
 import { BellIcon, LockIcon, LogoutIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
 import { Bottom, Container, InnerWrapper, ProfileImageCont, Top } from './style'
 
 const ProfileSidebar = () => {
   const user = useSelector(getUser);
+  const currentUserType = useSelector(getUserType);
   const router = useRouter();
   const [userData, setUserData] = useState({})
   useEffect(() => {
@@ -29,7 +31,7 @@ const ProfileSidebar = () => {
         </Top>
         <Bottom>
             {
-                userData?.account?.is_businessowner && (
+                currentUserType === "Business Owner" && (
                     <button onClick={() => router.push("/dashboard/profile/information")}>
                         <UserIcon />
                         <span>Business Information</span>
@@ -37,10 +39,10 @@ const ProfileSidebar = () => {
                 )
             }
             {
-                (userData?.account?.is_influencer || userData?.account?.is_creator) && (
+                (currentUserType === "Influencer" || currentUserType === "Creator") && (
                     <button onClick={() => router.push("/dashboard/profile/influencer")}>
                         <UserIcon />
-                        <span>Influencer Information</span>
+                        <span>{currentUserType} Information</span>
                     </button>
                 )
             }

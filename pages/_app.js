@@ -7,13 +7,14 @@ function MyApp({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page)
   return (
     <Provider store={store}>
+
+      <QueryClientProvider client={queryClient}>
       {
        getLayout(
-        <QueryClientProvider client={queryClient}>
             <Component {...pageProps} />
-        </QueryClientProvider>
        )
       }
+      </QueryClientProvider>
     </Provider>
     )
 }

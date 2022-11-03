@@ -168,6 +168,23 @@ export const ConnectDropdownCont = styled.div`
     box-shadow: 0px 4px 12px 0px #0000001A;
     border: 1px solid #D2D2D2;
     border-radius: 2px;
+    button {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        height: 40px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        span {
+            display: inline-block;
+            padding-left: 10px;
+        }
+        :hover {
+            color: ${colors.primaryColor};
+        }
+    }
     a {
         height: 40px;
         font-size: 14px;
