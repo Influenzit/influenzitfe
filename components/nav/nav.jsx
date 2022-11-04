@@ -229,7 +229,7 @@ const Nav = () => {
                             </ProfilePicWrapper>
                             {
                                 showDropdown && <UserDropdown>
-                                    <button onClick={() => router.push(currentAcctType === "Influencer" ? "/influencer/profile" : currentAcctType === "Creator" ? "/creator/profile" : "/business-owner/profile")}><UserIcon /><span>Profile</span></button>
+                                    <button onClick={() => router.push(currentAcctType === "Influencer" ? "/influencer/profile" : currentAcctType === "Creator" ? "/creators/profile" : "/business-owner/profile")}><UserIcon /><span>Profile</span></button>
                                     <button onClick={() => {}}><WalletIcon /><span>Wallet</span></button>
                                     <button onClick={() => router.push(`${user.account.is_businessowner ? "/dashboard/profile/information" : "/dashboard/profile/influencer"}`)}><SettingsIcon /><span>Settings</span></button>
                                     <button onClick={logout}><LogoutIcon /><span>Logout</span></button>
