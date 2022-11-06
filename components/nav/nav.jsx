@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, GetStartedBtn, LoginBtn, Logo, NavLinks, ProfilePicWrapper, Right, SearchBtn, SearchBtnC, SearchByBtn, SearchByOption, SearchContainer, UserBtn, UserDropdown, Wrapper } from './style'
 
 import Image from 'next/image'
@@ -11,7 +11,7 @@ import { clearBusiness } from '../../app/reducers/business'
 import { getUserType, setError, setLoading, setUserType } from '../../app/reducers/status'
 import { useMutation } from '@tanstack/react-query'
 import { accountTypeUpdate, getUserAccount } from '../../api/auth'
-import { useRef } from 'react'
+import switchIcon from "../../assets/switch.svg"
 
 const Nav = () => {
   const user = useSelector(getUser);
@@ -185,7 +185,7 @@ const Nav = () => {
                             ) : (
                             <>
                                 <ConnectDropdown onClick={() => toggleSwitchAccount()} ref={switchRef}>
-                                    <span>{currentAcctType}</span><Image src="/switch.png" alt="" height={24} width={24} />
+                                    <span>{currentAcctType}</span><Image src={switchIcon} alt="" height={24} width={24} />
                                     {
                                         showSwitchAccount && <ConnectDropdownCont>
                                                 <button onClick={() => handleAccountChange("Business Owner")}><span>Business Owner</span></button>
