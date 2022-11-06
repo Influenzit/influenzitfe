@@ -45,7 +45,7 @@ const Information = () => {
                     if(bizRes.data && res) {
                     dispatch(setLoading(false));
                     dispatch(setBusinesses(bizRes.data.data));
-                    dispatch(setError({error: false, message: ""}));
+                    dispatch(setError({error: false, message: "Update successful"}));
                     }
                 }).catch( _ => {
                     dispatch(setError({error: true, message: "An error occured"}));
