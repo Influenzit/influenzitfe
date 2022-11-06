@@ -145,7 +145,7 @@ export const ConnectDropdown = styled.div`
     border: none;
     background: #fff;
     padding: 0 10px;
-    width: 160px;
+    width: 170px;
     min-width: 160px;
     display: flex;
     height: 40px;

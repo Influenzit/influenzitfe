@@ -1,6 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
 import React, { useState } from 'react'
-import { resetPassword } from '../../../api/auth'
+import { useDispatch } from 'react-redux'
+import { changePassword } from '../../../api/auth'
+import { setError, setLoading, setSuccess } from '../../../app/reducers/status'
 import { CancelIcon, CheckIcon } from '../../../assets/svgIcons'
 import ProfileSidebar from '../../../components/profile-sidebar'
 import LandingLayout from '../../../layouts/landing.layout'
@@ -15,6 +17,8 @@ const Password = () => {
     const [oneNum, setOneNum] = useState(false);
     const [isMinLen, setIsMinLen] = useState(false)
     const [passwordMatch, setPasswordMatch] = useState(false);
+    const dispatch = useDispatch();
+    
     const handlePasswordValidation = (type, value) => {
         if (type === "new") {
             setNewPassword(value)
@@ -87,15 +91,41 @@ const Password = () => {
         }
     }
     const muation = useMutation(passwordData => (
-        resetPassword(passwordData)
-    ))
+        changePassword(passwordData)
+    ), {
+        onSuccess(successRes) {
+            const res = successRes.data;
+            if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: res.message}));
+            } else {
+                dispatch(setLoading(false));
+                dispatch(setSuccess({success: true, message: "Password updated"}));
+                setOldPassword("");
+                setConfirmNewPassword("");
+                setNewPassword("");
+            }
+        },
+        onError(error) {
+            const res = error.response.data;
+            if(res){
+              dispatch(setLoading(false));
+              dispatch(setError({error: true, message: res.message}));
+              return;
+            }
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: "An error occured"}));
+        }
+    })
     const handleSubmit = () => {
-        dispatch(setLoading(true));
-        muation.mutate({
-            old_password: oldPassword,
-            password: newPassword,
-            password_confirmation: confirmNewPassword,
-        })
+        if(oneLC && oneUC && oneNum && isMinLen && passwordMatch && oldPassword.length >= 8) {
+            dispatch(setLoading(true));
+            muation.mutate({
+                old_password: oldPassword,
+                new_password: newPassword,
+                new_password_confirmation: confirmNewPassword,
+            })
+        }
     }
   return (
     <Container>

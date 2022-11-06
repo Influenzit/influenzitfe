@@ -13,6 +13,9 @@ export const forgotPassword = (data) => {
 export const resetPassword = (data) => {
     return axiosInstance().post("/auth/password/reset", data);
 }
+export const changePassword = (data) => {
+    return axiosInstance().post("/auth/change-password", data);
+}
 export const resendEmail = (data) => {
     return axiosInstance().post("/auth/email/resend", data);
 }
