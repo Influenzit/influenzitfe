@@ -129,10 +129,12 @@ const Nav = () => {
     if(user) {
         setUserDetails(user);
         const { is_influencer, is_creator, is_businessowner} = user.account
-        if(is_businessowner) {
-            dispatch(setUserType("Business Owner"));
-        } else {
-            is_influencer ? dispatch(setUserType("Influencer")) : (is_creator && dispatch(setUserType("Creator")));
+        if(!currentAcctType) {
+            if(is_businessowner) {
+                dispatch(setUserType("Business Owner"));
+            } else {
+                is_influencer ? dispatch(setUserType("Influencer")) : (is_creator && dispatch(setUserType("Creator")));
+            }
         }
     }
   }, [user, router.pathname]);

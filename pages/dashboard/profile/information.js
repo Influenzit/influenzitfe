@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getBusinesses, updateBusiness } from '../../../api/business'
 import { getBusinessesFromState, setBusinesses } from '../../../app/reducers/business'
-import { setError, setLoading, setSuccess } from '../../../app/reducers/status'
+import { getUserType, setError, setLoading, setSuccess } from '../../../app/reducers/status'
 import { getUser } from '../../../app/reducers/user'
 import ProfileSidebar from '../../../components/profile-sidebar'
 import LandingLayout from '../../../layouts/landing.layout'
@@ -14,6 +14,7 @@ import { AddSocialBtn, Bottom, Container, Content, FormContainerM, Heading, Inpu
 const Information = () => {
     const router = useRouter();
     const user = useSelector(getUser);
+    const currentAcctType = useSelector(getUserType);
     const business = useSelector(getBusinessesFromState)[0]
     const [formVal, setFormVal] = useState({
         businessName: "",
@@ -97,11 +98,11 @@ const Information = () => {
       }, [business])
       useEffect(() => {
         if(user) {
-            if(user.account && !user.account.is_businessowner) {
+            if(currentAcctType !== "Business Owner") {
                 router.push("/dashboard/profile/influencer");
             }
         }
-      }, [user, router.pathname])
+      }, [user, router.pathname, currentAcctType])
   return (
     <Container>
         <Wrapper>

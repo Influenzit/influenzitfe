@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createCertifications, createExperiences, createSkills, deleteCertification, deleteExperience, deleteSkill, getCertifications, getExperiences, getSkills, updateCertifications, updateExperiences, updateSkills } from '../../../api/influencer'
-import { isLoading, setError, setLoading, setSuccess } from '../../../app/reducers/status'
+import { getUserType, isLoading, setError, setLoading, setSuccess } from '../../../app/reducers/status'
 import { getUser } from '../../../app/reducers/user'
 import { CancelIcon, DeleteIcon } from '../../../assets/svgIcons'
 import ProfileSidebar from '../../../components/profile-sidebar';
@@ -16,6 +16,8 @@ const Information = () => {
     const router = useRouter();
     const user = useSelector(getUser);
     const dispatch = useDispatch();
+
+    const currentAcctType = useSelector(getUserType);
     // handles new skills input change
     const [newSkills, setNewSkills] = useState({
         name: "",
@@ -515,14 +517,14 @@ const Information = () => {
 
     useEffect(() => {
     if(user) {
-        if(user.account && user.account.is_businessowner) {
+        if(currentAcctType === "Business Owner") {
             router.push("/dashboard/profile/information");
         }
         refetchCertificationData();
         refetchSkillData();
         refetchExperienceData();
     }
-    }, [user, router.pathname]);
+    }, [user, router.pathname, currentAcctType]);
 
   return (
     <Container>
