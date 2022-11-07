@@ -3,7 +3,7 @@ import { colors, sizes } from "./theme";
 
 export const Container = styled.div`
     background: #F7FAFC;
-    padding: 50px 0;
+    padding: 30px 0;
     min-height: calc(100vh - 140px);
 `;
 export const Wrapper = styled.div`

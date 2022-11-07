@@ -49,7 +49,7 @@ const BusinessOwner = () => {
               dispatch(setLoading(false));
               dispatch(setBusinesses(bizRes.data.data));
               dispatch(setError({error: false, message: ""}));
-              router.push("/dashboard/projects");
+              router.push("/dashboard");
             }
           }).catch(err => {
             dispatch(setError({error: true, message: "An error occured"}));
@@ -88,7 +88,7 @@ const BusinessOwner = () => {
  
   useEffect(() => {
     if (user && user.account.is_businessowner) {
-      router.push("/dashboard/projects");
+      router.push("/dashboard");
       return;
     }
   }, [user])

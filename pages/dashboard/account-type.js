@@ -29,7 +29,7 @@ const ChooseProfile = () => {
             dispatch(setLoading(false));
             dispatch(updateUser(userRes.data.data));
             localStorage.setItem("user", JSON.stringify(userRes.data.data));
-            router.push("/dashboard/projects");
+            router.push("/dashboard");
           }
         }).catch(_ => {
           dispatch(setError({error: true, message: "An error occured"}));

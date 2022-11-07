@@ -38,7 +38,7 @@ const Login = () => {
               dispatch(updateUser(res.user));
               dispatch(setError({error: false, message: ""}));
               localStorage.setItem("user", JSON.stringify(res.user));
-              router.push("/dashboard/projects");
+              router.push("/dashboard");
             }
           }).catch( _ => {
             dispatch(setLoading(false));
@@ -53,7 +53,7 @@ const Login = () => {
           
           if (is_influencer || is_creator) {
             is_influencer ? dispatch(setUserType("Influencer")) : (is_creator && dispatch(setUserType("Creator")))
-            router.push("/dashboard/projects");
+            router.push("/dashboard");
           } else {
             router.push("/dashboard/account-type");
           }

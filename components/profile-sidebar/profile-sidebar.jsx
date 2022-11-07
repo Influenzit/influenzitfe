@@ -46,6 +46,14 @@ const ProfileSidebar = () => {
                     </button>
                 )
             }
+             {
+                (currentUserType === "Influencer" || currentUserType === "Creator") && (
+                    <button onClick={() => router.push("/dashboard/profile/services")}>
+                        <UserIcon />
+                        <span>Services0</span>
+                    </button>
+                )
+            }
             <button onClick={() => router.push("/dashboard/profile/password")}>
                 <LockIcon />
                 <span>Password & Security</span>

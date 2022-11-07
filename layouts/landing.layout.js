@@ -37,7 +37,7 @@ const LandingLayout = ({children, title, description}) => {
         router.push("/dashboard")
       }
       if (!!user && authRoutes.includes(router.pathname)) {
-          router.push("/dashboard/projects")
+          router.push("/dashboard")
       }
     } else {
       if (router.pathname.includes("/dashboard")) {
