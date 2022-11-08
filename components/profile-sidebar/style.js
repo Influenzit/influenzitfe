@@ -44,6 +44,10 @@ export const Top = styled.div`
     padding: 20px 0;
     h2 {
         font-size: 22px;
+        max-width: 260px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
     p {
         font-size: 15px;

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getUserType } from '../../app/reducers/status'
 import { getUser } from '../../app/reducers/user'
-import { BellIcon, LockIcon, LogoutIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
+import { BellIcon, LockIcon, LogoutIcon, SettingsIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
 import { Bottom, Container, InnerWrapper, ProfileImageCont, Top } from './style'
 
 const ProfileSidebar = () => {
@@ -26,7 +26,7 @@ const ProfileSidebar = () => {
                     <Image src="/profile-pic.png" alt="profile picture" layout='fill' objectFit='contain' objectPosition="center"/>
                 </InnerWrapper>
             </ProfileImageCont>
-            <h2>Websitechic</h2>
+            <h2>{userData.firstname} {userData.lastname}</h2>
             <p>Lagos, Nigeria.</p>
         </Top>
         <Bottom>
@@ -49,8 +49,8 @@ const ProfileSidebar = () => {
              {
                 (currentUserType === "Influencer" || currentUserType === "Creator") && (
                     <button onClick={() => router.push("/dashboard/profile/services")}>
-                        <UserIcon />
-                        <span>Services0</span>
+                        <SettingsIcon />
+                        <span>Services</span>
                     </button>
                 )
             }

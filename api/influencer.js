@@ -40,16 +40,16 @@ export const deleteCertification = (index) => {
 }
 // Services API Request
 export const createServices = (data) => {
-    return axiosInstance().post(`/accounts/services`, data)
+    return axiosInstance().post(`/services`, data)
 }
 export const updateServices = (data) => {
-    return axiosInstance().patch(`/accounts/services`, data)
+    return axiosInstance().patch(`/services`, data)
 }
 export const getServices = () => {
-    return axiosInstance().get(`/accounts/services`)
+    return axiosInstance().get(`/services`)
 }
 export const deleteService = (index) => {
-    return axiosInstance().delete(`/accounts/services/${index}`)
+    return axiosInstance().delete(`/services/${index}`)
 }
 // Portfolios API Request
 export const createPortfolios = (data) => {
