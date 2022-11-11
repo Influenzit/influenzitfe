@@ -161,6 +161,13 @@ export const InfoCard = styled.div`
         width: 100%;
         padding: 20px 15px;
         margin: 10px 0;
+        h3 {
+        font-size: 18px;
+        margin-bottom: 15px;
+        }
+        p {
+            font-size: 15px;
+        }
     }
 `
 export const HeroSectionThree = styled.div`
@@ -189,6 +196,16 @@ export const WrapperThree = styled.div`
         display: inline-block;
         border-radius: 3px;
     } 
+    ${breakpoints.lg} {
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+        h1 + p {
+            font-size: 15px;
+        }
+    }
 `;
 export const NicheCard = styled.div`
     background: white;
