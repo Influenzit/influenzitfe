@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, GetStartedBtn, LoginBtn, Logo, NavLinks, ProfilePicWrapper, Right, SearchBtn, SearchBtnC, SearchByBtn, SearchByOption, SearchContainer, UserBtn, UserDropdown, Wrapper } from './style'
+import { ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, GetStartedBtn, LoginBtn, Logo, NavLinks, ProfilePicWrapper, ResponsiveNav, Right, SearchBtn, SearchBtnC, SearchBtnResponsive, SearchByBtn, SearchByOption, SearchContainer, SidebarBtn, UserBtn, UserDropdown, Wrapper } from './style'
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { BagIcon, BellIcon, CollaborationIcon, HashTagIcon, LogoutIcon, MailIcon, SettingsIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
+import { BagIcon, BellIcon, CollaborationIcon, HamburgerIcon, HashTagIcon, LogoutIcon, MailIcon, SettingsIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
 import { useRouter } from 'next/router'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { clearUser, getUser, updateUser } from '../../app/reducers/user'
@@ -28,6 +28,8 @@ const Nav = () => {
   const [showConnect, setShowConnect] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showSwitchAccount, setShowSwitchAccount] = useState(false);
+  const [showSearchRes, setShowSearchRes] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
   const router = useRouter();
   const handleSearchOption = (val) => {
     setSearchBy(val)
@@ -37,17 +39,20 @@ const Nav = () => {
     setShowSwitchAccount(!showSwitchAccount);
     setShowConnect(false);
     setShowDropdown(false);
+    setShowSearchRes(false);
   }
   
   const handleProfileOpen = () => {
     setShowConnect(false);
     setShowSwitchAccount(false);
+    setShowSearchRes(false);
     setShowDropdown(!showDropdown);
   }
   const handleConnectOpen = () => {
     setShowConnect(!showConnect);
     setShowDropdown(false);
     setShowSwitchAccount(false);
+    setShowSearchRes(false);
   }
   const mutation = useMutation(profileData => {
     return accountTypeUpdate(profileData);
@@ -167,25 +172,32 @@ const Nav = () => {
                     <Right>
                         {
                             showSearchBar ? (
-                                <SearchContainer>
-                                    <SearchByBtn onClick={() => setShowSearchOption(!showSearchOption)}>
-                                        <span>{searchBy}</span><Image src="/down-chev-b.svg" alt="" height={7} width={10} />
-                                        {
-                                            showSearchOption && <SearchByOption>
-                                                <button onClick={() => handleSearchOption("influencers")}>influencers</button>
-                                                <button onClick={() => handleSearchOption("creators")}>creators</button>
-                                            </SearchByOption>
-                                        }
-                                    </SearchByBtn>
-                                    <input type="text" placeholder="Search by name" />
-                                    <SearchBtnC>
+                                <>
+                                    <SearchContainer showSearch={showSearchRes} >
+                                        <SearchByBtn onClick={() => setShowSearchOption(!showSearchOption)}>
+                                            <span>{searchBy}</span><Image src="/down-chev-b.svg" alt="" height={7} width={10} />
+                                            {
+                                                showSearchOption && <SearchByOption>
+                                                    <button onClick={() => handleSearchOption("influencers")}>influencers</button>
+                                                    <button onClick={() => handleSearchOption("creators")}>creators</button>
+                                                </SearchByOption>
+                                            }
+                                        </SearchByBtn>
+                                        <input type="text" placeholder="Search by name" />
+                                        <SearchBtnC>
+                                            <Image src="/search-b.svg" alt="" height={25} width={25}/>
+                                        </SearchBtnC>
+                                    </SearchContainer>
+                                    <SearchBtnResponsive onClick={() => {
+                                        setShowSearchRes(!showSearchRes)
+                                    }}>
                                         <Image src="/search-b.svg" alt="" height={25} width={25}/>
-                                    </SearchBtnC>
-                                </SearchContainer>
+                                    </SearchBtnResponsive>
+                                </>
                             ) : (
                             <>
-                                <ConnectDropdown onClick={() => toggleSwitchAccount()} ref={switchRef}>
-                                    <span>{currentAcctType}</span><Image src={switchIcon} alt="" height={24} width={24} />
+                                <ConnectDropdown onClick={() => toggleSwitchAccount()} ref={switchRef} show={true}>
+                                    <span id="span-current">{currentAcctType}</span><Image src={switchIcon} alt="" height={24} width={24} />
                                     {
                                         showSwitchAccount && <ConnectDropdownCont>
                                                 <button onClick={() => handleAccountChange("Business Owner")}><span>Business Owner</span></button>
@@ -238,6 +250,9 @@ const Nav = () => {
                                 </UserDropdown>
                             }
                         </UserBtn>
+                        <SidebarBtn onClick={() => setShowSidebar(!showSidebar)}>
+                            <HamburgerIcon />
+                        </SidebarBtn>
                     </Right>
                 ) : (
                     <Right>
@@ -258,9 +273,38 @@ const Nav = () => {
                                 <GetStartedBtn>Get Started</GetStartedBtn>
                             </Link>
                         </Controls>
+                        <SidebarBtn onClick={() => setShowSidebar(!showSidebar)}>
+                            <HamburgerIcon />
+                        </SidebarBtn>
                     </Right>
                 )
             }
+
+            <ResponsiveNav show={showSidebar}>
+            {
+                !isLoggedIn ? (
+                        <NavLinks show={true}>
+                            <Link href="/">Home</Link>
+                            <Link href="/creators">Creators</Link>
+                            <Link href="/business-owner">Business Owner</Link>
+                            <Link href="/pricing">Pricing</Link>
+                        </NavLinks>
+                ) : (
+                    <NavLinks show={true}>
+                        <Link href="/dashboard/campaigns">
+                            <a><HashTagIcon /><span>Campaigns</span></a>
+                        </Link>
+                        <Link href="/dashboard/projects">
+                            <a><BagIcon /><span>Projects</span></a>
+                        </Link>
+                        <Link href="/dashboard/collaborations">
+                            <a><CollaborationIcon /><span>Collaborations</span></a>
+                        </Link>
+                    </NavLinks>
+                )
+            }
+
+        </ResponsiveNav>
         </Wrapper>
     </Container>
   )

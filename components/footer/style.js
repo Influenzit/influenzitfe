@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styled from "styled-components";
-import { colors, sizes } from "../../styles/theme";
+import { breakpoints, colors, sizes } from "../../styles/theme";
 
 export const Container = styled.footer`
     background: #111;
@@ -12,6 +12,9 @@ export const Wrapper = styled.div`
     padding-top: 25px;
     background: #111;
     color: white;
+    ${breakpoints.sm}{
+        font-size: 14px !important;
+    }
 `;
 export const MainSection = styled.div`
     width: 40%;
@@ -45,6 +48,10 @@ export const MainSection = styled.div`
             cursor: pointer;
         }
     }
+    ${breakpoints.lg}{
+        width: 100%;
+        padding-bottom: 20px;
+    }
 `;
 export const Section = styled.div`
     width: 20%;
@@ -64,10 +71,16 @@ export const Section = styled.div`
     h3 {
         margin-bottom: 10px;
     }
-
+    ${breakpoints.sm}{
+        width: 100%;
+        margin-top: 15px;
+    }
 `;
 export const Top = styled.div`
     display: flex;
+    ${breakpoints.lg}{
+        flex-direction: column;
+    }
 `;
 export const Bottom = styled.div`
     display: flex;
@@ -78,6 +91,12 @@ export const Bottom = styled.div`
     color: #FFFFFFB2;
     font-size: 14px;
     margin-top: 20px;
+    ${breakpoints.md}{
+        flex-direction: column;
+        height: auto;
+        text-align: center;
+        padding: 10px 0;
+    }
 `;
 export const BottomLinks = styled.div`
     a {

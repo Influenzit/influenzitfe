@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, sizes } from "./theme";
+import { breakpoints, colors, sizes } from "./theme";
 
 const activeLabel = `
     label {
@@ -42,6 +42,9 @@ export const Center = styled.div`
         margin-bottom: 20px;
         font-weight: 500;
     }
+    ${breakpoints.md} {
+        padding: 15px;
+    }
 `;
 export const Wrapper = styled.div`
     width: 98%;
@@ -60,6 +63,9 @@ export const FormWrapper = styled.div`
     width: 100%;
     max-width: 500px;
     min-width: 320px;
+    ${breakpoints.lg}{
+        width: 80%;
+    }
 `;
 export const FormHeader = styled.div`
     display: flex;
@@ -77,6 +83,7 @@ export const FormFields = styled.form`
     display: block;
     width: 100%;
     padding:20px 0;
+    
 `;
 export const InputContainer = styled.div`
     position: relative;
@@ -199,10 +206,16 @@ export const FacebookBtn = styled.button`
         font-weight: 500;
         font-size: 16px;
     }
+    ${breakpoints.md} {
+        font-size: 14px;
+    }
 `;
 export const SocialIcon = styled.div`
     position: absolute;
     left: 35px;
+    ${breakpoints.md} {
+        left: 15px;
+    }
 `;
 export const GoogleBtn = styled.button`
     width: 100%;
@@ -222,6 +235,9 @@ export const GoogleBtn = styled.button`
         font-weight: 500;
         font-size: 16px;
     }
+    ${breakpoints.md} {
+        font-size: 14px;
+    }
 `;
 export const Bottom = styled.div`
     display: flex;
@@ -231,6 +247,9 @@ export const Bottom = styled.div`
     height: 60px;
     a {
         color: ${colors.primaryColor}
+    }
+    ${breakpoints.md} {
+        font-size: 14px;
     }
 `;
 export const UploadContainer = styled.div`

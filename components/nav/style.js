@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styled from "styled-components";
-import { colors, sizes } from "../../styles/theme";
+import { breakpoints, colors, sizes } from "../../styles/theme";
 
 export const Container = styled.nav`
     height: 70px;
@@ -20,6 +20,7 @@ export const Wrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
 `;
 export const Logo = styled(Link)`
     img {
@@ -32,12 +33,25 @@ export const Right = styled.div`
 `;
 export const NavLinks = styled.div`
     padding: 0 15px;
+    display: ${(props) => props.show ? "none" : "flex"};
     a {
         text-decoration: none;
         padding-right: 15px;
         color: #111;
         :hover {
             color: ${colors.primaryColor};
+        }
+    }
+    ${breakpoints.lg} {
+        display: ${(props) => props.show ? "flex" : "none"};
+        flex-direction: column;
+        a {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+        span {
+            margin-left: 10px;
         }
     }
 `;
@@ -50,8 +64,10 @@ export const SearchBtn = styled.button`
     margin-right: 15px;
     background: transparent;
     border: none;
-    border-right: 1px solid #D2D2D2;
-    border-left: 1px solid #D2D2D2;
+    ${breakpoints.lg} {
+        padding: 7px 5px;
+        margin-right: 5px;
+    }
 `;
 export const LoginBtn = styled.a`
     color: ${colors.primaryColor};
@@ -64,6 +80,14 @@ export const LoginBtn = styled.a`
     :hover {
         background: ${colors.primaryColor};
         color: white;
+    }
+    ${breakpoints.lg} {
+        font-size: 14px;
+        padding: 7px 14px;
+    }
+    ${breakpoints.sm} {
+        font-size: 12px;
+        padding: 7px 8px;
     }
 `;
 export const GetStartedBtn = styled.a`
@@ -78,6 +102,16 @@ export const GetStartedBtn = styled.a`
     :hover {
         background: white;
         color: ${colors.primaryColor};
+    }
+    ${breakpoints.lg} {
+        font-size: 14px;
+        padding: 7px 14px;
+        margin-left: 10px;
+    }
+    ${breakpoints.sm} {
+        font-size: 12px;
+        padding: 7px 8px;
+        margin-left: 8px;
     }
 `;
 export const SearchContainer = styled.div`
@@ -102,6 +136,25 @@ export const SearchContainer = styled.div`
         cursor: pointer;
         border: none;
         font-size: 15px;
+    }
+    ${breakpoints.lg} {
+        position: absolute;
+        display: ${(props) => props.showSearch ? "flex" : "none"};
+        top: 70px;
+        width: 100vw;
+        max-width: 100vw;
+        left: -1%;
+    }
+`;
+export const SearchBtnResponsive = styled.button`
+    background: transparent;
+    cursor: pointer;
+    border: none;
+    font-size: 15px;
+    display: none;
+    margin: 0 10px;
+    ${breakpoints.lg} {
+        display: block;
     }
 `;
 export const SearchByBtn = styled.div`
@@ -155,11 +208,27 @@ export const ConnectDropdown = styled.div`
     margin-left: 15px;
     font-size: 15px;
     cursor: pointer;
+    
+    ${breakpoints.sm} {
+        width: 50px;
+        font-size: 12px;
+        min-width: 50px;
+        margin-left: 0;
+    }
+    ${breakpoints.lg} {
+        display: ${(props) => props.show ? "flex" : "none"};
+    }
+    ${breakpoints.sm} {
+        #span-current:first-of-type {
+            display: none;
+        }
+    }
 `;
 export const ConnectDropdownCont = styled.div`
     position: absolute;
-    left: 0;
+    right: 0;
     width: 100%;
+    min-width: 160px;
     top: 40px;
     background: #fff;
     display: flex;
@@ -184,6 +253,9 @@ export const ConnectDropdownCont = styled.div`
         :hover {
             color: ${colors.primaryColor};
         }
+        ${breakpoints.sm} {
+            font-size: 12px;
+        }
     }
     a {
         height: 40px;
@@ -197,6 +269,9 @@ export const ConnectDropdownCont = styled.div`
         }
         :hover {
             color: ${colors.primaryColor};
+        }
+        ${breakpoints.sm} {
+            font-size: 12px;
         }
     }
     ::after {
@@ -232,6 +307,12 @@ export const ControlsA = styled.div`
             top: -4px;
             right: 3px;
         }
+        ${breakpoints.sm} {
+            padding: 0 5px;
+            svg {
+                height: 22px;
+            }
+        }
     }
 `;
 export const UserBtn = styled.div`
@@ -253,6 +334,15 @@ export const UserBtn = styled.div`
         border-radius: 50%;
         border: 2px solid #fff;
         background: #14A800;
+        ${breakpoints.sm} {
+            height: 8px;
+            width: 8px;
+            right: 3px;
+            bottom: 1px;
+        }
+    }
+    ${breakpoints.sm} {
+        padding: 5px;
     }
 `;
 export const ProfilePicWrapper = styled.div`
@@ -260,6 +350,10 @@ export const ProfilePicWrapper = styled.div`
     height: 40px;
     width: 40px;
     border-radius: 50%;
+    ${breakpoints.sm} {
+        height: 30px;
+        width: 30px;
+    }
 `;
 export const UserDropdown = styled.div`
     position: absolute;
@@ -296,6 +390,9 @@ export const UserDropdown = styled.div`
                 color: red;
             }
         }
+        ${breakpoints.sm} {
+            font-size: 12px;
+        }
     }
     ::after {
         content: "";
@@ -310,4 +407,27 @@ export const UserDropdown = styled.div`
         border-top: 1px solid #D2D2D2;
         border-right: 1px solid #D2D2D2;
     }
+`;
+export const SidebarBtn = styled.button`
+    background: transparent;
+    border: none;
+    display: none;
+    cursor: pointer;
+    margin-left: 10px;
+    ${breakpoints.lg} {
+        display: block;
+        height: 29px;
+        width: 29px;
+    }
+`;
+export const ResponsiveNav = styled.div`
+    position: absolute;
+    top: 70px;
+    max-height: calc(100vh - 70px);
+    width: 100%;
+    background: #fff;
+    max-width: 300px;
+    padding: 15px 0;
+    right: ${(props) => props.show ? "-1%" : "-101%" };
+    transition: linear .3s;
 `;

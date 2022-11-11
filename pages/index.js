@@ -48,7 +48,7 @@ const Home = () => {
         <h1>We Connect <span>Brands</span> With The Perfect <span>Influencers</span> To <span>Multiply</span> Their <span>Sales.</span></h1>
         <p>Find results-focused influencers in just a few clicks.</p>
         <form>
-          <input type="text" placeholder="Search influencers by keyword or niche" />
+          <input type="text" placeholder="Search by keyword or niche" />
           <CustomSelect>
             <span>in:</span>
             <select>

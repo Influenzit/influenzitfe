@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import { colors, sizes } from "./theme";
+import { breakpoints, colors, sizes } from "./theme";
 
 export const HeroSectionOne = styled.section`
     background: url("/hero-1.png");
     background-size: cover;
-    background-attachment: fixed;
     background-repeat: no-repeat;
     height: 80vh;
     max-height: 800px;
@@ -62,6 +61,41 @@ export const HeroSectionOne = styled.section`
             cursor: pointer;
         }
     }
+    ${breakpoints.md} {
+        background: white;
+        color: ${colors.primaryColor};
+        height: auto;
+        h1 {
+            font-size: 28px;
+            width: 90%;
+            min-width:350px;
+        }
+        p {
+            margin-top: 15px;
+            font-size: 16px;
+            text-align: center;
+            width: 90%;
+        }
+        form {
+            height: 50px;
+            width: 90%;
+            margin-top: 20px;
+            font-size: 14px;
+            border: 1px solid ${colors.primaryColor};
+            input {
+                width: calc((100% - 50px)/2);
+                padding: 0 5px 0 5px;
+                font-size: 12px;
+            }
+            select {
+                padding: 0 5px 0 0;
+                font-size: 12px;
+            }
+            button {
+                width: 60px;
+            }
+        }
+    }
 `;
 export const CustomSelect = styled.div`
     width: calc((100% - 60px)/2);
@@ -75,6 +109,12 @@ export const CustomSelect = styled.div`
         padding-left: 15px;
         color: #848484;
     }
+    ${breakpoints.md} {
+        span {
+            padding-left: 5px;
+            color: #848484;
+        }
+    }
 `;
 export const HeroSectionTwo = styled.section`
     background: white;
@@ -86,6 +126,9 @@ export const WrapperTwo = styled.div`
     display: flex;
     padding: 40px 0;
     justify-content: space-between;
+    ${breakpoints.sm} {
+        flex-direction: column;
+    }
 `;
 export const InfoCard = styled.div`
     padding: 35px 50px;
@@ -109,6 +152,15 @@ export const InfoCard = styled.div`
         border: 2px solid white;
         padding: 10px 20px;
         margin-top: 20px;
+    }
+    ${breakpoints.lg} {
+        width: 48%;
+        padding: 20px 15px;
+    }
+    ${breakpoints.sm} {
+        width: 100%;
+        padding: 20px 15px;
+        margin: 10px 0;
     }
 `
 export const HeroSectionThree = styled.div`
@@ -149,6 +201,9 @@ export const NicheCard = styled.div`
     text-align: center;
     overflow: hidden;
     height: 250px;
+    width: 100%;
+    min-width: 280px;
+    max-width: 285px;
     position: relative;
     border-radius: 3px;
     a {
@@ -186,13 +241,16 @@ export const NicheCard = styled.div`
     }
 `;
 export const NicheWrapper = styled.div`
-    display: grid;
-    grid-template-columns: repeat(4, 280px);
+    display: flex;
     margin-top: 50px;
-    grid-column-gap: 20px;
-    grid-row-gap: 30px;
+    column-gap: 20px;
+    flex-wrap: wrap;
+    row-gap: 30px;
     justify-content: space-between;
     overflow-y: hidden;
+    ${breakpoints.lg} {
+        justify-content: center;
+    }
 `;
 export const HeroSectionFour = styled.section`
     background: white;
@@ -208,10 +266,21 @@ export const InfoSectOne = styled.div`
     width: 100%;
     justify-content: space-between;
     padding: 60px 0;
+    ${breakpoints.md} {
+        flex-direction: column;
+        padding-top: 20px;
+        :last-of-type {
+            flex-direction: column-reverse;
+        }
+    }
 `;
 export const ImgSlider = styled.div`
     width: 45%;
     position: relative;
+    ${breakpoints.md} {
+        width: 100%;
+        height: 350px;
+    }
 `;
 export const ImgWrapper = styled.div`
     height: 100%;
@@ -262,7 +331,24 @@ export const InfoDetails = styled.div`
         margin-top: 20px;
         display: inline-block;
     }
-
+    ${breakpoints.lg} {
+        width: 100%;
+        padding: 20px 15px;
+        h3 { 
+            font-size: 22px;
+            font-weight: 400;
+            span {
+                font-weight: 600;
+            }
+        }
+        h3 + p {
+            font-size: 15px;
+            margin-top: 10px;
+        }
+    }
+    ${breakpoints.md} {
+        max-width: 100%;
+    }
 `;
 export const InfoList = styled.div`
     margin-top: 20px;
@@ -274,6 +360,10 @@ export const ListItem = styled.div`
     span {
         margin-left: 10px;
         line-height: 25px;
+        width: calc(100% - 30px);
+    }
+    ${breakpoints.lg} {
+        font-size: 12px;
     }
 `;
 export const HeroSectionFive = styled.section`
@@ -297,6 +387,14 @@ export const WrapperFive = styled.div`
         width: 60%;
         min-width: 350px;
     }
+    ${breakpoints.md} {
+        padding: 20px 0;
+        h1 {
+            font-size: 28px;
+            width: 90%;
+        }
+    }
+    
 `;
 export const ReviewWrapper = styled.div`
     display: flex;
@@ -320,6 +418,10 @@ export const ReviewCard = styled.div`
         text-align: center;
         line-height: 160%;
         font-size: 20px;
+    }
+    ${breakpoints.md} {
+        width: 100%;
+        min-width: 100%;
     }
 `;
 export const UserCard = styled.div`

@@ -42,8 +42,8 @@ export const deleteCertification = (index) => {
 export const createServices = (data) => {
     return axiosInstance().post(`/services`, data)
 }
-export const updateServices = (data) => {
-    return axiosInstance().patch(`/services`, data)
+export const updateServices = (data, serviceId) => {
+    return axiosInstance().patch(`/services/${serviceId}`, data)
 }
 export const getServices = () => {
     return axiosInstance().get(`/services`)
