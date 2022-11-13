@@ -46,6 +46,9 @@ export const FormContainer = styled.div`
 `;
 export const FormContainerM = styled.div`
     padding: 20px 30px;
+    ${breakpoints.md}{
+        padding: 0px 10px;
+    }
 `;
 export const List = styled.div`
     display: flex;
