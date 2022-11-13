@@ -62,8 +62,6 @@ export const HeroSectionOne = styled.section`
         }
     }
     ${breakpoints.md} {
-        background: white;
-        color: ${colors.primaryColor};
         height: auto;
         h1 {
             font-size: 28px;
@@ -81,7 +79,6 @@ export const HeroSectionOne = styled.section`
             width: 90%;
             margin-top: 20px;
             font-size: 14px;
-            border: 1px solid ${colors.primaryColor};
             input {
                 width: calc((100% - 50px)/2);
                 padding: 0 5px 0 5px;

@@ -23,6 +23,8 @@ const Nav = () => {
   const switchRef = useRef(null);
   const connectRef = useRef(null);
   const profileRef = useRef(null);
+  const sidebarRef = useRef(null);
+  const sidebarBtn = useRef(null);
   const dispatch = useDispatch();
   const [showSearchOption, setShowSearchOption] = useState(false);
   const [showConnect, setShowConnect] = useState(false);
@@ -153,6 +155,9 @@ const Nav = () => {
         if(switchRef.current && !switchRef.current.innerHTML.includes(e.target.innerHTML)) {
             setShowSwitchAccount(false);
         }
+        if(sidebarRef.current && sidebarBtn.current && !sidebarRef.current.innerHTML.includes(e.target.innerHTML) && !sidebarBtn.current.innerHTML.includes(e.target.innerHTML)) {
+            setShowSidebar(false);
+        }
     }
   useEffect(() => {
     addEventListener("click", handleClosing);
@@ -250,7 +255,7 @@ const Nav = () => {
                                 </UserDropdown>
                             }
                         </UserBtn>
-                        <SidebarBtn onClick={() => setShowSidebar(!showSidebar)}>
+                        <SidebarBtn onClick={() => setShowSidebar(!showSidebar)} ref={sidebarBtn}>
                             <HamburgerIcon />
                         </SidebarBtn>
                     </Right>
@@ -273,14 +278,14 @@ const Nav = () => {
                                 <GetStartedBtn>Get Started</GetStartedBtn>
                             </Link>
                         </Controls>
-                        <SidebarBtn onClick={() => setShowSidebar(!showSidebar)}>
+                        <SidebarBtn onClick={() => setShowSidebar(!showSidebar)} ref={sidebarBtn}>
                             <HamburgerIcon />
                         </SidebarBtn>
                     </Right>
                 )
             }
 
-            <ResponsiveNav show={showSidebar}>
+            <ResponsiveNav show={showSidebar} ref={sidebarRef}>
             {
                 !isLoggedIn ? (
                         <NavLinks show={true}>

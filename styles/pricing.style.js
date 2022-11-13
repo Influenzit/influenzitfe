@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, sizes } from "./theme";
+import { breakpoints, colors, sizes } from "./theme";
 
 export const HeroSectionOne = styled.div`
     background: url("/hero-5.png");
@@ -8,13 +8,19 @@ export const HeroSectionOne = styled.div`
     background-position: center;
     height: 40vh;
     max-height: 400px;
-    min-height: 300px;
+    min-height: 150px;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     h1 {
         font-size: 45px;
+    }
+    ${breakpoints.md}{
+        height: 25vh;
+        h1 {
+            font-size: 24px;
+        }
     }
 `;
 export const HeroSectionTwo = styled.section`
@@ -32,17 +38,29 @@ export const Wrapper = styled.div`
             font-weight: 600;
         }
     }
+    ${breakpoints.md}{
+        h3 {
+            font-size: 20px;
+        }
+    }
 `;
 export const PricingWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 40px 0;
+    ${breakpoints.md}{
+       flex-direction: column;
+    }
 `;
 export const PricingContainer = styled.div`
     box-shadow: 0 0 10px #aaaaaa40;
     width: 31%;
     max-width: 31%;
+    ${breakpoints.md}{
+        width: 95%;
+        max-width: 95%;
+    }
 `;
 export const Top = styled.div`
     height: 40px;
@@ -80,6 +98,14 @@ export const PricingItem= styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    svg {
+        color: ${colors.primaryColor};
+        text-align: center;
+        width: 24px;
+    }
+    ${breakpoints.md}{
+       font-size: 14px;
+    }
 `;
 export const PricingContent = styled.div`
     a {

@@ -31,7 +31,7 @@ const ForCreators = () => {
               <Image src="/info-1.png" alt='' layout='fill' objectFit='cover' objectPosition="center" />
             </ImageWrapper>
           </InfoCard>
-          <InfoCard>
+          <InfoCard reverse={true}>
             <ImageWrapper>
               <Image src="/info-2.png" alt='' layout='fill' objectFit='cover' objectPosition="center" />
             </ImageWrapper>

@@ -7,7 +7,7 @@ import { BagIcon, ChevronLeft, ChevronRight, HashTagIcon, SettingsIcon, WalletIc
 import LandingLayout from '../../layouts/landing.layout'
 import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../styles/connect-pages.style'
 import { Card, CardsWrapper, ChartContainer, WelcomeHeading } from '../../styles/dashboard'
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const Dashboard = () => {
   const user = useSelector(getUser);

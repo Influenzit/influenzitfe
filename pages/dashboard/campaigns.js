@@ -12,8 +12,7 @@ const Campaigns = () => {
                 <TableHeader>
                     <h2>My Campaigns</h2>
                 </TableHeader>
-                <TableContent>
-                    <TableControls>
+                <TableControls>
                         <SearchContainer>
                             <input type="text" placeholder="Search by influencer"/>
                             <button>
@@ -25,7 +24,8 @@ const Campaigns = () => {
                             <button><Image src="/upload.svg" alt="" height={20} width={20} /><span>Export</span></button>
                             <button>Find Influencers</button>
                         </FilterContainer>
-                    </TableControls>
+                </TableControls>
+                <TableContent>
                     <Table>
                         <THead>
                             <TrH>
@@ -114,7 +114,8 @@ const Campaigns = () => {
                             </Tr>
                         </TBody>
                     </Table>
-                    <TableFooter>
+                </TableContent>
+                <TableFooter>
                         <p>Showing 10 of 500</p>
                         <Pagination>
                             <NavBtn>
@@ -133,7 +134,6 @@ const Campaigns = () => {
                             </NavBtn>
                         </Pagination>
                     </TableFooter>
-                </TableContent>
             </TableWrapper>
         </Wrapper>
     </Container>

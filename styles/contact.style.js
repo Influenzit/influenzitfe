@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, sizes } from "./theme";
+import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.section`
 `;
@@ -31,6 +31,18 @@ export const Wrapper = styled.div`
         color: #333;
         margin-bottom: 20px;
         margin-top: 40px;
+    }
+    ${breakpoints.md}{
+        h1 {
+            font-size: 22px;
+        }
+        p {
+            width: 80%;
+            font-size: 15px;
+        }
+        h3 {
+            font-size: 18px;
+        }
     }
 `;
 export const SocialLinks = styled.div`
@@ -64,11 +76,18 @@ export const FormContainer = styled.form`
         }
         cursor: pointer;
     }
+    ${breakpoints.md}{
+        padding: 20px;
+    }
 `;
 export const InputSection = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
+    ${breakpoints.md}{
+        flex-direction: column;
+        padding: 0;
+    }
 `;
 export const InputContainer = styled.div`
     display: flex;
@@ -86,6 +105,10 @@ export const InputContainer = styled.div`
         border: 1px solid #333;
         outline: none;
         padding: 0 10px;
+    }
+    ${breakpoints.md}{
+        width: 100%;
+        padding: 10px 0;
     }
 `;
 export const TextAreaContainer = styled.div`

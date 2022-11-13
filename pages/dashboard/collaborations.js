@@ -12,20 +12,20 @@ const Collaborations = () => {
                 <TableHeader>
                     <h2>My Collaborations</h2>
                 </TableHeader>
+                <TableControls>
+                    <SearchContainer>
+                        <input type="text" placeholder="Search by influencer"/>
+                        <button>
+                            <Image src="/search-b.svg" alt="" height={22} width={22}/>
+                        </button>
+                    </SearchContainer>
+                    <FilterContainer>
+                        <button><Image src="/filter.svg" alt="" height={20} width={20} /><span>Filter</span></button>
+                        <button><Image src="/upload.svg" alt="" height={20} width={20} /><span>Export</span></button>
+                        <button>Find Influencers</button>
+                    </FilterContainer>
+                </TableControls>
                 <TableContent>
-                    <TableControls>
-                        <SearchContainer>
-                            <input type="text" placeholder="Search by influencer"/>
-                            <button>
-                                <Image src="/search-b.svg" alt="" height={22} width={22}/>
-                            </button>
-                        </SearchContainer>
-                        <FilterContainer>
-                            <button><Image src="/filter.svg" alt="" height={20} width={20} /><span>Filter</span></button>
-                            <button><Image src="/upload.svg" alt="" height={20} width={20} /><span>Export</span></button>
-                            <button>Find Influencers</button>
-                        </FilterContainer>
-                    </TableControls>
                     <Table>
                         <THead>
                             <TrH>
@@ -114,26 +114,26 @@ const Collaborations = () => {
                             </Tr>
                         </TBody>
                     </Table>
-                    <TableFooter>
-                        <p>Showing 10 of 500</p>
-                        <Pagination>
-                            <NavBtn>
-                                <ChevronLeft />
-                            </NavBtn>
-                            <Pages>
-                                <PageBtn activePage={true}>1</PageBtn>
-                                <PageBtn>2</PageBtn>
-                                <PageBtn>3</PageBtn>
-                                <PageBtn>4</PageBtn>
-                                -
-                                <PageBtn>50</PageBtn>
-                            </Pages>
-                            <NavBtn>
-                                <ChevronRight />
-                            </NavBtn>
-                        </Pagination>
-                    </TableFooter>
                 </TableContent>
+                <TableFooter>
+                    <p>Showing 10 of 500</p>
+                    <Pagination>
+                        <NavBtn>
+                            <ChevronLeft />
+                        </NavBtn>
+                        <Pages>
+                            <PageBtn activePage={true}>1</PageBtn>
+                            <PageBtn>2</PageBtn>
+                            <PageBtn>3</PageBtn>
+                            <PageBtn>4</PageBtn>
+                            -
+                            <PageBtn>50</PageBtn>
+                        </Pages>
+                        <NavBtn>
+                            <ChevronRight />
+                        </NavBtn>
+                    </Pagination>
+                </TableFooter>
             </TableWrapper>
         </Wrapper>
     </Container>

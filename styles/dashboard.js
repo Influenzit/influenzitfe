@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "./theme";
+import { breakpoints, colors } from "./theme";
 
 export const WelcomeHeading = styled.h2`
     font-size: 26px;
@@ -14,6 +14,10 @@ export const CardsWrapper = styled.div`
     display: flex;
     column-gap: 15px;
     padding: 15px 0;
+    ${breakpoints.lg}{
+        flex-direction: column;
+        row-gap: 10px;
+    }
 `;
 export const ChartContainer = styled.div`
     width: 100%;

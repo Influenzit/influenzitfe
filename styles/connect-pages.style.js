@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, sizes } from "./theme";
+import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.div`
     background: #F7FAFC;
@@ -17,6 +17,8 @@ export const TableWrapper = styled.div`
 `;
 export const TableContent = styled.div`
     padding: 10px 0;
+    max-width: 95vw;
+    overflow-x: scroll;
 `;
 export const TableHeader = styled.div`
     padding: 20px;
@@ -25,11 +27,20 @@ export const TableHeader = styled.div`
     h2 {
         font-size: 22px;
     }
+    ${breakpoints.lg}{
+        h2 {
+            font-size: 17px;
+        }
+    }
 `;
 export const TableControls = styled.div`
     display: flex;
     justify-content: space-between;
     margin: 20px;
+    ${breakpoints.md}{
+        flex-direction: column;
+        row-gap: 15px;
+    }
 `;
 export const SearchContainer = styled.div`
     height: 40px;
@@ -53,6 +64,9 @@ export const SearchContainer = styled.div`
         outline: none;
         background: transparent;
         padding: 10px ;
+    }
+    ${breakpoints.md}{
+        width: 100%;
     }
 `;
 export const FilterContainer = styled.div`
@@ -102,11 +116,23 @@ export const Th = styled.th`
     flex-grow: 1;
     width: ${(props) => props.cellWidth && props.cellWidth};
     text-align: left;
+    ${breakpoints.lg}{
+        font-size: 14px;
+        width: ${(props) => props.cellWidth && `calc(${props.cellWidth} * 0.7)`};
+        min-width: max-content;
+        max-width: ${(props) => props.cellWidth && props.cellWidth};
+    }
 `;
 export const Td = styled.td`
     flex-grow: 1;
     width: ${(props) => props.cellWidth && props.cellWidth};
     text-align: left;
+    ${breakpoints.lg}{
+        font-size: 14px;
+        width: ${(props) => props.cellWidth && `calc(${props.cellWidth} * 0.7)`};
+        min-width: max-content;
+        max-width: ${(props) => props.cellWidth && props.cellWidth};
+    }
 `;
 export const Tr = styled.tr`
     display: flex;
@@ -114,6 +140,11 @@ export const Tr = styled.tr`
     padding: 15px 0;
     border-bottom: 1px solid #D2D2D2;
     font-size: 14px;
+    ${breakpoints.lg}{
+        font-size: 14px;
+        width: ${(props) => props.cellWidth && `calc(${props.cellWidth}*(95vw/1440px))`};
+        min-width: max-content;
+    }
 `;
 export const TableFooter = styled.div`
     padding: 20px;

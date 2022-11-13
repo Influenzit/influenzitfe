@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, sizes } from "../../styles/theme";
+import { breakpoints, colors, sizes } from "../../styles/theme";
 
 export const Container = styled.div`
 `;
@@ -15,6 +15,15 @@ export const Wrapper = styled.div`
         padding-left: 15px;
         :hover {
             color: ${colors.primaryColor}
+        }
+    }
+    ${breakpoints.md}{
+        font-size: 14px;
+        flex-direction: column-reverse;
+        row-gap: 10px;
+        align-items: center;
+        a:first-of-type{
+            padding-left: 0;
         }
     }
 `;

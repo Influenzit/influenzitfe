@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { CancelIcon, CheckIcon } from '../assets/svgIcons'
 import LandingLayout from '../layouts/landing.layout'
 import { Bottom, HeroSectionOne, HeroSectionTwo, PricingContainer, PricingContent, PricingItem, PricingListCont, PricingType, PricingWrapper, SocialLinks, Top, Wrapper } from '../styles/pricing.style'
 
@@ -41,43 +42,43 @@ const Pricing = () => {
                                 <p>Included features:</p>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/cancel.svg" alt="check" height={15} width={30}/>
+                                    <CancelIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/cancel.svg" alt="check" height={15} width={30}/>
+                                    <CancelIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/cancel.svg" alt="check" height={15} width={30}/>
+                                    <CancelIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/cancel.svg" alt="check" height={15} width={30}/>
+                                    <CancelIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/cancel.svg" alt="check" height={15} width={30}/>
+                                    <CancelIcon />
                                 </PricingItem>
                                 <Link href="/" passHref>
                                     <a>Contact Us</a>
@@ -117,43 +118,43 @@ const Pricing = () => {
                                 <p>Included features:</p>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/cancel.svg" alt="check" height={15} width={30}/>
+                                    <CancelIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/cancel.svg" alt="check" height={15} width={30}/>
+                                    <CancelIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/cancel.svg" alt="check" height={15} width={30}/>
+                                    <CancelIcon />
                                 </PricingItem>
                                 <Link href="/" passHref>
                                     <a>Contact Us</a>
@@ -189,43 +190,43 @@ const Pricing = () => {
                                 <p>Included features:</p>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <PricingItem>
                                     <span>Access to 500 influencers</span>
-                                    <Image src="/check.svg" alt="check" height={15} width={30}/>
+                                    <CheckIcon />
                                 </PricingItem>
                                 <Link href="/" passHref>
                                     <a>Contact Us</a>
