@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, sizes } from "./theme";
+import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.div`
     background: #F7FAFC;
@@ -19,6 +19,9 @@ export const Content =  styled.div`
     border: 1px solid #D2D2D2;
     border-radius: 5px;
     padding-bottom: 20px;
+    ${breakpoints.md}{
+        margin-left: 10px
+    }
 `;
 export const Heading = styled.div`
     padding: 20px 30px;
@@ -27,9 +30,19 @@ export const Heading = styled.div`
         color: #111;
     }
     border-bottom: 1px solid #D2D2D2;
+    ${breakpoints.lg}{
+        padding: 10px 5px;
+        h2 {
+            font-size: 15px;
+            color: #111;
+        }
+    }
 `;
 export const FormContainer = styled.div`
     padding: 0px 30px;
+    ${breakpoints.md}{
+        padding: 0px 10px;
+    }
 `;
 export const FormContainerM = styled.div`
     padding: 20px 30px;
@@ -44,6 +57,9 @@ export const InputFlex = styled.div`
     display: flex;
     column-gap: 15px;
     width: 100%;
+    ${breakpoints.lg}{
+        flex-direction: column;
+    }
 `;
 export const InputContainer = styled.div`
     display: flex;
@@ -73,6 +89,11 @@ export const InputContainer = styled.div`
         padding-bottom: 10px;
         color: #111;
     }
+    ${breakpoints.lg}{
+        label {
+            font-size: 13px;
+        }
+    }
 `;
 export const Bottom = styled.div`
     padding: 20px 30px;
@@ -89,6 +110,12 @@ export const Bottom = styled.div`
         border: none;
         border-radius: 3px;
     }
+    ${breakpoints.md}{
+        button {  
+            font-size: 13px;
+            padding: 10px;
+        }
+    }
 `;
 export const BottomAdd = styled.div`
     padding: 3px 0px;
@@ -104,15 +131,27 @@ export const BottomAdd = styled.div`
         cursor: pointer;
         border-radius: 3px;
     }
+    ${breakpoints.md}{
+        button {  
+            font-size: 13px;
+            padding: 10px;
+        }
+    }
 `;
 export const CreateContainer = styled.div`
     padding: 20px 30px;
+    ${breakpoints.md}{
+        padding: 20px 10px;
+    }
 `;
 export const ListContainer = styled.div`
     padding: 20px 30px;
     h4 {
         color: #444;
         text-align: center;
+    }
+    ${breakpoints.md}{
+        padding: 20px 10px;
     }
 `;
 export const DeleteBtn = styled.button`
@@ -145,6 +184,9 @@ export const CurrentToggle = styled.div`
     span {
         padding-left: 8px;
     }
+    ${breakpoints.md}{
+        font-size: 13px;
+    }
 `;
 
 export const ControlFlex = styled.div`
@@ -171,6 +213,16 @@ export const Control = styled.div`
         cursor: pointer;
         border-radius: 3px;
     }
+    ${breakpoints.md}{
+        button {  
+            font-size: 13px;
+            padding: 10px 5px;
+        }
+        button:last-child {  
+            font-size: 13px;
+            padding: 10px 5px;
+        }
+    }
 `;
 
 export const AddSocialBtn = styled.button`
@@ -191,10 +243,17 @@ export const PasswordContainer = styled.div`
     display: flex;
     column-gap: 30px;
     padding: 15px 0;
+    ${breakpoints.lg}{
+        flex-direction: column;
+    }
 `;
 export const Left = styled.div`
     width: 50%;
     max-width: 50%;
+    ${breakpoints.lg}{
+        width: 100%;
+        max-width: 100%;
+    }
 `;
 export const Right = styled.div`
     width: 50%;
@@ -228,6 +287,13 @@ export const Right = styled.div`
         }
         span {
             padding-left: 10px;
+        }
+    }
+    ${breakpoints.lg}{
+        width: 100%;
+        max-width: 100%;
+        p {
+            font-size: 13px;
         }
     }
 `;

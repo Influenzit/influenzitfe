@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { breakpoints } from "../../styles/theme";
 
 export const Container = styled.div`
     width: 300px;
@@ -11,6 +12,10 @@ export const Container = styled.div`
     border: 1px solid #D2D2D2;
     border-radius: 5px;
     min-width: 300px;
+    ${breakpoints.lg}{
+        width: 80px;
+        min-width: 80px;
+    }
 `;
 export const InnerWrapper = styled.div`
     position: relative;
@@ -18,6 +23,11 @@ export const InnerWrapper = styled.div`
     overflow: hidden;
     height: 100px;
     width: 100px;
+    ${breakpoints.lg}{
+        width: 60px;
+        height: 60px;
+        margin: 0 auto;
+    }
 `;
 export const ProfileImageCont = styled.div`
     margin-bottom: 20px;
@@ -36,6 +46,15 @@ export const ProfileImageCont = styled.div`
         border: 4px solid #fff;
         background: #14A800;
     }
+    ${breakpoints.lg}{
+        width: 60px;
+        height: 60px;
+        ::after {
+            height: 12px;
+            width: 12px;
+            border: 2px solid #fff;
+        }
+    }
 `;
 export const Top = styled.div`
     display: flex;
@@ -52,6 +71,11 @@ export const Top = styled.div`
     p {
         font-size: 15px;
         color: #333;
+    }
+    ${breakpoints.lg}{
+        h2, p {
+            display: none;
+        }
     }
 `;
 export const Bottom = styled.div`
@@ -73,6 +97,21 @@ export const Bottom = styled.div`
         :last-of-type {
             border: none;
             color: red;
+        }
+    }
+    ${breakpoints.lg}{
+        button {
+            padding: 15px 10px;
+            flex-direction: column;
+            span {
+                padding-left: 0;
+                font-size: 11px;
+                padding-top: 4px;
+            }
+            :last-of-type {
+                border: none;
+                color: red;
+            }
         }
     }
 `;
