@@ -7,6 +7,13 @@ export const BackImage = styled.div`
     position: relative;
     height: 60vh;
     min-height: 400px;
+    ${breakpoints.lg}{
+        height: auto;
+        min-height: auto;
+        #back-img {
+            display: none !important;
+        }
+    }
 `;
 export const UserCard = styled.div`
     background: #fff;
@@ -29,6 +36,12 @@ export const UserCard = styled.div`
         color: #333;
         margin-top: 10px;
     }
+    ${breakpoints.lg}{
+       position: relative;
+       bottom: 0;
+       align-items: center;
+       flex-direction: column;
+    }
 `;
 export const ProfileImgCont = styled.div`
     height: 250px;
@@ -38,6 +51,10 @@ export const ProfileImgCont = styled.div`
     margin-right: 20px;
 `;
 export const ProfileDetails = styled.div`
+    ${breakpoints.md}{
+       font-size: 14px;
+       text-align: center;
+    }
 `;
 export const Wrapper = styled.div`
     padding-top: 130px;
@@ -48,6 +65,9 @@ export const Wrapper = styled.div`
         color: #333;
         padding: 10px 0;
         border-bottom: 1px solid #333;
+    }
+    ${breakpoints.lg}{
+       padding-top: 20px;
     }
 `;
 export const SocialWrapper = styled.div`
@@ -83,6 +103,7 @@ export const CreatorsWrapper = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     background: #fff;
+    row-gap: 10px;
 `;
 export const CreatorsCard = styled.div`
     height: auto;

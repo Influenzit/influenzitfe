@@ -14,7 +14,7 @@ const BusinessProfile = () => {
     <Container>
       <HeroSectionOne>
         <BackImage>
-          <Image src="/profile.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
+          <Image src="/profile.png" alt="" layout="fill" objectPosition="center" objectFit="cover" id='back-img'/>
           <UserCard>
             <ProfileImgCont>
               <Image src="/profile-2.png" alt="" layout='fill' objectPosition="center" objectFit="cover"/>
