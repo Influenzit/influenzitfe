@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, sizes } from "./theme";
+import { breakpoints, colors, sizes } from "./theme";
 
 export const HeroSectionOne = styled.section`
 `;
@@ -9,6 +9,13 @@ export const BackImage = styled.div`
     min-height: 400px;
     display: flex;
     justify-content: center;
+    ${breakpoints.lg}{
+        height: auto;
+        min-height: auto;
+        #back-img {
+            display: none !important;
+        }
+    }
 `;
 export const UserCard = styled.div`
     background: #fff;
@@ -20,6 +27,11 @@ export const UserCard = styled.div`
     bottom: -250px;
     border-radius: 3px;
     display: flex;
+    ${breakpoints.lg}{
+       position: relative;
+       bottom: 0;
+       flex-direction: column;
+    }
 `;
 export const ProfileStats = styled.div`
     margin-right: 20px;
@@ -43,6 +55,9 @@ export const ProfileStats = styled.div`
         font-size: 16px;
         cursor: pointer;
         font-weight: 500;
+    }
+    ${breakpoints.lg}{
+        margin-right: 0;
     }
 `;
 export const ProfileImgCont = styled.div`
@@ -88,6 +103,12 @@ export const ProfileDetails = styled.div`
         color: #333;
         font-size: 15px;
     }
+    ${breakpoints.lg}{
+        margin-right: 0;
+        p {
+            font-size: 14px;
+        }
+    }
 `;
 export const ProfileCategory = styled.div`
     display: flex;
@@ -108,9 +129,18 @@ export const ProfileCategory = styled.div`
             margin-left: 10px;
         }
     }
+    ${breakpoints.md}{
+        flex-direction: column;
+        div{
+            padding-top: 7px;
+            p {
+                font-size: 13px;
+            }
+        }
+    }
 `;
 export const Stats = styled.div`
-    width: 320px;
+    width: 100%;
     min-width: 320px;
     display: flex;
     flex-direction: column;
@@ -141,15 +171,25 @@ export const StatWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 20px;
+    min-width: 320px;
+    width: 100%;
 `;
 export const StatCard = styled.div`
-    width: 160px;
+    width: 50%;
     padding: 25px 15px;
     text-align: center;
     color: ${(prop) => prop.textColor};
     background: ${(prop) => prop.bgColor};
     h3 {
         font-size: 22px;
+    }
+    ${breakpoints.md}{
+       h3 {
+        font-size: 20px;
+       }
+       p {
+        font-size: 13px;
+       }
     }
 `;
 export const SeeMoreCont = styled.div`
@@ -206,6 +246,9 @@ export const Wrapper = styled.div`
     max-width: ${sizes.wrapperWidth};
     padding-top: 300px;
     padding-bottom: 30px;
+    ${breakpoints.lg}{
+        padding-top: 20px;
+    }
 `;
 export const SkillCard = styled.div`
     width: 100%;
@@ -227,17 +270,27 @@ export const Bottom = styled.div`
     column-gap: 20px;
     padding: 15px 20px;
     row-gap: 15px;
+    ${breakpoints.md}{
+        column-gap: 10px;
+    }
 `;
 export const Skill = styled.span`
     padding: 10px 35px;
     display: inline-block;
     border-radius: 9999px;
     background: #f1f1f1;
+    ${breakpoints.md}{
+        font-size: 13px;
+        padding: 10px 15px;
+    }
 `;
 export const ImageCard = styled.div`
     height: 250px;
     width: 250px;
     position: relative;
+    ${breakpoints.md}{
+        margin: 0 auto;
+    }
 `;
 export const WorkCard = styled.div`
     padding: 20px 0;
@@ -266,6 +319,18 @@ export const WorkCard = styled.div`
     p {
         font-size: 15px;
         color: #666666
+    }
+    ${breakpoints.md}{
+        h3 {
+            font-size: 18px;
+        }
+        div {
+            p {
+                font-size: 13px;
+                margin-right: 10px;
+            }
+        }
+       
     }
 `;
 

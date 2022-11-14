@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { breakpoints } from "./theme";
 
 export const ServiceCard = styled.div`
     width: 100%;
@@ -7,6 +8,9 @@ export const ServiceCard = styled.div`
     height: auto;
     border: 1px solid #D2D2D2;
     border-radius: 3px;
+    ${breakpoints.md}{
+        margin: 0 auto;
+    }
 `;
 export const TopImg = styled.div`
     height: 50%; 
@@ -61,6 +65,9 @@ export const ServStats = styled.div`
 `;
 export const SectionTwo = styled.div`
     display: flex;
+    ${breakpoints.lg}{
+        flex-direction: column;
+    }
 `;
 export const Left = styled.div`
     width: 100%;
@@ -70,6 +77,9 @@ export const Left = styled.div`
 export const Right = styled.div`
     width: 330px;
     min-width: 330px;
+    ${breakpoints.lg}{
+        width: 100%;
+    }
 `;
 export const SocialStats = styled.div`
     display: flex;
@@ -125,14 +135,17 @@ export const SkillGuage = styled.div`
 export const DataSection = styled.div`
     margin-right: 30px;
     margin-bottom: 10px;
-    flex: 45%;
-    max-height: 45%;
+    ${breakpoints.lg}{
+        margin-right: 0;
+    }
 `;
 export const DataSectionTwo = styled.div`
     margin-right: 30px;
     margin-bottom: 20px;
     flex: 55%;
-    max-height: 55%;
+    ${breakpoints.lg}{
+        margin-right: 0;
+    }
 `;
 export const Tabs = styled.div`
     display: flex;
@@ -156,7 +169,6 @@ export const Content = styled.div`
     margin-top: 5px;
     background: #fff;
     height: calc(100% - 65px);
-    max-height: calc(100% - 100px);
     padding: 15px;
 `;
 export const PostWrapper = styled.div`
@@ -164,6 +176,7 @@ export const PostWrapper = styled.div`
     justify-content: space-between;
     column-gap: 15px;
     flex-wrap: wrap;
+    row-gap: 15px;
 `;
 export const PostLayer = styled.div`
     height: 100%;
@@ -207,11 +220,18 @@ export const PostStats = styled.div`
             color: black;
         }
     }
+    ${breakpoints.md}{
+        flex-direction: column;
+        row-gap: 5px;
+    }
 `;
 export const SocialPost = styled.div`
     height: 230px;
     width: 230px;
     position: relative;
+    ${breakpoints.md}{
+        margin: 0 auto;
+    }
 `;
 export const ExperienceWrapper = styled.div`
     height: 100%;

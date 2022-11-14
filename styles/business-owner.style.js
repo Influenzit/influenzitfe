@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, sizes } from "./theme";
+import { breakpoints, colors, sizes } from "./theme";
 
 export const HeroSectionOne = styled.section`
 `;
@@ -92,6 +92,9 @@ export const CreatorsCard = styled.div`
     p {
         font-size: 14px;
         color: #999;
+    }
+    ${breakpoints.md}{
+        margin: 0 auto;
     }
 `;
 export const TopImg = styled.div`

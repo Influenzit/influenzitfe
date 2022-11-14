@@ -285,7 +285,7 @@ const Nav = () => {
                 )
             }
 
-            <ResponsiveNav show={showSidebar} ref={sidebarRef}>
+            <ResponsiveNav show={showSidebar} ref={sidebarRef} onClick={() => setShowSidebar(false)}>
             {
                 !isLoggedIn ? (
                         <NavLinks show={true}>

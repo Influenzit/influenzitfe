@@ -10,7 +10,7 @@ const CreatorProfile = () => {
     <Container>
         <HeroSectionOne>
             <BackImage>
-            <Image src="/profile.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
+            <Image src="/profile.png" alt="" layout="fill" objectPosition="center" objectFit="cover" id="back-img"/>
             <UserCard>
                 <ProfileStats>
                     <ProfileImgCont>

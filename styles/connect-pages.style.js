@@ -70,8 +70,8 @@ export const SearchContainer = styled.div`
     }
 `;
 export const FilterContainer = styled.div`
-display: flex;
-align-items: center;
+    display: flex;
+    align-items: center;
     button {
         padding: 10px 16px;
         height: 40px;
@@ -91,6 +91,13 @@ align-items: center;
         }
         span {
             padding-left: 10px;
+        }
+    }
+    ${breakpoints.lg}{
+        justify-content: center;
+        button {
+            font-size: 12px;
+            padding: 10px;
         }
     }
 `;
@@ -153,6 +160,11 @@ export const TableFooter = styled.div`
     p {
         font-size: 14px;
         color: #333;
+    }
+    ${breakpoints.md}{
+        p {
+            font-size: 12px;
+        }
     }
 `;
 export const Pagination = styled.div`
