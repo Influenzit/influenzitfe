@@ -268,9 +268,6 @@ const Nav = () => {
                             <Link href="/pricing">Pricing</Link>
                         </NavLinks>
                         <Controls>
-                            <SearchBtn>
-                                <Image src="/search-b.svg" alt="" height={25} width={25}/>
-                            </SearchBtn>
                             <Link href="/login" passHref>
                                 <LoginBtn>Login</LoginBtn>
                             </Link>

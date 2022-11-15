@@ -15,6 +15,7 @@ export const Wrapper = styled.div`
 export const Content =  styled.div`
     margin-left: 20px;
     width: 100%;
+    height: auto;
     background: #fff;
     border: 1px solid #D2D2D2;
     border-radius: 5px;
@@ -299,4 +300,63 @@ export const Right = styled.div`
             font-size: 13px;
         }
     }
+`;
+export const CustomContent = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    max-width: calc(100% - 310px);
+    ${breakpoints.lg}{
+        max-width: calc(100% - 100px);
+    }
+`;
+export const WalletCardWrapper = styled.div`
+    display: flex;
+    column-gap: 10px;
+    padding: 20px;
+    ${breakpoints.lg}{
+        flex-direction: column;
+        row-gap: 10px;
+    }
+`;
+export const WalletCard = styled.div`
+    width: 26%;
+    padding: 15px 20px;
+    border: 1px solid #D2D2D2;
+    border-radius: 3px;
+    text-align: center;
+    p {
+        color: ${colors.primaryColor};
+    }
+    h3 {
+        font-size: 20px;
+        color: #111;
+        font-weight: 600;
+    }
+    ${breakpoints.lg}{
+        width: 100%;
+    }
+`;
+export const FundBtn = styled.button`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+    row-gap: 5px;
+    width: calc(22% - 30px);
+    border: none;
+    background: ${colors.primaryColor};
+    color: white;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+    ${breakpoints.lg}{
+        width: 100%;
+    }
+`;
+export const CAmount = styled.span`
+    color: ${(props) => props.status === "pending"? "#edb000" : props.status === "failed"? "red" : "#14a800"};
 `;
