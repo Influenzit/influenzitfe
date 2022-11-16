@@ -51,6 +51,7 @@ const Billing = () => {
                             <FilterContainer>
                                 <button><Image src="/filter.svg" alt="" height={20} width={20} /><span>Filter</span></button>
                                 <button><Image src="/upload.svg" alt="" height={20} width={20} /><span>Export</span></button>
+                                <button style={{ display: "none" }}></button>
                             </FilterContainer>
                         </TableControls>
                         <TableContent>
