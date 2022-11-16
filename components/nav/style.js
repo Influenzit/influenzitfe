@@ -407,6 +407,9 @@ export const UserDropdown = styled.div`
         border-top: 1px solid #D2D2D2;
         border-right: 1px solid #D2D2D2;
     }
+    ${breakpoints.md}{
+        right: 0;
+    }
 `;
 export const SidebarBtn = styled.button`
     background: transparent;
