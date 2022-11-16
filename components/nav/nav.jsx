@@ -42,12 +42,14 @@ const Nav = () => {
     setShowConnect(false);
     setShowDropdown(false);
     setShowSearchRes(false);
+    setShowSidebar(false);
   }
   
   const handleProfileOpen = () => {
     setShowConnect(false);
     setShowSwitchAccount(false);
     setShowSearchRes(false);
+    setShowSidebar(false);
     setShowDropdown(!showDropdown);
   }
   const handleConnectOpen = () => {
@@ -55,6 +57,14 @@ const Nav = () => {
     setShowDropdown(false);
     setShowSwitchAccount(false);
     setShowSearchRes(false);
+    setShowSidebar(false);
+  }
+  const handleShowSidebar = () => {
+    setShowConnect(false);
+    setShowDropdown(false);
+    setShowSwitchAccount(false);
+    setShowSearchRes(false);
+    setShowSidebar(!showSidebar);
   }
   const mutation = useMutation(profileData => {
     return accountTypeUpdate(profileData);
@@ -255,7 +265,7 @@ const Nav = () => {
                                 </UserDropdown>
                             }
                         </UserBtn>
-                        <SidebarBtn onClick={() => setShowSidebar(!showSidebar)} ref={sidebarBtn}>
+                        <SidebarBtn onClick={handleShowSidebar} ref={sidebarBtn}>
                             <HamburgerIcon />
                         </SidebarBtn>
                     </Right>

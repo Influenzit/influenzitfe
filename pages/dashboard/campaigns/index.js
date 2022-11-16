@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import React from 'react'
-import { ChevronLeft, ChevronRight } from '../../assets/svgIcons'
-import LandingLayout from '../../layouts/landing.layout'
-import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../styles/connect-pages.style'
+import { ChevronLeft, ChevronRight } from '../../../assets/svgIcons'
+import LandingLayout from '../../../layouts/landing.layout'
+import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../../styles/connect-pages.style'
 
 const Campaigns = () => {
   return (
