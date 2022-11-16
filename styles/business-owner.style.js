@@ -41,6 +41,7 @@ export const UserCard = styled.div`
        bottom: 0;
        align-items: center;
        flex-direction: column;
+       padding: 20px;
     }
 `;
 export const ProfileImgCont = styled.div`
@@ -49,6 +50,9 @@ export const ProfileImgCont = styled.div`
     width: 250px;
     min-width: 250px;
     margin-right: 20px;
+    ${breakpoints.lg}{
+        margin-right: 0;
+    }
 `;
 export const ProfileDetails = styled.div`
     ${breakpoints.md}{
