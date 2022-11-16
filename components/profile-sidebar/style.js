@@ -1,20 +1,53 @@
 import styled from "styled-components";
 import { breakpoints } from "../../styles/theme";
 
-export const Container = styled.div`
+export const Wrapper = styled.div`
     width: 300px;
     height: calc(100vh - 130px);
     max-height: calc(100vh - 130px);
-    overflow-y: scroll;
     position: sticky;
     top: 90px;
+    transition: .3s ease-in-out;
+    ${breakpoints.lg}{
+        width: 80px;
+        min-width: 80px;
+    }
+    ${breakpoints.md}{
+        position: fixed;
+        z-index: 99;
+        left: ${(props) => props.show ? "0px" : "-81px"};
+    }
+`;
+export const Container = styled.div`
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    overflow-y: scroll;
     background: #fff;
     border: 1px solid #D2D2D2;
     border-radius: 5px;
     min-width: 300px;
     ${breakpoints.lg}{
-        width: 80px;
-        min-width: 80px;
+        width: 100%;
+        min-width: 100%;
+    }
+`;
+export const ToggleBtn = styled.button`
+    border: none;
+    position: absolute;
+    right: -28px;
+    border: 1px solid #D2D2D2;
+    top: 10px;
+    display: none;
+    border-left: none;
+    z-index: 100;
+    width: 30px;
+    height: 30px;
+    top: 0;
+    background: #fff;
+    cursor: pointer;
+    ${breakpoints.md}{
+        display: block;
     }
 `;
 export const InnerWrapper = styled.div`

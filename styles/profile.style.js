@@ -5,12 +5,16 @@ export const Container = styled.div`
     background: #F7FAFC;
     padding: 20px 0;
     min-height: calc(100vh - 140px);
+    position: relative;
 `;
 export const Wrapper = styled.div`
     width: 98%;
     margin: 0 auto;
     max-width: ${sizes.wrapperWidth};
     display: flex;
+    ${breakpoints.md}{
+        margin-top: 35px;
+    }
 `;
 export const Content =  styled.div`
     margin-left: 20px;
@@ -21,7 +25,7 @@ export const Content =  styled.div`
     border-radius: 5px;
     padding-bottom: 20px;
     ${breakpoints.md}{
-        margin-left: 10px
+        margin-left: 0;
     }
 `;
 export const Heading = styled.div`
@@ -309,6 +313,9 @@ export const CustomContent = styled.div`
     max-width: calc(100% - 310px);
     ${breakpoints.lg}{
         max-width: calc(100% - 100px);
+    }
+    ${breakpoints.md}{
+        max-width: 100%;
     }
 `;
 export const WalletCardWrapper = styled.div`
