@@ -4,7 +4,7 @@ import { CheckIcon } from '../../../assets/svgIcons'
 import LandingLayout from '../../../layouts/landing.layout'
 import { Bottom, Container, ControlContainer, CurrentPackage, Desc, Details, DetailsContainer, ImageWrapper, MDetails, MDone, Milestone, MilestoneHeader, MilestoneList, Milestones, MStatus, OuterContainer, SubDetails, Top, Wrapper } from '../../../styles/view.style'
 
-const ProjectView = () => {
+const CampaignView = () => {
   return (
     <OuterContainer>
       <Wrapper>
@@ -12,7 +12,7 @@ const ProjectView = () => {
           <Top>
             <button>
               <Image src="/arrow-left.svg" height={24} width={24}/>
-              <span>My Projects</span>
+              <span>My Campaigns</span>
             </button>
             <button>
               <Image src="/more-vertical.svg" height={24} width={24}/>
@@ -24,7 +24,7 @@ const ProjectView = () => {
                 <Image src="/p-image.png" layout='fill'  objectFit='cover' objectPosition='center'/>
               </ImageWrapper>
               <Details>
-                <h2>General Branding for Product X</h2>
+                <h2>Instagram campaign for Product X</h2>
                 <SubDetails>
                   <div>
                     <Image src="/user-c.svg" height={24} width={24}/>
@@ -96,10 +96,10 @@ const ProjectView = () => {
     </OuterContainer>
   )
 }
-ProjectView.getLayout = (page) => (
+CampaignView.getLayout = (page) => (
     <LandingLayout>
         {page}
     </LandingLayout>
 )
 
-export default ProjectView
+export default CampaignView
