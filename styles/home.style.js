@@ -318,7 +318,7 @@ export const SlideBtn = styled.button`
     height: 16px;
     width: 16px;
     border-radius: 50%;
-    background: white;
+    background: ${(props) => props.isActive ? colors.primaryColor : "#fff"};
     margin-right: 10px;
     border: none;
     cursor: pointer;

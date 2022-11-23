@@ -1,22 +1,35 @@
 import Image from 'next/image'
-import React from 'react'
-import { CheckIcon } from '../../../assets/svgIcons'
+import React, { useState } from 'react'
+import { AlertTriangleIcon, CheckCircleIcon, CheckIcon, XSquareIcon } from '../../../assets/svgIcons'
+import { UserDropdown } from '../../../components/nav/style'
 import LandingLayout from '../../../layouts/landing.layout'
-import { Bottom, Container, ControlContainer, CurrentPackage, Desc, Details, DetailsContainer, ImageWrapper, MDetails, MDone, Milestone, MilestoneHeader, MilestoneList, Milestones, MStatus, OuterContainer, SubDetails, Top, Wrapper } from '../../../styles/view.style'
+import { Bottom, Container, ControlContainer, CurrentPackage, Desc, Details, DetailsContainer, ImageWrapper, MDetails, MDone, Milestone, MilestoneHeader, MilestoneList, Milestones, MStatus, OuterContainer, SubDetails, Top, TopBtn, Wrapper } from '../../../styles/view.style'
 
 const ProjectView = () => {
+  const [show, setShow] = useState(false);
   return (
     <OuterContainer>
       <Wrapper>
         <Container>
-          <Top>
-            <button>
+        <Top>
+            <TopBtn>
               <Image src="/arrow-left.svg" height={24} width={24}/>
               <span>My Projects</span>
-            </button>
-            <button>
-              <Image src="/more-vertical.svg" height={24} width={24}/>
-            </button>
+            </TopBtn>
+            <div id="drop-cont" onClick={() => setShow(!show)}>
+              <TopBtn>
+               <Image src="/more-vertical.svg" height={24} width={24}/>
+              </TopBtn>
+              {
+                show && (
+                  <UserDropdown style={{ right: "0", width: "200px" }}>
+                    <button onClick={() => {}}><CheckCircleIcon /><span>Mark as Completed</span></button>
+                    <button onClick={() => {}}><XSquareIcon /><span>Cancel Campaign</span></button>
+                    <button onClick={() => {}}><AlertTriangleIcon /><span>Report Account</span></button>
+                  </UserDropdown>
+                )
+              }
+            </div>
           </Top>
           <Bottom>
             <DetailsContainer>

@@ -21,8 +21,6 @@ const Home = () => {
   let intervalId;
 
   useEffect(() => {
-    let slideOneCtrl = []
-    let slideTwo 
     intervalId = setInterval(() => {
       if (currSlideOne < slideOneCount) {
         setCurrSlideOne((prev) => prev + 1)
@@ -189,15 +187,15 @@ const Home = () => {
           <InfoSectOne>
             <ImgSlider>
               <ImgWrapper showImg={currSlideOne === 1}>
-                <Image src="/hero-2.png" alt="info" layout="fill" objectFit="cover" objectPosition="center"/>
+                <Image src="/hero-2.png" alt="info" layout="fill" objectFit="cover" objectPosition="center" quality={100}/>
               </ImgWrapper>
               <ImgWrapper showImg={currSlideOne === 2}>
-                <Image src="/hero-3.png" alt="info" layout="fill" objectFit="cover" objectPosition="center" />
+                <Image src="/hero-3.png" alt="info" layout="fill" objectFit="cover" objectPosition="center" quality={100}/>
               </ImgWrapper>
               <SlideControl>
                 {
                   slideOneCtrl.map((val) => (
-                    <SlideBtn key={val} onClick={() => setCurrSlideOne(val + 1)}></SlideBtn>
+                    <SlideBtn key={val} onClick={() => setCurrSlideOne(val + 1)} isActive={currSlideOne === val + 1}></SlideBtn>
                   ))
                 }
               </SlideControl>
@@ -252,15 +250,15 @@ const Home = () => {
             </InfoDetails>
             <ImgSlider>
               <ImgWrapper showImg={currSlideOne === 1}>
-                <Image src="/hero-3.png" alt="info" layout="fill" objectFit="cover" objectPosition="center" />
+                <Image src="/hero-3.png" alt="info" layout="fill" objectFit="cover" objectPosition="center" quality={100}/>
               </ImgWrapper>
               <ImgWrapper showImg={currSlideOne === 2}>
-                <Image src="/hero-2.png" alt="info" layout="fill" objectFit="cover" objectPosition="center"/>
+                <Image src="/hero-2.png" alt="info" layout="fill" objectFit="cover" objectPosition="center" quality={100}/>
               </ImgWrapper>
               <SlideControl>
                 {
                   slideOneCtrl.map((val) => (
-                    <SlideBtn key={val} onClick={() => setCurrSlideOne(val + 1)}></SlideBtn>
+                    <SlideBtn key={val} onClick={() => setCurrSlideOne(val + 1)} isActive={currSlideTwo === val + 1}></SlideBtn>
                   ))
                 }
               </SlideControl>

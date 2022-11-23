@@ -1,10 +1,12 @@
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { ChevronLeft, ChevronRight } from '../../../assets/svgIcons'
 import LandingLayout from '../../../layouts/landing.layout'
 import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../../styles/connect-pages.style'
 
 const Projects = () => {
+  const router = useRouter();
   return (
     <Container>
         <Wrapper>
@@ -53,7 +55,7 @@ const Projects = () => {
                                 <Td cellWidth="150px">2 Months</Td>
                                 <Td cellWidth="120px">Active</Td>
                                 <Td cellWidth="120px">
-                                    <ActionBtn>View</ActionBtn>
+                                    <ActionBtn onClick={() => router.push("/dashboard/projects/view")}>View</ActionBtn>
                                 </Td>
                             </Tr>
                             <Tr>
@@ -67,7 +69,7 @@ const Projects = () => {
                                 <Td cellWidth="150px">2 Months</Td>
                                 <Td cellWidth="120px">Active</Td>
                                 <Td cellWidth="120px">
-                                    <ActionBtn>View</ActionBtn>
+                                    <ActionBtn onClick={() => router.push("/dashboard/projects/view")}>View</ActionBtn>
                                 </Td>
                             </Tr>
                             <Tr>
@@ -81,7 +83,7 @@ const Projects = () => {
                                 <Td cellWidth="150px">2 Months</Td>
                                 <Td cellWidth="120px">Active</Td>
                                 <Td cellWidth="120px">
-                                    <ActionBtn>View</ActionBtn>
+                                    <ActionBtn onClick={() => router.push("/dashboard/projects/view")}>View</ActionBtn>
                                 </Td>
                             </Tr>
                             <Tr>
@@ -95,7 +97,7 @@ const Projects = () => {
                                 <Td cellWidth="150px">2 Months</Td>
                                 <Td cellWidth="120px">Active</Td>
                                 <Td cellWidth="120px">
-                                    <ActionBtn>View</ActionBtn>
+                                    <ActionBtn onClick={() => router.push("/dashboard/projects/view")}>View</ActionBtn>
                                 </Td>
                             </Tr>
                             <Tr>
@@ -109,7 +111,7 @@ const Projects = () => {
                                 <Td cellWidth="150px">2 Months</Td>
                                 <Td cellWidth="120px">Active</Td>
                                 <Td cellWidth="120px">
-                                    <ActionBtn>View</ActionBtn>
+                                    <ActionBtn onClick={() => router.push("/dashboard/projects/view")}>View</ActionBtn>
                                 </Td>
                             </Tr>
                         </TBody>

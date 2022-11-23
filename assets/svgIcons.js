@@ -9,8 +9,8 @@ export const HashTagIcon = () => (
 );
 export const LockIcon = () => (
     <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17 10H3C1.89543 10 1 10.8954 1 12V19C1 20.1046 1.89543 21 3 21H17C18.1046 21 19 20.1046 19 19V12C19 10.8954 18.1046 10 17 10Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M5 10V6C5 4.67392 5.52678 3.40215 6.46447 2.46447C7.40215 1.52678 8.67392 1 10 1C11.3261 1 12.5979 1.52678 13.5355 2.46447C14.4732 3.40215 15 4.67392 15 6V10" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M17 10H3C1.89543 10 1 10.8954 1 12V19C1 20.1046 1.89543 21 3 21H17C18.1046 21 19 20.1046 19 19V12C19 10.8954 18.1046 10 17 10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M5 10V6C5 4.67392 5.52678 3.40215 6.46447 2.46447C7.40215 1.52678 8.67392 1 10 1C11.3261 1 12.5979 1.52678 13.5355 2.46447C14.4732 3.40215 15 4.67392 15 6V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
 );
 export const BagIcon = () => (
@@ -116,7 +116,7 @@ export const ItalicIcon = () => (
 );
 export const AttachmentIcon = () => (
     <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M21.0833 11.5C21.0833 11.5 18.2083 14.375 12.4583 20.125C6.70826 25.875 -1.91674 17.25 3.83326 11.5C9.58326 5.75001 8.62493 6.70834 12.4583 2.87501C16.2916 -0.958328 22.0416 4.79167 18.2083 8.62501C14.3749 12.4583 11.4999 15.3333 9.58326 17.25C7.66659 19.1667 4.79159 16.2917 6.70826 14.375C8.62493 12.4583 15.3333 5.75001 15.3333 5.75001" stroke="black" strokeWidth="2"/>
+        <path d="M21.0833 11.5C21.0833 11.5 18.2083 14.375 12.4583 20.125C6.70826 25.875 -1.91674 17.25 3.83326 11.5C9.58326 5.75001 8.62493 6.70834 12.4583 2.87501C16.2916 -0.958328 22.0416 4.79167 18.2083 8.62501C14.3749 12.4583 11.4999 15.3333 9.58326 17.25C7.66659 19.1667 4.79159 16.2917 6.70826 14.375C8.62493 12.4583 15.3333 5.75001 15.3333 5.75001" stroke="currentColor" strokeWidth="2"/>
     </svg>
 
 );
@@ -160,5 +160,25 @@ export const StarIcon = () => (
 export const HamburgerIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-6 h-6">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+    </svg>
+)
+export const AlertTriangleIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.2898 3.86002L1.81978 18C1.64514 18.3024 1.55274 18.6453 1.55177 18.9945C1.55079 19.3438 1.64127 19.6872 1.8142 19.9905C1.98714 20.2939 2.2365 20.5468 2.53748 20.7239C2.83847 20.901 3.18058 20.9962 3.52978 21H20.4698C20.819 20.9962 21.1611 20.901 21.4621 20.7239C21.7631 20.5468 22.0124 20.2939 22.1854 19.9905C22.3583 19.6872 22.4488 19.3438 22.4478 18.9945C22.4468 18.6453 22.3544 18.3024 22.1798 18L13.7098 3.86002C13.5315 3.56613 13.2805 3.32314 12.981 3.15451C12.6814 2.98587 12.3435 2.89728 11.9998 2.89728C11.656 2.89728 11.3181 2.98587 11.0186 3.15451C10.7191 3.32314 10.468 3.56613 10.2898 3.86002V3.86002Z" stroke="#FF0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12 9V13" stroke="#FF0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12 17H12.01" stroke="#FF0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+)
+export const CheckCircleIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+)
+export const XSquareIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M9 9L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M15 9L9 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
 )

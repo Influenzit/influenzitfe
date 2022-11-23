@@ -20,23 +20,26 @@ export const Top = styled.div`
     justify-content: space-between;
     padding: 15px 20px;
     border-bottom: 1px solid #D2D2D2;
-    button {
-        background: transparent;
-        border: none;
-        display: flex;
-        align-items: center;
-        font-size: 22px;
-        color: #111;
-        font-weight: 500;
-        span {
-            padding-left: 10px;
-        }
-        cursor: pointer;
-        :last-of-type {
-            border-radius: 50%;
-            padding: 4px;
-            background: #F6F6F6;
-        }
+    #drop-cont {
+        position: relative;
+    }
+`;
+export const TopBtn = styled.button`
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+    color: #111;
+    font-weight: 500;
+    span {
+        padding-left: 10px;
+    }
+    cursor: pointer;
+    #context-menu {
+        border-radius: 50%;
+        padding: 4px;
+        background: #F6F6F6;
     }
 `;
 export const Bottom = styled.div`

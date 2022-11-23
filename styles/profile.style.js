@@ -74,7 +74,7 @@ export const InputContainer = styled.div`
     width: 100%;
     flex-direction: column;
     margin-bottom: 15px;
-    input {
+    input, select {
         background: #FCFCFC;
         border: 1px solid #E1E7EC;
         border-radius: 3px;

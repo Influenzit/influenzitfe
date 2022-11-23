@@ -4,3 +4,5 @@ export const hasAValidAccount = (user) => {
         return  is_influencer || is_creator || is_businessowner; 
     }
 }
+export const moneyStandard = (val) => val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+

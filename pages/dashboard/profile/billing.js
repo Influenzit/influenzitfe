@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ProfileSidebar from '../../../components/profile-sidebar'
 import LandingLayout from '../../../layouts/landing.layout'
 import plusCircleIcon from '../../../assets/plus-circle.svg'
@@ -6,8 +6,31 @@ import { CAmount, Container, Content, CustomContent, FundBtn, Heading, WalletCar
 import Image from 'next/image'
 import { FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableWrapper, TBody, Td, Th, THead, Tr, TrH } from '../../../styles/connect-pages.style'
 import { ChevronLeft, ChevronRight } from '../../../assets/svgIcons'
+import { getWallet, getWalletTransactions } from '../../../api/wallet'
+import { useQuery } from '@tanstack/react-query'
+import { moneyStandard } from '../../../helpers/helper'
 
 const Billing = () => {
+    const [wallet, setWallet] = useState({})
+    const { data: walletData, refetch: refetchWalletData } = useQuery(["get-wallet"], async () => {
+        return await getWallet();
+    }
+    );
+    const { data: walletTransData, refetch: refetchWalletTransData } = useQuery(["get-wallet-trans"], async () => {
+        return await getWalletTransactions();
+    });
+    
+    useEffect(() => {
+        if(walletData){
+            setWallet(walletData.data.data)
+        }
+    }, [walletData])
+    useEffect(() => {
+        if(walletTransData){
+            console.log(walletTransData.data)
+        }
+    }, [walletTransData])
+    
   return (
     <Container>
         <Wrapper>
@@ -20,15 +43,15 @@ const Billing = () => {
                     <WalletCardWrapper>
                         <WalletCard>
                             <p>Wallet Balance</p>
-                            <h3>₦300,000.00</h3>
+                            <h3>₦ {wallet && moneyStandard(wallet.amount ?? 0)}</h3>
                         </WalletCard>
                         <WalletCard>
                             <p>Total Spent</p>
-                            <h3>₦300,000.00</h3>
+                            <h3>₦ {wallet && moneyStandard(wallet.total_spent ?? 0)}</h3>
                         </WalletCard>
                         <WalletCard>
                             <p>Escrow Balance</p>
-                            <h3>₦300,000.00</h3>
+                            <h3>₦ {wallet && moneyStandard(wallet.escrow_balance ?? 0)}</h3>
                         </WalletCard>
                         <FundBtn>
                             <Image src={plusCircleIcon} alt="plus-circle" height={26} width={26}/>
