@@ -6,7 +6,7 @@ import { CountryDropdown } from 'react-country-region-selector'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserAccount, updateAccount } from '../../../api/auth'
 import { getUserType, setError, setLoading, setSuccess } from '../../../app/reducers/status'
-import { getUser } from '../../../app/reducers/user'
+import { getUser, updateUser } from '../../../app/reducers/user'
 import ProfileSidebar from '../../../components/profile-sidebar'
 import LandingLayout from '../../../layouts/landing.layout'
 import { AddSocialBtn, AvailableSwitch, Bottom, Container, Content, FormContainerM, Heading, InputContainer, InputFlex, Wrapper } from '../../../styles/profile.style'
@@ -39,7 +39,6 @@ const Information = () => {
         }, {
             onSuccess(successRes) {
                 const res = successRes.data;
-                refetchServiceData();
                 if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
                     dispatch(setLoading(false));
                     dispatch(setError({error: true, message: res.message}));
@@ -47,14 +46,15 @@ const Information = () => {
                     getUserAccount(user.id).then((userRes) => {
                         if(userRes.data.data) {
                           dispatch(updateUser(userRes.data.data));
+                          dispatch(setLoading(false));
+                          dispatch(setSuccess({success: true, message: "Account updated successful"}));
                           localStorage.setItem("user", JSON.stringify(userRes.data.data));
                         }
                       }).catch(err => {
+                        console.log(err);
+                          dispatch(setLoading(false));
                           dispatch(setError({error: true, message: "An error occured"}));
                         })
-                    dispatch(setLoading(false));
-                    dispatch(setSuccess({success: true, message: "Account updated successful"}));
-
                 }
             },
             onError(error) {
@@ -76,7 +76,24 @@ const Information = () => {
       const dispatch = useDispatch();
       const handleSubmit = () => {
         dispatch(setLoading(true));
-        updateAccountMutation.mutate(formVal)
+        if(!formVal.firstname || !formVal.lastname) return;
+        const copyOfForm = JSON.parse(JSON.stringify(formVal))
+        Object.keys(copyOfForm).forEach(val => {
+            if(!copyOfForm[val]){
+                delete copyOfForm[val]
+            }
+            if((val === "phones") && copyOfForm["phones"]){
+                copyOfForm.phones.forEach((val,i) => {
+                    if(!val.phone){
+                        !copyOfForm.phones.splice(i, 1)
+;                    }
+                })
+            }
+        })
+        if(copyOfForm.phones.length === 0) {
+            delete copyOfForm["phones"]
+        }
+        updateAccountMutation.mutate(copyOfForm)
       }
       const handleInputChangeP = (val, field, index) => {
         setFormVal((prevVal) => {
@@ -162,6 +179,7 @@ const Information = () => {
                         <InputContainer>
                             <label>Gender</label>
                             <select value={formVal.gender} onChange={(e) => handleInputChange(e.target.value, "gender")}>
+                                <option value="">Select a gender</option>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                                 <option value="not-provided">Rather not say</option>

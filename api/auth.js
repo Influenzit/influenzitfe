@@ -23,7 +23,7 @@ export const getUserAccount = (userId) => {
     return axiosInstance().get(`/users/${userId}`)
 }
 export const updateAccount = (userId, data) => {
-    return axiosInstance().get(`/accounts/${userId}`, data)
+    return axiosInstance().patch(`/accounts/${userId}`, data)
 }
 export const accountTypeUpdate = (data) => {
     return axiosInstance().patch(`/accounts/toggle-type`, data);
