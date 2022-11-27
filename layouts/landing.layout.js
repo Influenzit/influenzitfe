@@ -5,10 +5,10 @@ import Footer from '../components/footer'
 import Loader from '../components/loading'
 import { Container } from '../styles/landing.style'
 import DashboardFooter from '../components/dashboard-footer'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getUser } from '../app/reducers/user'
 import { useRouter } from 'next/router'
-import { getMessage, isError, isLoading, isSuccess } from '../app/reducers/status'
+import { getMessage, isError, isLoading, isSuccess, setUserType } from '../app/reducers/status'
 import ErrorPopup from '../components/error-popup'
 import SuccessPopup from '../components/success-popup'
 import { hasAValidAccount } from '../helpers/helper'
@@ -20,10 +20,17 @@ const LandingLayout = ({children, title, description}) => {
   const successStatus = useSelector(isSuccess);
   const message = useSelector(getMessage);
   const router = useRouter();
+  const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
   useEffect(() => {
     setIsLoggedIn(!!user);
   }, [user]);
+  useEffect(() => {
+    console.log(localStorage.getItem("user-type"));
+    dispatch(setUserType(localStorage.getItem("user-type")));
+  }, [])
+  
   useEffect(() => {
     const authRoutes = ["/login", "/register", "/reset-password"];
     const token = localStorage.getItem("token");

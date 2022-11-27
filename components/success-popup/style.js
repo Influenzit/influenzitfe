@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { colors } from "../../styles/theme";
+
 
 export const Container = styled.div`
     display: flex;
@@ -27,21 +29,19 @@ export const LoaderCard = styled.div`
         height: 70px;
     }
     p {
-        margin-top: 10px;
-        font-weight: 600;
-        font-size: 20px;
+        margin-top: 15px;
+        font-size: 17px;
         text-align: center;
     }
     button {
-        border: 2px solid #ddd;
-        background: white;
-        padding: 10px 25px;
-        border-radius: 99px;
-        color: #dc143ca3;
-        font-size: 18px;
+        background: ${colors.primaryColor};
+        color: white;
+        padding: 12px 25px;
+        font-size: 15px;
         font-weight: 500;
         cursor: pointer;
-        display: inline-flex;
-        margin: 10px 0;
+        border: none;
+        border-radius: 3px;
+        margin: 12px 0;
     }
-`;
+    `;

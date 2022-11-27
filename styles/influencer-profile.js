@@ -11,6 +11,9 @@ export const ServiceCard = styled.div`
     ${breakpoints.md}{
         margin: 0 auto;
     }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 `;
 export const TopImg = styled.div`
     height: 50%; 
@@ -27,6 +30,10 @@ export const ServUserCard = styled.div`
     padding: 15px 5px;
     color: #333;
     font-size: 15px;
+    p {
+        min-width: calc(100% - 80px);
+        max-width: calc(100% - 80px);
+    }
 `;
 export const ImageWrap = styled.div`
     height: 40px;
@@ -53,14 +60,26 @@ export const ServStats = styled.div`
     div {
         display: flex;
         justify-content: center;
-        padding: 8px 15px;
+        align-items: center;
         width: 50%;
+        height: 40px;
     }
     div:first-child {
         border-right: 1px solid #D2D2D2;
         span {
             padding-left: 15px;
         }
+    }
+    button {
+        border: none;
+        background: transparent;
+        font-size: 15px;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+    }
+    #del {
+        color: red;
     }
 `;
 export const SectionTwo = styled.div`

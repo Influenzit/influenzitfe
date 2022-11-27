@@ -10,7 +10,7 @@ export const Container = styled.nav`
     top: 0;
     display: flex;
     z-index: 99999;
-    box-shadow: 0 0 10px #ccc;
+    box-shadow: 0 0 8px #ddd;
 `;
 export const Wrapper = styled.div`
     width: 98%;

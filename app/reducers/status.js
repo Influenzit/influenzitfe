@@ -1,14 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState =  {
+    loading: false,
+    success: false,
+    error: false,
+    message: "",
+    userType: "",
+}
 const statusSlice = createSlice({
     name: "status",
-    initialState: {
-        loading: false,
-        success: false,
-        error: false,
-        message: "",
-        userType: "",
-    },
+    initialState,
     reducers: {
         setLoading(state, { payload }) {
             state.loading = payload
@@ -23,6 +24,7 @@ const statusSlice = createSlice({
         },
         setUserType(state, { payload }) {
             state.userType = payload;
+            localStorage.setItem("user-type", payload);
         }
     }
 });

@@ -25,8 +25,8 @@ const CampaignView = () => {
               {
                 show && (
                   <UserDropdown style={{ right: "0", width: "200px" }}>
-                    <button onClick={() => {}}><CheckCircleIcon /><span>Mark as Completed</span></button>
-                    <button onClick={() => {}}><XSquareIcon /><span>Cancel Campaign</span></button>
+                    <button onClick={() => router.push("/dashboard/campaigns/completed")}><CheckCircleIcon /><span>Mark as Completed</span></button>
+                    <button onClick={() => router.push("/dashboard/campaigns/cancel")}><XSquareIcon /><span>Cancel Campaign</span></button>
                     <button onClick={() => {}}><AlertTriangleIcon /><span>Report Account</span></button>
                   </UserDropdown>
                 )

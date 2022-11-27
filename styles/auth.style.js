@@ -159,7 +159,7 @@ export const FrameContainer = styled.div`
 `;
 export const CheckContainer = styled.div`
     position: absolute;
-    top: 1px;
+    top: -3px;
     left: 9px;
 `;
 export const OrContainer = styled.div`

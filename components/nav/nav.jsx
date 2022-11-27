@@ -3,7 +3,7 @@ import { ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, G
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { BagIcon, BellIcon, CollaborationIcon, HamburgerIcon, HashTagIcon, LogoutIcon, MailIcon, SettingsIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
+import { BagIcon, BellIcon, BoxIcon, CollaborationIcon, HamburgerIcon, HashTagIcon, LogoutIcon, MailIcon, SettingsIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
 import { useRouter } from 'next/router'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { clearUser, getUser, updateUser } from '../../app/reducers/user'
@@ -145,14 +145,6 @@ const Nav = () => {
     }
     if(user) {
         setUserDetails(user);
-        const { is_influencer, is_creator, is_businessowner} = user.account
-        if(!currentAcctType) {
-            if(is_businessowner) {
-                dispatch(setUserType("Business Owner"));
-            } else {
-                is_influencer ? dispatch(setUserType("Influencer")) : (is_creator && dispatch(setUserType("Creator")));
-            }
-        }
     }
   }, [user, router.pathname]);
   const handleClosing = (e) => {
@@ -258,9 +250,10 @@ const Nav = () => {
                             </ProfilePicWrapper>
                             {
                                 showDropdown && <UserDropdown>
+                                    <button onClick={() => router.push("/dashboard")}><BoxIcon /><span>Dashboard</span></button>
                                     <button onClick={() => router.push(currentAcctType === "Influencer" ? "/influencer/profile" : currentAcctType === "Creator" ? "/creators/profile" : "/business-owner/profile")}><UserIcon /><span>Profile</span></button>
                                     <button onClick={() => router.push("/dashboard/profile/billing")}><WalletIcon /><span>Wallet</span></button>
-                                    <button onClick={() => router.push(`${user.account.is_businessowner ? "/dashboard/profile/information" : "/dashboard/profile/influencer"}`)}><SettingsIcon /><span>Settings</span></button>
+                                    <button onClick={() => router.push("/dashboard/profile")}><SettingsIcon /><span>Settings</span></button>
                                     <button onClick={logout}><LogoutIcon /><span>Logout</span></button>
                                 </UserDropdown>
                             }

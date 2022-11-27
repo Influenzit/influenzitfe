@@ -3,14 +3,14 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createCertifications, createServices, createSkills, deleteCertification, deleteService, deleteSkill, getCertifications, getServices, getSkills, updateCertifications, updateServices, updateSkills } from '../../../api/influencer'
-import { getUserType, isLoading, setError, setLoading, setSuccess } from '../../../app/reducers/status'
-import { getUser } from '../../../app/reducers/user'
-import { CancelIcon, DeleteIcon } from '../../../assets/svgIcons'
-import ProfileSidebar from '../../../components/profile-sidebar';
-import LandingLayout from '../../../layouts/landing.layout';
-import { CheckContainer, FrameContainer } from '../../../styles/auth.style'
-import { BottomAdd,  Container, Content, Control, ControlFlex, CurrentToggle, DeleteBtn, FormContainer, Heading, InputContainer, InputFlex, List, ListB, ListContainer, Wrapper } from '../../../styles/profile.style'
+import { createCertifications, createServices, createSkills, deleteCertification, deleteService, deleteSkill, getCertifications, getServices, getSkills, updateCertifications, updateServices, updateSkills } from '../../../../api/influencer'
+import { getUserType, isLoading, setError, setLoading, setSuccess } from '../../../../app/reducers/status'
+import { getUser } from '../../../../app/reducers/user'
+import { CancelIcon, DeleteIcon } from '../../../../assets/svgIcons'
+import ProfileSidebar from '../../../../components/profile-sidebar';
+import LandingLayout from '../../../../layouts/landing.layout';
+import { CheckContainer, FrameContainer } from '../../../../styles/auth.style'
+import { Bottom, BottomAdd,  Container, Content, Control, ControlFlex, CurrentToggle, DeleteBtn, FormContainer, Heading, InputContainer, InputFlex, List, ListB, ListContainer, Wrapper } from '../../../../styles/profile.style'
 
 const Services = () => {
     const router = useRouter();
@@ -26,8 +26,6 @@ const Services = () => {
     const [newService, setNewService] = useState({
         name: "",
         description: "",
-        price: "",
-        currency: "NGN",
         isNegotiable: false,
         link: ""
     })
@@ -61,14 +59,11 @@ const Services = () => {
                 setNewService({
                     name: "",
                     description: "",
-                    price: 0,
-                    currency: "NGN",
                     is_negotiable: false,
                     link: ""
                 })
                 dispatch(setLoading(false));
-                dispatch(setSuccess({success: true, message: "Service created"}));
-
+                router.push(`/dashboard/profile/services/faq/create/${successRes.data.data.id}`)
             }
         },
         onError(error) {
@@ -120,8 +115,6 @@ const Services = () => {
                 setNewService({
                     name: "",
                     description: "",
-                    price: 0,
-                    currency: "NGN",
                     is_negotiable: false,
                     link: ""
                 })
@@ -144,13 +137,11 @@ const Services = () => {
 
     // handles create Service
     const handleCreateService = () => {
-        if(newService.name && newService.description && newService.price && newService.link) {
+        if(newService.name && newService.description && newService.link) {
             dispatch(setLoading(true));
             createServiceMutation.mutate({
                 name: newService.name,
                 description: newService.description,
-                price: Number(newService.price),
-                currency: "NGN",
                 is_negotiable: newService.isNegotiable,
                 link: newService.link
             });
@@ -176,7 +167,7 @@ const Services = () => {
     } 
 
     // handles Service input change
-    const handleServiceChange = (val, field, index) => {
+    const handleServiceChange = (val, field) => {
         setServiceList((prevList) => {
             const copyOfList = JSON.parse(JSON.stringify(prevList));
             if((field === "price" && Number(val)) || (field === "price" && val === "") || (field !== "price")) {
@@ -212,79 +203,12 @@ const Services = () => {
             <ProfileSidebar />
             <Content>
                 <Heading>
-                    <h2>Services</h2>
+                    <h2>Add new service</h2>
                 </Heading>
-                <ListContainer>
-                    {
-                        serviceList.length > 0 ? (
-                            serviceList.map((val, i) => (
-                                <ListB key={i}>
-                                    <InputFlex>
-                                        <InputContainer>
-                                            <label>Name</label>
-                                            <input
-                                            type="text"
-                                            value={val.name}
-                                            onChange={(e) => handleServiceChange(e.target.value, "name", i)}
-                                            />
-                                        </InputContainer>
-                                        <InputContainer>
-                                            <label>Description</label>
-                                            <input
-                                            type="text"
-                                            value={val.description}
-                                            onChange={(e) => handleServiceChange(e.target.value, "description", i)}
-                                            />
-                                        </InputContainer>
-                                    </InputFlex>
-                                    <InputFlex>
-                                        <InputContainer>
-                                            <label>Price</label>
-                                            <input
-                                            type="text"
-                                            value={val.price}
-                                            onChange={(e) => handleServiceChange(e.target.value, "price", i)}
-                                            />
-                                        </InputContainer>
-                                        <InputContainer>
-                                            <label>Link</label>
-                                            <input
-                                            type="text"
-                                            value={val.link}
-                                            onChange={(e) => handleServiceChange(e.target.value, "link", i)}
-                                            />
-                                        </InputContainer>
-                                    </InputFlex>
-                                    <ControlFlex>
-                                        <CurrentToggle>
-                                            <button onClick={() => handleServiceChange(!serviceList[i].is_negotiable, "is_negotiable", i)}>
-                                            <FrameContainer>
-                                                <Image src="/check-frame.svg" alt="" height={18} width={18} />
-                                            </FrameContainer>
-                                            {
-                                                serviceList[i].is_negotiable && <CheckContainer>
-                                                <Image src="/check-b.svg" alt="" height={10} width={13} />
-                                                </CheckContainer>
-                                            }
-                                            </button>
-                                            <span>Negotiable</span>
-                                        </CurrentToggle>
-                                        <Control>
-                                            <button onClick={() => handleDeleteService(val.id)}><DeleteIcon /></button>
-                                            <BottomAdd>
-                                                <button onClick={() => handleUpdateService(i)}>Update Service</button>
-                                            </BottomAdd>
-                                        </Control>
-                                    </ControlFlex>
-                                </ListB> 
-                            ))
-                        ) : <h4>No Service</h4>
-                    }
-                </ListContainer>
+                
                 <FormContainer>
-                <InputFlex>
                     <InputContainer>
-                        <label>Name</label>
+                        <label>Name this service</label>
                         <input
                         type="text"
                         value={newService.name}
@@ -293,20 +217,9 @@ const Services = () => {
                     </InputContainer>
                     <InputContainer>
                         <label>Description</label>
-                        <input
-                        type="text"
+                        <textarea
                         value={newService.description}
                         onChange={(e) => handleNewServiceChange(e.target.value, "description")}
-                        />
-                    </InputContainer>
-                </InputFlex>
-                <InputFlex>
-                    <InputContainer>
-                        <label>Price</label>
-                        <input
-                        type="text"
-                        value={newService.price}
-                        onChange={(e) => handleNewServiceChange(e.target.value, "price")}
                         />
                     </InputContainer>
                     <InputContainer>
@@ -317,8 +230,6 @@ const Services = () => {
                         onChange={(e) => handleNewServiceChange(e.target.value, "link")}
                         />
                     </InputContainer>
-                </InputFlex>
-                <ControlFlex>
                     <CurrentToggle>
                         <button onClick={() => handleNewServiceChange(!newService.isNegotiable, "isNegotiable")}>
                         <FrameContainer>
@@ -332,11 +243,10 @@ const Services = () => {
                         </button>
                         <span>Negotiable</span>
                     </CurrentToggle>
-                    <Control>
-                        <button onClick={() => handleCreateService()}>Create Service</button>
-                    </Control>
-                </ControlFlex>
                 </FormContainer>
+                <Bottom>
+                    <button onClick={handleCreateService}>Proceed to Pricing</button>
+                </Bottom>
             </Content>
         </Wrapper>
     </Container>

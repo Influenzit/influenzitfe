@@ -12,7 +12,7 @@ const ErrorPopup = ({message}) => {
   return (
     <Container>
         <LoaderCard>
-            <Image src="/fail.svg" height={70} width={70} />
+            <Image src="/fail.svg" height={180} width={180} />
             <p>{message}</p>
             <button onClick={handleClose}>Close</button>
         </LoaderCard>

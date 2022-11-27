@@ -1,18 +1,67 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
 import LandingLayout from '../../../layouts/landing.layout'
-import { Container, DetailTab, LeftControl, RightControl, TopTabContainer, Wrapper, ContainerB, Left, Section, CurrentPosition, ImageSlides, CtrlBtn, Images, Header, Desc, SectionM, ProfileCard, ImageWrapper, ProfileDetails, Stars, FaqWrapper, FaqCont, FaqQuest, FaqAns, ReviewWrapper, Review, ReviewL, ReviewImg, ReviewR, ReviewMsg, Right, PackageCard, PackageTabs, PackageTab, Package, PHead, PDetails, PFeatures, Feature, ContinueBtn, WrapperT, AboutWrapper, Bio } from '../../../styles/service.style'
+import { Container, DetailTab, LeftControl, RightControl, TopTabContainer, Wrapper, ContainerB, Left, Section, CurrentPosition, ImageSlides, CtrlBtn, Images, Header, Desc, SectionM, ProfileCard, ImageWrapper, ProfileDetails, Stars, FaqWrapper, FaqCont, FaqQuest, FaqAns, ReviewWrapper, Review, ReviewL, ReviewImg, ReviewR, ReviewMsg, Right, PackageCard, PackageTabs, PackageTab, Package, PHead, PDetails, PFeatures, Feature, ContinueBtn, WrapperT, AboutWrapper, Bio, RCountry } from '../../../styles/service.style'
 import heartIcon from '../../../assets/heart.svg';
 import shareIcon from '../../../assets/share.svg';
 import chevLeftIcon from '../../../assets/chev-left.svg';
 import chevRightIcon from '../../../assets/chev-right.svg';
+import chevDownIcon from '../../../assets/chev-down.svg';
+import chevUpIcon from '../../../assets/chev-up.svg';
 import starIcon from '../../../assets/star.svg';
 import fillStarIcon from '../../../assets/fill-star.svg';
-import { Slide } from 'react-slideshow-image'
-import 'react-slideshow-image/dist/styles.css'
+import { Slide } from 'react-slideshow-image';
+import 'react-slideshow-image/dist/styles.css';
+import { useEffect } from 'react';
 
 const ServiceView = () => {
-  const [packageType, setPackageType] = useState("basic")
+  const [packageType, setPackageType] = useState("basic");
+  const [showFaq, setShowFaq] = useState(null);
+  const Faqs = [
+    {
+        question: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa?",
+        answer: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem."
+    },
+    {
+        question: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa?",
+        answer: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem."
+    },
+    {
+        question: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa?",
+        answer: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem."
+    },
+    {
+        question: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa?",
+        answer: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem."
+    },
+    {
+        question: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa?",
+        answer: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem."
+    },
+  ]
+  const handleToggle = (i) => {
+    if(showFaq[i]){
+        setShowFaq((prev) => {
+            const copyOf = {...prev};
+            copyOf[i] = false;
+            return copyOf;
+        });
+    } else {
+        setShowFaq((prev) => {
+            const copyOf = {...prev};
+            copyOf[i] = true;
+            return copyOf;
+        });
+    }
+  }
+  useEffect(() => {
+    let sFaq = {};
+    Faqs.forEach((_, i) => {
+        sFaq = {...sFaq, [i]: false};
+    })
+    setShowFaq(sFaq);
+  }, [])
+  
   return (
     <Container>
         <TopTabContainer>
@@ -112,12 +161,19 @@ const ServiceView = () => {
                             <h3>Frequently Asked Questions</h3>
                         </Header>
                         <FaqWrapper>
-                            <FaqCont>
-                                <FaqQuest>
-                                    <h4>Excepteur sint occaecat cupidatat non proident, saeunt in culpa?</h4>
-                                </FaqQuest>
-                                <FaqAns>Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem.</FaqAns>
-                            </FaqCont>
+                            {
+                                Faqs.map((val, i) => (
+                                    <FaqCont key={i}>
+                                        <FaqQuest onClick={() => handleToggle(i)} isActive={showFaq?.[i]}>
+                                            <h4>{val.question}</h4>
+                                            <button><Image src={(showFaq?.[i]) ? chevUpIcon : chevDownIcon} alt="" height={10} width={17}/></button>
+                                        </FaqQuest>
+                                        {
+                                            showFaq?.[i] && <FaqAns>{val.answer}</FaqAns>
+                                        }
+                                    </FaqCont>
+                                ))
+                            }
                         </FaqWrapper>
                     </SectionM>
                     <SectionM>
@@ -128,11 +184,50 @@ const ServiceView = () => {
                             <Review>
                                 <ReviewL>
                                     <ReviewImg>
+                                        <Image src="/p-2.svg" alt="" height={60} width={60} quality={100}/>
                                     </ReviewImg>
                                 </ReviewL>
                                 <ReviewR>
                                     <h4>Megayard</h4>
-                                    <div><Image src="/flag.svg" height={25} width={25}/><p>Nigeria</p></div>
+                                    <RCountry><Image src="/flag.svg" height={25} width={25}/><p>Lagos, Nigeria</p></RCountry>
+                                    <Stars>
+                                        <Image src={fillStarIcon} height={15} width={15} />
+                                        <Image src={fillStarIcon} height={15} width={15} />
+                                        <Image src={fillStarIcon} height={15} width={15} />
+                                        <Image src={fillStarIcon} height={15} width={15} />
+                                        <Image src={starIcon} height={15} width={15} />
+                                    </Stars>
+                                    <ReviewMsg>Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem.</ReviewMsg>
+                                </ReviewR>
+                            </Review>
+                            <Review>
+                                <ReviewL>
+                                    <ReviewImg>
+                                        <Image src="/p-2.svg" alt="" height={60} width={60} quality={100}/>
+                                    </ReviewImg>
+                                </ReviewL>
+                                <ReviewR>
+                                    <h4>Megayard</h4>
+                                    <RCountry><Image src="/flag.svg" height={25} width={25}/><p>Lagos, Nigeria</p></RCountry>
+                                    <Stars>
+                                        <Image src={fillStarIcon} height={15} width={15} />
+                                        <Image src={fillStarIcon} height={15} width={15} />
+                                        <Image src={fillStarIcon} height={15} width={15} />
+                                        <Image src={fillStarIcon} height={15} width={15} />
+                                        <Image src={starIcon} height={15} width={15} />
+                                    </Stars>
+                                    <ReviewMsg>Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem.</ReviewMsg>
+                                </ReviewR>
+                            </Review>
+                            <Review>
+                                <ReviewL>
+                                    <ReviewImg>
+                                        <Image src="/p-2.svg" alt="" height={60} width={60} quality={100}/>
+                                    </ReviewImg>
+                                </ReviewL>
+                                <ReviewR>
+                                    <h4>Megayard</h4>
+                                    <RCountry><Image src="/flag.svg" height={25} width={25}/><p>Lagos, Nigeria</p></RCountry>
                                     <Stars>
                                         <Image src={fillStarIcon} height={15} width={15} />
                                         <Image src={fillStarIcon} height={15} width={15} />

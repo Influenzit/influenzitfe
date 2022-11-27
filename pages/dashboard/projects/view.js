@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { AlertTriangleIcon, CheckCircleIcon, CheckIcon, XSquareIcon } from '../../../assets/svgIcons'
 import { UserDropdown } from '../../../components/nav/style'
@@ -7,12 +8,13 @@ import { Bottom, Container, ControlContainer, CurrentPackage, Desc, Details, Det
 
 const ProjectView = () => {
   const [show, setShow] = useState(false);
+  const router = useRouter();
   return (
     <OuterContainer>
       <Wrapper>
         <Container>
         <Top>
-            <TopBtn>
+            <TopBtn onClick={() => router.push("/dashboard/projects")}>
               <Image src="/arrow-left.svg" height={24} width={24}/>
               <span>My Projects</span>
             </TopBtn>
@@ -23,8 +25,8 @@ const ProjectView = () => {
               {
                 show && (
                   <UserDropdown style={{ right: "0", width: "200px" }}>
-                    <button onClick={() => {}}><CheckCircleIcon /><span>Mark as Completed</span></button>
-                    <button onClick={() => {}}><XSquareIcon /><span>Cancel Campaign</span></button>
+                    <button onClick={() => router.push("/dashboard/projects/completed")}><CheckCircleIcon /><span>Mark as Completed</span></button>
+                    <button onClick={() => router.push("/dashboard/projects/cancel")}><XSquareIcon /><span>Cancel Campaign</span></button>
                     <button onClick={() => {}}><AlertTriangleIcon /><span>Report Account</span></button>
                   </UserDropdown>
                 )
@@ -101,7 +103,7 @@ const ProjectView = () => {
             </Milestones>
             <ControlContainer>
               <button>Report Account</button>
-              <button><span><CheckIcon /></span> Mark As Completed</button>
+              <button onClick={() => router.push("/dashboard/projects/completed")}><span><CheckIcon /></span> Mark As Completed</button>
             </ControlContainer>
           </Bottom>
         </Container>

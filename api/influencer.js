@@ -48,6 +48,10 @@ export const updateServices = (data, serviceId) => {
 export const getServices = () => {
     return axiosInstance().get(`/services`)
 }
+export const getService = (serviceId) => {
+    return axiosInstance().get(`/services/${serviceId}`)
+}
+
 export const deleteService = (index) => {
     return axiosInstance().delete(`/services/${index}`)
 }

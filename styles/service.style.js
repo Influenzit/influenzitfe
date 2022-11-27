@@ -11,7 +11,7 @@ export const TopTabContainer = styled.div`
     top: 70px;
     left: 0;
     background: #fff;
-    z-index: 99999;
+    z-index: 999;
     border: 1px solid #D2D2D2;
 `;
 export const WrapperT = styled.div`
@@ -158,24 +158,53 @@ export const ProfileDetails = styled.div`
     }
 `;
 export const FaqWrapper = styled.div`
+     padding: 15px 30px;
 `;
 export const FaqCont = styled.div`
 `;
 export const FaqQuest = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    cursor: pointer;
+    button {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+    }
+    h4 {
+        font-weight: 400;
+        font-size: 16px;
+        color: ${(props) => props.isActive ? colors.primaryColor : "#111"};
+    }
 `;
 export const FaqAns = styled.div`
+    color: #666666;
 `;
 export const ReviewWrapper = styled.div`
+    padding: 15px 30px;
 `;
 export const Review = styled.div`
+    display: flex;
+    column-gap: 25px;
 `;
 export const ReviewL = styled.div`
+
 `;
 export const ReviewImg = styled.div`
 `;
 export const ReviewR = styled.div`
+    max-width: calc(100% - 95px);
 `;
-export const ReviewMsg = styled.div`
+export const RCountry = styled.div`
+    column-gap: 15px;
+    padding: 5px 0;
+    display: flex;
+`;
+export const ReviewMsg = styled.p`
+    color: #666666;
+    padding: 20px 0;
 `;
 export const Right = styled.div`
     width: 350px;

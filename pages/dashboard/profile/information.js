@@ -171,32 +171,6 @@ const Information = () => {
                         <textarea />
                     </InputContainer>
                 </FormContainerM>
-                <Heading>
-                    <h2>Social Media Profiles</h2>
-                </Heading>
-                <FormContainerM>
-                    <InputFlex>
-                        <InputContainer>
-                            <label>Facebook</label>
-                            <input type="text" />
-                        </InputContainer>
-                        <InputContainer>
-                            <label>Instagram</label>
-                            <input type="text" />
-                        </InputContainer>
-                    </InputFlex>
-                    <InputFlex>
-                        <InputContainer>
-                            <label>Linkedin</label>
-                            <input type="text" />
-                        </InputContainer>
-                        <InputContainer>
-                            <label>Twitter</label>
-                            <input type="text" />
-                        </InputContainer>
-                    </InputFlex>
-                </FormContainerM>
-                <AddSocialBtn><Image src="/plus.svg" alt="plus" height={22} width={22} /><span>Add another social media profile</span></AddSocialBtn>
                 <Bottom>
                     <button onClick={handleSubmit}>Save Changes</button>
                 </Bottom>

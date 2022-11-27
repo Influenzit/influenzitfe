@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getUserType } from '../../app/reducers/status'
 import { getUser } from '../../app/reducers/user'
-import { BellIcon, ChevronRight, LockIcon, LogoutIcon, SettingsIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
+import { BagIcon, BellIcon, BoxIcon, ChevronRight, LockIcon, LogoutIcon, SettingsIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
 import { Bottom, Container, InnerWrapper, ProfileImageCont, ToggleBtn, Top, Wrapper } from './style'
 
 const ProfileSidebar = () => {
@@ -34,10 +34,14 @@ const ProfileSidebar = () => {
                 <p>Lagos, Nigeria.</p>
             </Top>
             <Bottom>
+                <button onClick={() => router.push("/dashboard/profile")}>
+                    <UserIcon />
+                    <span>Account</span>
+                </button>
                 {
                     currentUserType === "Business Owner" && (
                         <button onClick={() => router.push("/dashboard/profile/information")}>
-                            <UserIcon />
+                            <BagIcon />
                             <span>Business Information</span>
                         </button>
                     )
@@ -45,7 +49,7 @@ const ProfileSidebar = () => {
                 {
                     (currentUserType === "Influencer" || currentUserType === "Creator") && (
                         <button onClick={() => router.push("/dashboard/profile/influencer")}>
-                            <UserIcon />
+                            <BagIcon />
                             <span>{currentUserType} Information</span>
                         </button>
                     )
@@ -53,7 +57,7 @@ const ProfileSidebar = () => {
                 {
                     (currentUserType === "Influencer" || currentUserType === "Creator") && (
                         <button onClick={() => router.push("/dashboard/profile/services")}>
-                            <SettingsIcon />
+                            <BoxIcon />
                             <span>Services</span>
                         </button>
                     )

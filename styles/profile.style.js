@@ -28,8 +28,17 @@ export const Content =  styled.div`
         margin-left: 0;
     }
 `;
+export const AvailableSwitch = styled.div`
+    display: flex;
+    font-size: 14px;
+    /* p{
+        color: ;
+    } */
+`;
 export const Heading = styled.div`
     padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
     h2 {
         font-size: 18px;
         color: #111;
@@ -44,7 +53,7 @@ export const Heading = styled.div`
     }
 `;
 export const FormContainer = styled.div`
-    padding: 0px 30px;
+    padding: 15px 30px;
     ${breakpoints.md}{
         padding: 0px 10px;
     }
@@ -131,8 +140,8 @@ export const BottomAdd = styled.div`
     justify-content: right;
     button {
         color: ${colors.primaryColor};
-        background: white;
-        border: 2px solid ${colors.primaryColor};
+        background: #F5F8FA;
+        border: 2px solid #F5F8FA;
         padding: 10px 25px;
         font-size: 15px;
         font-weight: 500;
@@ -201,6 +210,7 @@ export const ControlFlex = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 5px 30px;
 `;
 export const Control = styled.div`
      display: flex;
@@ -213,8 +223,8 @@ export const Control = styled.div`
      }
      button:last-child {
         color: ${colors.primaryColor};
-        background: white;
-        border: 2px solid ${colors.primaryColor};
+        background: #F5F8FA;
+        border: 2px solid #F5F8FA;
         padding: 10px 25px;
         font-size: 15px;
         font-weight: 500;
@@ -366,4 +376,54 @@ export const FundBtn = styled.button`
 `;
 export const CAmount = styled.span`
     color: ${(props) => props.status === "pending"? "#edb000" : props.status === "failed"? "red" : "#14a800"};
+`;
+export const ServiceList = styled.div`
+    padding: 20px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 5px;
+    row-gap: 15px;
+    justify-content: space-between;
+    margin: 0 auto;
+`;
+export const AddServiceBtn = styled.button`
+    width: 100%;
+    max-width: 285px;
+    min-width: 240px;
+    display: flex;
+    background: ${colors.primaryColor};
+    color: white;
+    border: none;
+    border-radius: 3px;
+    align-items: center;
+    min-height: 300px;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 15px;
+    cursor: pointer;
+    span {
+        font-size: 16px;
+        font-weight: 700;
+        :first-of-type {
+            display: flex;
+            background: white;
+            color: ${colors.primaryColor};
+            padding: 20px;
+            border-radius: 50%;
+            svg {
+                height: 50px;
+                width: 50px;
+            }
+        }
+    }
+    ${breakpoints.md}{
+        margin: 0 auto;
+    }
+`;
+export const FaqCont = styled.div`
+    h3 {
+        font-size: 16px;
+        color: #111;
+        padding-bottom: 10px;
+    }
 `;

@@ -12,7 +12,7 @@ const SuccessPopup = ({message}) => {
   return (
     <Container>
         <LoaderCard>
-            <Image src="/success.svg" height={70} width={70} />
+            <Image src="/ok-icon.svg" height={180} width={180} />
             <p>{message}</p>
             <button onClick={handleClose}>Close</button>
         </LoaderCard>
