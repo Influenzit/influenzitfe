@@ -51,10 +51,14 @@ export const getServices = () => {
 export const getService = (serviceId) => {
     return axiosInstance().get(`/services/${serviceId}`)
 }
-
 export const deleteService = (index) => {
     return axiosInstance().delete(`/services/${index}`)
 }
+// Service Faq API Request
+export const createFaqServices = (serviceId, data) => {
+    return axiosInstance().post(`/services/${serviceId}/faqs`, data)
+}
+
 // Portfolios API Request
 export const createPortfolios = (data) => {
     return axiosInstance().post(`/accounts/portfolios`, data)

@@ -117,12 +117,14 @@ const Information = () => {
                 gender: user.account.gender ?? "",
                 address: user.account.address ?? "",
                 biography: user.account.biography?? "",
-                phones:[
-                    {
-                        phone: "",
-                        phone_country: ""
-                    }
-                ],
+                phones: user.account.phones && user.account.phones.length ?
+                     user.account.phones : [
+                        {
+                            phone: "",
+                            phone_country: ""
+                        }
+                    ]
+                ,
                 facebook: user.account.facebook ?? "",
                 instagram: user.account.instagram ?? "",
                 linkedin: user.account.linkedin ?? "",

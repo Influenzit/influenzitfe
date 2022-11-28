@@ -31,7 +31,7 @@ const ProfileSidebar = () => {
                     </InnerWrapper>
                 </ProfileImageCont>
                 <h2>{userData.firstname} {userData.lastname}</h2>
-                <p>Lagos, Nigeria.</p>
+                <p>{userData.account?.address ?? "No address added"}</p>
             </Top>
             <Bottom>
                 <button onClick={() => router.push("/dashboard/profile")}>
