@@ -121,7 +121,7 @@ const CreatorProfile = () => {
             <Wrapper>
                 <SkillCard>
                     <Top><h3>Services</h3></Top>
-                    <Bottom style={{ justifyContent: "space-between"}}>
+                    <Bottom style={{ columnGap: "15px"}}>
                         {
                            inData?.services.map((val, i) => (
                             <CreatorsCard key={i}>
