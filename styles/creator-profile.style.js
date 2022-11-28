@@ -86,6 +86,7 @@ export const ProfileData = styled.div`
 `;
 export const ProfileDetails = styled.div`
     margin-right: 20px;
+    width: 100%;
     h2 {
         display: flex;
         align-items: center;
@@ -142,6 +143,7 @@ export const ProfileCategory = styled.div`
 export const Stats = styled.div`
     width: 100%;
     min-width: 320px;
+    max-width: 320px;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -1,13 +1,48 @@
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { getInfluencer } from '../../api/influencer'
+import { setLoading } from '../../app/reducers/status'
 import LandingLayout from '../../layouts/landing.layout'
-import { Controls, CreatorDetails, CreatorsCard, SocialHandle } from '../../styles/business-owner.style'
+import { Controls, CreatorsCard, CreatorDetails, SocialHandle } from '../../styles/business-owner.style'
 import { BackImage, Bottom, Container, HeroSectionOne, Popup, ProfileCategory, ProfileData, ProfileDetails, ProfileImgCont, ProfileStats, SeeMoreCont, SkillCard, StatCard, Stats, StatWrapper, Top, UserCard, WorkCard, Wrapper } from '../../styles/creator-profile.style'
-import { AwardCard, Content, DataSection, DataSectionTwo, ExperienceWrapper, ImageWrap, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServiceCard, ServiceDetails, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, TabBtn, Tabs, TopImg } from '../../styles/influencer-profile'
+import { AwardCard, Content, DataSection, DataSectionTwo, ExperienceWrapper, ImageWrap, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, TabBtn, Tabs, TopImg } from '../../styles/influencer-profile'
 
 const CreatorProfile = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  const [inData, setInData] = useState(null);
+  const dispatch = useDispatch();
   const [showEngagePopup, setShowEngagePopup] = useState(false);
+  const { data: influencerData, refetch: refetchInfluencerData } = useQuery(["get-influencer"], async () => {
+        return await getInfluencer(id);
+    }, {
+        enabled: false,
+        staleTime: Infinity,
+        retry: false,
+        onSuccess() {
+            dispatch(setLoading(false));
+        },
+        onError(res) {
+            dispatch(setLoading(false));
+            router.push("/search");
+        } 
+    });
+    useEffect(() => {
+        dispatch(setLoading(true));
+        if(id){
+            refetchInfluencerData();
+        }
+    }, [router.pathname, id]);
+    useEffect(() => {
+        if(influencerData?.data?.data) {
+            setInData(influencerData?.data?.data);
+        }
+    }, [influencerData])
+    
   return (
     <Container>
         <HeroSectionOne>
@@ -21,7 +56,7 @@ const CreatorProfile = () => {
                     <ProfileData>
                         <div>
                             <Image src="/users.svg" height={20} width={20} />
-                            <span>Male</span>
+                            <span>{inData?.gender}</span>
                         </div>
                         <div>
                             <Image src="/verified.svg" height={20} width={20} />
@@ -29,24 +64,17 @@ const CreatorProfile = () => {
                         </div>
                     </ProfileData>
                     <p>0/5 (<span>0 Feedbacks</span>)</p>
-                    <p>Member since Feb 09, 2021.</p>
+                    <p>Member since {(new Date(inData?.created_at).toDateString())}</p>
                     <button>Share Profile</button>
                 </ProfileStats>
                 <ProfileDetails>
-                    <h2>Ezekiel Alawode</h2>
+                    <h2>{inData?.user?.firstname} {inData?.user.lastname}</h2>
                     <ProfileCategory>
                         <div><Image src="/niche.svg" height={25} width={25}/><p>Influencer&apos;s Niche</p></div>
                         <div><Image src="/flag.svg" height={25} width={25}/><p>Nigeria</p></div>
                         <div><Image src="/instagram.svg" height={25} width={25}/><p>itzphoenixgold</p> <span>744</span></div>
                     </ProfileCategory>
-                    <p>Excepteur sint occaecat cupidatat non proident,
-                         saeunt in culpa qui officia deserunt mollit anim laborum. 
-                         Seden utem perspiciatis undesieu omnis voluptatem accusantium doque 
-                         laudantium, totam rem aiam eaqueiu ipsa quae ab illoion inventore veritatisetm 
-                         quasitea architecto beataea dictaed quia couuntur magni dolores 
-                         eos aquist ratione vtatem seque nesnt. Excepteur sint occaecat cupidatat non proident, 
-                         saeunt in culpa qui officia deserunt mollit anim laborum with excepteur 
-                         sint occaecat cupidatat non proident.
+                    <p>{inData?.biography}
                     </p>
                     <SeeMoreCont>
                         <button>Click to see more</button>
@@ -56,19 +84,19 @@ const CreatorProfile = () => {
                 <Stats>
                     <StatWrapper>
                         <StatCard textColor='#2B368C' bgColor="#F9F9FC">
-                            <h3>5</h3>
+                            <h3>0</h3>
                             <p>Ongoing Engagements</p>
                         </StatCard>
                         <StatCard textColor='#019B2C' bgColor="#F7FCF9">
-                            <h3>5</h3>
+                            <h3>0</h3>
                             <p>Completed Campaigns</p>
                         </StatCard>
                         <StatCard textColor='#FF0000' bgColor="#FFF7F7">
-                            <h3>5</h3>
+                            <h3>0</h3>
                             <p>Cancelled Engagements</p>
                         </StatCard>
                         <StatCard textColor='#000' bgColor="#F8F8F8">
-                            <h3>75%</h3>
+                            <h3>0%</h3>
                             <p>Total Engagement</p>
                         </StatCard> 
                     </StatWrapper>
@@ -92,108 +120,37 @@ const CreatorProfile = () => {
             </BackImage>
             <Wrapper>
                 <SkillCard>
-                    <Top><h3>Services &amp; Pricing</h3></Top>
+                    <Top><h3>Services</h3></Top>
                     <Bottom style={{ justifyContent: "space-between"}}>
-                        <ServiceCard>
-                            <TopImg>
-                                <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center" objectFit='cover' />
-                            </TopImg>
-                            <ServiceDetails>
-                                <ServUserCard>
-                                    <ImageWrap>
-                                        <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center" objectFit='cover'/>
-                                    </ImageWrap>
-                                    <p>I will make a Video to sell your product on my timeline.</p>
-                                </ServUserCard>
-                                <ServRate>
-                                    <span>#70</span> starting from
-                                </ServRate>
-                            </ServiceDetails>
-                            <ServStats>
-                                <div>
-                                    <Image src="/star.svg" height={20} width={20} />
-                                    <span>0/5 (0)</span>
-                                </div>
-                                <div>
-                                    <span>0 in queue</span>
-                                </div>
-                            </ServStats>
-                        </ServiceCard>
-                        <ServiceCard>
-                            <TopImg>
-                                <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center" objectFit='cover' />
-                            </TopImg>
-                            <ServiceDetails>
-                                <ServUserCard>
-                                    <ImageWrap>
-                                        <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center" objectFit='cover'/>
-                                    </ImageWrap>
-                                    <p>I will make a Video to sell your product on my timeline.</p>
-                                </ServUserCard>
-                                <ServRate>
-                                    <span>#70</span> starting from
-                                </ServRate>
-                            </ServiceDetails>
-                            <ServStats>
-                                <div>
-                                    <Image src="/star.svg" height={20} width={20} />
-                                    <span>0/5 (0)</span>
-                                </div>
-                                <div>
-                                    <span>0 in queue</span>
-                                </div>
-                            </ServStats>
-                        </ServiceCard>
-                        <ServiceCard>
-                            <TopImg>
-                                <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center" objectFit='cover' />
-                            </TopImg>
-                            <ServiceDetails>
-                                <ServUserCard>
-                                    <ImageWrap>
-                                        <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center" objectFit='cover'/>
-                                    </ImageWrap>
-                                    <p>I will make a Video to sell your product on my timeline.</p>
-                                </ServUserCard>
-                                <ServRate>
-                                    <span>#70</span> starting from
-                                </ServRate>
-                            </ServiceDetails>
-                            <ServStats>
-                                <div>
-                                    <Image src="/star.svg" height={20} width={20} />
-                                    <span>0/5 (0)</span>
-                                </div>
-                                <div>
-                                    <span>0 in queue</span>
-                                </div>
-                            </ServStats>
-                        </ServiceCard>
-                        <ServiceCard>
-                            <TopImg>
-                                <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center" objectFit='cover' />
-                            </TopImg>
-                            <ServiceDetails>
-                                <ServUserCard>
-                                    <ImageWrap>
-                                        <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center" objectFit='cover'/>
-                                    </ImageWrap>
-                                    <p>I will make a Video to sell your product on my timeline.</p>
-                                </ServUserCard>
-                                <ServRate>
-                                    <span>#70</span> starting from
-                                </ServRate>
-                            </ServiceDetails>
-                            <ServStats>
-                                <div>
-                                    <Image src="/star.svg" height={20} width={20} />
-                                    <span>0/5 (0)</span>
-                                </div>
-                                <div>
-                                    <span>0 in queue</span>
-                                </div>
-                            </ServStats>
-                        </ServiceCard>
+                        {
+                           inData?.services.map((val, i) => (
+                            <CreatorsCard key={i}>
+                                <TopImg>
+                                    <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center" objectFit='cover' />
+                                </TopImg>
+                                <CreatorDetails>
+                                    <ServUserCard>
+                                        <ImageWrap>
+                                            <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center" objectFit='cover'/>
+                                        </ImageWrap>
+                                        <p>{val.description}</p>
+                                    </ServUserCard>
+                                    <ServRate>
+                                        starting from <span># {val.starting_from}</span> 
+                                    </ServRate>
+                                </CreatorDetails>
+                                <ServStats>
+                                    <div>
+                                        <Image src="/star.svg" height={20} width={20} />
+                                        <span>0/5 (0)</span>
+                                    </div>
+                                    <div>
+                                        <span>0 in queue</span>
+                                    </div>
+                                </ServStats>
+                            </CreatorsCard>
+                           )) 
+                        }
                     </Bottom>
                 </SkillCard>
                 <SectionTwo>
@@ -250,7 +207,7 @@ const CreatorProfile = () => {
                             <Content>
                                 <ExperienceWrapper>
                                 <WorkCard>
-                                    <h3>Lead UI/UX Designer &amp; Wordpress Developer | Websitechic Digital Service</h3>
+                                    <h3>Lead UI/UX Designer &amp; Wordpress Developer | Websitechic Digital influencer</h3>
                                     <div>
                                         <p><Image src="/bag-icon.svg" height={20} width={20} /><span>Company Name</span></p>
                                         <p><Image src="/calendar.svg" height={20} width={20} /><span>March 2020 - Present</span></p>
@@ -258,7 +215,7 @@ const CreatorProfile = () => {
                                     <p>Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem accusantium doque laudantium, totam rem aiam eaqueiu ipsa quae ab illoion inventore veritatisetm quasitea architecto beataea dictaed quia couuntur magni dolores eos aquist ratione vtatem seque nesnt. Neque porro quamest quioremas ipsum quiatem dolor sitem ameteism conctetur adipisci velit sedate quianon.</p>
                                 </WorkCard> 
                                 <WorkCard>
-                                    <h3>Lead UI/UX Designer &amp; Wordpress Developer | Websitechic Digital Service</h3>
+                                    <h3>Lead UI/UX Designer &amp; Wordpress Developer | Websitechic Digital influencer</h3>
                                     <div>
                                         <p><Image src="/bag-icon.svg" height={20} width={20} /><span>Company Name</span></p>
                                         <p><Image src="/calendar.svg" height={20} width={20} /><span>March 2020 - Present</span></p>

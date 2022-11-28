@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LandingLayout from '../layouts/landing.layout';
 import { Bottom, Container, Content, Filter, ListWrapper, PageBtn, Pages, Tab, Tabs, Top, Wrapper } from '../styles/search.style';
 import ProfileCard from '../components/profile-card';
+import { getInfluencers } from '../api/influencer';
+import { useQuery } from '@tanstack/react-query';
 
 const Search = () => {
   const [currentTab, setCurrentTab] = useState("influencer");
+  const { data: influencersData, refetch: refetchInfluencerData } = useQuery(["get-service"], async () => {
+    return await getInfluencers();
+}, {
+    enabled: false,
+    staleTime: Infinity,
+    retry: false
+});
+useEffect(() => {
+  refetchInfluencerData();
+}, [])
+
   return (
     <Container>
         <Wrapper>
@@ -27,62 +40,18 @@ const Search = () => {
                         </div>
                     </Filter>
                     <ListWrapper>
-                        <ProfileCard 
-                            profileLink={"/"}
-                            imgSrc="/profile-2.png"
-                            name="Jade Jackman"
-                            sex="male"
-                            address="Rex Villa, GT, Mexico."
-                        />
-                         <ProfileCard 
-                            profileLink={"/"}
-                            imgSrc="/profile-2.png"
-                            name="Jade Jackman"
-                            sex="male"
-                            address="Rex Villa, GT, Mexico."
-                        />
-                         <ProfileCard 
-                            profileLink={"/"}
-                            imgSrc="/profile-2.png"
-                            name="Jade Jackman"
-                            sex="male"
-                            address="Rex Villa, GT, Mexico."
-                        />
-                         <ProfileCard 
-                            profileLink={"/"}
-                            imgSrc="/profile-2.png"
-                            name="Jade Jackman"
-                            sex="male"
-                            address="Rex Villa, GT, Mexico."
-                        />
-                         <ProfileCard 
-                            profileLink={"/"}
-                            imgSrc="/profile-2.png"
-                            name="Jade Jackman"
-                            sex="male"
-                            address="Rex Villa, GT, Mexico."
-                        />
-                         <ProfileCard 
-                            profileLink={"/"}
-                            imgSrc="/profile-2.png"
-                            name="Jade Jackman"
-                            sex="male"
-                            address="Rex Villa, GT, Mexico."
-                        />
-                        <ProfileCard 
-                            profileLink={"/"}
-                            imgSrc="/profile-2.png"
-                            name="Jade Jackman"
-                            sex="male"
-                            address="Rex Villa, GT, Mexico."
-                        />
-                         <ProfileCard 
-                            profileLink={"/"}
-                            imgSrc="/profile-2.png"
-                            name="Jade Jackman"
-                            sex="male"
-                            address="Rex Villa, GT, Mexico."
-                        />
+                        {
+                            influencersData?.data?.data?.data.map((val, i) => (
+                                <ProfileCard 
+                                    profileLink={`/influencer/${val.id}`}
+                                    imgSrc="/profile-2.png"
+                                    handle={val.twitter}
+                                    name={`${val.user.firstname} ${val.user.lastname}`}
+                                    sex={val.gender}
+                                    address={val.address}
+                                />
+                            ))
+                        }
                     </ListWrapper>
                     <Pages>
                         <PageBtn>1</PageBtn>
