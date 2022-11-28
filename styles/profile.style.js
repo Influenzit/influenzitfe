@@ -31,9 +31,36 @@ export const Content =  styled.div`
 export const AvailableSwitch = styled.div`
     display: flex;
     font-size: 14px;
-    /* p{
-        color: ;
-    } */
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 10px;
+    p {
+        font-weight: 600;
+        color: #B3B3B3;
+        :last-of-type {
+            color: ${colors.primaryColor};
+        }
+    }
+    button {
+        height: 17px;
+        border-radius: 12px;
+        cursor: pointer;
+        width: 30px;
+        border: none;
+        background: ${(props) => props.isAvailable ? colors.primaryColor : "#B3B3B3"} ;
+        display: flex;
+        align-items: center;
+        justify-content: ${(props) => props.isAvailable ? "right" : "left"};
+        padding: 2px;
+        ::after{
+            content: "";
+            display: block;
+            height: 13px;
+            width: 13px;
+            background: #fff;
+            border-radius: 50%;
+        }
+    }
 `;
 export const Heading = styled.div`
     padding: 20px 30px;

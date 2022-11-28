@@ -108,7 +108,7 @@ const Services = () => {
                             <AddSocialBtn onClick={handleAddFaq}><Image src="/plus.svg" alt="plus" height={22} width={22} /><span>Add more</span></AddSocialBtn>
                         </FormContainer>
                         <Bottom>
-                            <button>Proceed to Faq</button>
+                            <button>Continue to Media</button>
                         </Bottom>
                     </Content>
                 )

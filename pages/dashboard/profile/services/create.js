@@ -120,7 +120,6 @@ const Services = () => {
                 })
                 dispatch(setLoading(false));
                 dispatch(setSuccess({success: true, message: "Service updated successful"}));
-
             }
         },
         onError(error) {
