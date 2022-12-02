@@ -43,6 +43,7 @@ useEffect(() => {
                         {
                             influencersData?.data?.data?.data.map((val, i) => (
                                 <ProfileCard 
+                                    key={i}
                                     profileLink={`/influencer/${val.id}`}
                                     imgSrc="/profile-2.png"
                                     handle={val.twitter}

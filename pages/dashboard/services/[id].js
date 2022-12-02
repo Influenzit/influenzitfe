@@ -262,8 +262,8 @@ const ServiceView = () => {
                     <PackageCard>
                         <PackageTabs>
                             {
-                                packages.map((val) => (
-                                    <PackageTab isActive={packageType === val} onClick={() => setPackageType(val)}>{val}</PackageTab>
+                                packages.map((val, i) => (
+                                    <PackageTab key={i} isActive={packageType === val} onClick={() => setPackageType(val)}>{val}</PackageTab>
                                 ))
                             }
                         </PackageTabs>
@@ -277,8 +277,8 @@ const ServiceView = () => {
                             </PDetails>
                             <PFeatures>
                                 {
-                                    getCurrentPackage()?.features.map(feature => (
-                                        <Feature>
+                                    getCurrentPackage()?.features.map((feature, i) => (
+                                        <Feature key={i}>
                                             <Image src="/check-square.svg" alt="" width={25} height={25}/>
                                             <p>{feature.name}</p>
                                         </Feature>
