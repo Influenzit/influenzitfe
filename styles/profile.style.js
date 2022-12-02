@@ -19,13 +19,18 @@ export const Wrapper = styled.div`
 export const Content =  styled.div`
     margin-left: 20px;
     width: 100%;
+    max-width: calc(100% - 320px);
     height: auto;
     background: #fff;
     border: 1px solid #D2D2D2;
     border-radius: 5px;
     padding-bottom: 20px;
+    ${breakpoints.lg}{
+        max-width: calc(100% - 100px);;
+    }
     ${breakpoints.md}{
         margin-left: 0;
+        max-width: 100%;
     }
 `;
 export const AvailableSwitch = styled.div`
@@ -81,6 +86,8 @@ export const Heading = styled.div`
 `;
 export const FormContainer = styled.div`
     padding: 15px 30px;
+    width: 100%;
+    max-width: 100%;
     ${breakpoints.md}{
         padding: 0px 10px;
     }

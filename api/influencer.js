@@ -51,6 +51,9 @@ export const getServices = () => {
 export const getService = (serviceId) => {
     return axiosInstance().get(`/services/${serviceId}`)
 }
+export const createServicePackage = (serviceId, data) => {
+    return axiosInstance().post(`/services/${serviceId}/packages`, data)
+}
 export const deleteService = (index) => {
     return axiosInstance().delete(`/services/${index}`)
 }

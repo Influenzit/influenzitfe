@@ -191,7 +191,7 @@ const Nav = () => {
                                             }
                                         </SearchByBtn>
                                         <input type="text" placeholder="Search by name" />
-                                        <SearchBtnC>
+                                        <SearchBtnC onClick={() => router.push("/search")}>
                                             <Image src="/search-b.svg" alt="" height={25} width={25}/>
                                         </SearchBtnC>
                                     </SearchContainer>

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { CheckCircleIcon, CheckIcon, WalletIcon, XSquareIcon } from '../../../assets/svgIcons'
+import { AlertTriangleIcon, CheckCircleIcon, CheckIcon, WalletIcon, XSquareIcon } from '../../../assets/svgIcons'
 import { UserDropdown } from '../../../components/nav/style'
 import LandingLayout from '../../../layouts/landing.layout'
 import { Bottom, Container, ControlContainer, CurrentPackage, Desc, Details, DetailsContainer, ImageWrapper, MDetails, MDone, Milestone, MilestoneHeader, MilestoneList, Milestones, MStatus, OuterContainer, SubDetails, Top, TopBtn, Wrapper } from '../../../styles/view.style'
@@ -16,7 +16,7 @@ const CampaignView = () => {
         <Top>
             <TopBtn onClick={() => router.push("/dashboard/campaigns")}>
               <Image src="/arrow-left.svg" height={24} width={24}/>
-              <span>My Campaignss</span>
+              <span>My Campaigns</span>
             </TopBtn>
             <div id="drop-cont" onClick={() => setShow(!show) }>
               <TopBtn id>
@@ -103,7 +103,7 @@ const CampaignView = () => {
             </Milestones>
             <ControlContainer>
               <button>Report Account</button>
-              <button><span><CheckIcon /></span> Mark As Completed</button>
+              <button onClick={() => router.push("/dashboard/campaigns/completed")}><span><CheckIcon /></span> Mark As Completed</button>
             </ControlContainer>
           </Bottom>
         </Container>

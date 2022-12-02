@@ -278,7 +278,7 @@ export const ContinueBtn = styled.button`
     padding: 10px 0;
     width: 100%;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 15px;
     border-radius: 3px;
     cursor: pointer;
 `;

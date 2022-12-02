@@ -13,6 +13,7 @@ import { CheckContainer, FrameContainer } from '../../../../styles/auth.style'
 import { ImageWrap, ServiceCard, ServiceDetails, ServRate, ServStats, ServUserCard, TopImg } from '../../../../styles/influencer-profile'
 import { AddServiceBtn, AvailableSwitch, BottomAdd,  Container, Content, Control, ControlFlex, CurrentToggle, DeleteBtn, FormContainer, Heading, InputContainer, InputFlex, List, ListB, ListContainer, ServiceList, Wrapper } from '../../../../styles/profile.style'
 import { BoxIcon } from '../../../../assets/svgIcons'
+import { moneyStandard } from '../../../../helpers/helper'
 
 const Services = () => {
   const [isAvailable, setIsAvailable] = useState(false);
@@ -94,7 +95,7 @@ const Services = () => {
                                         <p>{val.name}</p>
                                     </ServUserCard>
                                     <ServRate>
-                                        starting from <span>#70</span>
+                                        starting from <span>{val.currency} {moneyStandard(val.starting_from)}</span>
                                     </ServRate>
                                 </ServiceDetails>
                                 <ServStats>

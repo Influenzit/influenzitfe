@@ -63,7 +63,7 @@ const Services = () => {
                     link: ""
                 })
                 dispatch(setLoading(false));
-                router.push(`/dashboard/profile/services/faq/create/${successRes.data.data.id}`)
+                router.push(`/dashboard/profile/services/pricing/create/${successRes.data.data.id}`)
             }
         },
         onError(error) {

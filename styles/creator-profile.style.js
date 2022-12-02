@@ -41,6 +41,7 @@ export const ProfileStats = styled.div`
     p {
         text-align: center;
         color: #333;
+        font-size: 15px;
         span {
             color: ${colors.primaryColor};
         }

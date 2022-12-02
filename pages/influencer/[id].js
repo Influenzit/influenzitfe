@@ -124,7 +124,7 @@ const CreatorProfile = () => {
                     <Bottom style={{ columnGap: "15px"}}>
                         {
                            inData?.services.map((val, i) => (
-                            <CreatorsCard key={i}>
+                            <CreatorsCard key={i} style={{ cursor: "pointer" }} onClick={() => router.push(`/dashboard/services/${val.id}`)}>
                                 <TopImg>
                                     <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center" objectFit='cover' />
                                 </TopImg>

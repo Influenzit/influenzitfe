@@ -434,3 +434,125 @@ export const ResponsiveNav = styled.div`
     right: ${(props) => props.show ? "-1%" : "-101%" };
     transition: linear .3s;
 `;
+export const PricingContainer = styled.div`
+    display: flex;
+    max-width: 100%;
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+`;
+export const TitleColumn = styled.div`
+    width: 15%;
+    max-width: 15%;
+    font-size: 15px;
+    border-right: 1px solid #ccc;
+    #heading-cell {
+        height: 160px;
+        align-items: flex-start;
+    }
+`;
+export const HeadingCell = styled.div`
+    border-bottom: 1px solid #ccc;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    font-weight: 600;
+    font-size: 15px;
+    span {
+        width: 100%;
+        text-align: center;
+    }
+`;
+export const InputCell = styled.div`
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+    max-height: 160px;
+    textarea {
+        width: 100%;
+        height: 150px;
+        outline: none;
+        border: none;
+        background: #fff;
+        resize: none;
+        border-radius: 5px;
+        font-size: 15px;
+        padding: 5px;
+    }
+    input {
+        width: 100%;
+        height: 39px;
+        outline: none;
+        border: none;
+        background: #fff;
+        resize: none;
+        border-radius: 5px;
+        font-size: 15px;
+        padding: 5px;
+    }
+`;
+export const PackageColumn = styled.div`
+     width: calc(85% / 3);
+     max-width: calc(85% / 3);
+     min-width: calc(85% / 3);
+     border-right: 1px solid #ccc;
+     :last-of-type {
+        border-right: none;
+     }
+`;
+export const SubHeadingCell = styled.div`
+    border-bottom: 1px solid #ccc;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    font-size: 15px;
+    span {
+        width: 100%;
+        text-align: center;
+    }
+`;
+export const FeatureCell = styled.div`
+    padding: 5px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    input {
+        width: 100%;
+        border: none;
+        outline: none;
+        width: 100%;
+        border-radius: 5px;
+        background: #fff;
+        height: 40px;
+        padding: 5px;
+    }
+    button {
+        border: none;
+        background: transparent;
+        position: absolute;
+        right: 15px;
+        display: none;
+        cursor: pointer;
+    }
+    :hover button {
+        display: block;
+    }
+`;
+export const AddFeatureBtn = styled.button`
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    outline: none;
+    display: flex;
+    padding: 5px;
+    height: 40px;
+    align-items: center;
+    font-size: 15px;
+    margin-bottom: 15px;
+    span {
+        padding-left: 10px;
+        color: ${colors.primaryColor};
+    }
+`;

@@ -5,8 +5,10 @@ import { Container, ControlContainer, Details, StarsContainer, Textarea, Top } f
 import cancelIcon from '../../../assets/cancel.svg'
 import { OuterContainer, Wrapper } from '../../../styles/view.style'
 import { InputContainer, InputFlex } from '../../../styles/profile.style'
+import { useRouter } from 'next/router'
 
 const ProjectCancel = () => {
+  const router = useRouter();
   return (
     <OuterContainer>
       <Wrapper>
@@ -37,7 +39,7 @@ const ProjectCancel = () => {
             ></Textarea>
             <ControlContainer>
                 <button>Submit Request</button>
-                <button>Cancel & Go back</button>
+                <button onClick={() => router.push("/dashboard/projects/view")}>Cancel & Go back</button>
             </ControlContainer>
         </Container>
       </Wrapper>

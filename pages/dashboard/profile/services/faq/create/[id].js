@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createCertifications, createServices, createSkills, deleteCertification, deleteService, deleteSkill, getCertifications, getService, getServices, getSkills, updateCertifications, updateServices, updateSkills } from '../../../../../../api/influencer'
+import { createCertifications, createFaqServices, createServices, createSkills, deleteCertification, deleteService, deleteSkill, getCertifications, getService, getServices, getSkills, updateCertifications, updateServices, updateSkills } from '../../../../../../api/influencer'
 import { getUserType, isLoading, setError, setLoading, setSuccess } from '../../../../../../app/reducers/status'
 import { getUser } from '../../../../../../app/reducers/user'
 import ProfileSidebar from '../../../../../../components/profile-sidebar';
@@ -16,10 +16,6 @@ const Services = () => {
     const user = useSelector(getUser);
     const dispatch = useDispatch();
     const { id } = router.query;
-    const [fetched, setFetched] = useState(false);
-
-
-
     const currentAcctType = useSelector(getUserType);
 
     // faq list state
@@ -43,6 +39,44 @@ const Services = () => {
             router.push("/dashboard/profile/services/create");
         } 
     });
+    const createFaqMutation = useMutation( faqData => {
+        return createFaqServices(faqData.id, faqData.data);
+    }, {
+        onSuccess(successRes) {
+            const res = successRes.data;
+            refetchServiceData();
+            if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: res.message}));
+            } else { 
+                dispatch(setLoading(false));
+                router.push(`/dashboard/profile/services/faq/create/${successRes.data.data.id}`)
+            }
+        },
+        onError(error) {
+            const res = error.response.data;
+            if(res){
+              dispatch(setLoading(false));
+              dispatch(setError({error: true, message: res.message}));
+              return;
+            }
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: "An error occured"}));
+        }
+    });
+    const handleCreateFaq = () => {
+        dispatch(setLoading(true));
+        const filteredData = faqList.filter(val => val.question && val.answer)
+        if(filteredData.length < 1) {
+            dispatch(setLoading(false));
+            dispatch(setError({message: "Enter atleast a faq", error: true}));
+        } else{
+            createFaqMutation.mutate({
+                id,
+                data: filteredData,
+            });
+        }
+    }
     const handleAddFaq = () => {
         setFaqList((prev) => {
             const copyOfPrev = JSON.parse(JSON.stringify(prev));
@@ -56,15 +90,21 @@ const Services = () => {
             return copyOfPrev;
         })
     }
+    const handleFaqDel = (index) => {
+        setFaqList((prev) => {
+            const copyOfPrev = JSON.parse(JSON.stringify(prev));
+            copyOfPrev.splice(index, 1);
+            return copyOfPrev;
+        })
+    }
     useEffect(() => {
         dispatch(setLoading(true));
         if(user) {
             if(currentAcctType === "Business Owner") {
-                router.push("/dashboard/profile/information");
+                router.push("/dashboard/profile");
             }
-            if(id && !fetched) { 
+            if(id) { 
                 refetchServiceData();
-                setFetched(true);
             }
         }
         if(serviceData?.data) {
@@ -86,7 +126,7 @@ const Services = () => {
                             {
                                 faqList.map((val, i) => (
                                     <FaqCont>
-                                        <h3>Question {i + 1}</h3>
+                                        <h3>Question {i + 1} <button onClick={() => handleFaqDel(i)}><Image src="/delete.svg" alt="plus" height={22} width={22} /></button></h3>
                                         <InputContainer>
                                             <input
                                                 type="tel"
@@ -108,7 +148,7 @@ const Services = () => {
                             <AddSocialBtn onClick={handleAddFaq}><Image src="/plus.svg" alt="plus" height={22} width={22} /><span>Add more</span></AddSocialBtn>
                         </FormContainer>
                         <Bottom>
-                            <button>Continue to Media</button>
+                            <button onClick={handleCreateFaq}>Continue to Media</button>
                         </Bottom>
                     </Content>
                 )

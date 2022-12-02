@@ -13,32 +13,35 @@ import fillStarIcon from '../../../assets/fill-star.svg';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
 import { useEffect } from 'react';
+import { getService } from '../../../api/influencer';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { setLoading } from '../../../app/reducers/status';
+import { moneyStandard } from '../../../helpers/helper';
 
 const ServiceView = () => {
-  const [packageType, setPackageType] = useState("basic");
+  const [packageType, setPackageType] = useState("");
+  const [inData, setInData] = useState(null);
+  const [packages, setPackages] = useState([]);
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { data: serviceData, refetch: refetchServiceData } = useQuery(["get-service"], async () => {
+    return await getService(id);
+}, {
+    enabled: false,
+    staleTime: Infinity,
+    retry: false,
+    onSuccess() {
+        dispatch(setLoading(false));
+    },
+    onError(res) {
+        dispatch(setLoading(false));
+        router.push("/search");
+    } 
+});
+  const { id } = router.query;
   const [showFaq, setShowFaq] = useState(null);
-  const Faqs = [
-    {
-        question: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa?",
-        answer: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem."
-    },
-    {
-        question: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa?",
-        answer: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem."
-    },
-    {
-        question: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa?",
-        answer: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem."
-    },
-    {
-        question: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa?",
-        answer: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem."
-    },
-    {
-        question: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa?",
-        answer: "Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem."
-    },
-  ]
   const handleToggle = (i) => {
     if(showFaq[i]){
         setShowFaq((prev) => {
@@ -54,13 +57,38 @@ const ServiceView = () => {
         });
     }
   }
+  const getCurrentPackage = () => inData?.packages.filter(val => val.name === packageType)[0];
   useEffect(() => {
-    let sFaq = {};
-    Faqs.forEach((_, i) => {
-        sFaq = {...sFaq, [i]: false};
-    })
-    setShowFaq(sFaq);
-  }, [])
+    if (id) {
+        refetchServiceData();
+    }
+  }, [id]);
+  useEffect(() => {
+    if(serviceData?.data?.data){
+        setInData(serviceData?.data?.data);
+        const packagesGotten = [];
+        let sFaq = {};
+        serviceData?.data?.data.faqs.forEach((_, i) => {
+            sFaq = {...sFaq, [i]: false};
+        })
+        serviceData?.data?.data.packages.forEach((val) => {
+            if (val.name === "Basic" && !packagesGotten[0]) {
+                packagesGotten[0] = "Basic"
+            }
+            if(val.name === "Standard") {
+                packagesGotten[1] = "Standard"
+            }
+            if(val.name === "Premium") {
+                packagesGotten[2] = "Premium"
+            }
+        })
+        const formattedPackages = packagesGotten.filter((val) => !!val);
+        setShowFaq(sFaq);
+        setPackages(formattedPackages);
+        setPackageType(formattedPackages[0]);
+    }
+  }, [serviceData])
+  
   
   return (
     <Container>
@@ -87,9 +115,9 @@ const ServiceView = () => {
                 <Left>
                     <Section>
                         <CurrentPosition>
-                            <p>Category &gt; Sub-category &gt; Tag</p>
+                            <p>Dashboard &gt; Services &gt; {id}</p>
                         </CurrentPosition>
-                        <h2>I will make a post about your product on Instagram</h2>
+                        <h2>{inData?.name}</h2>
                         <ImageSlides>
                             <Slide 
                                 prevArrow={
@@ -115,15 +143,7 @@ const ServiceView = () => {
                             <h3>Description</h3>
                         </Header>
                         <Desc>
-                            Excepteur sint occaecat cupidatat non proident, saeunt 
-                            in culpa qui officia deserunt mollit anim laborum. Seden 
-                            utem perspiciatis undesieu omnis voluptatem alert of 
-                            the accusantium doque laudantium, totam rem aiam eaqueiu 
-                            ipsa quae ab illoion fabric inventore veritatisetm 
-                            quasitea architecto beataea dictaed quia couuntur magni 
-                            lorem dolores eos aquist ratione vtatem seque nesnt. 
-                            Neque porro quamest quioremas ete ipsum quiatem dolor 
-                            sitem ameteism conctetur adipisci velit sedate quianon.
+                           {inData?.description}
                         </Desc>
                     </Section>
                     <SectionM>
@@ -136,7 +156,7 @@ const ServiceView = () => {
                                     <Image src="/profile-2.png" layout='fill' objectFit="cover" objectPosition="center" />
                                 </ImageWrapper>
                                 <ProfileDetails>
-                                    <h3>Ezekiel Alawode</h3>
+                                    <h3>{inData?.user?.firstname} {inData?.user?.lastname}</h3>
                                     <Stars>
                                         <Image src={fillStarIcon} height={15} width={15} />
                                         <Image src={fillStarIcon} height={15} width={15} />
@@ -144,15 +164,12 @@ const ServiceView = () => {
                                         <Image src={fillStarIcon} height={15} width={15} />
                                         <Image src={starIcon} height={15} width={15} />
                                     </Stars>
-                                    <div><Image src="/flag.svg" height={25} width={25}/><p>Lagos, Nigeria</p></div>
-                                    <p>Member since Feb 09, 2021.</p>
+                                    <div><Image src="/flag.svg" height={25} width={25}/><p>{inData?.user.account.address}</p></div>
+                                    <p>Member since {(new Date(inData?.user?.created_at).toDateString())}.</p>
                                 </ProfileDetails>
                             </ProfileCard>
-                            <Bio>Excepteur sint occaecat cupidatat non proident, saeunt 
-                                in culpa qui officia deserunt mollit anim laborum. Seden 
-                                utem perspiciatis undesieu omnis voluptatem accusantium doque 
-                                laudantium, totam rem aiam eaqueiu ipsa laudantium, totam 
-                                rem aiam eaqueiu ipsa
+                            <Bio>
+                                {inData?.user?.biography}
                             </Bio>
                         </AboutWrapper>
                     </SectionM>
@@ -162,7 +179,7 @@ const ServiceView = () => {
                         </Header>
                         <FaqWrapper>
                             {
-                                Faqs.map((val, i) => (
+                                inData?.faqs.map((val, i) => (
                                     <FaqCont key={i}>
                                         <FaqQuest onClick={() => handleToggle(i)} isActive={showFaq?.[i]}>
                                             <h4>{val.question}</h4>
@@ -244,41 +261,31 @@ const ServiceView = () => {
                 <Right>
                     <PackageCard>
                         <PackageTabs>
-                            <PackageTab isActive={packageType === "basic"} onClick={() => setPackageType("basic")}>Basic</PackageTab>
-                            <PackageTab isActive={packageType === "standard"} onClick={() => setPackageType("standard")}>Standard</PackageTab>
-                            <PackageTab isActive={packageType === "premium"} onClick={() => setPackageType("premium")}>Premium</PackageTab>
+                            {
+                                packages.map((val) => (
+                                    <PackageTab isActive={packageType === val} onClick={() => setPackageType(val)}>{val}</PackageTab>
+                                ))
+                            }
                         </PackageTabs>
                         <Package>
                             <PHead>
-                                <p>{packageType === "basic" ? "BASIC" : packageType === "standard" ?  "STANDARD" : "PREMIUM" }</p>
-                                <p>#50,000</p>
+                                <p style={{ textTransform: "uppercase" }}>{getCurrentPackage()?.name}</p>
+                                <p>{getCurrentPackage()?.currency} {moneyStandard(getCurrentPackage()?.amount ?? 0)}</p>
                             </PHead>
                             <PDetails>
-                                Excepteur sint occaecat cupidatat non dolor lorem proident, saeunt in culpa qui officia is deserunt mollit anim laborum.
+                                {getCurrentPackage()?.description}
                             </PDetails>
                             <PFeatures>
-                                <Feature>
-                                    <Image src="/check-square.svg" alt="" width={25} height={25}/>
-                                    <p>Package Benefit One</p>
-                                </Feature>
-                                <Feature>
-                                    <Image src="/check-square.svg" alt="" width={25} height={25}/>
-                                    <p>Package Benefit One</p>
-                                </Feature>
-                                <Feature>
-                                    <Image src="/check-square.svg" alt="" width={25} height={25}/>
-                                    <p>Package Benefit One</p>
-                                </Feature>
-                                <Feature>
-                                    <Image src="/check-square.svg" alt="" width={25} height={25}/>
-                                    <p>Package Benefit One</p>
-                                </Feature>
-                                <Feature>
-                                    <Image src="/check-square.svg" alt="" width={25} height={25}/>
-                                    <p>Package Benefit One</p>
-                                </Feature>
+                                {
+                                    getCurrentPackage()?.features.map(feature => (
+                                        <Feature>
+                                            <Image src="/check-square.svg" alt="" width={25} height={25}/>
+                                            <p>{feature.name}</p>
+                                        </Feature>
+                                    ))
+                                }
                             </PFeatures>
-                            <ContinueBtn>Continue with Basic (#50,000)</ContinueBtn>
+                            <ContinueBtn>Continue with {getCurrentPackage()?.name} ({getCurrentPackage()?.currency} {moneyStandard(getCurrentPackage()?.amount ?? 0)})</ContinueBtn>
                         </Package>
                     </PackageCard>
                 </Right>
