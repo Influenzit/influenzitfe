@@ -125,7 +125,7 @@ const Services = () => {
                         <FormContainer>
                             {
                                 faqList.map((val, i) => (
-                                    <FaqCont>
+                                    <FaqCont key={i}>
                                         <h3>Question {i + 1} <button onClick={() => handleFaqDel(i)}><Image src="/delete.svg" alt="plus" height={22} width={22} /></button></h3>
                                         <InputContainer>
                                             <input
