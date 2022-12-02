@@ -14,17 +14,25 @@ import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
 import { useEffect } from 'react';
 import { getService } from '../../../api/influencer';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
-import { setLoading } from '../../../app/reducers/status';
+import { useDispatch, useSelector } from 'react-redux';
+import { setError, setLoading, setSuccess } from '../../../app/reducers/status';
 import { moneyStandard } from '../../../helpers/helper';
+import { usePaystackPayment } from 'react-paystack';
+import { createPaymentLog, processPayment } from '../../../api/payment';
+import { getUser } from '../../../app/reducers/user';
 
 const ServiceView = () => {
   const [packageType, setPackageType] = useState("");
   const [inData, setInData] = useState(null);
   const [packages, setPackages] = useState([]);
+  const [paystackConfig, setPaystackConfig] = useState({})
+  const initializePayment = usePaystackPayment(paystackConfig);
+  const [triggerPayment, setTriggerPayment] = useState(false);
+  const [makePayment, setMakePayment] = useState(false);
   const router = useRouter();
+  const user = useSelector(getUser);
   const dispatch = useDispatch();
   const { data: serviceData, refetch: refetchServiceData } = useQuery(["get-service"], async () => {
     return await getService(id);
@@ -88,7 +96,77 @@ const ServiceView = () => {
         setPackageType(formattedPackages[0]);
     }
   }, [serviceData])
-  
+  const onPaymentSuccess = (res) => {
+    dispatch(setLoading(true));
+    processPayment({
+        channel: "paystack",
+        payment_reference: res.reference
+    }).then((successRes) => {
+        dispatch(setLoading(false));
+        dispatch(setSuccess({success: true, message: successRes.data.message}));
+        setTimeout(() => {
+            router.push("/dashboard");
+        }, 3000)
+    }).catch(err => {
+        const res = err.response.data;
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: res.message}))
+    })
+  }
+  const onPaymentClose = (close) => {
+    console.log(close);
+  }
+    const createPaymentLogMutation = useMutation((log) => {
+        return createPaymentLog(log);
+    }, {
+        onSuccess(successRes) {
+            const res = successRes.data;
+            if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: res.message}));
+            } else {
+                dispatch(setLoading(false));
+                setPaystackConfig({
+                    reference: res.data.payment_reference,
+                    email: user.email,
+                    amount: Number(res.data.amount) * 100,
+                    publicKey: "pk_test_9d97cf0be86b0758ece444694d57a8db41a4be59",
+                });
+                setTriggerPayment(!triggerPayment);
+                setMakePayment(true);
+            }
+        },
+        onError(error) {
+            const res = error.response.data;
+            if(res){
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: res.message}));
+            return;
+            }
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: "An error occured"}));
+        }
+    });
+
+    // handles create Service
+    const handleCreatePaymentLog = () => {
+        dispatch(setLoading(true));
+        createPaymentLogMutation.mutate({
+            channel: "paystack",
+            payment_type: "service_payment",
+            amount: getCurrentPackage()?.amount,
+            currency: getCurrentPackage()?.currency,
+            package_id: getCurrentPackage()?.id,
+            meta: { business_id: 1}
+        });
+    }
+    useEffect(() => {
+      if (makePayment) {
+        initializePayment(onPaymentSuccess, onPaymentClose);
+        setMakePayment(false);
+      }
+    }, [triggerPayment])
+    
   
   return (
     <Container>
@@ -285,7 +363,7 @@ const ServiceView = () => {
                                     ))
                                 }
                             </PFeatures>
-                            <ContinueBtn>Continue with {getCurrentPackage()?.name} ({getCurrentPackage()?.currency} {moneyStandard(getCurrentPackage()?.amount ?? 0)})</ContinueBtn>
+                            <ContinueBtn onClick={handleCreatePaymentLog}>Continue with {getCurrentPackage()?.name} ({getCurrentPackage()?.currency} {moneyStandard(getCurrentPackage()?.amount ?? 0)})</ContinueBtn>
                         </Package>
                     </PackageCard>
                 </Right>

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import { Container, Controls, CreatorDetails, SocialHandle, TopImg } from './style'
 
-const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink}) => {
+const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink, skills}) => {
   return (
     <Container>
         <TopImg>
@@ -17,7 +17,7 @@ const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink}) => {
                 <a><Image src="/twitter.svg" alt="" height={16} width={16}/><span>{handle} | 16k reach</span></a>
             </Link>
             </SocialHandle>
-            <p>Laptop Lifestyle | Photography | Fashion</p>
+            <p>{skills}</p>
             <Controls>
                 <Link href={profileLink} passHref>
                     <a>View Profile</a>

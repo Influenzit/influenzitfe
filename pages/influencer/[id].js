@@ -136,7 +136,7 @@ const CreatorProfile = () => {
                                         <p>{val.description}</p>
                                     </ServUserCard>
                                     <ServRate>
-                                        starting from <span># {val.starting_from}</span> 
+                                        starting from <span>{val.currency} {val.starting_from}</span> 
                                     </ServRate>
                                 </CreatorDetails>
                                 <ServStats>
@@ -287,18 +287,14 @@ const CreatorProfile = () => {
                                 <h3>My Skills</h3>
                             </Top>
                             <Bottom style={{ flexDirection: "column"}}>
-                                <SkillGuage level={95}>
-                                    <p>Public Engagement</p>
-                                    <div></div>
-                                </SkillGuage>
-                                <SkillGuage level={70}>
-                                    <p>Public Engagement</p>
-                                    <div></div>
-                                </SkillGuage>
-                                <SkillGuage level={86}>
-                                    <p>Public Engagement</p>
-                                    <div></div>
-                                </SkillGuage>
+                                {
+                                    inData?.skills.map((val, i) => (
+                                        <SkillGuage level={val.rate} key={i}>
+                                            <p>{val.name}</p>
+                                            <div></div>
+                                        </SkillGuage>
+                                    ))
+                                }
                             </Bottom>
                         </SkillCard>
                     </Right>
