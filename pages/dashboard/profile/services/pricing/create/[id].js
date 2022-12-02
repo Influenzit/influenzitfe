@@ -24,21 +24,21 @@ const Services = () => {
         description: "",
         amount: "",
         currency: "",
-        features: [""],
+        features: [{name: ""}],
     });
     const [premium, setPremium] = useState({
         name: "Premium",
         description: "",
         amount: "",
         currency: "",
-        features: [""],
+        features: [{name: ""}],
     });
     const [standard, setStandard] = useState({
         name: "Standard",
         description: "",
         amount: "",
         currency: "",
-        features: [""],
+        features: [{name: ""}],
     });
     // gets Services
     const { data: serviceData, refetch: refetchServiceData } = useQuery(["get-service"], async () => {
@@ -67,7 +67,7 @@ const Services = () => {
                 dispatch(setError({error: true, message: res.message}));
             } else { 
                 dispatch(setLoading(false));
-                router.push(`/dashboard/profile/services/faq/create/${successRes.data.data.id}`)
+                router.push(`/dashboard/profile/services/faq/create/${id}`)
             }
         },
         onError(error) {
@@ -139,21 +139,21 @@ const Services = () => {
     const handleAddFeatureB = () => {
         setBasic((old) => {
             const copyOld = JSON.parse(JSON.stringify(old));
-            copyOld.features.push("");
+            copyOld.features.push({name: ""});
             return copyOld;
         })
     }
     const handleAddFeatureP = () => {
         setPremium((old) => {
             const copyOld = JSON.parse(JSON.stringify(old));
-            copyOld.features.push("");
+            copyOld.features.push({name: ""});
             return copyOld;
         })
     }
     const handleAddFeatureS = () => {
         setStandard((old) => {
             const copyOld = JSON.parse(JSON.stringify(old));
-            copyOld.features.push("");
+            copyOld.features.push({name: ""});
             return copyOld;
         })
     }
@@ -176,21 +176,21 @@ const Services = () => {
                 description: "",
                 amount: "",
                 currency: serviceData?.data.data.currency,
-                features: [""],
+                features: [{name: ""}],
             });
             setStandard({ 
                 name: "Standard",
                 description: "",
                 amount: "",
                 currency: serviceData?.data.data.currency,
-                features: [""],
+                features: [{name: ""}],
             });
             setPremium({ 
                 name: "Premium",
                 description: "",
                 amount: "",
                 currency: serviceData?.data.data.currency,
-                features: [""],
+                features: [{name: ""}],
             });
         }
     }, [serviceData])
@@ -201,21 +201,21 @@ const Services = () => {
             case "basic":
                 setBasic((oldVal) => {
                     const copyOld = JSON.parse(JSON.stringify(oldVal));
-                    copyOld.features[index] = val;
+                    copyOld.features[index].name = val;
                     return copyOld;
                 })
                 break;
             case "standard":
                 setStandard((oldVal) => {
                     const copyOld = JSON.parse(JSON.stringify(oldVal));
-                    copyOld.features[index] = val;
+                    copyOld.features[index].name = val;
                     return copyOld;
                 })
                 break;
             case "premium":
                 setPremium((oldVal) => {
                     const copyOld = JSON.parse(JSON.stringify(oldVal));
-                    copyOld.features[index] = val;
+                    copyOld.features[index].name = val;
                     return copyOld;
                 })
                 break;
@@ -267,7 +267,7 @@ const Services = () => {
                         <TitleColumn>
                             <HeadingCell></HeadingCell>
                             <HeadingCell id="heading-cell"><span>Description</span></HeadingCell>
-                            <HeadingCell><span>Price</span></HeadingCell>
+                            <HeadingCell><span>Price ({serviceData?.data.data.currency})</span></HeadingCell>
                         </TitleColumn>
                         <PackageColumn>
                             <HeadingCell><span>Basic</span></HeadingCell>
@@ -283,7 +283,7 @@ const Services = () => {
                             {
                                 basic.features.map((val, i) => (
                                     <FeatureCell key={i}>
-                                        <input type="text" placeholder='Feature' value={val} onChange={(e) => handleFeatureInput(e.target.value, "basic", i)}/>
+                                        <input type="text" placeholder='Feature' value={val.name} onChange={(e) => handleFeatureInput(e.target.value, "basic", i)}/>
                                         <button onClick={() => handleFeatureDel("basic", i)}><Image src="/delete.svg" alt="plus" height={22} width={22} /></button>
                                     </FeatureCell>
                                 ))
@@ -306,7 +306,7 @@ const Services = () => {
                             {
                                 standard.features.map((val, i) => (
                                     <FeatureCell key={i}>
-                                        <input type="text" value={val} onChange={(e) => handleFeatureInput(e.target.value, "standard", i)} placeholder='Feature'/>
+                                        <input type="text" value={val.name} onChange={(e) => handleFeatureInput(e.target.value, "standard", i)} placeholder='Feature'/>
                                         <button onClick={() => handleFeatureDel("standard", i)}><Image src="/delete.svg" alt="plus" height={22} width={22} /></button>
                                     </FeatureCell>
                                 ))
@@ -329,7 +329,7 @@ const Services = () => {
                             {
                                 premium.features.map((val, i) => (
                                     <FeatureCell key={i}>
-                                        <input type="text" value={val} onChange={(e) => handleFeatureInput(e.target.value, "premium", i)} placeholder='Feature'/>
+                                        <input type="text" value={val.name} onChange={(e) => handleFeatureInput(e.target.value, "premium", i)} placeholder='Feature'/>
                                         <button onClick={() => handleFeatureDel("premium", i)}><Image src="/delete.svg" alt="plus" height={22} width={22} /></button>
                                     </FeatureCell>
                                 ))

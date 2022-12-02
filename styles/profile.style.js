@@ -455,6 +455,10 @@ export const AddServiceBtn = styled.button`
     }
 `;
 export const FaqCont = styled.div`
+    button {
+        background: transparent;
+        border: none;
+    }
     h3 {
         font-size: 16px;
         color: #111;
