@@ -350,6 +350,7 @@ export const ProfilePicWrapper = styled.div`
     height: 40px;
     width: 40px;
     border-radius: 50%;
+    overflow: hidden;
     ${breakpoints.sm} {
         height: 30px;
         width: 30px;

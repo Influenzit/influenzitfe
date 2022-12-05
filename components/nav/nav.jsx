@@ -246,7 +246,7 @@ const Nav = () => {
                         </ControlsA>
                         <UserBtn onClick={() => handleProfileOpen()} ref={profileRef}>
                             <ProfilePicWrapper>
-                                <Image src="/profile-pic.png" alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
+                                <Image src={`https://ui-avatars.com/api/?name=${userDetails?.firstname}+${userDetails?.lastname}&color=FFFFFF&background=12544D`} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
                             </ProfilePicWrapper>
                             {
                                 showDropdown && <UserDropdown>

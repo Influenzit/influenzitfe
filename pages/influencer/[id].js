@@ -10,6 +10,7 @@ import LandingLayout from '../../layouts/landing.layout'
 import { Controls, CreatorsCard, CreatorDetails, SocialHandle } from '../../styles/business-owner.style'
 import { BackImage, Bottom, Container, HeroSectionOne, Popup, ProfileCategory, ProfileData, ProfileDetails, ProfileImgCont, ProfileStats, SeeMoreCont, SkillCard, StatCard, Stats, StatWrapper, Top, UserCard, WorkCard, Wrapper } from '../../styles/creator-profile.style'
 import { AwardCard, Content, DataSection, DataSectionTwo, ExperienceWrapper, ImageWrap, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, TabBtn, Tabs, TopImg } from '../../styles/influencer-profile'
+import { colors } from '../../styles/theme'
 
 const CreatorProfile = () => {
   const router = useRouter();
@@ -51,7 +52,7 @@ const CreatorProfile = () => {
             <UserCard>
                 <ProfileStats>
                     <ProfileImgCont>
-                        <Image src="/profile-2.png" alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                        <Image src={`https://ui-avatars.com/api/?name=${inData?.user?.firstname}+${inData?.user.lastname}&color=FFFFFF&background=12544D`} alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                     </ProfileImgCont>
                     <ProfileData>
                         <div>
@@ -72,7 +73,7 @@ const CreatorProfile = () => {
                     <ProfileCategory>
                         <div><Image src="/niche.svg" height={25} width={25}/><p>Influencer&apos;s Niche</p></div>
                         <div><Image src="/flag.svg" height={25} width={25}/><p>Nigeria</p></div>
-                        <div><Image src="/instagram.svg" height={25} width={25}/><p>itzphoenixgold</p> <span>744</span></div>
+                        <div><Image src="/instagram.svg" height={25} width={25}/><p>{inData?.instagram}</p> <span>0</span></div>
                     </ProfileCategory>
                     <p>{inData?.biography}
                     </p>
@@ -234,23 +235,23 @@ const CreatorProfile = () => {
                             <Bottom style={{ flexDirection: "column"}}>
                                 <SocialStats>
                                     <Image src="/instagram.svg" height={25} width={25}/>
-                                    <p>itzphoenixgold</p>
-                                    <span>744</span>
+                                    <p>{inData?.instagram}</p>
+                                    <span>0</span>
                                 </SocialStats>
                                 <SocialStats>
                                     <Image src="/twitter.svg" height={25} width={25}/>
-                                    <p>itzphoenixgold</p>
-                                    <span>744</span>
+                                    <p>{inData?.twitter}</p>
+                                    <span>0</span>
                                 </SocialStats>
                                 <SocialStats>
                                     <Image src="/facebook.svg" height={25} width={25}/>
-                                    <p>itzphoenixgold</p>
-                                    <span>744</span>
+                                    <p>{inData?.facebook}</p>
+                                    <span>0</span>
                                 </SocialStats>
                                 <SocialStats>
                                     <Image src="/tiktok.svg" height={25} width={25}/>
-                                    <p>itzphoenixgold</p>
-                                    <span>744</span>
+                                    <p>{inData?.tiktok}</p>
+                                    <span>0</span>
                                 </SocialStats>
                             </Bottom>
                         </SkillCard>
