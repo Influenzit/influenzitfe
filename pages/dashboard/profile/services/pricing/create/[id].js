@@ -161,6 +161,7 @@ const Services = () => {
         dispatch(setLoading(true));
         if(user) {
             if(currentAcctType === "Business Owner") {
+                dispatch(setLoading(false));
                 router.push("/dashboard/profile");
             }
             if(id) { 

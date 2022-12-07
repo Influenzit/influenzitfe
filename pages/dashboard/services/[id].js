@@ -10,8 +10,9 @@ import chevDownIcon from '../../../assets/chev-down.svg';
 import chevUpIcon from '../../../assets/chev-up.svg';
 import starIcon from '../../../assets/star.svg';
 import fillStarIcon from '../../../assets/fill-star.svg';
-import { Slide } from 'react-slideshow-image';
-import 'react-slideshow-image/dist/styles.css';
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { useEffect } from 'react';
 import { getService } from '../../../api/influencer';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -22,6 +23,30 @@ import { moneyStandard } from '../../../helpers/helper';
 import { usePaystackPayment } from 'react-paystack';
 import { createPaymentLog, processPayment } from '../../../api/payment';
 import { getUser } from '../../../app/reducers/user';
+
+function NextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+        <CtrlBtn
+            onClick={onClick}
+            className={className}
+        >
+            <Image src={chevRightIcon} alt="chev-left" height={20} width={15} />
+        </CtrlBtn>
+    );
+  }
+  
+  function PrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+        <CtrlBtn
+         onClick={onClick}
+         className={className}
+         >
+            <Image src={chevLeftIcon} alt="chev-left" height={20} width={15} />
+        </CtrlBtn>
+    );
+  }
 
 const ServiceView = () => {
   const [packageType, setPackageType] = useState("");
@@ -147,7 +172,6 @@ const ServiceView = () => {
             dispatch(setError({error: true, message: "An error occured"}));
         }
     });
-
     // handles create Service
     const handleCreatePaymentLog = () => {
         dispatch(setLoading(true));
@@ -197,25 +221,36 @@ const ServiceView = () => {
                         </CurrentPosition>
                         <h2>{inData?.name}</h2>
                         <ImageSlides>
-                            <Slide 
-                                prevArrow={
-                                    <CtrlBtn leftS={true}>
-                                        <Image src={chevLeftIcon} alt="chev-left" height={20} width={15} />
-                                    </CtrlBtn>
-                                }
-                                nextArrow={
-                                    <CtrlBtn>
-                                        <Image src={chevRightIcon} alt="chev-left" height={20} width={15} />
-                                    </CtrlBtn>
-                                }
-                            > 
-                                <Images>
-                                    <Image src="/wp.png" layout='fill' objectFit='cover' objectPosition='center' quality={100} />
-                                </Images>
-                                <Images>
-                                    <Image src="/wp.png" layout='fill' objectFit='cover' objectPosition='center' quality={100}/>
-                                </Images>
-                            </Slide>
+                            {
+                                inData?.media && (
+                                    <Slider 
+                                        dots={false}
+                                        infinite={true}
+                                        speed={500}
+                                        slidesToShow={1}
+                                        slidesToScroll={1}
+                                        prevArrow={<PrevArrow />}
+                                        nextArrow={<NextArrow />}
+                                    > 
+                                        {
+                                            inData?.media.map((val, i) => {
+                                                return (
+                                                    <Images key={i}>
+                                                        <Image src={val.url} layout='fill' objectFit='cover' objectPosition='center' quality={100} />
+                                                    </Images>
+                                                )
+                                            })
+                                        }
+                                        {
+                                           (inData?.media.length === 0) && (
+                                                <Images>
+                                                    <Image src={"/web-services.jpg"} layout='fill' objectFit='cover' objectPosition='center' quality={100} />
+                                                </Images>
+                                            ) 
+                                        }
+                                    </Slider>
+                                )
+                            }
                         </ImageSlides>
                         <Header style={{ paddingLeft: "0" }}>
                             <h3>Description</h3>

@@ -465,3 +465,54 @@ export const FaqCont = styled.div`
         padding-bottom: 10px;
     }
 `;
+export const SmallHeader = styled.p`
+    font-weight: 600;
+    font-size: 14px;
+    color: #111;
+`;
+export const UploadContainer = styled.div`
+    border: 2px dashed #E1E7EC;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 15px;
+`;
+export const UploadHeader = styled.div`
+    label {
+        cursor: pointer;
+        color: ${colors.primaryColor};
+        text-decoration: underline;
+    }
+`;
+export const UploadInfo = styled.div`
+    font-size: 12px;
+    color: #111;
+    margin-top: 10px;
+`;
+export const FileContainer = styled.div`
+`;
+export const FilePreview = styled.div`
+    background: #FCFCFC;
+    height: 80px;
+    align-items: center;
+    margin-top: 10px;
+    display: flex;
+    border: 1px solid #E1E7EC;
+    border-radius: 3px;
+`;
+export const ImgPreview = styled.div`
+    margin: 0 15px;
+`;
+export const PreviewDetails = styled.div`
+    p {
+        font-weight: 600;
+        font-size: 14px;
+        color: #111;
+    }
+    span {
+        font-size: 12px;
+        color: #111;
+    }
+`;

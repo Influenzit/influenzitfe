@@ -37,7 +37,7 @@ const Login = () => {
               dispatch(setBusinesses(bizRes.data.data))
               dispatch(updateUser(res.user));
               dispatch(setError({error: false, message: ""}));
-              localStorage.setItem("user", JSON.stringify(res.user));
+              localStorage.setItem("user-id", res.user.id);
               router.push("/dashboard");
             }
           }).catch( _ => {
@@ -49,7 +49,7 @@ const Login = () => {
           dispatch(updateUser(res.user));
           dispatch(setError({error: false, message: ""}));
           localStorage.setItem("token", res.token);
-          localStorage.setItem("user", JSON.stringify(res.user));
+          localStorage.setItem("user-id", res.user.id);
           
           if (is_influencer || is_creator) {
             is_influencer ? dispatch(setUserType("Influencer")) : (is_creator && dispatch(setUserType("Creator")))

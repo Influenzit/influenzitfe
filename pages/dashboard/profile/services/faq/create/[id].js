@@ -50,7 +50,7 @@ const Services = () => {
                 dispatch(setError({error: true, message: res.message}));
             } else { 
                 dispatch(setLoading(false));
-                router.push(`/dashboard/profile/services/faq/create/${successRes.data.data.id}`)
+                router.push(`/dashboard/profile/services/media/create/${id}`)
             }
         },
         onError(error) {
@@ -102,6 +102,7 @@ const Services = () => {
         if(user) {
             if(currentAcctType === "Business Owner") {
                 router.push("/dashboard/profile");
+                dispatch(setLoading(false));
             }
             if(id) { 
                 refetchServiceData();

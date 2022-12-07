@@ -6,12 +6,14 @@ import Loader from '../components/loading'
 import { Container } from '../styles/landing.style'
 import DashboardFooter from '../components/dashboard-footer'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUser } from '../app/reducers/user'
+import { getUser, updateUser } from '../app/reducers/user'
 import { useRouter } from 'next/router'
-import { getMessage, isError, isLoading, isSuccess, setUserType } from '../app/reducers/status'
+import { getMessage, isError, isLoading, isSuccess, setLoading, setUserType } from '../app/reducers/status'
 import ErrorPopup from '../components/error-popup'
 import SuccessPopup from '../components/success-popup'
 import { hasAValidAccount } from '../helpers/helper'
+import { useQuery } from '@tanstack/react-query'
+import { getUserAccount } from '../api/auth'
 
 const LandingLayout = ({children, title, description}) => {
   const user = useSelector(getUser);
@@ -23,12 +25,31 @@ const LandingLayout = ({children, title, description}) => {
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   
+  const { data, refetch } = useQuery(["get-user"], async () => {
+    return await getUserAccount(localStorage.getItem("user-id"));
+}, {
+    staleTime: false,
+    enabled: false,
+    retry: false,
+    onSuccess(res) {
+        dispatch(setLoading(false));
+        dispatch(updateUser(res.data.data));
+    },
+    onError(res) {
+        dispatch(setLoading(false));
+        if (router.pathname.includes("/dashboard")) {
+          router.push("/login")
+        }
+    } 
+});
+  
   useEffect(() => {
     setIsLoggedIn(!!user);
   }, [user]);
   useEffect(() => {
-    console.log(localStorage.getItem("user-type"));
+    dispatch(setLoading(true));
     dispatch(setUserType(localStorage.getItem("user-type")));
+    refetch();
   }, [])
   
   useEffect(() => {
@@ -47,9 +68,7 @@ const LandingLayout = ({children, title, description}) => {
           router.push("/dashboard")
       }
     } else {
-      if (router.pathname.includes("/dashboard")) {
-        router.push("/login")
-      }
+     
     }
   }, [user, router.pathname])
   return (

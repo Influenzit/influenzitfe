@@ -87,19 +87,21 @@ export const CurrentPosition = styled.div`
 export const ImageSlides = styled.div`
     width: 100%;
     margin: 20px 0;
+    position: relative;
 `;
 export const CtrlBtn = styled.button`
     border: none;
     height: 40px;
     width: 40px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    background: #fff;
-    justify-content: center;
-    position: absolute;
-    ${(props) => props.leftS ? "left: -20px !important" : "right: -20px !important" };
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #fff !important;
     box-shadow: 0px 0px 10px 0px #00000026;
+    ::before {
+        display: none !important;
+    }
 `;
 export const Images = styled.div`
     position: relative;

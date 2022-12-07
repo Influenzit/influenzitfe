@@ -8,6 +8,12 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: 'http',
+        hostname: 'phplaravel-870335-3074787.cloudwaysapps.com',
+        port: '',
+        pathname: '/storage/**',
+      },
+      {
         protocol: 'https',
         hostname: 'ui-avatars.com',
         port: '',

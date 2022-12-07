@@ -3,12 +3,13 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createCertifications, createFaqServices, createServices, createSkills, deleteCertification, deleteService, deleteSkill, getCertifications, getService, getServices, getSkills, updateCertifications, updateServices, updateSkills } from '../../../../../../api/influencer'
+import { createCertifications, createFaqServices, createServices, createSkills, deleteCertification, deleteService, deleteSkill, getCertifications, getService, getServices, getSkills, updateCertifications, updateServices, updateSkills, uploadServiceMedia } from '../../../../../../api/influencer'
 import { getUserType, isLoading, setError, setLoading, setSuccess } from '../../../../../../app/reducers/status'
 import { getUser } from '../../../../../../app/reducers/user'
 import ProfileSidebar from '../../../../../../components/profile-sidebar';
 import LandingLayout from '../../../../../../layouts/landing.layout';
-import { AddSocialBtn, Bottom, BottomAdd,  Container, Content, Control, ControlFlex, CurrentToggle, DeleteBtn, FaqCont, FormContainer, Heading, InputContainer, InputFlex, List, ListB, ListContainer, Wrapper } from '../../../../../../styles/profile.style'
+import { AddSocialBtn, Bottom, BottomAdd,  Container, Content, Control, ControlFlex, CurrentToggle, DeleteBtn, FaqCont, FileContainer, FilePreview, FormContainer, Heading, ImgPreview, InputContainer, InputFlex, List, ListB, ListContainer, PreviewDetails, SmallHeader, UploadContainer, UploadHeader, UploadInfo, Wrapper } from '../../../../../../styles/profile.style';
+import imageIcon from "../../../../../../assets/image.svg";
 
 
 const Services = () => {
@@ -17,12 +18,11 @@ const Services = () => {
     const dispatch = useDispatch();
     const { id } = router.query;
     const currentAcctType = useSelector(getUserType);
+    const [dataEnter, setDataEnter] = useState(false);
 
-    // faq list state
-    const [faqList, setFaqList] = useState([{
-        question: "",
-        answer: ""
-    }]);
+    // file list state
+    const [fileList, setFileList] = useState([]);
+    const [fileSelected, setFileSelected] = useState(null);
 
     // gets Services
     const { data: serviceData, refetch: refetchServiceData } = useQuery(["get-service"], async () => {
@@ -39,8 +39,8 @@ const Services = () => {
             router.push("/dashboard/profile/services/create");
         } 
     });
-    const createFaqMutation = useMutation( faqData => {
-        return createFaqServices(faqData.id, faqData.data);
+    const uploadMutation = useMutation( mediaData => {
+        return uploadServiceMedia(mediaData.id, mediaData.data);
     }, {
         onSuccess(successRes) {
             const res = successRes.data;
@@ -50,7 +50,7 @@ const Services = () => {
                 dispatch(setError({error: true, message: res.message}));
             } else { 
                 dispatch(setLoading(false));
-                router.push(`/dashboard/profile/services/faq/create/${successRes.data.data.id}`)
+                router.push(`/dashboard/profile/services`)
             }
         },
         onError(error) {
@@ -64,16 +64,19 @@ const Services = () => {
             dispatch(setError({error: true, message: "An error occured"}));
         }
     });
-    const handleCreateFaq = () => {
+    const handleUpload = () => {
         dispatch(setLoading(true));
-        const filteredData = faqList.filter(val => val.question && val.answer)
-        if(filteredData.length < 1) {
+        if(fileList.length < 1) {
             dispatch(setLoading(false));
-            dispatch(setError({message: "Enter atleast a faq", error: true}));
+            dispatch(setError({message: "Upload atleast a file", error: true}));
         } else{
-            createFaqMutation.mutate({
+            const formdata = new FormData();
+            fileList.forEach((val, i) => {
+                formdata.append(`service_media_${i + 1}`, val);
+            })
+            uploadMutation.mutate({
                 id,
-                data: filteredData,
+                data: formdata,
             });
         }
     }
@@ -83,25 +86,47 @@ const Services = () => {
             return [...copyOfPrev, { question: "", answer: "" }];
         })
     }
-    const handleInputChange = (val, field, index) => {
-        setFaqList((prev) => {
-            const copyOfPrev = JSON.parse(JSON.stringify(prev));
-            copyOfPrev[index][field] = val;
-            return copyOfPrev;
+    const handleSetFiles = (file) => {
+        if(file.size < 5000000){
+            setFileList((old) => {
+                let copyOld = [...old];
+                if(file.type.includes("image/") && !(copyOld.includes(file))){
+                    copyOld = [...copyOld, file];
+                }
+                return copyOld;
+            })
+        }
+    }
+    const handleFileChange = (e) => {
+        [...e.target.files].forEach((val) => {
+            handleSetFiles(val);
         })
     }
-    const handleFaqDel = (index) => {
-        setFaqList((prev) => {
-            const copyOfPrev = JSON.parse(JSON.stringify(prev));
-            copyOfPrev.splice(index, 1);
-            return copyOfPrev;
-        })
+    const handleDrop = (e) => {
+        e.preventDefault();
+        if (e.dataTransfer.files.length > 1) {
+            [...e.dataTransfer.files].forEach(val => {
+                handleSetFiles(val);
+            })
+        } else if(e.dataTransfer.files.length === 1) {
+            handleSetFiles(e.dataTransfer.files[0]);
+        }
+    }
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDataEnter(true);
+    }
+    const handleDragLeave = (e) => {
+        e.preventDefault();
+        setDataEnter(false);
     }
     useEffect(() => {
         dispatch(setLoading(true));
         if(user) {
             if(currentAcctType === "Business Owner") {
                 router.push("/dashboard/profile");
+                dispatch(setLoading(false));
             }
             if(id) { 
                 refetchServiceData();
@@ -120,35 +145,40 @@ const Services = () => {
                 serviceData && serviceData.data && (
                     <Content>
                         <Heading>
-                            <h2>Add Service FAQs</h2>
+                            <h2>Media &amp; Consent</h2>
                         </Heading>
                         <FormContainer>
-                            {
-                                faqList.map((val, i) => (
-                                    <FaqCont key={i}>
-                                        <h3>Question {i + 1} <button onClick={() => handleFaqDel(i)}><Image src="/delete.svg" alt="plus" height={22} width={22} /></button></h3>
-                                        <InputContainer>
-                                            <input
-                                                type="tel"
-                                                value={val.question}
-                                                placeholder="Ask your question"
-                                                onChange={(e) => handleInputChange(e.target.value, "question", i)}
-                                            />
-                                        </InputContainer>
-                                        <InputContainer>
-                                            <textarea 
-                                              value={val.answer}
-                                              placeholder="Type answer here"
-                                              onChange={(e) => handleInputChange(e.target.value, "answer", i)}
-                                            />
-                                        </InputContainer>
-                                    </FaqCont>
-                                ))
-                            }
-                            <AddSocialBtn onClick={handleAddFaq}><Image src="/plus.svg" alt="plus" height={22} width={22} /><span>Add more</span></AddSocialBtn>
+                            <SmallHeader>Upload and attach files</SmallHeader>
+                            <UploadContainer onDrop={handleDrop} onDragLeave={handleDragLeave} onDragOver={handleDragOver}>
+                                <UploadHeader >
+                                    <label htmlFor="upload-input">Click to upload</label>
+                                    <span> or drag and drop here.</span>
+                                </UploadHeader>
+                                <UploadInfo>
+                                    Maximum file size 5MB
+                                </UploadInfo>
+                                <input type="file" value={fileSelected} hidden id="upload-input" onChange={handleFileChange} multiple/>
+                            </UploadContainer>
+                            <FileContainer>
+                                {
+                                    fileList.map((val, i) => {
+                                        return (
+                                            <FilePreview key={i}>
+                                                <ImgPreview>
+                                                    <Image src={URL.createObjectURL(val)} alt="" height={60} width={60} />
+                                                </ImgPreview>
+                                                <PreviewDetails>
+                                                    <p>{val.name}</p>
+                                                    <span>{(val.size / 1000000).toFixed(2)} MB</span>
+                                                </PreviewDetails>
+                                            </FilePreview>
+                                        )
+                                    })
+                                }
+                            </FileContainer>
                         </FormContainer>
                         <Bottom>
-                            <button onClick={handleCreateFaq}>Continue to Media</button>
+                            <button onClick={handleUpload}>Finish</button>
                         </Bottom>
                     </Content>
                 )

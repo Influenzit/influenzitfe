@@ -57,7 +57,6 @@ const Services = () => {
   const [serviceList, setServiceList] = useState([]);
     useEffect(() => {
         if(serviceData) {
-            console.log(serviceData.data.data)
             setServiceList(serviceData.data.data);
         }
     }, [serviceData]);
@@ -85,7 +84,7 @@ const Services = () => {
                         serviceList.map((val, i) => (
                             <ServiceCard key={i}>
                                 <TopImg>
-                                    <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center" objectFit='cover' />
+                                    <Image src={val.media[0]?.url ?? "/web-services.jpg"} alt="" layout="fill" objectPosition="center" objectFit='cover' />
                                 </TopImg>
                                 <ServiceDetails>
                                     <ServUserCard>
