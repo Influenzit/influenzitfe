@@ -94,6 +94,7 @@ export const CtrlBtn = styled.button`
     height: 40px;
     width: 40px;
     border-radius: 50%;
+    z-index: 20;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;

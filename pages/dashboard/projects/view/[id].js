@@ -1,14 +1,40 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { AlertTriangleIcon, CheckCircleIcon, CheckIcon, XSquareIcon } from '../../../assets/svgIcons'
-import { UserDropdown } from '../../../components/nav/style'
-import LandingLayout from '../../../layouts/landing.layout'
-import { Bottom, Container, ControlContainer, CurrentPackage, Desc, Details, DetailsContainer, ImageWrapper, MDetails, MDone, Milestone, MilestoneHeader, MilestoneList, Milestones, MStatus, OuterContainer, SubDetails, Top, TopBtn, Wrapper } from '../../../styles/view.style'
+import { useDispatch } from 'react-redux'
+import { getProject } from '../../../../api/projects'
+import { AlertTriangleIcon, CheckCircleIcon, CheckIcon, XSquareIcon } from '../../../../assets/svgIcons'
+import { UserDropdown } from '../../../../components/nav/style'
+import LandingLayout from '../../../../layouts/landing.layout'
+import { Bottom, Container, ControlContainer, CurrentPackage, Desc, Details, DetailsContainer, ImageWrapper, MDetails, MDone, Milestone, MilestoneHeader, MilestoneList, Milestones, MStatus, OuterContainer, SubDetails, Top, TopBtn, Wrapper } from '../../../../styles/view.style'
 
 const ProjectView = () => {
   const [show, setShow] = useState(false);
   const router = useRouter();
+  const { id } = router.query;
+  const dispatch = useDispatch();
+  const [projectDetails, setProjectDetails] = useState({})
+
+  const { data, refetch } = useQuery(["get-project"], async () => {
+        return await getProject(id);
+    }, {
+        enabled: false,
+        staleTime: Infinity,
+        retry: false,
+        onSuccess(res) {
+            dispatch(setLoading(false));
+            setProjectDetails(res.data.data)
+        },
+        onError(res) {
+            dispatch(setLoading(false));
+            router.push("/search");
+        } 
+    });
+    useEffect(() => {
+      if(id){
+        refetch(id);
+      }
+    }, [id])
   return (
     <OuterContainer>
       <Wrapper>
@@ -39,28 +65,26 @@ const ProjectView = () => {
                 <Image src="/p-image.png" layout='fill'  objectFit='cover' objectPosition='center'/>
               </ImageWrapper>
               <Details>
-                <h2>General Branding for Product X</h2>
+                <h2>{projectDetails?.title}</h2>
                 <SubDetails>
                   <div>
                     <Image src="/user-c.svg" height={24} width={24}/>
-                    <span>Ezekiel Alawode</span>
+                    <span>{projectDetails?.provider?.firstname} {projectDetails?.provider?.lastname}</span>
                   </div>
                   <div>
                     <Image src="/calendar.svg" height={24} width={24}/>
-                    <span>2 Months</span>
+                    <span>{projectDetails?.duration_count ?? "Not specified"}</span>
                   </div>
                   <div>
                     <Image src="/clock.svg" height={24} width={24}/>
-                    <span>Sep. 31, 2022</span>
+                    <span>{projectDetails?.start_date ?? "Not specified"}</span>
                   </div>
                 </SubDetails>
                 <CurrentPackage>
                   <p>Active Package: <span>Basic</span> <Image src="/repeat.svg" height={24} width={24}/></p>
                 </CurrentPackage>
                 <Desc>
-                Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum.
-                Seden utem perspiciatis undesieu omnis voluptatem accusantium doque laudantium, totam rem aiam 
-                eaqueiu ipsa quae ab illoion inventore veritatisetm quasitea architecto beataea dictaed quia couuntur magni dolores eos aquist ratione vtatem seque nesnt
+                {projectDetails.description}
                 </Desc>
               </Details>
             </DetailsContainer>

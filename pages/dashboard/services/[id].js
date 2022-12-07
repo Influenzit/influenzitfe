@@ -59,21 +59,21 @@ const ServiceView = () => {
   const router = useRouter();
   const user = useSelector(getUser);
   const dispatch = useDispatch();
-  const { data: serviceData, refetch: refetchServiceData } = useQuery(["get-service"], async () => {
-    return await getService(id);
-}, {
-    enabled: false,
-    staleTime: Infinity,
-    retry: false,
-    onSuccess() {
-        dispatch(setLoading(false));
-    },
-    onError(res) {
-        dispatch(setLoading(false));
-        router.push("/search");
-    } 
-});
   const { id } = router.query;
+  const { data: serviceData, refetch: refetchServiceData } = useQuery(["get-service"], async () => {
+        return await getService(id);
+    }, {
+        enabled: false,
+        staleTime: Infinity,
+        retry: false,
+        onSuccess() {
+            dispatch(setLoading(false));
+        },
+        onError(res) {
+            dispatch(setLoading(false));
+            router.push("/search");
+        } 
+    });
   const [showFaq, setShowFaq] = useState(null);
   const handleToggle = (i) => {
     if(showFaq[i]){
@@ -130,7 +130,7 @@ const ServiceView = () => {
         dispatch(setLoading(false));
         dispatch(setSuccess({success: true, message: successRes.data.message}));
         setTimeout(() => {
-            router.push("/dashboard");
+            router.push("/dashboard/campaigns");
         }, 3000)
     }).catch(err => {
         const res = err.response.data;

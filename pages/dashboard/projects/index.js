@@ -1,12 +1,40 @@
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useState } from 'react'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { getProjects } from '../../../api/projects'
+import { setError, setLoading } from '../../../app/reducers/status'
 import { ChevronLeft, ChevronRight } from '../../../assets/svgIcons'
 import LandingLayout from '../../../layouts/landing.layout'
 import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../../styles/connect-pages.style'
 
 const Projects = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const [projectList, setProjectList] = useState({
+    data: [],
+  });
+  const { data, refetch } = useQuery(["get-projects"], async () => {
+        return await getProjects();
+    }, {
+        enabled: false,
+        staleTime: Infinity,
+        retry: false,
+        onSuccess(res) {
+            dispatch(setLoading(false));
+            setProjectList(res.data.data);
+        },
+        onError(res) {
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: "An error occured"}));
+        } 
+    });
+    useEffect(() => {
+        refetch();
+    }, [])
+
   return (
     <Container>
         <Wrapper>
@@ -35,8 +63,7 @@ const Projects = () => {
                                     <Checkbox>
                                     </Checkbox>
                                 </Th>
-                                <Th cellWidth="300px">Creator</Th>
-                                <Th cellWidth="200px">Project Type</Th>
+                                <Th cellWidth="500px">Creator</Th>
                                 <Th cellWidth="150px">Start Date</Th>
                                 <Th cellWidth="150px">Duration</Th>
                                 <Th cellWidth="120px">Status</Th>
@@ -44,94 +71,36 @@ const Projects = () => {
                             </TrH>
                         </THead>
                         <TBody>
-                            <Tr>
-                                <Td cellWidth="50px">
-                                    <Checkbox>
-                                    </Checkbox>
-                                </Td>
-                                <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                <Td cellWidth="200px">Instagram</Td>
-                                <Td cellWidth="150px">Sep 31, 2022</Td>
-                                <Td cellWidth="150px">2 Months</Td>
-                                <Td cellWidth="120px">Active</Td>
-                                <Td cellWidth="120px">
-                                    <ActionBtn onClick={() => router.push("/dashboard/projects/view")}>View</ActionBtn>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td cellWidth="50px">
-                                    <Checkbox>
-                                    </Checkbox>
-                                </Td>
-                                <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                <Td cellWidth="200px">Instagram</Td>
-                                <Td cellWidth="150px">Sep 31, 2022</Td>
-                                <Td cellWidth="150px">2 Months</Td>
-                                <Td cellWidth="120px">Active</Td>
-                                <Td cellWidth="120px">
-                                    <ActionBtn onClick={() => router.push("/dashboard/projects/view")}>View</ActionBtn>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td cellWidth="50px">
-                                    <Checkbox>
-                                    </Checkbox>
-                                </Td>
-                                <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                <Td cellWidth="200px">Instagram</Td>
-                                <Td cellWidth="150px">Sep 31, 2022</Td>
-                                <Td cellWidth="150px">2 Months</Td>
-                                <Td cellWidth="120px">Active</Td>
-                                <Td cellWidth="120px">
-                                    <ActionBtn onClick={() => router.push("/dashboard/projects/view")}>View</ActionBtn>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td cellWidth="50px">
-                                    <Checkbox>
-                                    </Checkbox>
-                                </Td>
-                                <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                <Td cellWidth="200px">Instagram</Td>
-                                <Td cellWidth="150px">Sep 31, 2022</Td>
-                                <Td cellWidth="150px">2 Months</Td>
-                                <Td cellWidth="120px">Active</Td>
-                                <Td cellWidth="120px">
-                                    <ActionBtn onClick={() => router.push("/dashboard/projects/view")}>View</ActionBtn>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td cellWidth="50px">
-                                    <Checkbox>
-                                    </Checkbox>
-                                </Td>
-                                <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                <Td cellWidth="200px">Instagram</Td>
-                                <Td cellWidth="150px">Sep 31, 2022</Td>
-                                <Td cellWidth="150px">2 Months</Td>
-                                <Td cellWidth="120px">Active</Td>
-                                <Td cellWidth="120px">
-                                    <ActionBtn onClick={() => router.push("/dashboard/projects/view")}>View</ActionBtn>
-                                </Td>
-                            </Tr>
+                            {
+                                projectList.data.map((val, i) => (
+                                    <Tr key={i}>
+                                        <Td cellWidth="50px">
+                                            <Checkbox>
+                                            </Checkbox>
+                                        </Td>
+                                        <Td cellWidth="500px">{val.provider.firstname} {val.provider.lastname}</Td>
+                                        <Td cellWidth="150px">{val.start_date ?? "Not specified"}</Td>
+                                        <Td cellWidth="150px">{val.duration_count ?? "Not specified"}</Td>
+                                        <Td cellWidth="120px">{val.status}</Td>
+                                        <Td cellWidth="120px">
+                                            <ActionBtn onClick={() => router.push(`/dashboard/campaigns/view/${val.id}`)}>View</ActionBtn>
+                                        </Td>
+                                    </Tr>
+                                ))
+                            }
                         </TBody>
                     </Table>
                 </TableContent>
                 <TableFooter>
-                        <p>Showing 10 of 500</p>
+                        <p>Showing {((projectList.current_page - 1) * projectList.per_page) + projectList.data.length} of {projectList.total}</p>
                         <Pagination>
-                            <NavBtn>
+                            <NavBtn onClick={() => projectList.current_page.prev_page_url && setGetUrl(projectList.current_page.prev_page_url.replace("https://phplaravel-870335-3074787.cloudwaysapps.com/api/v1", ""))}>
                                 <ChevronLeft />
                             </NavBtn>
                             <Pages>
-                                <PageBtn activePage={true}>1</PageBtn>
-                                <PageBtn>2</PageBtn>
-                                <PageBtn>3</PageBtn>
-                                <PageBtn>4</PageBtn>
-                                -
-                                <PageBtn>50</PageBtn>
+                                <PageBtn activePage={true}>{projectList.current_page}</PageBtn>
                             </Pages>
-                            <NavBtn>
+                            <NavBtn onClick={() => projectList.current_page.next_page_url && setGetUrl(projectList.current_page.next_page_url.replace("https://phplaravel-870335-3074787.cloudwaysapps.com/api/v1", ""))}>
                                 <ChevronRight />
                             </NavBtn>
                         </Pagination>

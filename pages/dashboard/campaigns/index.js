@@ -1,12 +1,39 @@
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { getCampaigns } from '../../../api/campaigns'
+import { setLoading } from '../../../app/reducers/status'
 import { ChevronLeft, ChevronRight } from '../../../assets/svgIcons'
 import LandingLayout from '../../../layouts/landing.layout'
 import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../../styles/connect-pages.style'
 
 const Campaigns = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const [getUrl, setGetUrl] = useState("");
+  const [campaignList, setCampaignList] = useState({
+    data: [],
+  });
+  const { data, refetch } = useQuery(["get-campaigns"], async () => {
+        return await getCampaigns(getUrl);
+    }, {
+        enabled: false,
+        staleTime: Infinity,
+        retry: false,
+        onSuccess(res) {
+            dispatch(setLoading(false));
+            setCampaignList(res.data.data);
+        },
+        onError(res) {
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: "An error occured"}));
+        } 
+    });
+    useEffect(() => {
+        refetch();
+    }, [getUrl])
   return (
     <Container>
         <Wrapper>
@@ -35,8 +62,7 @@ const Campaigns = () => {
                                     <Checkbox>
                                     </Checkbox>
                                 </Th>
-                                <Th cellWidth="300px">Influencer</Th>
-                                <Th cellWidth="200px">Channel</Th>
+                                <Th cellWidth="500px">Influencer</Th>
                                 <Th cellWidth="150px">Start Date</Th>
                                 <Th cellWidth="150px">Duration</Th>
                                 <Th cellWidth="120px">Status</Th>
@@ -44,94 +70,36 @@ const Campaigns = () => {
                             </TrH>
                         </THead>
                         <TBody>
-                            <Tr>
-                                <Td cellWidth="50px">
-                                    <Checkbox>
-                                    </Checkbox>
-                                </Td>
-                                <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                <Td cellWidth="200px">Instagram</Td>
-                                <Td cellWidth="150px">Sep 31, 2022</Td>
-                                <Td cellWidth="150px">2 Months</Td>
-                                <Td cellWidth="120px">Active</Td>
-                                <Td cellWidth="120px">
-                                    <ActionBtn onClick={() => router.push("/dashboard/campaigns/view")}>View</ActionBtn>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td cellWidth="50px">
-                                    <Checkbox>
-                                    </Checkbox>
-                                </Td>
-                                <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                <Td cellWidth="200px">Instagram</Td>
-                                <Td cellWidth="150px">Sep 31, 2022</Td>
-                                <Td cellWidth="150px">2 Months</Td>
-                                <Td cellWidth="120px">Active</Td>
-                                <Td cellWidth="120px">
-                                    <ActionBtn onClick={() => router.push("/dashboard/campaigns/view")}>View</ActionBtn>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td cellWidth="50px">
-                                    <Checkbox>
-                                    </Checkbox>
-                                </Td>
-                                <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                <Td cellWidth="200px">Instagram</Td>
-                                <Td cellWidth="150px">Sep 31, 2022</Td>
-                                <Td cellWidth="150px">2 Months</Td>
-                                <Td cellWidth="120px">Active</Td>
-                                <Td cellWidth="120px">
-                                    <ActionBtn onClick={() => router.push("/dashboard/campaigns/view")}>View</ActionBtn>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td cellWidth="50px">
-                                    <Checkbox>
-                                    </Checkbox>
-                                </Td>
-                                <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                <Td cellWidth="200px">Instagram</Td>
-                                <Td cellWidth="150px">Sep 31, 2022</Td>
-                                <Td cellWidth="150px">2 Months</Td>
-                                <Td cellWidth="120px">Active</Td>
-                                <Td cellWidth="120px">
-                                    <ActionBtn onClick={() => router.push("/dashboard/campaigns/view")}>View</ActionBtn>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td cellWidth="50px">
-                                    <Checkbox>
-                                    </Checkbox>
-                                </Td>
-                                <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                <Td cellWidth="200px">Instagram</Td>
-                                <Td cellWidth="150px">Sep 31, 2022</Td>
-                                <Td cellWidth="150px">2 Months</Td>
-                                <Td cellWidth="120px">Active</Td>
-                                <Td cellWidth="120px">
-                                    <ActionBtn onClick={() => router.push("/dashboard/campaigns/view")}>View</ActionBtn>
-                                </Td>
-                            </Tr>
+                            {
+                                campaignList.data.map((val, i) => (
+                                    <Tr key={i}>
+                                        <Td cellWidth="50px">
+                                            <Checkbox>
+                                            </Checkbox>
+                                        </Td>
+                                        <Td cellWidth="500px">{val.provider.firstname} {val.provider.lastname}</Td>
+                                        <Td cellWidth="150px">{val.start_date ?? "Not specified"}</Td>
+                                        <Td cellWidth="150px">{val.duration_count ?? "Not specified"}</Td>
+                                        <Td cellWidth="120px">{val.status}</Td>
+                                        <Td cellWidth="120px">
+                                            <ActionBtn onClick={() => router.push(`/dashboard/campaigns/view/${val.id}`)}>View</ActionBtn>
+                                        </Td>
+                                    </Tr>
+                                ))
+                            }
                         </TBody>
                     </Table>
                 </TableContent>
                 <TableFooter>
-                        <p>Showing 10 of 500</p>
+                        <p>Showing {((campaignList.current_page - 1) * campaignList.per_page) + campaignList.data.length} of {campaignList.total}</p>
                         <Pagination>
-                            <NavBtn>
+                            <NavBtn onClick={() => campaignList.current_page.prev_page_url && setGetUrl(campaignList.current_page.prev_page_url.replace("https://phplaravel-870335-3074787.cloudwaysapps.com/api/v1", ""))}>
                                 <ChevronLeft />
                             </NavBtn>
                             <Pages>
-                                <PageBtn activePage={true}>1</PageBtn>
-                                <PageBtn>2</PageBtn>
-                                <PageBtn>3</PageBtn>
-                                <PageBtn>4</PageBtn>
-                                -
-                                <PageBtn>50</PageBtn>
+                                <PageBtn activePage={true}>{campaignList.current_page}</PageBtn>
                             </Pages>
-                            <NavBtn>
+                            <NavBtn onClick={() => campaignList.current_page.next_page_url && setGetUrl(campaignList.current_page.next_page_url.replace("https://phplaravel-870335-3074787.cloudwaysapps.com/api/v1", ""))}>
                                 <ChevronRight />
                             </NavBtn>
                         </Pagination>

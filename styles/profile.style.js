@@ -33,6 +33,14 @@ export const Content =  styled.div`
         max-width: 100%;
     }
 `;
+export const CContent =  styled.div`
+    width: 100%;
+    height: auto;
+    background: #fff;
+    border: 1px solid #D2D2D2;
+    border-radius: 5px;
+    padding-bottom: 20px;
+`;
 export const AvailableSwitch = styled.div`
     display: flex;
     font-size: 14px;
@@ -354,6 +362,7 @@ export const CustomContent = styled.div`
     display: flex;
     flex-direction: column;
     row-gap: 15px;
+    margin-left: 20px;
     max-width: calc(100% - 310px);
     ${breakpoints.lg}{
         max-width: calc(100% - 100px);

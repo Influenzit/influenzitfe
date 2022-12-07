@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ProfileSidebar from '../../../components/profile-sidebar'
 import LandingLayout from '../../../layouts/landing.layout'
 import plusCircleIcon from '../../../assets/plus-circle.svg'
-import { CAmount, Container, Content, CustomContent, FundBtn, Heading, WalletCard, WalletCardWrapper, Wrapper } from '../../../styles/profile.style'
+import { CAmount, CContent, Container, Content, CustomContent, FundBtn, Heading, WalletCard, WalletCardWrapper, Wrapper } from '../../../styles/profile.style'
 import Image from 'next/image'
 import { FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableWrapper, TBody, Td, Th, THead, Tr, TrH } from '../../../styles/connect-pages.style'
 import { ChevronLeft, ChevronRight } from '../../../assets/svgIcons'
@@ -36,7 +36,7 @@ const Billing = () => {
         <Wrapper>
             <ProfileSidebar />
             <CustomContent>
-                <Content>
+                <CContent>
                     <Heading>
                         <h2>Business Wallet</h2>
                     </Heading>
@@ -58,8 +58,8 @@ const Billing = () => {
                             <p>Fund Wallet</p>
                         </FundBtn>
                     </WalletCardWrapper>
-                </Content>
-                <Content>
+                </CContent>
+                <CContent>
                     <Heading>
                         <h2>Wallet Transactions</h2>
                     </Heading>
@@ -159,7 +159,7 @@ const Billing = () => {
                             </Pagination>
                         </TableFooter>
                     </TableWrapper>
-                </Content>
+                </CContent>
             </CustomContent>
         </Wrapper>
     </Container>

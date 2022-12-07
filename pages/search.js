@@ -31,7 +31,7 @@ const Search = () => {
                     </Top>
                     <Bottom>
                         <Filter>
-                            <p>15 of 150 Results</p>
+                            <p>{((influencersData?.data?.data?.current_page - 1) * influencersData?.data?.data?.per_page) + influencersData?.data?.data?.data.length} of {influencersData?.data?.data?.total}</p>
                             <div>
                                 <p>Filter</p>
                                 <select>
