@@ -80,12 +80,6 @@ const Services = () => {
             });
         }
     }
-    const handleAddFaq = () => {
-        setFaqList((prev) => {
-            const copyOfPrev = JSON.parse(JSON.stringify(prev));
-            return [...copyOfPrev, { question: "", answer: "" }];
-        })
-    }
     const handleSetFiles = (file) => {
         if(file.size < 5000000){
             setFileList((old) => {

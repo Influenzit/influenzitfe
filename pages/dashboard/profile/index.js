@@ -4,17 +4,23 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { CountryDropdown } from 'react-country-region-selector'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserAccount, updateAccount } from '../../../api/auth'
+import { accountMedia, getUserAccount, updateAccount } from '../../../api/auth'
 import { getUserType, setError, setLoading, setSuccess } from '../../../app/reducers/status'
 import { getUser, updateUser } from '../../../app/reducers/user'
 import ProfileSidebar from '../../../components/profile-sidebar'
 import LandingLayout from '../../../layouts/landing.layout'
-import { AddSocialBtn, AvailableSwitch, Bottom, Container, Content, FormContainerM, Heading, InputContainer, InputFlex, Wrapper } from '../../../styles/profile.style'
+import { AddSocialBtn, AvailableSwitch, Bottom, Container, Content, FormContainerM, Heading, InputContainer, InputFlex, ProfileImageCont, ProfilePicWrapper, UploadContainer, UploadHeader, UploadInfo, Wrapper } from '../../../styles/profile.style'
 
 const Information = () => {
     const router = useRouter();
     const [isAvailable, setIsAvailable] = useState(false);
     const user = useSelector(getUser);
+    const [dataEnter, setDataEnter] = useState(false);
+
+    // file list state
+    const [fileSelected, setFileSelected] = useState(null);
+    const [imgSrc, setImgSrc] = useState("");
+    const [showUpload, setShowUpload] = useState(false);
     const [formVal, setFormVal] = useState({
         firstname: "",
         lastname: "",
@@ -48,7 +54,6 @@ const Information = () => {
                           dispatch(updateUser(userRes.data.data));
                           dispatch(setLoading(false));
                           dispatch(setSuccess({success: true, message: "Account updated successful"}));
-                          localStorage.setItem("user", JSON.stringify(userRes.data.data));
                         }
                       }).catch(err => {
                         console.log(err);
@@ -74,6 +79,38 @@ const Information = () => {
         })
       }
       const dispatch = useDispatch();
+      const uploadMutation = useMutation( mediaData => {
+            return accountMedia(mediaData);
+        }, {
+            onSuccess(successRes) {
+                const res = successRes.data;
+                if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+                    dispatch(setLoading(false));
+                    dispatch(setError({error: true, message: res.message}));
+                } else { 
+                    getUserAccount(user.id).then((userRes) => {
+                    if(userRes.data.data) {
+                        dispatch(updateUser(userRes.data.data));
+                        dispatch(setLoading(false));
+                        dispatch(setSuccess({success: true, message: "Image uploaded successful"}));
+                    }
+                    }).catch(err => {
+                        dispatch(setLoading(false));
+                        dispatch(setError({error: true, message: "An error occured"}));
+                    })
+                }
+            },
+            onError(error) {
+                const res = error.response.data;
+                if(res){
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: res.message}));
+                return;
+                }
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: "An error occured"}));
+            }
+        });
       const handleSubmit = () => {
         dispatch(setLoading(true));
         if(!formVal.firstname || !formVal.lastname) return;
@@ -109,6 +146,36 @@ const Information = () => {
             return copyVal;
         })
       }
+      const handleSetFiles = (file) => {
+        if(file.size < 5000000){
+            setFileSelected(file);
+            setImgSrc(URL.createObjectURL(file));
+        }
+    }
+    const handleFileChange = (e) => {
+        handleSetFiles(e.target.files[0]);
+    }
+    const handleDrop = (e) => {
+        e.preventDefault();
+        handleSetFiles(e.dataTransfer.files[0]);
+    }
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDataEnter(true);
+    }
+    const handleDragLeave = (e) => {
+        e.preventDefault();
+        setDataEnter(false);
+    }
+    const handleUpload = () => {
+        if(fileSelected) {
+            dispatch(setLoading(true));
+            const formdata = new FormData();
+            formdata.append("profile_pic", fileSelected);
+            uploadMutation.mutate(formdata);
+        }
+    }
       useEffect(() => {
         if (user) {
             setFormVal({
@@ -151,6 +218,29 @@ const Information = () => {
                     </AvailableSwitch>
                 </Heading>
                 <FormContainerM>
+                    <ProfilePicWrapper>
+                        <ProfileImageCont>
+                            <Image src={imgSrc ? imgSrc : user?.account?.media[0].url ? user?.account?.media[0].url : `https://ui-avatars.com/api/?name=${user?.firstname}+${user?.lastname}&color=FFFFFF&background=12544D`} alt="profile-pic" layout='fill' objectFit='contain' objectPosition="center"/>
+                        </ProfileImageCont>
+                        <button onClick={() => setShowUpload(!showUpload)}>Edit</button>
+                    </ProfilePicWrapper>
+                    {
+                        showUpload && (
+                            <>
+                                <UploadContainer onDrop={handleDrop} onDragLeave={handleDragLeave} onDragOver={handleDragOver} style={{ marginBottom: "20px" }}>
+                                    <UploadHeader >
+                                        <label htmlFor="upload-input">Click to upload</label>
+                                        <span> or drag and drop here.</span>
+                                    </UploadHeader>
+                                    <UploadInfo>
+                                        Maximum file size 5MB
+                                    </UploadInfo>
+                                    <input type="file" hidden id="upload-input" onChange={handleFileChange}/>
+                                    <button onClick={handleUpload}>Save Image</button>
+                                </UploadContainer>
+                            </>
+                        )
+                    }
                     <InputFlex>
                         <InputContainer>
                             <label>Firstname</label>

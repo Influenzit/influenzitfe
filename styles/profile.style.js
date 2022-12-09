@@ -487,6 +487,15 @@ export const UploadContainer = styled.div`
     justify-content: center;
     flex-direction: column;
     margin-top: 15px;
+    button {
+        padding: 10px 25px;
+        background: ${colors.primaryColor};
+        color: #fff;
+        border: none;
+        margin: 10px 0;
+        border-radius: 8px;
+        cursor: pointer;
+    }
 `;
 export const UploadHeader = styled.div`
     label {
@@ -523,5 +532,29 @@ export const PreviewDetails = styled.div`
     span {
         font-size: 12px;
         color: #111;
+    }
+`;
+export const ProfileImageCont = styled.div`
+    margin-bottom: 20px;
+    height: 200px;
+    width: 200px;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+`;
+export const ProfilePicWrapper = styled.div`
+    width: 200px;
+    margin: 20px auto;
+    position: relative;
+    button {
+        position: absolute;
+        right: 22px;
+        bottom: 22px;
+        background: #fff;
+        border: 1px solid #E1E7EC;
+        border-radius: 10px;
+        padding: 5px 15px;
+        cursor: pointer;
     }
 `;

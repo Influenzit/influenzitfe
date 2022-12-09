@@ -2,19 +2,23 @@ import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getCampaign } from '../../../../api/campaigns'
 import { setLoading } from '../../../../app/reducers/status'
+import { getUser } from '../../../../app/reducers/user'
 import { AlertTriangleIcon, CheckCircleIcon, CheckIcon, WalletIcon, XSquareIcon } from '../../../../assets/svgIcons'
 import { UserDropdown } from '../../../../components/nav/style'
 import LandingLayout from '../../../../layouts/landing.layout'
+import { getUserType } from '../../../../app/reducers/status'
 import { Bottom, Container, ControlContainer, CurrentPackage, Desc, Details, DetailsContainer, ImageWrapper, MDetails, MDone, Milestone, MilestoneHeader, MilestoneList, Milestones, MStatus, OuterContainer, SubDetails, Top, TopBtn, Wrapper } from '../../../../styles/view.style'
 
 const CampaignView = () => {
   const [show, setShow] = useState(false);
   const router = useRouter();
   const { id } = router.query;
+  const user = useSelector(getUser);
   const dispatch = useDispatch();
+  const accountType = useSelector(getUserType);
   const [campaignDetails, setCampaignDetails] = useState({})
 
   const { data, refetch } = useQuery(["get-service"], async () => {
@@ -116,7 +120,12 @@ const CampaignView = () => {
             </Milestones>
             <ControlContainer>
               <button>Report Account</button>
-              <button onClick={() => router.push("/dashboard/campaigns/completed")}><span><CheckIcon /></span> Mark As Completed</button>
+              {
+                (campaignDetails?.provider?.id && user?.id && (user?.id === campaignDetails?.provider?.id) && accountType && (accountType === "Influencer")) ?
+                <button>Update</button>: (campaignDetails?.provider?.id && user?.id && (user?.id !== campaignDetails?.provider?.id)) ? (
+                  <button onClick={() => router.push("/dashboard/campaigns/completed")}><span><CheckIcon /></span> Mark As Completed</button>
+                ) : (<button></button>)
+              }
             </ControlContainer>
           </Bottom>
         </Container>

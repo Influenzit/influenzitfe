@@ -28,3 +28,6 @@ export const updateAccount = (userId, data) => {
 export const accountTypeUpdate = (data) => {
     return axiosInstance().patch(`/accounts/toggle-type`, data);
 }
+export const accountMedia = (data) => {
+    return axiosInstance().post(`/accounts/media`, data);
+}

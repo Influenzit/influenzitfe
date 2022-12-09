@@ -47,7 +47,6 @@ const LandingLayout = ({children, title, description}) => {
     setIsLoggedIn(!!user);
   }, [user]);
   useEffect(() => {
-    dispatch(setLoading(true));
     dispatch(setUserType(localStorage.getItem("user-type")));
     refetch();
   }, [])
