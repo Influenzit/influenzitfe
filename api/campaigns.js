@@ -9,6 +9,9 @@ export const getCampaign = (id) => {
 export const createCampaignMilestone = (id, data) => {
     return axiosInstance().post(`/campaigns/${id}/milestones`, data)
 }
+export const updateCampaignMilestone = (id, data, milestoneId) => {
+    return axiosInstance().patch(`/campaigns/${id}/milestones/${milestoneId}`, data)
+}
 export const updateCampaign = (id, data) => {
     return axiosInstance().patch(`/campaigns/${id}`, data,)
 }

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createCampaignMilestone, getCampaign, updateCampaign } from '../../../../api/campaigns'
+import { createCampaignMilestone, getCampaign, updateCampaign, updateCampaignMilestone } from '../../../../api/campaigns'
 import { setError, setLoading } from '../../../../app/reducers/status'
 import { getUser } from '../../../../app/reducers/user'
 import { AlertTriangleIcon, CheckCircleIcon, CheckIcon, WalletIcon, XSquareIcon } from '../../../../assets/svgIcons'
@@ -92,6 +92,30 @@ const CampaignView = () => {
           dispatch(setError({error: true, message: "An error occured"}));
       }
   });
+  const updateMilestone = useMutation( milestoneData => {
+    return updateCampaignMilestone(id, milestoneData.data, milestoneData.id);
+}, {
+    onSuccess(successRes) {
+        const res = successRes.data;
+        refetch();
+        if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: res.message}));
+        } else { 
+            dispatch(setLoading(false));
+        }
+    },
+    onError(error) {
+        const res = error.response.data;
+        if(res){
+          dispatch(setLoading(false));
+          dispatch(setError({error: true, message: res.message}));
+          return;
+        }
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: "An error occured"}));
+    }
+});
   const updateCampaignMutation = useMutation( campaignData => {
       return updateCampaign(id, campaignData);
   }, {
@@ -123,6 +147,15 @@ const CampaignView = () => {
     } else {
       dispatch(setError({error: true, message: "Enter required fields"}));
     }
+  }
+  const handleMilestoneToggle = (val, mId) => {
+      dispatch(setLoading(true));
+      updateMilestone.mutate({
+        data: {
+        status: val === "Completed" ? "Pending" : "Completed",
+        },
+        id: mId,
+    })
   }
   const handleCampaignUpdate = () => {
     if(campaign.duration_count && campaign.start_date && campaign.end_date && campaign.duration_type){
@@ -207,11 +240,11 @@ const CampaignView = () => {
                 {
                   campaignDetails?.milestones?.map((val, i) => (
                     <Milestone key={i}>
-                      <MDetails>Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia</MDetails>
-                      <MStatus>Delivered</MStatus>
+                      <MDetails>{val.description}</MDetails>
+                      <MStatus>{val.status}</MStatus>
                       <MDone>
-                        <button>
-                          <Image src="/check-square.svg" height={24} width={24}/>
+                        <button onClick={() => handleMilestoneToggle(val.status, val.id)}>
+                          <Image src={val.status === "Completed" ? "/check-square.svg" : "/check-frame.svg"} height={24} width={24}/>
                         </button>
                       </MDone>
                     </Milestone>
@@ -253,7 +286,6 @@ const CampaignView = () => {
                 <option value="Week">Week</option>
                 <option value="Month">Month</option>
                 <option value="Year">Year</option>
-                <option value="Decade">Decade</option>
               </select>
             </InputContainer>
             <InputContainer>
