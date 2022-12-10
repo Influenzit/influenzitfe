@@ -86,7 +86,7 @@ const Home = () => {
               <h4>Fashion</h4>
               <div>
                 <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/" passHref>
+                <Link href="/explore?niche=fashion" passHref>
                   <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
                 </Link>
               </div>
@@ -98,7 +98,7 @@ const Home = () => {
               <h4>Beauty</h4>
               <div>
                 <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/" passHref>
+                <Link href="/explore?niche=beauty" passHref>
                   <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
                 </Link>
               </div>
@@ -110,7 +110,7 @@ const Home = () => {
               <h4>Travel &amp; Tourism</h4>
               <div>
                 <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/" passHref>
+                <Link href="/explore?niche=tourism" passHref>
                   <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
                 </Link>
               </div>
@@ -122,7 +122,7 @@ const Home = () => {
               <h4>Tech and Gadgets</h4>
               <div>
                 <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/" passHref>
+                <Link href="/explore?niche=tech" passHref>
                   <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
                 </Link>
               </div>
@@ -134,7 +134,7 @@ const Home = () => {
               <h4>Entertainment</h4>
               <div>
                 <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/" passHref>
+                <Link href="/explore?niche=entertainment" passHref>
                   <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
                 </Link>
               </div>
@@ -146,7 +146,7 @@ const Home = () => {
               <h4>Sports</h4>
               <div>
                 <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/" passHref>
+                <Link href="/explore?niche=sports" passHref>
                   <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
                 </Link>
               </div>
@@ -158,7 +158,7 @@ const Home = () => {
               <h4>Health</h4>
               <div>
                 <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/" passHref>
+                <Link href="/explore?niche=health" passHref>
                   <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
                 </Link>
               </div>
@@ -170,7 +170,7 @@ const Home = () => {
               <h4>Business</h4>
               <div>
                 <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/" passHref>
+                <Link href="/explore?niche=business" passHref>
                   <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
                 </Link>
               </div>
@@ -244,7 +244,7 @@ const Home = () => {
                   <span>Powerful algorithm that produces excellent brand matches in seconds.</span>
                 </ListItem>
               </InfoList>
-              <Link href="/contact">
+              <Link href="/register">
                 <a>Become a creator</a>
               </Link>
             </InfoDetails>

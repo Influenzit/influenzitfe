@@ -31,7 +31,7 @@ const Search = () => {
                     </Top>
                     <Bottom>
                         <Filter>
-                            <p>{((influencersData?.data?.data?.current_page - 1) * influencersData?.data?.data?.per_page) + influencersData?.data?.data?.data.length} of {influencersData?.data?.data?.total}</p>
+                            <p id='explore_pagenumber'>{((influencersData?.data?.data?.current_page - 1) * influencersData?.data?.data?.per_page) + influencersData?.data?.data?.data.length} of {influencersData?.data?.data?.total}</p>
                             <div>
                                 <p>Filter</p>
                                 <select>
@@ -55,7 +55,7 @@ const Search = () => {
                                     return <ProfileCard
                                         key={i}
                                         profileLink={`/influencer/${val.id}`}
-                                        imgSrc="/profile-2.png"
+                                        imgSrc={val?.media.filter(med => med.identifier === 'profile_pic')?.[0]?.url ?? '/profile-2.png'  }
                                         handle={val.twitter}
                                         name={`${val.user.firstname} ${val.user.lastname}`}
                                         sex={val.gender}

@@ -46,13 +46,19 @@ export const Bottom = styled.div`
 `;
 export const Filter = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     align-items: center;
     padding: 10px 20px;
     p {
         color: #111;
         font-size: 15px;
         font-weight: 600;
+
+    }
+    p#explore_pagenumber {
+        color: #555;
+        font-weight: 400;
+        display: none;
     }
     div {
         display: flex;

@@ -191,7 +191,7 @@ const Nav = () => {
                                             }
                                         </SearchByBtn>
                                         <input type="text" placeholder="Search by name" />
-                                        <SearchBtnC onClick={() => router.push("/search")}>
+                                        <SearchBtnC onClick={() => router.push("/explore")}>
                                             <Image src="/search-b.svg" alt="" height={25} width={25}/>
                                         </SearchBtnC>
                                     </SearchContainer>
@@ -265,9 +265,7 @@ const Nav = () => {
                 ) : (
                     <Right>
                         <NavLinks>
-                            <Link href="/">Home</Link>
-                            <Link href="/creators">Creators</Link>
-                            <Link href="/business-owner">Business Owner</Link>
+                            <Link href="/explore">Explore</Link>
                             <Link href="/pricing">Pricing</Link>
                         </NavLinks>
                         <Controls>

@@ -30,8 +30,8 @@ const Footer = () => {
                 <Section>
                     <h3>Get engaged</h3>
                     <ul>
-                        <li><Link href="/search">Search by niche</Link></li>
-                        <li><Link href="/creator-signup">Become a creator</Link></li>
+                        <li><Link href="/explore">Search by niche</Link></li>
+                        <li><Link href="/register">Become a creator</Link></li>
                         <li><Link href="/login">Login</Link></li>
                         <li><Link href="/ebooks">Ebooks</Link></li>
                     </ul>
