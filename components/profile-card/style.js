@@ -54,5 +54,9 @@ export const TopImg = styled.div`
     position: relative;
 `;
 export const CreatorDetails = styled.div`
-    padding: 5px;
+    padding: 10px 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 50%;
 `;
