@@ -71,6 +71,24 @@ const Dashboard = () => {
         data: [],
       });
       const router = useRouter();
+      const [projectList, setProjectList] = useState({
+        data: [],
+      });
+      const { data: projectData, refetch: projectRefetch } = useQuery(["get-projects"], async () => {
+            return await getProjects();
+        }, {
+            enabled: false,
+            staleTime: Infinity,
+            retry: false,
+            onSuccess(res) {
+                dispatch(setLoading(false));
+                setProjectList(res.data.data);
+            },
+            onError(res) {
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: "An error occured"}));
+            } 
+        });
       const { data: campaignData, refetch } = useQuery(["get-campaigns"], async () => {
             return await getCampaigns("");
         }, {
@@ -95,6 +113,7 @@ const Dashboard = () => {
         useEffect(() => {
             refetch();
             refetchServiceData();
+            projectRefetch();
         }, [])
     
   return (
@@ -165,82 +184,40 @@ const Dashboard = () => {
                         <h2>Projects</h2>
                     </TableHeader>
                     <TableContent>
-                        <Table>
-                            <THead>
-                                <TrH>
-                                    <Th cellWidth="15px">
-                                    </Th>
-                                    <Th cellWidth="300px">Creator</Th>
-                                    <Th cellWidth="200px">Project Type</Th>
-                                    <Th cellWidth="150px">Start Date</Th>
-                                    <Th cellWidth="150px">Duration</Th>
-                                    <Th cellWidth="120px">Status</Th>
-                                    <Th cellWidth="120px">Action</Th>
-                                </TrH>
-                            </THead>
-                            <TBody>
-                                <Tr>
-                                    <Td cellWidth="15px">
-                                    </Td>
-                                    <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                    <Td cellWidth="200px">Instagram</Td>
-                                    <Td cellWidth="150px">Sep 31, 2022</Td>
-                                    <Td cellWidth="150px">2 Months</Td>
-                                    <Td cellWidth="120px">Active</Td>
-                                    <Td cellWidth="120px">
-                                        <ActionBtn>View</ActionBtn>
-                                    </Td>
-                                </Tr>
-                                <Tr>
-                                    <Td cellWidth="15px">
-                                    </Td>
-                                    <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                    <Td cellWidth="200px">Instagram</Td>
-                                    <Td cellWidth="150px">Sep 31, 2022</Td>
-                                    <Td cellWidth="150px">2 Months</Td>
-                                    <Td cellWidth="120px">Active</Td>
-                                    <Td cellWidth="120px">
-                                        <ActionBtn>View</ActionBtn>
-                                    </Td>
-                                </Tr>
-                                <Tr>
-                                    <Td cellWidth="15px">
-                                    </Td>
-                                    <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                    <Td cellWidth="200px">Instagram</Td>
-                                    <Td cellWidth="150px">Sep 31, 2022</Td>
-                                    <Td cellWidth="150px">2 Months</Td>
-                                    <Td cellWidth="120px">Active</Td>
-                                    <Td cellWidth="120px">
-                                        <ActionBtn>View</ActionBtn>
-                                    </Td>
-                                </Tr>
-                                <Tr>
-                                    <Td cellWidth="15px">
-                                    </Td>
-                                    <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                    <Td cellWidth="200px">Instagram</Td>
-                                    <Td cellWidth="150px">Sep 31, 2022</Td>
-                                    <Td cellWidth="150px">2 Months</Td>
-                                    <Td cellWidth="120px">Active</Td>
-                                    <Td cellWidth="120px">
-                                        <ActionBtn>View</ActionBtn>
-                                    </Td>
-                                </Tr>
-                                <Tr>
-                                    <Td cellWidth="15px">
-                                    </Td>
-                                    <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                    <Td cellWidth="200px">Instagram</Td>
-                                    <Td cellWidth="150px">Sep 31, 2022</Td>
-                                    <Td cellWidth="150px">2 Months</Td>
-                                    <Td cellWidth="120px">Active</Td>
-                                    <Td cellWidth="120px">
-                                        <ActionBtn>View</ActionBtn>
-                                    </Td>
-                                </Tr>
-                            </TBody>
-                        </Table>
+                    <Table>
+                        <THead>
+                            <TrH>
+                                <Th cellWidth="50px">
+                                    <Checkbox>
+                                    </Checkbox>
+                                </Th>
+                                <Th cellWidth="500px">Creator</Th>
+                                <Th cellWidth="150px">Start Date</Th>
+                                <Th cellWidth="150px">Duration</Th>
+                                <Th cellWidth="120px">Status</Th>
+                                <Th cellWidth="120px">Action</Th>
+                            </TrH>
+                        </THead>
+                        <TBody>
+                            {
+                                projectList.data.map((val, i) => (
+                                    <Tr key={i}>
+                                        <Td cellWidth="50px">
+                                            <Checkbox>
+                                            </Checkbox>
+                                        </Td>
+                                        <Td cellWidth="500px">{val.provider.firstname} {val.provider.lastname}</Td>
+                                        <Td cellWidth="150px">{val.start_date ?? "Not specified"}</Td>
+                                        <Td cellWidth="150px">{val.duration_count ?? "Not specified"}</Td>
+                                        <Td cellWidth="120px">{val.status}</Td>
+                                        <Td cellWidth="120px">
+                                            <ActionBtn onClick={() => router.push(`/dashboard/campaigns/view/${val.id}`)}>View</ActionBtn>
+                                        </Td>
+                                    </Tr>
+                                ))
+                            }
+                        </TBody>
+                    </Table>
                     </TableContent>
                 </TableWrapper>
               )  
