@@ -97,6 +97,9 @@ export const Milestones = styled.div`
         font-size: 22px;
         border-bottom: 1px solid #d2d2d2;
     }
+    button {
+        margin: 20px auto;
+    }
 `;
 export const MilestoneList = styled.div`
     border: 1px solid #D2D2D2;
@@ -158,6 +161,54 @@ export const ControlContainer = styled.div`
             span {
                 padding-right: 10px;
             }
+        }
+    }
+`;
+export const UpdateModal = styled.div`
+    height: 100%;
+    width: 100%;
+    z-index: 99999;
+    background: rgba(0,0,0, 0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+export const FormContainer = styled.div`
+    background: #fff;
+    width: 50%;
+    max-width: 420px;
+    min-width: 300px;
+    padding: 20px 25px;
+    border-radius: 10px;
+    max-height: 90vh;
+    overflow-y: scroll;
+    h3 {
+        color: #111;
+        text-align: center;
+        padding-bottom: 20px;
+    }
+    button {
+        border: none;
+        padding: 12px 20px;
+        color: red;
+        background: transparent;
+        font-size: 15px;
+        cursor: pointer;
+        font-weight: 500;
+        background: ${colors.primaryColor};
+        color: #fff;
+        border-radius: 3px;
+        display: block;
+        margin: 0 auto;
+        :first-of-type {
+            color: ${colors.primaryColor};
+            background: transparent;
+        }
+        span {
+            padding-right: 10px;
         }
     }
 `;

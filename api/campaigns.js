@@ -6,3 +6,9 @@ export const getCampaigns = (url) => {
 export const getCampaign = (id) => {
     return axiosInstance().get(`/campaigns/${id}`)
 }
+export const createCampaignMilestone = (id, data) => {
+    return axiosInstance().post(`/campaigns/${id}/milestones`, data)
+}
+export const updateCampaign = (id, data) => {
+    return axiosInstance().patch(`/campaigns/${id}`, data,)
+}
