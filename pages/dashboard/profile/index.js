@@ -220,7 +220,7 @@ const Information = () => {
                 <FormContainerM>
                     <ProfilePicWrapper>
                         <ProfileImageCont>
-                            <Image src={imgSrc ? imgSrc : user?.account?.media[0].url ? user?.account?.media[0].url : `https://ui-avatars.com/api/?name=${user?.firstname}+${user?.lastname}&color=FFFFFF&background=12544D`} alt="profile-pic" layout='fill' objectFit='contain' objectPosition="center"/>
+                            <Image src={imgSrc ? imgSrc : user?.account?.media?.[0]?.url ? user?.account?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${user?.firstname}+${user?.lastname}&color=FFFFFF&background=12544D`} alt="profile-pic" layout='fill' objectFit='contain' objectPosition="center"/>
                         </ProfileImageCont>
                         <button onClick={() => setShowUpload(!showUpload)}>Edit</button>
                     </ProfilePicWrapper>
