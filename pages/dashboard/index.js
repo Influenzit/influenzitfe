@@ -1,18 +1,23 @@
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { getUserType } from '../../app/reducers/status'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserType, setLoading } from '../../app/reducers/status'
 import { getUser } from '../../app/reducers/user'
 import { BagIcon, ChevronLeft, ChevronRight, HashTagIcon, SettingsIcon, WalletIcon } from '../../assets/svgIcons'
 import LandingLayout from '../../layouts/landing.layout'
 import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../styles/connect-pages.style'
 import { Card, CardsWrapper, ChartContainer, WelcomeHeading } from '../../styles/dashboard'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { useQuery } from '@tanstack/react-query'
+import { getCampaigns } from '../../api/campaigns'
+import { getServices } from '../../api/influencer'
+import { useRouter } from 'next/router'
 
 const Dashboard = () => {
   const user = useSelector(getUser);
   const currentAcctType = useSelector(getUserType);
   const [userDetails, setUserDetails] = useState(null);
+  const dispatch = useDispatch();
     useEffect(() => {
       if (user) {
         setUserDetails(user);
@@ -62,6 +67,35 @@ const Dashboard = () => {
           amt: 2100,
         },
       ];
+      const [campaignList, setCampaignList] = useState({
+        data: [],
+      });
+      const router = useRouter();
+      const { data: campaignData, refetch } = useQuery(["get-campaigns"], async () => {
+            return await getCampaigns("");
+        }, {
+            enabled: false,
+            staleTime: Infinity,
+            retry: false,
+            onSuccess(res) {
+                dispatch(setLoading(false));
+                setCampaignList(res.data.data);
+            },
+            onError(res) {
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: "An error occured"}));
+            } 
+        });
+        const { data: serviceData, refetch: refetchServiceData } = useQuery(["get-services"], async () => {
+            return await getServices();
+        }, {
+            enabled: false,
+            staleTime: Infinity
+        });
+        useEffect(() => {
+            refetch();
+            refetchServiceData();
+        }, [])
     
   return (
     <Container>
@@ -79,7 +113,7 @@ const Dashboard = () => {
                     (currentAcctType === "Business Owner" || (currentAcctType === "Influencer"))&& (
                         <Card>
                             <h3>No of Campaigns</h3>
-                            <h1>0</h1>
+                            <h1>{campaignData?.data?.data.total}</h1>
                             <HashTagIcon />
                         </Card>
                     )
@@ -97,7 +131,7 @@ const Dashboard = () => {
                    ((currentAcctType === "Creator") ||  (currentAcctType === "Influencer")) && (
                         <Card>
                             <h3>No of Services</h3>
-                            <h1>0</h1>
+                            <h1>{serviceData?.data?.data.length}</h1>
                             <SettingsIcon />
                         </Card>
                     )
@@ -218,82 +252,40 @@ const Dashboard = () => {
                             <h2>My Campaigns</h2>
                         </TableHeader>
                         <TableContent>
-                            <Table>
-                                <THead>
-                                    <TrH>
-                                        <Th cellWidth="15px">
-                                        </Th>
-                                        <Th cellWidth="300px">Influencer</Th>
-                                        <Th cellWidth="200px">Channel</Th>
-                                        <Th cellWidth="150px">Start Date</Th>
-                                        <Th cellWidth="150px">Duration</Th>
-                                        <Th cellWidth="120px">Status</Th>
-                                        <Th cellWidth="120px">Action</Th>
-                                    </TrH>
-                                </THead>
-                                <TBody>
-                                    <Tr>
-                                        <Td cellWidth="15px">
-                                        </Td>
-                                        <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                        <Td cellWidth="200px">Instagram</Td>
-                                        <Td cellWidth="150px">Sep 31, 2022</Td>
-                                        <Td cellWidth="150px">2 Months</Td>
-                                        <Td cellWidth="120px">Active</Td>
-                                        <Td cellWidth="120px">
-                                            <ActionBtn>View</ActionBtn>
-                                        </Td>
-                                    </Tr>
-                                    <Tr>
-                                        <Td cellWidth="15px">
-                                        </Td>
-                                        <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                        <Td cellWidth="200px">Instagram</Td>
-                                        <Td cellWidth="150px">Sep 31, 2022</Td>
-                                        <Td cellWidth="150px">2 Months</Td>
-                                        <Td cellWidth="120px">Active</Td>
-                                        <Td cellWidth="120px">
-                                            <ActionBtn>View</ActionBtn>
-                                        </Td>
-                                    </Tr>
-                                    <Tr>
-                                        <Td cellWidth="15px">
-                                        </Td>
-                                        <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                        <Td cellWidth="200px">Instagram</Td>
-                                        <Td cellWidth="150px">Sep 31, 2022</Td>
-                                        <Td cellWidth="150px">2 Months</Td>
-                                        <Td cellWidth="120px">Active</Td>
-                                        <Td cellWidth="120px">
-                                            <ActionBtn>View</ActionBtn>
-                                        </Td>
-                                    </Tr>
-                                    <Tr>
-                                        <Td cellWidth="15px">
-                                        </Td>
-                                        <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                        <Td cellWidth="200px">Instagram</Td>
-                                        <Td cellWidth="150px">Sep 31, 2022</Td>
-                                        <Td cellWidth="150px">2 Months</Td>
-                                        <Td cellWidth="120px">Active</Td>
-                                        <Td cellWidth="120px">
-                                            <ActionBtn>View</ActionBtn>
-                                        </Td>
-                                    </Tr>
-                                    <Tr>
-                                        <Td cellWidth="15px">
-                                        </Td>
-                                        <Td cellWidth="300px">Ezekiel Alawode</Td>
-                                        <Td cellWidth="200px">Instagram</Td>
-                                        <Td cellWidth="150px">Sep 31, 2022</Td>
-                                        <Td cellWidth="150px">2 Months</Td>
-                                        <Td cellWidth="120px">Active</Td>
-                                        <Td cellWidth="120px">
-                                            <ActionBtn>View</ActionBtn>
-                                        </Td>
-                                    </Tr>
-                                </TBody>
-                            </Table>
+                        <Table>
+                            <THead>
+                                <TrH>
+                                    <Th cellWidth="50px">
+                                        <Checkbox>
+                                        </Checkbox>
+                                    </Th>
+                                    <Th cellWidth="500px">Influencer</Th>
+                                    <Th cellWidth="150px">Start Date</Th>
+                                    <Th cellWidth="150px">Duration</Th>
+                                    <Th cellWidth="120px">Status</Th>
+                                    <Th cellWidth="120px">Action</Th>
+                                </TrH>
+                            </THead>
+                            <TBody>
+                                {
+                                    campaignList.data.map((val, i) => (
+                                        <Tr key={i}>
+                                            <Td cellWidth="50px">
+                                                <Checkbox>
+                                                </Checkbox>
+                                            </Td>
+                                            <Td cellWidth="500px">{val.provider.firstname} {val.provider.lastname}</Td>
+                                            <Td cellWidth="150px">{val.start_date ? (new Date(val.start_date)).toDateString() : "Not specified"}</Td>
+                                            <Td cellWidth="150px">{val.duration_count ?? "Not specified"} {val.duration_type}</Td>
+                                            <Td cellWidth="120px">{val.status}</Td>
+                                            <Td cellWidth="120px">
+                                                <ActionBtn onClick={() => router.push(`/dashboard/campaigns/view/${val.id}`)}>View</ActionBtn>
+                                            </Td>
+                                        </Tr>
+                                    ))
+                                }
+                            </TBody>
+                        </Table>
                         </TableContent>
                     </TableWrapper>
                 )

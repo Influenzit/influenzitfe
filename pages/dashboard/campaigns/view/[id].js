@@ -218,7 +218,7 @@ const CampaignView = () => {
                   </div>
                   <div>
                     <Image src="/clock.svg" height={24} width={24}/>
-                    <span>{(new Date(campaignDetails?.start_date)).toDateString() ?? "Not specified"}</span>
+                    <span>{campaignDetails?.start_date ? (new Date(campaignDetails?.start_date)).toDateString() : "Not specified"}</span>
                   </div>
                 </SubDetails>
                 <CurrentPackage>

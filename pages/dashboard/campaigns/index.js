@@ -91,19 +91,19 @@ const Campaigns = () => {
                     </Table>
                 </TableContent>
                 <TableFooter>
-                        <p>Showing {((campaignList.current_page - 1) * campaignList.per_page) + campaignList.data.length} of {campaignList.total}</p>
-                        <Pagination>
-                            <NavBtn onClick={() => campaignList.current_page.prev_page_url && setGetUrl(campaignList.current_page.prev_page_url.replace("https://phplaravel-870335-3074787.cloudwaysapps.com/api/v1", ""))}>
-                                <ChevronLeft />
-                            </NavBtn>
-                            <Pages>
-                                <PageBtn activePage={true}>{campaignList.current_page}</PageBtn>
-                            </Pages>
-                            <NavBtn onClick={() => campaignList.current_page.next_page_url && setGetUrl(campaignList.current_page.next_page_url.replace("https://phplaravel-870335-3074787.cloudwaysapps.com/api/v1", ""))}>
-                                <ChevronRight />
-                            </NavBtn>
-                        </Pagination>
-                    </TableFooter>
+                    <p>Showing {((campaignList.current_page - 1) * campaignList.per_page) + campaignList.data.length} of {campaignList.total}</p>
+                    <Pagination>
+                        <NavBtn onClick={() => campaignList.current_page.prev_page_url && setGetUrl(campaignList.current_page.prev_page_url.replace("https://phplaravel-870335-3074787.cloudwaysapps.com/api/v1", ""))}>
+                            <ChevronLeft />
+                        </NavBtn>
+                        <Pages>
+                            <PageBtn activePage={true}>{campaignList.current_page}</PageBtn>
+                        </Pages>
+                        <NavBtn onClick={() => campaignList.current_page.next_page_url && setGetUrl(campaignList.current_page.next_page_url.replace("https://phplaravel-870335-3074787.cloudwaysapps.com/api/v1", ""))}>
+                            <ChevronRight />
+                        </NavBtn>
+                    </Pagination>
+                </TableFooter>
             </TableWrapper>
         </Wrapper>
     </Container>
