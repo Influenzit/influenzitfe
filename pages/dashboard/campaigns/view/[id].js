@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createCampaignMilestone, getCampaign } from '../../../../api/campaigns'
+import { createCampaignMilestone, getCampaign, updateCampaign } from '../../../../api/campaigns'
 import { setError, setLoading } from '../../../../app/reducers/status'
 import { getUser } from '../../../../app/reducers/user'
 import { AlertTriangleIcon, CheckCircleIcon, CheckIcon, WalletIcon, XSquareIcon } from '../../../../assets/svgIcons'
@@ -22,13 +22,13 @@ const CampaignView = () => {
   const accountType = useSelector(getUserType);
   const [campaignDetails, setCampaignDetails] = useState({});
   const [showUpdate, setShowUpdate] = useState(false);
+  const [completed, setCompleted] = useState(false);
   const [campaign, setCampaign] = useState({
-    title: "n",
-    description: "no",
     duration_count: "",
     duration_type: "Day",
     start_date: "",
     end_date: "",
+    status: "Ongoing"
   })
   const [milestone, setMilestone] = useState({
     title: "",
@@ -60,7 +60,8 @@ const CampaignView = () => {
       retry: false,
       onSuccess(res) {
           dispatch(setLoading(false));
-          setCampaignDetails(res.data.data)
+          setCampaignDetails(res.data.data);
+
       },
       onError(res) {
           dispatch(setLoading(false));
@@ -91,8 +92,8 @@ const CampaignView = () => {
           dispatch(setError({error: true, message: "An error occured"}));
       }
   });
-  const updateCampaign = useMutation( campaignData => {
-      return createCampaignMilestone(id, campaignData);
+  const updateCampaignMutation = useMutation( campaignData => {
+      return updateCampaign(id, campaignData);
   }, {
       onSuccess(successRes) {
           const res = successRes.data;
@@ -126,10 +127,15 @@ const CampaignView = () => {
   const handleCampaignUpdate = () => {
     if(campaign.duration_count && campaign.start_date && campaign.end_date && campaign.duration_type){
       dispatch(setLoading(true));
-      updateCampaign.mutate(campaign)
+      updateCampaignMutation.mutate(campaign)
     } else {
       dispatch(setError({error: true, message: "Enter required fields"}));
     }
+  }
+  const handleCampaignCompleted = () => {
+    dispatch(setLoading(true));
+    setCompleted(true);
+    updateCampaignMutation.mutate({status: "completed"});
   }
   useEffect(() => {
     if(id){
@@ -175,11 +181,11 @@ const CampaignView = () => {
                   </div>
                   <div>
                     <Image src="/calendar.svg" height={24} width={24}/>
-                    <span>{campaignDetails?.duration_count ?? "Not specified"}</span>
+                    <span>{campaignDetails?.duration_count ?? "Not specified"} {campaignDetails?.duration_type}</span>
                   </div>
                   <div>
                     <Image src="/clock.svg" height={24} width={24}/>
-                    <span>{campaignDetails?.start_date ?? "Not specified"}</span>
+                    <span>{(new Date(campaignDetails?.start_date)).toDateString() ?? "Not specified"}</span>
                   </div>
                 </SubDetails>
                 <CurrentPackage>
@@ -219,7 +225,7 @@ const CampaignView = () => {
               {
                 (campaignDetails?.provider?.id && user?.id && (user?.id === campaignDetails?.provider?.id) && accountType && (accountType === "Influencer")) ?
                 <button onClick={setShowUpdate} >Update</button>: (campaignDetails?.provider?.id && user?.id && (user?.id !== campaignDetails?.provider?.id)) ? (
-                  <button onClick={() => router.push("/dashboard/campaigns/completed")}><span><CheckIcon /></span> Mark As Completed</button>
+                  <button onClick={handleCampaignCompleted}><span><CheckIcon /></span> Mark As Completed</button>
                 ) : (<button></button>)
               }
             </ControlContainer>
