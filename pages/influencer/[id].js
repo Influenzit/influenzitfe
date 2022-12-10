@@ -52,7 +52,7 @@ const CreatorProfile = () => {
             <UserCard>
                 <ProfileStats>
                     <ProfileImgCont>
-                        <Image src={`https://ui-avatars.com/api/?name=${inData?.user?.firstname}+${inData?.user.lastname}&color=FFFFFF&background=12544D`} alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                        <Image src={inData?.media[0].url ? inData?.media[0].url : `https://ui-avatars.com/api/?name=${inData?.user?.firstname}+${inData?.user?.lastname}&color=FFFFFF&background=12544D`}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                     </ProfileImgCont>
                     <ProfileData>
                         <div>
