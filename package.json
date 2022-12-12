@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "export": "next export",
+    "deploy": "npm run build && export && rsync -r out/ public_html",
     "start": "next start",
     "lint": "next lint"
   },
