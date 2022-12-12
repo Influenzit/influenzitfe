@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserType, setLoading } from '../../app/reducers/status'
+import { getUserType, setError, setLoading } from '../../app/reducers/status'
 import { getUser } from '../../app/reducers/user'
 import { BagIcon, ChevronLeft, ChevronRight, HashTagIcon, SettingsIcon, WalletIcon } from '../../assets/svgIcons'
 import LandingLayout from '../../layouts/landing.layout'
