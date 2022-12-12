@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, sizes } from "./theme";
+import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.div`
     width: 100%;
@@ -23,6 +23,10 @@ export const Top = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    ${breakpoints.md} {
+        flex-direction: column;
+        row-gap: 15px;
+    }
     h2 {
         color: #333;
         font-size: 22px;

@@ -287,9 +287,7 @@ const Nav = () => {
             {
                 !isLoggedIn ? (
                         <NavLinks show={true}>
-                            <Link href="/">Home</Link>
-                            <Link href="/creators">Creators</Link>
-                            <Link href="/business-owner">Business Owner</Link>
+                            <Link href="/explore">Explore</Link>
                             <Link href="/pricing">Pricing</Link>
                         </NavLinks>
                 ) : (
