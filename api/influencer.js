@@ -51,6 +51,9 @@ export const getServices = () => {
 export const getService = (serviceId) => {
     return axiosInstance().get(`/services/${serviceId}`)
 }
+export const getExploreService = (serviceId) => {
+    return axiosInstance().get(`/explore/services/${serviceId}`)
+}
 export const uploadServiceMedia = (serviceId, data) => {
     return axiosInstance().post(`/services/${serviceId}/media`, data);
 }

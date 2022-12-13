@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserAccount } from '../../../api/auth';
 import { createBusiness, getBusinesses } from '../../../api/business';
 import { setBusinesses } from '../../../app/reducers/business';
-import { setError, setLoading } from '../../../app/reducers/status';
+import { setError, setLoading, setUserType } from '../../../app/reducers/status';
 import { getUser, updateUser } from '../../../app/reducers/user';
 import LandingLayout from '../../../layouts/landing.layout';
 import { Center, Container, FormFields, FormHeader, FormWrapper, ImagePreview, Input, InputContainer, SubmitButton, UploadContainer, Wrapper } from '../../../styles/auth.style'
@@ -41,7 +41,7 @@ const BusinessOwner = () => {
         getUserAccount(res.data.user_id).then((userRes) => {
           if(userRes.data.data) {
             dispatch(updateUser(userRes.data.data));
-            localStorage.setItem("user", JSON.stringify(userRes.data.data));
+            dispatch(setUserType("Business Owner"));
           }
         }).then(() => {
           getBusinesses().then((bizRes) => {

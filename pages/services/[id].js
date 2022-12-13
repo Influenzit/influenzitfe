@@ -1,28 +1,28 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
-import LandingLayout from '../../../layouts/landing.layout'
-import { Container, DetailTab, LeftControl, RightControl, TopTabContainer, Wrapper, ContainerB, Left, Section, CurrentPosition, ImageSlides, CtrlBtn, Images, Header, Desc, SectionM, ProfileCard, ImageWrapper, ProfileDetails, Stars, FaqWrapper, FaqCont, FaqQuest, FaqAns, ReviewWrapper, Review, ReviewL, ReviewImg, ReviewR, ReviewMsg, Right, PackageCard, PackageTabs, PackageTab, Package, PHead, PDetails, PFeatures, Feature, ContinueBtn, WrapperT, AboutWrapper, Bio, RCountry } from '../../../styles/service.style'
-import heartIcon from '../../../assets/heart.svg';
-import shareIcon from '../../../assets/share.svg';
-import chevLeftIcon from '../../../assets/chev-left.svg';
-import chevRightIcon from '../../../assets/chev-right.svg';
-import chevDownIcon from '../../../assets/chev-down.svg';
-import chevUpIcon from '../../../assets/chev-up.svg';
-import starIcon from '../../../assets/star.svg';
-import fillStarIcon from '../../../assets/fill-star.svg';
+import LandingLayout from '../../layouts/landing.layout'
+import { Container, DetailTab, LeftControl, RightControl, TopTabContainer, Wrapper, ContainerB, Left, Section, CurrentPosition, ImageSlides, CtrlBtn, Images, Header, Desc, SectionM, ProfileCard, ImageWrapper, ProfileDetails, Stars, FaqWrapper, FaqCont, FaqQuest, FaqAns, ReviewWrapper, Review, ReviewL, ReviewImg, ReviewR, ReviewMsg, Right, PackageCard, PackageTabs, PackageTab, Package, PHead, PDetails, PFeatures, Feature, ContinueBtn, WrapperT, AboutWrapper, Bio, RCountry } from '../../styles/service.style'
+import heartIcon from '../../assets/heart.svg';
+import shareIcon from '../../assets/share.svg';
+import chevLeftIcon from '../../assets/chev-left.svg';
+import chevRightIcon from '../../assets/chev-right.svg';
+import chevDownIcon from '../../assets/chev-down.svg';
+import chevUpIcon from '../../assets/chev-up.svg';
+import starIcon from '../../assets/star.svg';
+import fillStarIcon from '../../assets/fill-star.svg';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useEffect } from 'react';
-import { getService } from '../../../api/influencer';
+import { getExploreService } from '../../api/influencer';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { setError, setLoading, setSuccess } from '../../../app/reducers/status';
-import { moneyStandard } from '../../../helpers/helper';
+import { setError, setLoading, setSuccess } from '../../app/reducers/status';
+import { moneyStandard } from '../../helpers/helper';
 import { usePaystackPayment } from 'react-paystack';
-import { createPaymentLog, processPayment } from '../../../api/payment';
-import { getUser } from '../../../app/reducers/user';
+import { createPaymentLog, processPayment } from '../../api/payment';
+import { getUser } from '../../app/reducers/user';
 
 function NextArrow(props) {
     const { className, style, onClick } = props;
@@ -61,7 +61,7 @@ const ServiceView = () => {
   const dispatch = useDispatch();
   const { id } = router.query;
   const { data: serviceData, refetch: refetchServiceData } = useQuery(["get-service"], async () => {
-        return await getService(id);
+        return await getExploreService(id);
     }, {
         enabled: false,
         staleTime: Infinity,
@@ -71,7 +71,7 @@ const ServiceView = () => {
         },
         onError(res) {
             dispatch(setLoading(false));
-            router.push("/search");
+            router.push("/explore");
         } 
     });
   const [showFaq, setShowFaq] = useState(null);
@@ -174,15 +174,19 @@ const ServiceView = () => {
     });
     // handles create Service
     const handleCreatePaymentLog = () => {
-        dispatch(setLoading(true));
-        createPaymentLogMutation.mutate({
-            channel: "paystack",
-            payment_type: "service_payment",
-            amount: getCurrentPackage()?.amount,
-            currency: getCurrentPackage()?.currency,
-            package_id: getCurrentPackage()?.id,
-            meta: { business_id: 1}
-        });
+        if(!!user){
+            dispatch(setLoading(true));
+            createPaymentLogMutation.mutate({
+                channel: "paystack",
+                payment_type: "service_payment",
+                amount: getCurrentPackage()?.amount,
+                currency: getCurrentPackage()?.currency,
+                package_id: getCurrentPackage()?.id,
+                meta: { business_id: 1}
+            });
+        } else {
+            dispatch(setError({error: true, message: "Please login to make payment"}));
+        }
     }
     useEffect(() => {
       if (makePayment) {
@@ -266,7 +270,7 @@ const ServiceView = () => {
                         <AboutWrapper>
                             <ProfileCard>
                                 <ImageWrapper>
-                                    <Image src="/profile-2.png" layout='fill' objectFit="cover" objectPosition="center" />
+                                    <Image src={inData?.user?.account?.media?.[0]?.url ? inData?.user?.account?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${inData?.user?.firstname}+${inData?.user?.lastname}&color=FFFFFF&background=12544D`} layout='fill' objectFit="cover" objectPosition="center" />
                                 </ImageWrapper>
                                 <ProfileDetails>
                                     <h3>{inData?.user?.firstname} {inData?.user?.lastname}</h3>

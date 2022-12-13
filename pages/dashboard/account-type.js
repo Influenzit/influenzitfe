@@ -15,6 +15,7 @@ const ChooseProfile = () => {
   const user = useSelector(getUser);
   const dispatch = useDispatch();
   const router = useRouter();
+  const [currentType, setCurrentType] = useState("")
   const mutation = useMutation(profileData => {
     return accountTypeUpdate(profileData);
   }, {
@@ -28,7 +29,7 @@ const ChooseProfile = () => {
           if(userRes.data.data) {
             dispatch(setLoading(false));
             dispatch(updateUser(userRes.data.data));
-            localStorage.setItem("user", JSON.stringify(userRes.data.data));
+            dispatch(setUserType(currentType));
             router.push("/dashboard");
           }
         }).catch(_ => {
@@ -49,6 +50,7 @@ const ChooseProfile = () => {
   )
   const registerAs = (type) => {
     dispatch(setLoading(true));
+    setCurrentType(type === "creator" ? "Creator" : "Influencer");
     mutation.mutate({
       type
     })

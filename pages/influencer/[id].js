@@ -125,14 +125,14 @@ const CreatorProfile = () => {
                     <Bottom style={{ columnGap: "15px"}}>
                         {
                            inData?.services.map((val, i) => (
-                            <CreatorsCard key={i} style={{ cursor: "pointer" }} onClick={() => router.push(`/dashboard/services/${val.id}`)}>
+                            <CreatorsCard key={i} style={{ cursor: "pointer" }} onClick={() => router.push(`/services/${val.id}`)}>
                                 <TopImg>
                                     <Image src={val.media[0]?.url ?? "/web-services.jpg"} alt="" layout="fill" objectPosition="center" objectFit='cover' />
                                 </TopImg>
                                 <CreatorDetails>
                                     <ServUserCard>
                                         <ImageWrap>
-                                            <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center" objectFit='cover'/>
+                                            <Image src={inData?.media?.[0]?.url ? inData?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${inData?.user?.firstname}+${inData?.user?.lastname}&color=FFFFFF&background=12544D`} alt="" layout="fill" objectPosition="center" objectFit='cover'/>
                                         </ImageWrap>
                                         <p>{val.description}</p>
                                     </ServUserCard>
