@@ -85,7 +85,6 @@ const Nav = () => {
             if(userRes.data.data.account.is_influencer && currentAcctType !== "Influencer") {
                 dispatch(setUserType("Influencer"))
             }
-            localStorage.setItem("user", JSON.stringify(userRes.data.data));
           }
         }).catch(_ => {
           dispatch(setError({error: true, message: "An error occured"}));
@@ -204,7 +203,7 @@ const Nav = () => {
                             ) : (
                             <>
                                 <ConnectDropdown onClick={() => toggleSwitchAccount()} ref={switchRef} show={true}>
-                                    <span id="span-current">{currentAcctType}</span><Image src={switchIcon} alt="" height={24} width={24} />
+                                    <span id="span-current">{currentAcctType === "null" ? "None" : currentAcctType}</span><Image src={switchIcon} alt="" height={24} width={24} />
                                     {
                                         showSwitchAccount && <ConnectDropdownCont>
                                                 <button onClick={() => handleAccountChange("Business Owner")}><span>Business Owner</span></button>

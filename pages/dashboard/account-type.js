@@ -50,7 +50,8 @@ const ChooseProfile = () => {
   )
   const registerAs = (type) => {
     dispatch(setLoading(true));
-    setCurrentType(type === "creator" ? "Creator" : "Influencer");
+    const typeTO = type === "creator" ? "Creator" : "Influencer";
+    setCurrentType(typeTO);
     mutation.mutate({
       type
     })
