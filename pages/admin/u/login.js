@@ -5,12 +5,12 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import AdminLayout from '../../../layouts/admin.layout'
-import { loginUser } from '../api/auth'
-import { getBusinesses } from '../api/business'
-import { setBusinesses } from '../app/reducers/business'
-import { setError, setLoading, setUserType } from '../app/reducers/status'
-import { updateUser } from '../app/reducers/user'
-import { Bottom, Center, CheckContainer, Container, FacebookBtn, FormFields, FormHeader, FormWrapper, FrameContainer, GoogleBtn, HelpSection, Input, InputContainer, OrContainer, RememberMe, SocialIcon, SocialLogin, SubmitButton, Wrapper } from '../styles/auth.style'
+import { loginUser } from '../../../api/auth' 
+import { getBusinesses } from '../../../api/business'
+import { setBusinesses } from '../../../app/reducers/business' 
+import { setError, setLoading, setUserType } from '../../../app/reducers/status'
+import { updateUser } from '../../../app/reducers/user'
+import { Bottom, Center, CheckContainer, Container, FacebookBtn, FormFields, FormHeader, FormWrapper, FrameContainer, GoogleBtn, HelpSection, Input, InputContainer, OrContainer, RememberMe, SocialIcon, SocialLogin, SubmitButton, Wrapper } from "../../../styles/auth.style"
 
 const Login = () => {
   const [email, setEmail] = useState("");
