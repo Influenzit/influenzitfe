@@ -9,7 +9,7 @@ export const Container = styled.nav`
     position: fixed;
     top: 0;
     display: flex;
-    z-index: 99999;
+    z-index: 998;
     box-shadow: 0 0 8px #ddd;
 `;
 export const Wrapper = styled.div`
@@ -203,11 +203,13 @@ export const ConnectDropdown = styled.div`
     display: flex;
     height: 40px;
     align-items: center;
-    justify-content: space-between;
     position: relative;
     margin-left: 15px;
     font-size: 15px;
     cursor: pointer;
+    span {
+        padding-right: 10px;
+    }
     
     ${breakpoints.sm} {
         width: 50px;
@@ -282,7 +284,7 @@ export const ConnectDropdownCont = styled.div`
         transform: rotate(-45deg);
         position: absolute;
         top: -6px;
-        right: 10px;
+        right: 30px;
         background: #fff;
         border-top: 1px solid #D2D2D2;
         border-right: 1px solid #D2D2D2;

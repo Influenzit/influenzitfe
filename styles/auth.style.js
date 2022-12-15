@@ -28,6 +28,7 @@ export const Container = styled.div`
     background: url("/bg.png");
     background-size: cover;
     background-position: center;
+    min-height: calc(100vh - 140px);
 `;
 export const Center = styled.div`
     padding: 15px 45px;

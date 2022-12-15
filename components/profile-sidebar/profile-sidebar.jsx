@@ -27,7 +27,7 @@ const ProfileSidebar = () => {
             <Top>
                 <ProfileImageCont>
                     <InnerWrapper>
-                        <Image src={ user?.account?.media[0].url ? user?.account?.media[0].url : `https://ui-avatars.com/api/?name=${userData?.firstname}+${userData?.lastname}&color=FFFFFF&background=12544D`} alt="profile picture" layout='fill' objectFit='contain' objectPosition="center"/>
+                        <Image src={ user?.account?.media?.[0]?.url ? user?.account?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${userData?.firstname}+${userData?.lastname}&color=FFFFFF&background=12544D`} alt="profile picture" layout='fill' objectFit='contain' objectPosition="center"/>
                     </InnerWrapper>
                 </ProfileImageCont>
                 <h2>{userData.firstname} {userData.lastname}</h2>

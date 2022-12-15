@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserType, setError, setLoading } from '../../../app/reducers/status'
 import { getUser } from '../../../app/reducers/user'
-import { BagIcon, ChevronLeft, ChevronRight, HashTagIcon, SettingsIcon, WalletIcon } from '../../../assets/svgIcons'
-import LandingLayout from '../../../layouts/landing.layout'
+import { BagIcon, ChevronLeft, ChevronRight, HashTagIcon, SettingsIcon, UserIcon, WalletIcon } from '../../../assets/svgIcons'
+import AdminLayout from '../../../layouts/admin.layout'
 import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../../styles/connect-pages.style'
 import { Card, CardsWrapper, ChartContainer, WelcomeHeading } from '../../../styles/dashboard'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
@@ -86,9 +86,7 @@ const Dashboard = () => {
             },
             onError(res) {
                 dispatch(setLoading(false));
-                if((currentAcctType === "Business Owner") || (currentAcctType === "Creator")) {
-                    dispatch(setError({error: true, message: "An error occured"}));
-                }
+                dispatch(setError({error: true, message: "An error occured"}));
             } 
         });
       const { data: campaignData, refetch } = useQuery(["get-campaigns"], async () => {
@@ -128,38 +126,25 @@ const Dashboard = () => {
             </WelcomeHeading>
             <CardsWrapper>
                 <Card>
-                    <h3>Wallet Balance</h3>
-                    <h1>₦ 0.00</h1>
-                    <WalletIcon />
+                    <h3>Numbers of Users</h3>
+                    <h1>0</h1>
+                    <UserIcon />
                 </Card>
-                {
-                    (currentAcctType === "Business Owner" || (currentAcctType === "Influencer"))&& (
-                        <Card>
-                            <h3>No of Campaigns</h3>
-                            <h1>{campaignData?.data?.data.total}</h1>
-                            <HashTagIcon />
-                        </Card>
-                    )
-                }
-                {
-                    ((currentAcctType === "Business Owner") || (currentAcctType === "Creator"))  && (
-                        <Card>
-                            <h3>No of Projects</h3>
-                            <h1>0</h1>
-                            <BagIcon />
-                        </Card>
-                    )
-                }
-                {
-                   ((currentAcctType === "Creator") ||  (currentAcctType === "Influencer")) && (
-                        <Card>
-                            <h3>No of Services</h3>
-                            <h1>{serviceData?.data?.data.length}</h1>
-                            <SettingsIcon />
-                        </Card>
-                    )
-                }
-                
+                <Card>
+                    <h3>No of Campaigns</h3>
+                    <h1>0</h1>
+                    <HashTagIcon />
+                </Card>
+                <Card>
+                    <h3>No of Projects</h3>
+                    <h1>0</h1>
+                    <BagIcon />
+                </Card>
+                <Card>
+                    <h3>No of Services</h3>
+                    <h1>0</h1>
+                    <SettingsIcon />
+                </Card>
             </CardsWrapper>
             <ChartContainer>
                 <ResponsiveContainer width="100%" height="100%">
@@ -181,8 +166,6 @@ const Dashboard = () => {
                     </AreaChart>
                 </ResponsiveContainer>
             </ChartContainer>
-            {
-              (currentAcctType === "Business Owner" || (currentAcctType === "Creator")) && (
                 <TableWrapper>
                     <TableHeader>
                         <h2>Projects</h2>
@@ -224,62 +207,56 @@ const Dashboard = () => {
                     </Table>
                     </TableContent>
                 </TableWrapper>
-              )  
-            }
-            {
-                (currentAcctType === "Influencer") && (
-                    <TableWrapper>
-                        <TableHeader>
-                            <h2>My Campaigns</h2>
-                        </TableHeader>
-                        <TableContent>
-                        <Table>
-                            <THead>
-                                <TrH>
-                                    <Th cellWidth="50px">
-                                        <Checkbox>
-                                        </Checkbox>
-                                    </Th>
-                                    <Th cellWidth="500px">Influencer</Th>
-                                    <Th cellWidth="150px">Start Date</Th>
-                                    <Th cellWidth="150px">Duration</Th>
-                                    <Th cellWidth="120px">Status</Th>
-                                    <Th cellWidth="120px">Action</Th>
-                                </TrH>
-                            </THead>
-                            <TBody>
-                                {
-                                    campaignList.data.map((val, i) => (
-                                        <Tr key={i}>
-                                            <Td cellWidth="50px">
-                                                <Checkbox>
-                                                </Checkbox>
-                                            </Td>
-                                            <Td cellWidth="500px">{val.provider.firstname} {val.provider.lastname}</Td>
-                                            <Td cellWidth="150px">{val.start_date ? (new Date(val.start_date)).toDateString() : "Not specified"}</Td>
-                                            <Td cellWidth="150px">{val.duration_count ?? "Not specified"} {val.duration_type}</Td>
-                                            <Td cellWidth="120px">{val.status}</Td>
-                                            <Td cellWidth="120px">
-                                                <ActionBtn onClick={() => router.push(`/dashboard/campaigns/view/${val.id}`)}>View</ActionBtn>
-                                            </Td>
-                                        </Tr>
-                                    ))
-                                }
-                            </TBody>
-                        </Table>
-                        </TableContent>
-                    </TableWrapper>
-                )
-            }
+                <TableWrapper>
+                    <TableHeader>
+                        <h2>My Campaigns</h2>
+                    </TableHeader>
+                    <TableContent>
+                    <Table>
+                        <THead>
+                            <TrH>
+                                <Th cellWidth="50px">
+                                    <Checkbox>
+                                    </Checkbox>
+                                </Th>
+                                <Th cellWidth="500px">Influencer</Th>
+                                <Th cellWidth="150px">Start Date</Th>
+                                <Th cellWidth="150px">Duration</Th>
+                                <Th cellWidth="120px">Status</Th>
+                                <Th cellWidth="120px">Action</Th>
+                            </TrH>
+                        </THead>
+                        <TBody>
+                            {
+                                campaignList.data.map((val, i) => (
+                                    <Tr key={i}>
+                                        <Td cellWidth="50px">
+                                            <Checkbox>
+                                            </Checkbox>
+                                        </Td>
+                                        <Td cellWidth="500px">{val.provider.firstname} {val.provider.lastname}</Td>
+                                        <Td cellWidth="150px">{val.start_date ? (new Date(val.start_date)).toDateString() : "Not specified"}</Td>
+                                        <Td cellWidth="150px">{val.duration_count ?? "Not specified"} {val.duration_type}</Td>
+                                        <Td cellWidth="120px">{val.status}</Td>
+                                        <Td cellWidth="120px">
+                                            <ActionBtn onClick={() => router.push(`/dashboard/campaigns/view/${val.id}`)}>View</ActionBtn>
+                                        </Td>
+                                    </Tr>
+                                ))
+                            }
+                        </TBody>
+                    </Table>
+                    </TableContent>
+                </TableWrapper>
         </Wrapper>
     </Container>
   )
 }
 
 Dashboard.getLayout = (page) => (
-    <LandingLayout>
+    <AdminLayout>
         {page}
-    </LandingLayout>
+    </AdminLayout>
 )
 
 export default Dashboard

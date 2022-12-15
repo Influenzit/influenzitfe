@@ -9,7 +9,7 @@ export const Container = styled.nav`
     position: fixed;
     top: 0;
     display: flex;
-    z-index: 99999;
+    z-index: 998;
     box-shadow: 0 0 8px #ddd;
 `;
 export const Wrapper = styled.div`

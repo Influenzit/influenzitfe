@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 import { getInfluencer } from '../../api/influencer'
 import { setLoading } from '../../app/reducers/status'
 import LandingLayout from '../../layouts/landing.layout'
@@ -32,6 +33,12 @@ const CreatorProfile = () => {
             router.push("/search");
         } 
     });
+    const handleLinkCopy = () => {
+        navigator.clipboard.writeText(location.href);
+        toast.success("Profile URL copied to clipboard", {
+            position: toast.POSITION.TOP_RIGHT
+          });
+    }
     useEffect(() => {
         dispatch(setLoading(true));
         if(id){
@@ -66,7 +73,7 @@ const CreatorProfile = () => {
                     </ProfileData>
                     <p>0/5 (<span>0 Feedbacks</span>)</p>
                     <p>Member since {(new Date(inData?.created_at).toDateString())}</p>
-                    <button>Share Profile</button>
+                    <button onClick={handleLinkCopy}>Share Profile</button>
                 </ProfileStats>
                 <ProfileDetails>
                     <h2>{inData?.user?.firstname} {inData?.user.lastname}</h2>
@@ -77,9 +84,9 @@ const CreatorProfile = () => {
                     </ProfileCategory>
                     <p>{inData?.biography}
                     </p>
-                    <SeeMoreCont>
+                    {/* <SeeMoreCont>
                         <button>Click to see more</button>
-                    </SeeMoreCont>
+                    </SeeMoreCont> */}
                     
                 </ProfileDetails>
                 <Stats>
@@ -107,9 +114,6 @@ const CreatorProfile = () => {
                         <Popup show={showEngagePopup}>
                             <Link href="/">
                                 <a><span>Send a message</span><Image src="/arr-r.svg" height={10} width={10} /></a>
-                            </Link>
-                            <Link href="/">
-                                <a><span>Start a Project</span><Image src="/arr-r.svg" height={10} width={10} /></a>
                             </Link>
                             <Link href="/">
                                 <a><span>Report Account</span><Image src="/arr-r.svg" height={10} width={10} /></a>

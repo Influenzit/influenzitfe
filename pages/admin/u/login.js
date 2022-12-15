@@ -91,7 +91,7 @@ const Login = () => {
       <Wrapper>
         <FormWrapper>
           <FormHeader>
-            <h2>Login to Influenzit</h2>
+            <h2>Login as Admin</h2>
           </FormHeader>
           <Center>
             <FormFields onSubmit={handleSubmit}>
@@ -129,31 +129,8 @@ const Login = () => {
                 </button>
                 <span>Remember Me</span>
               </RememberMe>
-              <Link href="/reset-password">
-                <a>Forgot Password</a>
-              </Link>
             </HelpSection>
-            <OrContainer>
-              <p>OR</p>
-            </OrContainer>
-            <SocialLogin>
-              <FacebookBtn>
-                <SocialIcon>
-                  <Image src="/facebook-r.svg" alt="" height={22} width={22} />
-                </SocialIcon>
-                <span>Continue With Facebook</span>
-              </FacebookBtn>
-              <GoogleBtn>
-                <SocialIcon>
-                  <Image src="/google-r.svg" alt="" height={22} width={22} />
-                </SocialIcon>
-                <span>Continue With Google</span>
-              </GoogleBtn>
-            </SocialLogin>
           </Center>
-          <Bottom>
-            <p>Don&apos;t have an account? <Link href="/register"><a>Register Here</a></Link></p>
-          </Bottom>
         </FormWrapper>
       </Wrapper>
     </Container>
