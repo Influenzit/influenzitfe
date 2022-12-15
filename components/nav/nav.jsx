@@ -133,7 +133,7 @@ const Nav = () => {
     localStorage.clear();
     dispatch(clearUser());
     dispatch(clearBusiness());
-    router.push("/login");
+    router.replace("/login");
   }
   useEffect(() => {
     setIsLoggedIn(!!user);
