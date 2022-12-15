@@ -38,7 +38,7 @@ const LandingLayout = ({children, title, description}) => {
     onError(res) {
         dispatch(setLoading(false));
         if (router.pathname.includes("/dashboard")) {
-          router.push("/login")
+          router.replace("/login")
         }
     } 
 });
@@ -70,21 +70,26 @@ const LandingLayout = ({children, title, description}) => {
      
     }
   }, [user, router.pathname])
-  return (
-    <Container>
-       <Head>
-        <title>{title ? title : "Influenzit"}</title>
-        <meta name="description" content={description} />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Nav />
-        {loadingStatus && <Loader />}
-        {errorStatus && <ErrorPopup message={message} />}
-        {successStatus && <SuccessPopup message={message} />}
-        <main>{children}</main>
-      {isLoggedIn && router.pathname.includes("/dashboard")? (<DashboardFooter />) : (<Footer />)}
-    </Container>
-  )
+  if (isLoggedIn || !router.pathname.includes("/dashboard")) {
+    return (
+      <Container>
+         <Head>
+          <title>{title ? title : "Influenzit"}</title>
+          <meta name="description" content={description} />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <Nav />
+          {loadingStatus && <Loader />}
+          {errorStatus && <ErrorPopup message={message} />}
+          {successStatus && <SuccessPopup message={message} />}
+          <main>{children}</main>
+        {isLoggedIn && router.pathname.includes("/dashboard")? (<DashboardFooter />) : (<Footer />)}
+      </Container>
+    )
+  } else {
+    return null
+  }
+ 
 }
 
 export default LandingLayout
