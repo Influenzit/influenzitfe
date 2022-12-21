@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
-import Nav from '../components/nav'
+import Nav from '../components/admin-nav'
 import Footer from '../components/footer'
 import Loader from '../components/loading'
 import { Container } from '../styles/landing.style'
@@ -15,7 +15,7 @@ import { hasAValidAccount } from '../helpers/helper'
 import { useQuery } from '@tanstack/react-query'
 import { getUserAccount } from '../api/auth'
 
-const AdminLayout = ({children, title, description}) => {
+const AdminLayout = ({ children, title, description }) => {
   const user = useSelector(getUser);
   const loadingStatus = useSelector(isLoading);
   const errorStatus = useSelector(isError);
@@ -24,56 +24,64 @@ const AdminLayout = ({children, title, description}) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+
   const { data, refetch } = useQuery(["get-user"], async () => {
     return await getUserAccount(localStorage.getItem("admin-user-id"));
-}, {
+  }, {
     staleTime: false,
     enabled: false,
     retry: false,
     onSuccess(res) {
-        dispatch(setLoading(false));
-        dispatch(updateUser(res.data.data));
+      dispatch(setLoading(false));
+      dispatch(updateUser(res.data.data));
     },
     onError(res) {
-        dispatch(setLoading(false));
-        if (router.pathname.includes("/admin/u/dashboard")) {
-          router.push("/admin/u/login")
-        }
-    } 
-});
-  
-  useEffect(() => {
-    setIsLoggedIn(!!user);
-  }, [user]);
-  
+      dispatch(setLoading(false));
+      if (router.pathname.includes("/admin/u/dashboard")) {
+        router.push("/admin/u/login");
+        localStorage.clear();
+        dispatch(updateUser(null));
+      }
+    }
+  });
+
   useEffect(() => {
     const authRoutes = ["/admin/u/login"];
     const token = localStorage.getItem("token");
-    if(user && token) {
-      setIsLoggedIn(!!user);
-      if (!!user && authRoutes.includes(router.pathname)) {
-          router.push("/admin/u/dashboard")
+    if (user && token) {
+      setIsLoggedIn(!!user && user.is_admin);
+      if (!!user && authRoutes.includes(router.pathname) && user.is_admin) {
+        router.push("/admin/u/dashboard")
       }
-    } else {
-     
-    }
+      if(!user?.is_admin && !token){
+        localStorage.clear();
+        router.replace("/admin/u/login")
+      }
+    } 
   }, [user, router.pathname])
-  return (
-    <Container>
-       <Head>
-        <title>{title ? title : "Influenzit"}</title>
-        <meta name="description" content={description} />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Nav />
+  useEffect(() => {
+    refetch();
+  }, [])
+  
+  if (isLoggedIn || !router.pathname.includes("/admin/u/dashboard")) {
+    return (
+      <Container>
+        <Head>
+          <title>{title ? title : "Influenzit"}</title>
+          <meta name="description" content={description} />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <Nav />
         {loadingStatus && <Loader />}
         {errorStatus && <ErrorPopup message={message} />}
         {successStatus && <SuccessPopup message={message} />}
         <main>{children}</main>
-      <DashboardFooter />
-    </Container>
-  )
+        <DashboardFooter />
+      </Container>
+    )
+  } else {
+    return null;
+  }
 }
 
 export default AdminLayout

@@ -27,36 +27,17 @@ const Login = () => {
         dispatch(setLoading(false));
         dispatch(setError({error: true, message: res.message}));
       } else {
-        localStorage.setItem("token", res.token);
-        const { is_influencer, is_creator, is_businessowner } = res.user.account;
-        if (is_businessowner) {
-          dispatch(setUserType("Business Owner"));
-          getBusinesses(res.token).then((bizRes) => {
-            if (bizRes.data && res) {
-              dispatch(setLoading(false));
-              dispatch(setBusinesses(bizRes.data.data))
-              dispatch(updateUser(res.user));
-              dispatch(setError({error: false, message: ""}));
-              localStorage.setItem("user-id", res.user.id);
-              router.push("/dashboard");
-            }
-          }).catch( _ => {
-            dispatch(setLoading(false));
-            dispatch(setError({error: true, message: "An error occured"}))
-          })
-        } else {
+        const { is_admin } = res.user;
+        if (is_admin) {
+          localStorage.setItem("token", res.token);
+          localStorage.setItem("admin-user-id", res.user.account.id);
           dispatch(setLoading(false));
           dispatch(updateUser(res.user));
           dispatch(setError({error: false, message: ""}));
-          localStorage.setItem("token", res.token);
-          localStorage.setItem("user-id", res.user.id);
-          
-          if (is_influencer || is_creator) {
-            is_influencer ? dispatch(setUserType("Influencer")) : (is_creator && dispatch(setUserType("Creator")))
-            router.push("/dashboard");
-          } else {
-            router.push("/dashboard/account-type");
-          }
+          router.push("/admin/u/dashboard");
+        } else {
+          dispatch(setLoading(false));
+          dispatch(setError({error: true, message: "Unauthenticated"}));
         }
       }
     },

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import LandingLayout from '../layouts/landing.layout';
 import { Bottom, Container, Content, Filter, ListWrapper, PageBtn, Pages, Tab, Tabs, Top, Wrapper } from '../styles/search.style';
 import ProfileCard from '../components/profile-card';
-import { getInfluencers } from '../api/influencer';
+import { getExploreNiches, getInfluencers } from '../api/influencer';
 import { useQuery } from '@tanstack/react-query';
 
 const Search = () => {
@@ -14,8 +14,16 @@ const Search = () => {
         staleTime: Infinity,
         retry: false
     });
+    const { data, refetch } = useQuery(["get-niche"], async () => {
+        return await getExploreNiches();
+    }, {
+        enabled: false,
+        staleTime: Infinity,
+        retry: false
+    });
     useEffect(() => {
         refetchInfluencerData();
+        refetch();
     }, [])
 
     return (
@@ -35,7 +43,12 @@ const Search = () => {
                             <div>
                                 <p>Filter</p>
                                 <select>
-                                    <option>All Niche</option>
+                                    <option value="">Select a niche</option>
+                                    {
+                                        data?.data?.data?.map((val, i) => (
+                                        <option key={i} value={val.name}>{val.name}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
                         </Filter>

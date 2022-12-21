@@ -14,6 +14,7 @@ import SuccessPopup from '../components/success-popup'
 import { hasAValidAccount } from '../helpers/helper'
 import { useQuery } from '@tanstack/react-query'
 import { getUserAccount } from '../api/auth'
+import AdminNav from '../components/admin-nav'
 
 const LandingLayout = ({children, title, description}) => {
   const user = useSelector(getUser);
@@ -60,14 +61,15 @@ const LandingLayout = ({children, title, description}) => {
           if((router.pathname !== "/dashboard/account-type") && router.pathname.includes("/dashboard") && !router.pathname.includes("create/")) {
               router.push("/dashboard/account-type")
           }
+          if(router.pathname.includes("/dashboard") && user.is_admin) {
+            router.push("/admin/u/dashboard")
+        }
       } else if (router.pathname.includes("/dashboard/account-type")) {
         router.push("/dashboard")
       }
       if (!!user && authRoutes.includes(router.pathname)) {
           router.push("/dashboard")
       }
-    } else {
-     
     }
   }, [user, router.pathname])
   if (isLoggedIn || !router.pathname.includes("/dashboard")) {
@@ -78,7 +80,11 @@ const LandingLayout = ({children, title, description}) => {
           <meta name="description" content={description} />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <Nav />
+        {(!!user && user?.is_admin) ? (
+           <AdminNav />
+        ): (
+          <Nav />
+        )}
           {loadingStatus && <Loader />}
           {errorStatus && <ErrorPopup message={message} />}
           {successStatus && <SuccessPopup message={message} />}

@@ -71,7 +71,7 @@ const Nav = () => {
     localStorage.clear();
     dispatch(clearUser());
     dispatch(clearBusiness());
-    router.push("/admin/u/login");
+    router.replace("/admin/u/login");
   }
   useEffect(() => {
     setIsLoggedIn(!!user);
@@ -115,10 +115,10 @@ const Nav = () => {
                             </ProfilePicWrapper>
                             {
                                 showDropdown && <UserDropdown>
-                                    <button onClick={() => router.push("/dashboard")}><BoxIcon /><span>Dashboard</span></button>
-                                    <button onClick={() => router.push(currentAcctType === "Influencer" ? `/influencer/${userDetails.account.id}` : currentAcctType === "Creator" ? "/creators/profile" : "/business-owner/profile")}><UserIcon /><span>Profile</span></button>
+                                    <button onClick={() => router.push("/admin/u/dashboard")}><BoxIcon /><span>Dashboard</span></button>
+                                    {/* <button onClick={() => router.push(currentAcctType === "Influencer" ? `/influencer/${userDetails.account.id}` : currentAcctType === "Creator" ? "/creators/profile" : "/business-owner/profile")}><UserIcon /><span>Profile</span></button>
                                     <button onClick={() => router.push("/dashboard/profile/billing")}><WalletIcon /><span>Wallet</span></button>
-                                    <button onClick={() => router.push("/dashboard/profile")}><SettingsIcon /><span>Settings</span></button>
+                                    <button onClick={() => router.push("/dashboard/profile")}><SettingsIcon /><span>Settings</span></button> */}
                                     <button onClick={logout}><LogoutIcon /><span>Logout</span></button>
                                 </UserDropdown>
                             }

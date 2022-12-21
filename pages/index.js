@@ -1,12 +1,16 @@
+import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { getExploreNiches } from "../api/influencer"
 import LandingLayout from "../layouts/landing.layout"
 import { CustomSelect, HeroSectionFive, HeroSectionFour, HeroSectionOne, HeroSectionThree, HeroSectionTwo, ImgSlider, ImgWrapper, InfoCard, InfoDetails, InfoList, InfoSectOne, ListItem, NicheCard, NicheWrapper, ReviewCard, ReviewWrapper, SlideBtn, SlideControl, UserCard, UserDetails, UserImage, WrapperFive, WrapperFour, WrapperThree, WrapperTwo } from "../styles/home.style"
 
 const Home = () => {
   const [currSlideOne, setCurrSlideOne] = useState(1);
   const [currSlideTwo, setCurrSlideTwo] = useState(1);
+  const router = useRouter();
   let slideOneCtrl = [];
   let slideTwoCtrl = [];
 
@@ -19,6 +23,8 @@ const Home = () => {
     slideTwoCtrl.push(i)
   }
   let intervalId;
+  const [nicheVal, setNicheVal] = useState("");
+  const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
     intervalId = setInterval(() => {
@@ -39,6 +45,16 @@ const Home = () => {
       clearInterval(intervalId);
     }
   }, [currSlideOne, currSlideTwo])
+  const { data, refetch } = useQuery(["get-niche"], async () => {
+      return await getExploreNiches();
+  }, {
+      enabled: false,
+      staleTime: Infinity,
+      retry: false
+  });
+  useEffect(() => {
+    refetch();
+  }, [])
   
   return (
     <div>
@@ -46,14 +62,22 @@ const Home = () => {
         <h1>We Connect <span>Brands</span> With The Perfect <span>Influencers</span> To <span>Multiply</span> Their <span>Sales.</span></h1>
         <p>Find results-focused influencers in just a few clicks.</p>
         <form>
-          <input type="text" placeholder="Search by keyword or niche" />
+          <input type="text" value={searchString} onChange={(e) => setSearchString(e.target.value)} placeholder="Search by keyword or niche" />
           <CustomSelect>
             <span>in:</span>
-            <select>
-              <option>Select a niche</option>
+            <select val={nicheVal} onChange={(e) => setNicheVal(e.target.value)}>
+              <option value="">Select a niche</option>
+              {
+                data?.data?.data?.map((val, i) => (
+                  <option key={i} value={val.name}>{val.name}</option>
+                ))
+              }
             </select>
           </CustomSelect>
-          <button><Image src="/search.svg" height={30} width={30}/></button>
+          <button onClick={(e) => {
+            e.preventDefault();
+            router.push(`/explore?query=${searchString}&niche=${nicheVal.toLocaleLowerCase()}`);
+          }}><Image src="/search.svg" height={30} width={30}/></button>
         </form>
       </HeroSectionOne>
       <HeroSectionTwo>

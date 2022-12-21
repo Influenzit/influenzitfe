@@ -87,3 +87,6 @@ export const getInfluencers = () => {
 export const getInfluencer = (id) => {
     return axiosInstance().get(`/explore/influencers/${id}`)
 }
+export const getExploreNiches = () => {
+    return axiosInstance().get(`/explore/niches`)
+}
