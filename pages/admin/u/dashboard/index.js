@@ -445,7 +445,7 @@ const Dashboard = () => {
                                         <Td cellWidth="150px">{val.duration_count ?? "Not specified"} {val.duration_type}</Td>
                                         <Td cellWidth="120px">{val.status}</Td>
                                         <Td cellWidth="120px">
-                                            <ActionBtn onClick={() => router.push(`/dashboard/campaigns/view/${val.id}`)}>View</ActionBtn>
+                                            <ActionBtn onClick={() => router.push(`/admin/u/dashboard/campaigns/view/${val.id}`)}>View</ActionBtn>
                                         </Td>
                                     </Tr>
                                 ))
