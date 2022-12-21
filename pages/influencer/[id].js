@@ -324,7 +324,7 @@ const CreatorProfile = () => {
                                 <Link href="/" passHref>
                                     <a>Engage</a>
                                 </Link>
-                                <button><Image src="/list.svg" alt="" height={24} width={24}/></button>
+                                {/* <button><Image src="/list.svg" alt="" height={24} width={24}/></button> */}
                                 </Controls>
                             </CreatorDetails>
                         </CreatorsCard>
@@ -345,7 +345,7 @@ const CreatorProfile = () => {
                                 <Link href="/" passHref>
                                     <a>Engage</a>
                                 </Link>
-                                <button><Image src="/list.svg" alt="" height={24} width={24}/></button>
+                                {/* <button><Image src="/list.svg" alt="" height={24} width={24}/></button> */}
                                 </Controls>
                             </CreatorDetails>
                         </CreatorsCard>
@@ -366,7 +366,7 @@ const CreatorProfile = () => {
                                 <Link href="/" passHref>
                                     <a>Engage</a>
                                 </Link>
-                                <button><Image src="/list.svg" alt="" height={24} width={24}/></button>
+                                {/* <button><Image src="/list.svg" alt="" height={24} width={24}/></button> */}
                                 </Controls>
                             </CreatorDetails>
                         </CreatorsCard>
@@ -387,7 +387,7 @@ const CreatorProfile = () => {
                                 <Link href="/" passHref>
                                     <a>Engage</a>
                                 </Link>
-                                <button><Image src="/list.svg" alt="" height={24} width={24}/></button>
+                                {/* <button><Image src="/list.svg" alt="" height={24} width={24}/></button> */}
                                 </Controls>
                             </CreatorDetails>
                         </CreatorsCard>

@@ -79,11 +79,9 @@ const Search = () => {
                             }
                         </ListWrapper>
                         <Pages>
-                            <PageBtn>1</PageBtn>
-                            <PageBtn>2</PageBtn>
-                            <PageBtn>3</PageBtn>
-                            <PageBtn>4</PageBtn>
-                            <PageBtn>&gt;&gt;</PageBtn>
+                            <PageBtn onClick={() => influencersData?.data?.data?.current_page.prev_page_url && setGetUrl(influencersData?.data?.data?.current_page.prev_page_url.replace("https://phplaravel-870335-3074787.cloudwaysapps.com/api/v1", ""))}>&lt;&lt;</PageBtn>
+                            <PageBtn>{influencersData?.data?.data?.current_page}</PageBtn>
+                            <PageBtn onClick={() => influencersData?.data?.data?.current_page.next_page_url && setGetUrl(influencersData?.data?.data?.current_page.next_page_url.replace("https://phplaravel-870335-3074787.cloudwaysapps.com/api/v1", ""))}>&gt;&gt;</PageBtn>
                         </Pages>
                     </Bottom>
                 </Content>
