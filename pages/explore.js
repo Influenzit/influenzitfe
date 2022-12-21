@@ -7,8 +7,9 @@ import { useQuery } from '@tanstack/react-query';
 
 const Search = () => {
     const [currentTab, setCurrentTab] = useState("influencer");
+    const [getUrl, setGetUrl] = useState("")
     const { data: influencersData, refetch: refetchInfluencerData } = useQuery(["get-service"], async () => {
-        return await getInfluencers();
+        return await getInfluencers(getUrl);
     }, {
         enabled: false,
         staleTime: Infinity,
