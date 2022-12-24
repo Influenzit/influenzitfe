@@ -130,15 +130,14 @@ const Password = () => {
   return (
     <Container>
         <Wrapper>
-            <ProfileSidebar />
             <Content>
                 <Heading>
                     <h2>Password & Security</h2>
                 </Heading>
                 <FormContainer style={{ paddingTop: 0 }}>
-                    <Heading>
+                    {/* <Heading>
                         <h2>Change Password</h2>
-                    </Heading>
+                    </Heading> */}
                     <PasswordContainer>
                         <Left>
                             <InputContainer>

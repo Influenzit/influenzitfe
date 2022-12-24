@@ -134,7 +134,6 @@ const Services = () => {
   return (
     <Container>
         <Wrapper>
-            <ProfileSidebar />
             {
                 serviceData && serviceData.data && (
                     <Content>

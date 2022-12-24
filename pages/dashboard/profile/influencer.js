@@ -529,7 +529,6 @@ const Information = () => {
   return (
     <Container>
         <Wrapper>
-            <ProfileSidebar />
             <Content>
                 <Heading>
                     <h2>Skills</h2>

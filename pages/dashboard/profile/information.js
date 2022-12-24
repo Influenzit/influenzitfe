@@ -106,7 +106,6 @@ const Information = () => {
   return (
     <Container>
         <Wrapper>
-            <ProfileSidebar />
             <Content>
                 <Heading>
                     <h2>Business Information</h2>

@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { CountryDropdown } from 'react-country-region-selector'
@@ -9,7 +10,7 @@ import { getUserType, setError, setLoading, setSuccess } from '../../../app/redu
 import { getUser, updateUser } from '../../../app/reducers/user'
 import ProfileSidebar from '../../../components/profile-sidebar'
 import LandingLayout from '../../../layouts/landing.layout'
-import { AddSocialBtn, AvailableSwitch, Bottom, Container, Content, FormContainerM, Heading, InputContainer, InputFlex, ProfileImageCont, ProfilePicWrapper, UploadContainer, UploadHeader, UploadInfo, Wrapper } from '../../../styles/profile.style'
+import { AddSocialBtn, AvailableSwitch, Bottom, ConnectButton, Container, Content, FormContainerM, Heading, InputContainer, InputFlex, ProfileImageCont, ProfilePicWrapper, TopFlex, UploadContainer, UploadHeader, UploadInfo, Wrapper } from '../../../styles/profile.style'
 
 const Information = () => {
     const router = useRouter();
@@ -205,7 +206,6 @@ const Information = () => {
   return (
     <Container>
         <Wrapper>
-            <ProfileSidebar />
             <Content>
                 <Heading>
                     <h2>Account</h2>
@@ -218,12 +218,15 @@ const Information = () => {
                     </AvailableSwitch>
                 </Heading>
                 <FormContainerM>
-                    <ProfilePicWrapper>
-                        <ProfileImageCont>
-                            <Image src={imgSrc ? imgSrc : user?.account?.media?.[0]?.url ? user?.account?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${user?.firstname}+${user?.lastname}&color=FFFFFF&background=12544D`} alt="profile-pic" layout='fill' objectFit='contain' objectPosition="center"/>
-                        </ProfileImageCont>
-                        <button onClick={() => setShowUpload(!showUpload)}>Edit</button>
-                    </ProfilePicWrapper>
+                    <TopFlex>
+                        <ProfilePicWrapper>
+                            <ProfileImageCont>
+                                <Image src={imgSrc ? imgSrc : user?.account?.media?.[0]?.url ? user?.account?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${user?.firstname}+${user?.lastname}&color=FFFFFF&background=12544D`} alt="profile-pic" layout='fill' objectFit='cover' objectPosition="center"/>
+                            </ProfileImageCont>
+                            <button onClick={() => setShowUpload(!showUpload)}>Edit</button>
+                        </ProfilePicWrapper>
+                    </TopFlex>
+                    
                     {
                         showUpload && (
                             <>
@@ -241,6 +244,29 @@ const Information = () => {
                             </>
                         )
                     }
+                    <h3 style={{ textAlign: "center", color: "#555" }}>Connect</h3>
+                    <ConnectButton>
+                            <Link href="/">
+                                <a>
+                                    <Image src="/facebook.svg" height={25} width={25}/><span>Facebook</span>
+                                </a>
+                            </Link>
+                            <Link href="/">
+                                <a>
+                                    <Image src="/instagram.svg" height={25} width={25}/><span>Instagram</span>
+                                </a>
+                            </Link>
+                            {/* <Link href="/">
+                                <a>
+                                    <Image src="/tiktok.svg" height={25} width={25}/><span>Tiktok</span>
+                                </a>
+                            </Link>
+                            <Link href="/">
+                                <a>
+                                    <Image src="/twitter.svg" height={25} width={25}/><span>Twitter</span>
+                                </a>
+                            </Link> */}
+                        </ConnectButton>
                     <InputFlex>
                         <InputContainer>
                             <label>Firstname</label>

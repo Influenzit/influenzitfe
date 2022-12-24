@@ -34,7 +34,6 @@ const Billing = () => {
   return (
     <Container>
         <Wrapper>
-            <ProfileSidebar />
             <CustomContent>
                 <CContent>
                     <Heading>

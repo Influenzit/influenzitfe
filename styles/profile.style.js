@@ -4,6 +4,7 @@ import { breakpoints, colors, sizes } from "./theme";
 export const Container = styled.div`
     background: #F7FAFC;
     padding: 20px 0;
+    padding-right: 3vw;
     min-height: calc(100vh - 140px);
     position: relative;
 `;
@@ -19,15 +20,11 @@ export const Wrapper = styled.div`
 export const Content =  styled.div`
     margin-left: 20px;
     width: 100%;
-    max-width: calc(100% - 320px);
     height: auto;
     background: #fff;
     border: 1px solid #D2D2D2;
     border-radius: 5px;
     padding-bottom: 20px;
-    ${breakpoints.lg}{
-        max-width: calc(100% - 100px);;
-    }
     ${breakpoints.md}{
         margin-left: 0;
         max-width: 100%;
@@ -76,7 +73,7 @@ export const AvailableSwitch = styled.div`
     }
 `;
 export const Heading = styled.div`
-    padding: 20px 30px;
+    padding: 20px 80px;
     display: flex;
     justify-content: space-between;
     h2 {
@@ -93,7 +90,7 @@ export const Heading = styled.div`
     }
 `;
 export const FormContainer = styled.div`
-    padding: 15px 30px;
+    padding: 15px 80px;
     width: 100%;
     max-width: 100%;
     ${breakpoints.md}{
@@ -101,7 +98,7 @@ export const FormContainer = styled.div`
     }
 `;
 export const FormContainerM = styled.div`
-    padding: 20px 30px;
+    padding: 20px 80px;
     ${breakpoints.md}{
         padding: 0px 10px;
     }
@@ -155,7 +152,7 @@ export const InputContainer = styled.div`
     }
 `;
 export const Bottom = styled.div`
-    padding: 20px 30px;
+    padding: 20px 80px;
     border-top: 1px solid #D2D2D2;
     display: flex;
     justify-content: right;
@@ -363,10 +360,6 @@ export const CustomContent = styled.div`
     flex-direction: column;
     row-gap: 15px;
     margin-left: 20px;
-    max-width: calc(100% - 310px);
-    ${breakpoints.lg}{
-        max-width: calc(100% - 100px);
-    }
     ${breakpoints.md}{
         max-width: 100%;
     }
@@ -545,7 +538,7 @@ export const ProfileImageCont = styled.div`
 `;
 export const ProfilePicWrapper = styled.div`
     width: 200px;
-    margin: 20px auto;
+    margin: 20px;
     position: relative;
     button {
         position: absolute;
@@ -556,5 +549,27 @@ export const ProfilePicWrapper = styled.div`
         border-radius: 10px;
         padding: 5px 15px;
         cursor: pointer;
+    }
+`;
+export const TopFlex = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+`;
+export const ConnectButton = styled.div`
+    display: flex;
+    column-gap: 10px;
+    justify-content: center;
+    padding: 7px 0 30px 0;
+    a {
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        column-gap: 10px;
+        padding: 7px 15px;
+        border-radius: 5px;
+        background: ${colors.primaryColor}11;
     }
 `;

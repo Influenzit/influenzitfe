@@ -290,6 +290,70 @@ export const ConnectDropdownCont = styled.div`
         border-right: 1px solid #D2D2D2;
     }
 `;
+export const SwitchDropdownCont = styled.div`
+    position: absolute;
+    right: 0;
+    width: 200px;
+    min-width: 160px;
+    top: 40px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    color: #111;
+    box-shadow: 0px 4px 12px 0px #0000001A;
+    border: 1px solid #D2D2D2;
+    border-radius: 2px;
+    button {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        height: 40px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        span {
+            display: inline-block;
+            padding-left: 10px;
+        }
+        :hover {
+            color: ${colors.primaryColor};
+        }
+        ${breakpoints.sm} {
+            font-size: 12px;
+        }
+    }
+    a {
+        height: 40px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        span {
+            display: inline-block;
+            padding-left: 10px;
+        }
+        :hover {
+            color: ${colors.primaryColor};
+        }
+        ${breakpoints.sm} {
+            font-size: 12px;
+        }
+    }
+    ::after {
+        content: "";
+        display: block;
+        height: 10px;
+        width: 10px;
+        transform: rotate(-45deg);
+        position: absolute;
+        top: -6px;
+        right: 10px;
+        background: #fff;
+        border-top: 1px solid #D2D2D2;
+        border-right: 1px solid #D2D2D2;
+    }
+`;
 export const ControlsA = styled.div`
     display: flex;
     align-items: center;
@@ -324,7 +388,7 @@ export const UserBtn = styled.div`
     position: relative;
     display: flex;
     align-items: center;
-    padding: 0 15px;
+    padding: 0 0 0 15px;
     ::after {
         height: 11px;
         width: 11px;
@@ -332,7 +396,7 @@ export const UserBtn = styled.div`
         content: "";
         position: absolute;
         bottom: 0;
-        right: 18px;
+        right: 0px;
         border-radius: 50%;
         border: 2px solid #fff;
         background: #14A800;
@@ -360,7 +424,7 @@ export const ProfilePicWrapper = styled.div`
 `;
 export const UserDropdown = styled.div`
     position: absolute;
-    right: 15px;
+    right: 0px;
     width: 100%;
     top: 50px;
     width: 150px;
@@ -558,4 +622,16 @@ export const AddFeatureBtn = styled.button`
         padding-left: 10px;
         color: ${colors.primaryColor};
     }
+`;
+export const SwitchBtn = styled.div`
+    height: 35px;
+    width: 35px;
+    min-width: 35px;
+    background: #eee;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
 `;

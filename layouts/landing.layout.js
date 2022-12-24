@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Nav from '../components/nav'
 import Footer from '../components/footer'
 import Loader from '../components/loading'
-import { Container } from '../styles/landing.style'
+import { Container, Content, Wrapper } from '../styles/landing.style'
 import DashboardFooter from '../components/dashboard-footer'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUser, updateUser } from '../app/reducers/user'
@@ -15,6 +15,7 @@ import { hasAValidAccount } from '../helpers/helper'
 import { useQuery } from '@tanstack/react-query'
 import { getUserAccount } from '../api/auth'
 import AdminNav from '../components/admin-nav'
+import Sidebar from '../components/sidebar'
 
 const LandingLayout = ({children, title, description}) => {
   const user = useSelector(getUser);
@@ -88,8 +89,13 @@ const LandingLayout = ({children, title, description}) => {
           {loadingStatus && <Loader />}
           {errorStatus && <ErrorPopup message={message} />}
           {successStatus && <SuccessPopup message={message} />}
-          <main>{children}</main>
-        {isLoggedIn && router.pathname.includes("/dashboard")? (<DashboardFooter />) : (<Footer />)}
+          <Wrapper>
+            {router.pathname.includes("/dashboard") && <Sidebar />}
+            <Content isPadded={router.pathname.includes("/dashboard")}>
+              {children}
+              {isLoggedIn && router.pathname.includes("/dashboard")? (<DashboardFooter />) : (<Footer />)}
+            </Content>
+          </Wrapper>
       </Container>
     )
   } else {

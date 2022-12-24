@@ -67,7 +67,6 @@ const Services = () => {
   return (
     <Container>
         <Wrapper>
-            <ProfileSidebar />
             <Content>
                 <Heading>
                     <h2>My Services</h2>

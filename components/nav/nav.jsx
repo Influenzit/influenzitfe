@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, GetStartedBtn, LoginBtn, Logo, NavLinks, ProfilePicWrapper, ResponsiveNav, Right, SearchBtn, SearchBtnC, SearchBtnResponsive, SearchByBtn, SearchByOption, SearchContainer, SidebarBtn, UserBtn, UserDropdown, Wrapper } from './style'
+import { ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, GetStartedBtn, LoginBtn, Logo, NavLinks, ProfilePicWrapper, ResponsiveNav, Right, SearchBtn, SearchBtnC, SearchBtnResponsive, SearchByBtn, SearchByOption, SearchContainer, SidebarBtn, SwitchBtn, SwitchDropdownCont, UserBtn, UserDropdown, Wrapper } from './style'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -200,20 +200,7 @@ const Nav = () => {
                                         <Image src="/search-b.svg" alt="" height={25} width={25}/>
                                     </SearchBtnResponsive>
                                 </>
-                            ) : (
-                            <>
-                                <ConnectDropdown onClick={() => toggleSwitchAccount()} ref={switchRef} show={true}>
-                                    <span id="span-current">{currentAcctType === "null" ? "None" : currentAcctType}</span><Image src={switchIcon} alt="" height={24} width={24} />
-                                    {
-                                        showSwitchAccount && <ConnectDropdownCont>
-                                                <button onClick={() => handleAccountChange("Business Owner")}><span>Business Owner</span></button>
-                                                <button onClick={() => handleAccountChange("Creator")}><span>Creator</span></button>
-                                                <button onClick={() => handleAccountChange("Influencer")}><span>Influencer</span></button>
-                                        </ConnectDropdownCont>
-                                    }
-                                </ConnectDropdown>
-                            </>
-                            )
+                            ) : null
                         }
                         <ConnectDropdown onClick={() => handleConnectOpen()} ref={connectRef}>
                             <span>My Connects</span><Image src="/down-chev-b.svg" alt="" height={7} width={10} />
@@ -249,14 +236,23 @@ const Nav = () => {
                             </ProfilePicWrapper>
                             {
                                 showDropdown && <UserDropdown>
-                                    <button onClick={() => router.push("/dashboard")}><BoxIcon /><span>Dashboard</span></button>
                                     <button onClick={() => router.push(currentAcctType === "Influencer" ? `/influencer/${userDetails.account.id}` : currentAcctType === "Creator" ? "/creators/profile" : "/business-owner/profile")}><UserIcon /><span>Profile</span></button>
-                                    <button onClick={() => router.push("/dashboard/profile/billing")}><WalletIcon /><span>Wallet</span></button>
-                                    <button onClick={() => router.push("/dashboard/profile")}><SettingsIcon /><span>Settings</span></button>
+                                    {/* <button onClick={() => router.push("/dashboard/profile/billing")}><WalletIcon /><span>Wallet</span></button>
+                                    <button onClick={() => router.push("/dashboard/profile")}><SettingsIcon /><span>Settings</span></button> */}
                                     <button onClick={logout}><LogoutIcon /><span>Logout</span></button>
                                 </UserDropdown>
                             }
                         </UserBtn>
+                        <SwitchBtn onClick={() => toggleSwitchAccount()} ref={switchRef}>
+                            <Image src={switchIcon} alt="" height={24} width={24} />
+                            {
+                                showSwitchAccount && <SwitchDropdownCont>
+                                    <button onClick={() => handleAccountChange("Business Owner")}><span>Business Owner</span></button>
+                                    <button onClick={() => handleAccountChange("Creator")}><span>Creator</span></button>
+                                    <button onClick={() => handleAccountChange("Influencer")}><span>Influencer</span></button>
+                                </SwitchDropdownCont>
+                            }
+                        </SwitchBtn>
                         <SidebarBtn onClick={handleShowSidebar} ref={sidebarBtn}>
                             <HamburgerIcon />
                         </SidebarBtn>
