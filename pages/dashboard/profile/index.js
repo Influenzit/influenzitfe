@@ -246,7 +246,7 @@ const Information = () => {
                     }
                     <h3 style={{ textAlign: "center", color: "#555" }}>Connect</h3>
                     <ConnectButton>
-                            <Link href="/">
+                            <Link href={`${process.env.NEXT_PUBLIC_API_URI}/accounts/connect?provider=facebook&user=${user.id}`}>
                                 <a>
                                     <Image src="/facebook.svg" height={25} width={25}/><span>Facebook</span>
                                 </a>
