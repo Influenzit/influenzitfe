@@ -86,9 +86,9 @@ const Dashboard = () => {
             },
             onError(res) {
                 dispatch(setLoading(false));
-                if((currentAcctType === "Business Owner") || (currentAcctType === "Creator")) {
-                    dispatch(setError({error: true, message: "An error occured"}));
-                }
+                // if((currentAcctType === "Business Owner") || (currentAcctType === "Creator")) {
+                //     dispatch(setError({error: true, message: "An error occured"}));
+                // }
             } 
         });
       const { data: campaignData, refetch } = useQuery(["get-campaigns"], async () => {
@@ -103,9 +103,9 @@ const Dashboard = () => {
             },
             onError(res) {
                 dispatch(setLoading(false));
-                if((currentAcctType === "Business Owner") || (currentAcctType === "Influencer")) {
-                    dispatch(setError({error: true, message: "An error occured"}));
-                }
+                // if((currentAcctType === "Business Owner") || (currentAcctType === "Influencer")) {
+                //     dispatch(setError({error: true, message: "An error occured"}));
+                // }
             } 
         });
         const { data: serviceData, refetch: refetchServiceData } = useQuery(["get-services"], async () => {

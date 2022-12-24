@@ -3,7 +3,7 @@ import { ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, G
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { BagIcon, BellIcon, BoxIcon, CollaborationIcon, HamburgerIcon, HashTagIcon, LogoutIcon, MailIcon, SettingsIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
+import { BagIcon, BellIcon, BoxIcon, CollaborationIcon, DashboardIcon, HamburgerIcon, HashTagIcon, LogoutIcon, MailIcon, SettingsIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
 import { useRouter } from 'next/router'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { clearUser, getUser, updateUser } from '../../app/reducers/user'
@@ -236,6 +236,7 @@ const Nav = () => {
                             </ProfilePicWrapper>
                             {
                                 showDropdown && <UserDropdown>
+                                    <button onClick={() => router.push("/dashboard")}><DashboardIcon /><span>Dashboard</span></button>
                                     <button onClick={() => router.push(currentAcctType === "Influencer" ? `/influencer/${userDetails.account.id}` : currentAcctType === "Creator" ? "/creators/profile" : "/business-owner/profile")}><UserIcon /><span>Profile</span></button>
                                     {/* <button onClick={() => router.push("/dashboard/profile/billing")}><WalletIcon /><span>Wallet</span></button>
                                     <button onClick={() => router.push("/dashboard/profile")}><SettingsIcon /><span>Settings</span></button> */}
