@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { getUserType } from '../../app/reducers/status';
 import { getUser } from '../../app/reducers/user';
 import { BagIcon, BoxIcon, DashboardIcon, LockIcon, SettingsIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
-import { Container, InnerWrapper, NavButton, ProfileImageCont } from './style'
+import { Container, InnerWrapper, NavButton, ProfileImageCont, Status } from './style'
 
 const Sidebar = () => {
     const user = useSelector(getUser);
@@ -24,6 +24,7 @@ const Sidebar = () => {
                 <Image src={ user?.account?.media?.[0]?.url ? user?.account?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${userData?.firstname}+${userData?.lastname}&color=FFFFFF&background=12544D`} alt="profile picture" layout='fill' objectFit='cover' objectPosition="center"/>
             </InnerWrapper>
         </ProfileImageCont>
+        <Status>{currentUserType}</Status>
         <NavButton onClick={() => router.push("/dashboard")} isActive={router.pathname === "/dashboard"}>
             <DashboardIcon />
             <span>Dashbord</span>

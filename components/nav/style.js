@@ -634,4 +634,5 @@ export const SwitchBtn = styled.div`
     justify-content: center;
     position: relative;
     cursor: pointer;
+    margin-left: 12px;
 `;

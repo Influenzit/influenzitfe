@@ -91,3 +91,8 @@ export const InnerWrapper = styled.div`
         margin: 0 auto;
     }
 `;
+export const Status = styled.div`
+    font-size: 10px;
+    text-align: center;
+    color: ${colors.primaryColor};
+`;
