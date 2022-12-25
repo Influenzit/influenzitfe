@@ -26,6 +26,7 @@ const LandingLayout = ({children, title, description}) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [show, setShow] = useState(false);
   
   const { data, refetch } = useQuery(["get-user"], async () => {
     return await getUserAccount(localStorage.getItem("user-id"));
@@ -72,8 +73,13 @@ const LandingLayout = ({children, title, description}) => {
           router.push("/dashboard")
       }
     }
+    if(authRoutes.includes(router.pathname) && token) {
+      setShow(false);
+    } else {
+      setShow(true);
+    }
   }, [user, router.pathname])
-  if (isLoggedIn || !router.pathname.includes("/dashboard")) {
+  if ((isLoggedIn || !router.pathname.includes("/dashboard")) && show) {
     return (
       <Container>
          <Head>
