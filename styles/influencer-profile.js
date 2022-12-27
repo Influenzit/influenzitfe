@@ -183,6 +183,7 @@ export const TabBtn = styled.button`
     font-size: 17px;
     color: #333;
     max-width: 260px;
+    opacity: ${(props) => props.isActive ? "1" : "0.6"};
 `;
 export const Content = styled.div`
     margin-top: 5px;
@@ -257,4 +258,14 @@ export const ExperienceWrapper = styled.div`
     max-height: 100%;
     overflow-y: scroll;
     padding: 0 15px;
+`;
+export const EmptyWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px 0;
+    h3 {
+        color: #555
+    }
 `;

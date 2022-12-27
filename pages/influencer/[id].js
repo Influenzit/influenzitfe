@@ -10,7 +10,7 @@ import { setLoading } from '../../app/reducers/status'
 import LandingLayout from '../../layouts/landing.layout'
 import { Controls, CreatorsCard, CreatorDetails, SocialHandle } from '../../styles/business-owner.style'
 import { BackImage, Bottom, Container, HeroSectionOne, Popup, ProfileCategory, ProfileData, ProfileDetails, ProfileImgCont, ProfileStats, SeeMoreCont, SkillCard, StatCard, Stats, StatWrapper, Top, UserCard, WorkCard, Wrapper } from '../../styles/creator-profile.style'
-import { AwardCard, Content, DataSection, DataSectionTwo, ExperienceWrapper, ImageWrap, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, TabBtn, Tabs, TopImg } from '../../styles/influencer-profile'
+import { AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, ImageWrap, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, TabBtn, Tabs, TopImg } from '../../styles/influencer-profile'
 import { colors } from '../../styles/theme'
 
 const CreatorProfile = () => {
@@ -18,6 +18,7 @@ const CreatorProfile = () => {
   const { id } = router.query;
   const [inData, setInData] = useState(null);
   const dispatch = useDispatch();
+  const [currentTab, setCurrentTab] = useState("instagram");
   const [showEngagePopup, setShowEngagePopup] = useState(false);
   const { data: influencerData, refetch: refetchInfluencerData } = useQuery(["get-influencer"], async () => {
         return await getInfluencer(id);
@@ -30,7 +31,6 @@ const CreatorProfile = () => {
         },
         onError(res) {
             dispatch(setLoading(false));
-            router.push("/search");
         } 
     });
     const handleLinkCopy = () => {
@@ -162,47 +162,200 @@ const CreatorProfile = () => {
                     <Left>
                         <DataSection>
                             <Tabs>
-                                <TabBtn>Instagram</TabBtn>
-                                <TabBtn>Facebook</TabBtn>
-                                <TabBtn>Twitter</TabBtn>
-                                <TabBtn>TikTok</TabBtn>
+                                <TabBtn isActive={currentTab === "instagram"} onClick={() => setCurrentTab("instagram")}>Instagram</TabBtn>
+                                <TabBtn isActive={currentTab === "facebook"} onClick={() => setCurrentTab("facebook")}>Facebook</TabBtn>
+                                <TabBtn isActive={currentTab === "twitter"} onClick={() => setCurrentTab("twitter")}>Twitter</TabBtn>
+                                <TabBtn isActive={currentTab === "tiktok"} onClick={() => setCurrentTab("tiktok")}>TikTok</TabBtn>
                             </Tabs>
-                            <Content>
-                                <PostWrapper>
-                                    <SocialPost>
-                                        <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                        <PostLayer>
-                                            <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                            <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                        </PostLayer>
-                                    </SocialPost>
-                                    <SocialPost>
-                                        <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                        <PostLayer>
-                                            <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                            <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                        </PostLayer>
-                                    </SocialPost>
-                                    <SocialPost>
-                                        <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                        <PostLayer>
-                                            <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                            <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                        </PostLayer>
-                                    </SocialPost>
-                                </PostWrapper>
-                                <PostStats>
-                                    <div>
-                                        <p><span>123</span>Posts</p>
-                                    </div>
-                                    <div>
-                                        <p><span>540</span>Followers</p>
-                                    </div>
-                                    <div>
-                                        <p><span>78%</span>Engagements</p>
-                                    </div>
-                                </PostStats>
-                            </Content>
+                            {
+                                currentTab === "instagram" && inData?.instagram_verified ? (
+                                    <Content>
+                                        <PostWrapper>
+                                            <SocialPost>
+                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
+                                                <PostLayer>
+                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
+                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
+                                                </PostLayer>
+                                            </SocialPost>
+                                            <SocialPost>
+                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
+                                                <PostLayer>
+                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
+                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
+                                                </PostLayer>
+                                            </SocialPost>
+                                            <SocialPost>
+                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
+                                                <PostLayer>
+                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
+                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
+                                                </PostLayer>
+                                            </SocialPost>
+                                        </PostWrapper>
+                                        <PostStats>
+                                            <div>
+                                                <p><span>123</span>Posts</p>
+                                            </div>
+                                            <div>
+                                                <p><span>540</span>Followers</p>
+                                            </div>
+                                            <div>
+                                                <p><span>78%</span>Engagements</p>
+                                            </div>
+                                        </PostStats>
+                                    </Content>
+                                ) : (currentTab === "instagram") && (
+                                    <Content>
+                                        <EmptyWrapper>
+                                            <Image src="/empty.png" alt="" height={150} width={150}/>
+                                            <h3>Instagram not connected yet</h3>
+                                        </EmptyWrapper>
+                                    </Content>
+                                )
+                            }
+                            {
+                                currentTab === "facebook" && inData?.facebook_verified ? (
+                                    <Content>
+                                        <PostWrapper>
+                                            <SocialPost>
+                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
+                                                <PostLayer>
+                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
+                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
+                                                </PostLayer>
+                                            </SocialPost>
+                                            <SocialPost>
+                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
+                                                <PostLayer>
+                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
+                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
+                                                </PostLayer>
+                                            </SocialPost>
+                                            <SocialPost>
+                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
+                                                <PostLayer>
+                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
+                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
+                                                </PostLayer>
+                                            </SocialPost>
+                                        </PostWrapper>
+                                        <PostStats>
+                                            <div>
+                                                <p><span>123</span>Posts</p>
+                                            </div>
+                                            <div>
+                                                <p><span>540</span>Followers</p>
+                                            </div>
+                                            <div>
+                                                <p><span>78%</span>Engagements</p>
+                                            </div>
+                                        </PostStats>
+                                    </Content>
+                                ) : (currentTab === "facebook") && (
+                                    <Content>
+                                        <EmptyWrapper>
+                                            <Image src="/empty.png" alt="" height={150} width={150}/>
+                                            <h3>Facebook not connected yet</h3>
+                                        </EmptyWrapper>
+                                    </Content>
+                                )
+                            }
+                            {
+                                currentTab === "twitter" && inData?.twitter_verified ? (
+                                    <Content>
+                                        <PostWrapper>
+                                            <SocialPost>
+                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
+                                                <PostLayer>
+                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
+                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
+                                                </PostLayer>
+                                            </SocialPost>
+                                            <SocialPost>
+                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
+                                                <PostLayer>
+                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
+                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
+                                                </PostLayer>
+                                            </SocialPost>
+                                            <SocialPost>
+                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
+                                                <PostLayer>
+                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
+                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
+                                                </PostLayer>
+                                            </SocialPost>
+                                        </PostWrapper>
+                                        <PostStats>
+                                            <div>
+                                                <p><span>123</span>Posts</p>
+                                            </div>
+                                            <div>
+                                                <p><span>540</span>Followers</p>
+                                            </div>
+                                            <div>
+                                                <p><span>78%</span>Engagements</p>
+                                            </div>
+                                        </PostStats>
+                                    </Content>
+                                ) : (currentTab === "twitter") && (
+                                    <Content>
+                                        <EmptyWrapper>
+                                            <Image src="/empty.png" alt="" height={150} width={150}/>
+                                            <h3>Twitter not connected yet</h3>
+                                        </EmptyWrapper>
+                                    </Content>
+                                )
+                            }
+                             {
+                                currentTab === "tiktok" && inData?.tiktok_verified ? (
+                                    <Content>
+                                        <PostWrapper>
+                                            <SocialPost>
+                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
+                                                <PostLayer>
+                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
+                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
+                                                </PostLayer>
+                                            </SocialPost>
+                                            <SocialPost>
+                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
+                                                <PostLayer>
+                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
+                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
+                                                </PostLayer>
+                                            </SocialPost>
+                                            <SocialPost>
+                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
+                                                <PostLayer>
+                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
+                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
+                                                </PostLayer>
+                                            </SocialPost>
+                                        </PostWrapper>
+                                        <PostStats>
+                                            <div>
+                                                <p><span>123</span>Posts</p>
+                                            </div>
+                                            <div>
+                                                <p><span>540</span>Followers</p>
+                                            </div>
+                                            <div>
+                                                <p><span>78%</span>Engagements</p>
+                                            </div>
+                                        </PostStats>
+                                    </Content>
+                                ) : (currentTab === "tiktok") && (
+                                    <Content>
+                                        <EmptyWrapper>
+                                            <Image src="/empty.png" alt="" height={150} width={150}/>
+                                            <h3>TikTok not connected yet</h3>
+                                        </EmptyWrapper>
+                                    </Content>
+                                )
+                            }
+                            
                         </DataSection>
                         <DataSectionTwo>
                             <Tabs>
@@ -240,22 +393,22 @@ const CreatorProfile = () => {
                                 <SocialStats>
                                     <Image src="/instagram.svg" height={25} width={25}/>
                                     <p>{inData?.instagram}</p>
-                                    <span>0</span>
+                                    <span>{inData?.analytics?.instagram?.count ?? 0}</span>
                                 </SocialStats>
                                 <SocialStats>
                                     <Image src="/twitter.svg" height={25} width={25}/>
                                     <p>{inData?.twitter}</p>
-                                    <span>0</span>
+                                    <span>{inData?.analytics?.twitter?.count ?? 0}</span>
                                 </SocialStats>
                                 <SocialStats>
                                     <Image src="/facebook.svg" height={25} width={25}/>
                                     <p>{inData?.facebook}</p>
-                                    <span>0</span>
+                                    <span>{inData?.analytics?.facebook?.count}</span>
                                 </SocialStats>
                                 <SocialStats>
                                     <Image src="/tiktok.svg" height={25} width={25}/>
                                     <p>{inData?.tiktok}</p>
-                                    <span>0</span>
+                                    <span>{inData?.analytics?.tiktok?.count}</span>
                                 </SocialStats>
                             </Bottom>
                         </SkillCard>

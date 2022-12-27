@@ -11,6 +11,7 @@ import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'rec
 import { useQuery } from '@tanstack/react-query'
 import { getCampaigns } from '../../api/campaigns'
 import { getServices } from '../../api/influencer'
+import { getProjects } from '../../api/projects'
 import { useRouter } from 'next/router'
 
 const Dashboard = () => {
@@ -75,7 +76,7 @@ const Dashboard = () => {
         data: [],
       });
       const { data: projectData, refetch: projectRefetch } = useQuery(["get-projects"], async () => {
-            return await getProjects();
+            return await getProjects("");
         }, {
             enabled: false,
             staleTime: Infinity,
@@ -145,7 +146,7 @@ const Dashboard = () => {
                     ((currentAcctType === "Business Owner") || (currentAcctType === "Creator"))  && (
                         <Card>
                             <h3>No of Projects</h3>
-                            <h1>0</h1>
+                            <h1>{projectData?.data?.data.length}</h1>
                             <BagIcon />
                         </Card>
                     )
@@ -215,7 +216,7 @@ const Dashboard = () => {
                                         <Td cellWidth="150px">{val.duration_count ?? "Not specified"}</Td>
                                         <Td cellWidth="120px">{val.status}</Td>
                                         <Td cellWidth="120px">
-                                            <ActionBtn onClick={() => router.push(`/dashboard/campaigns/view/${val.id}`)}>View</ActionBtn>
+                                            <ActionBtn onClick={() => router.push(`/dashboard/projects/view/${val.id}`)}>View</ActionBtn>
                                         </Td>
                                     </Tr>
                                 ))

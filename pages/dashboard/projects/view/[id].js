@@ -35,7 +35,6 @@ const ProjectView = () => {
         },
         onError(res) {
             dispatch(setLoading(false));
-            router.push("/search");
         } 
     });
     const [project, setProject] = useState({
@@ -170,7 +169,7 @@ const ProjectView = () => {
     }
     useEffect(() => {
       if(id){
-        refetch(id);
+        refetch();
       }
     }, [id])
   return (
@@ -200,7 +199,7 @@ const ProjectView = () => {
           <Bottom>
             <DetailsContainer>
               <ImageWrapper>
-                <Image src="/p-image.png" layout='fill'  objectFit='cover' objectPosition='center'/>
+                <Image src={projectDetails?.media?.url ?? "/web-services.jpg"} layout='fill'  objectFit='cover' objectPosition='center'/>
               </ImageWrapper>
               <Details>
                 <h2>{projectDetails?.title}</h2>

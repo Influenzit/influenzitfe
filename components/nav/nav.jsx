@@ -202,7 +202,7 @@ const Nav = () => {
                                 </>
                             ) : null
                         }
-                        <ConnectDropdown onClick={() => handleConnectOpen()} ref={connectRef}>
+                        {/* <ConnectDropdown onClick={() => handleConnectOpen()} ref={connectRef}>
                             <span>My Connects</span><Image src="/down-chev-b.svg" alt="" height={7} width={10} />
                             {
                                 showConnect && <ConnectDropdownCont>
@@ -217,7 +217,7 @@ const Nav = () => {
                                     </Link>
                                 </ConnectDropdownCont>
                             }
-                        </ConnectDropdown>
+                        </ConnectDropdown> */}
                         <ControlsA>
                             <Link href="/dashboard/notifications">
                                 <a>

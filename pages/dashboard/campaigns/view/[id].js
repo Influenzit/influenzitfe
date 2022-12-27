@@ -65,7 +65,6 @@ const CampaignView = () => {
       },
       onError(res) {
           dispatch(setLoading(false));
-          router.push("/search");
       } 
   });
   const createMilestone = useMutation( milestoneData => {
@@ -203,7 +202,7 @@ const CampaignView = () => {
           <Bottom>
             <DetailsContainer>
               <ImageWrapper>
-                <Image src="/p-image.png" layout='fill'  objectFit='cover' objectPosition='center'/>
+                <Image src={campaignDetails?.media?.url ?? "/web-services.jpg"} layout='fill'  objectFit='cover' objectPosition='center'/>
               </ImageWrapper>
               <Details>
                 <h2>{campaignDetails?.title}</h2>
