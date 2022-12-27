@@ -146,7 +146,7 @@ const Dashboard = () => {
                     ((currentAcctType === "Business Owner") || (currentAcctType === "Creator"))  && (
                         <Card>
                             <h3>No of Projects</h3>
-                            <h1>{projectData?.data?.data.length}</h1>
+                            <h1>{projectData?.data?.data?.total}</h1>
                             <BagIcon />
                         </Card>
                     )
