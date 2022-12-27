@@ -78,7 +78,7 @@ export const ContextBtn = styled.div`
 `;
 export const MessagesCont = styled.div`
     height: calc(100% - 170px);
-    min-height: calc(100% - 170px);
+    min-height: calc(100% - 220px);
     max-height: calc(100% - 170px);
     overflow-y: scroll;
 `;
@@ -89,6 +89,7 @@ export const Editor = styled.div`
     display: flex;
     flex-direction: column;
     border-top: 1px solid #D2D2D2;
+    position: relative;
 `;
 export const MessageInput = styled.div`
     outline: none;
@@ -142,4 +143,11 @@ export const ActionBtn = styled.button`
     background: transparent;
     padding: 4px;
     cursor: pointer;
+`;
+export const PickerContainer = styled.div`
+    position: absolute;
+    left: 20px;
+    top: -300px;
+    z-index: 99;
+
 `;

@@ -142,7 +142,8 @@ const Services = () => {
                 name: newService.name,
                 description: newService.description,
                 is_negotiable: newService.isNegotiable,
-                link: newService.link
+                link: newService.link,
+                type: currentAcctType === "Creator" ? "project" : "campaign"
             });
         } else {
             dispatch(setError({message: "Enter required fields", error: true}));

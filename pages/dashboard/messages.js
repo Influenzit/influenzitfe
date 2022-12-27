@@ -1,13 +1,24 @@
 import Image from 'next/image';
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { AttachmentIcon, BoldIcon, EmojiIcon, ItalicIcon, MarkupIcon, SendIcon, UnderlineIcon } from '../../assets/svgIcons';
 import ChatSidebar from '../../components/chat-sidebar';
 import LandingLayout from '../../layouts/landing.layout';
-import { ActionBtn, ChatContainer, ChatControls, ChatHeader, Container, ContextBtn, Editor, EditorBtn, HLeft, ImageWrapper, LeftControls, MessageInput, MessagesCont, MessageSection, NonSelectedCont, RightControls, Wrapper } from '../../styles/messages.style';
+import { ActionBtn, ChatContainer, ChatControls, ChatHeader, Container, ContextBtn, Editor, EditorBtn, HLeft, ImageWrapper, LeftControls, MessageInput, MessagesCont, MessageSection, NonSelectedCont, PickerContainer, RightControls, Wrapper } from '../../styles/messages.style';
+import { colors } from '../../styles/theme';
+import dynamic from 'next/dynamic';
+
+const Picker = dynamic(
+  () => {
+    return import('emoji-picker-react');
+  },
+  { ssr: false }
+);
 
 const Messages = () => {
   const [userId, setUserId] = useState("");
-  const [messageContent, setMessageContent] = useState("")
+  const [messageContent, setMessageContent] = useState("");
+  const [showEmoji, setShowEmoji] = useState(false);
+  const emojiRef = useRef(null);
   const handleInput = (e) => {
     if(e.currentTarget.innerHTML === "<br>") {
         setMessageContent("");
@@ -15,6 +26,7 @@ const Messages = () => {
     }
     setMessageContent(e.currentTarget.innerHTML)
   }
+  
   return (
     <Container>
         <Wrapper>
@@ -33,9 +45,20 @@ const Messages = () => {
                             </ContextBtn>
                         </ChatHeader>
                         <MessagesCont>
-
                         </MessagesCont>
                         <Editor>
+                            {
+                                showEmoji && 
+                                <PickerContainer ref={emojiRef}>
+                                    <Picker 
+                                        height="350px"
+                                        emojiStyle="facebook"
+                                        previewConfig={{
+                                            showPreview: false,
+                                        }}
+                                    />
+                                </PickerContainer>
+                            }
                             <MessageInput data-placeholder="Write a message" contentEditable showPlaceholder={!!messageContent} onInput={handleInput} >
 
                             </MessageInput>
@@ -50,18 +73,18 @@ const Messages = () => {
                                     <EditorBtn>
                                         <UnderlineIcon />
                                     </EditorBtn>
-                                    <EditorBtn>
+                                    {/* <EditorBtn>
                                         <MarkupIcon />
+                                    </EditorBtn> */}
+                                    <EditorBtn>
+                                        <AttachmentIcon />
+                                    </EditorBtn>
+                                    <EditorBtn onClick={() => setShowEmoji(!showEmoji)}>
+                                        <EmojiIcon />
                                     </EditorBtn>
                                 </LeftControls>
                                 <RightControls>
-                                    <ActionBtn>
-                                        <AttachmentIcon />
-                                    </ActionBtn>
-                                    <ActionBtn>
-                                        <EmojiIcon />
-                                    </ActionBtn>
-                                    <ActionBtn>
+                                    <ActionBtn style={{ color: colors.primaryColor }}>
                                         <SendIcon />
                                     </ActionBtn>
                                 </RightControls>

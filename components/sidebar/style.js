@@ -8,16 +8,39 @@ export const Container = styled.div`
     position: fixed;
     row-gap: 3px;
     min-height: calc(100vh - 80px);
+    max-height: calc(100vh - 80px);
     background: #fff;
     z-index: 9;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 20px;
+    overflow-y: scroll;
+    :hover {
+        scrollbar-color: ${colors.primaryColor} ${colors.primaryColor}11;
+
+    ::-webkit-scrollbar-thumb {
+        background-color: ${colors.primaryColor};
+    }
+    ::-webkit-scrollbar {
+        background-color: ${colors.primaryColor}11;
+        width: 3px;
+    }
+    }
+    scrollbar-color: transparent transparent;
+
+    ::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+    ::-webkit-scrollbar {
+        background-color: transparent;
+        width: 3px;
+    }
 `;
 export const NavButton = styled.button`
     width: 90%;
     height: 80px;
+    min-height: 80px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
@@ -40,17 +63,17 @@ export const NavButton = styled.button`
     :hover {
         background: #f3f3f3;
     }
-    ::after {
+    /* ::after {
         content: "";
         display: ${(props) => props.isActive ? "block" : "none"};
-        height: 4px;
+        height: 2px;
         border-top-left-radius: 3px;
         border-top-right-radius: 3px;
         position: absolute;
         bottom: 0;
         width: 60%;
         background: ${colors.primaryColor};
-    }
+    } */
 `;
 export const ProfileImageCont = styled.div`
     margin-bottom: 5px;

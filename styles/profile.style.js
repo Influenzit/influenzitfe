@@ -201,7 +201,7 @@ export const CreateContainer = styled.div`
     }
 `;
 export const ListContainer = styled.div`
-    padding: 20px 30px;
+    padding: 20px 80px;
     h4 {
         color: #444;
         text-align: center;
@@ -512,6 +512,15 @@ export const FilePreview = styled.div`
     display: flex;
     border: 1px solid #E1E7EC;
     border-radius: 3px;
+    position: relative;
+    button {
+        position: absolute;
+        right: 10px;
+        top: 5px;
+        background: transparent;
+        cursor: pointer;
+        border: none;
+    }
 `;
 export const ImgPreview = styled.div`
     margin: 0 15px;

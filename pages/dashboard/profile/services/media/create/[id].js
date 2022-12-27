@@ -10,6 +10,7 @@ import ProfileSidebar from '../../../../../../components/profile-sidebar';
 import LandingLayout from '../../../../../../layouts/landing.layout';
 import { AddSocialBtn, Bottom, BottomAdd,  Container, Content, Control, ControlFlex, CurrentToggle, DeleteBtn, FaqCont, FileContainer, FilePreview, FormContainer, Heading, ImgPreview, InputContainer, InputFlex, List, ListB, ListContainer, PreviewDetails, SmallHeader, UploadContainer, UploadHeader, UploadInfo, Wrapper } from '../../../../../../styles/profile.style';
 import imageIcon from "../../../../../../assets/image.svg";
+import { CancelIcon } from '../../../../../../assets/svgIcons'
 
 
 const Services = () => {
@@ -91,6 +92,13 @@ const Services = () => {
             })
         }
     }
+    const handleImageRemove = (index) => {
+        setFileList((old) => {
+            let copyOld = [...old];
+            copyOld.splice(index, 1);
+            return copyOld;
+        })
+    } 
     const handleFileChange = (e) => {
         [...e.target.files].forEach((val) => {
             handleSetFiles(val);
@@ -157,6 +165,9 @@ const Services = () => {
                                     fileList.map((val, i) => {
                                         return (
                                             <FilePreview key={i}>
+                                                <button onClick={() => handleImageRemove(i)}>
+                                                    <CancelIcon />
+                                                </button>
                                                 <ImgPreview>
                                                     <Image src={URL.createObjectURL(val)} alt="" height={60} width={60} />
                                                 </ImgPreview>
