@@ -19,14 +19,139 @@ const Messages = () => {
   const [messageContent, setMessageContent] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
   const emojiRef = useRef(null);
+  const messageBoxRef = useRef(null);
   const handleInput = (e) => {
     if(e.currentTarget.innerHTML === "<br>") {
         setMessageContent("");
+        e.currentTarget.innerHTML = "";
         return;
     }
     setMessageContent(e.currentTarget.innerHTML)
   }
-  
+  const handleBold = () => {
+    const selection = window.getSelection();
+    if(!selection.anchorNode) return;
+    const parent = selection.anchorNode.parentElement;
+    const grandParent = parent.parentElement;
+    const greatGrandParent = grandParent.parentElement;
+    const selectionText = selection.toString();
+    
+    if(parent.nodeName === "STRONG") {
+        if (selectionText !== parent.textContent) return;
+        parent.replaceWith(document.createTextNode(parent.innerHTML));
+        grandParent.normalize();
+        selection.removeAllRanges();
+        return;
+    }
+    if(grandParent.nodeName === "STRONG") {
+        if (selectionText !== parent.textContent) return;
+        parent.replaceWith(document.createTextNode(grandParent.innerHTML));
+        greatGrandParent.normalize();
+        selection.removeAllRanges();
+        return;
+    }
+    if(greatGrandParent.nodeName === "STRONG") {
+        if (selectionText !== parent.textContent) return;
+        parent.replaceWith(document.createTextNode(greatGrandParent.innerHTML));
+        greatGrandParent.parentElement.normalize();
+        selection.removeAllRanges();
+        return;
+    }
+    const selectionRange = selection.getRangeAt(0)
+    const boldElem = document.createElement("strong");
+    selectionRange.surroundContents(boldElem);
+    selection.removeAllRanges();
+  }
+  const handleItalic = () => {
+    const selection = window.getSelection();
+    if(!selection.anchorNode) return;
+    const parent = selection.anchorNode.parentElement;
+    const grandParent = parent.parentElement;
+    const greatGrandParent = grandParent.parentElement;
+    const selectionText = selection.toString();
+    
+    if(parent.nodeName === "EM") {
+        if (selectionText !== parent.textContent) return;
+        parent.replaceWith(document.createTextNode(parent.innerHTML));
+        grandParent.normalize();
+        selection.removeAllRanges();
+        return;
+    }
+    if(grandParent.nodeName === "EM") {
+        if (selectionText !== parent.textContent) return;
+        parent.replaceWith(document.createTextNode(grandParent.innerHTML));
+        greatGrandParent.normalize();
+        selection.removeAllRanges();
+        return;
+    }
+    if(greatGrandParent.nodeName === "EM") {
+        if (selectionText !== parent.textContent) return;
+        parent.replaceWith(document.createTextNode(greatGrandParent.innerHTML));
+        greatGrandParent.parentElement.normalize();
+        selection.removeAllRanges();
+        return;
+    }
+    const selectionRange = selection.getRangeAt(0)
+    const italicElem = document.createElement("em");
+    selectionRange.surroundContents(italicElem);
+    selection.removeAllRanges();
+  }
+  const handleLineThrough = () => {
+    const selection = window.getSelection();
+    if(!selection.anchorNode) return;
+    const parent = selection.anchorNode.parentElement;
+    const grandParent = parent.parentElement;
+    const greatGrandParent = grandParent.parentElement;
+    const selectionText = selection.toString();
+    
+    if(parent.nodeName === "S") {
+        if (selectionText !== parent.textContent) return;
+        parent.replaceWith(document.createTextNode(parent.innerHTML));
+        grandParent.normalize();
+        selection.removeAllRanges();
+        return;
+    }
+    if(grandParent.nodeName === "S") {
+        if (selectionText !== parent.textContent) return;
+        parent.replaceWith(document.createTextNode(grandParent.innerHTML));
+        greatGrandParent.normalize();
+        selection.removeAllRanges();
+        return;
+    }
+    if(greatGrandParent.nodeName === "S") {
+        if (selectionText !== parent.textContent) return;
+        parent.replaceWith(document.createTextNode(greatGrandParent.innerHTML));
+        greatGrandParent.parentElement.normalize();
+        selection.removeAllRanges();
+        return;
+    }
+    const selectionRange = selection.getRangeAt(0);
+    const linethroughElem = document.createElement("s");
+    selectionRange.surroundContents(linethroughElem);
+    selection.removeAllRanges();
+  }
+  const handleEmojiClick = (emojiData, event) => {
+    let newEmoji = document.createElement("img");
+    newEmoji.src = emojiData.getImageUrl("facebook");
+    newEmoji.alt = emojiData.emoji;
+    newEmoji.height = "22";
+    newEmoji.width = "22";
+    setShowEmoji(false);
+
+    if (messageBoxRef.current.lastChild && messageBoxRef.current.lastChild.nodeName === "BR") {
+        messageBoxRef.current.lastChild.remove();
+    }
+    if (messageBoxRef.current.lastChild && messageBoxRef.current.lastChild.nodeName === "DIV") {
+        if (messageBoxRef.current.lastChild.lastChild && messageBoxRef.current.lastChild.lastChild.nodeName === "BR") {
+            messageBoxRef.current.lastChild.lastChild.remove();
+        }
+        messageBoxRef.current.lastChild.appendChild(newEmoji);
+        setMessageContent(messageBoxRef.current.innerHTML);
+        return;
+    }
+    messageBoxRef.current.appendChild(newEmoji);
+    setMessageContent(messageBoxRef.current.innerHTML);
+  }
   return (
     <Container>
         <Wrapper>
@@ -56,21 +181,22 @@ const Messages = () => {
                                         previewConfig={{
                                             showPreview: false,
                                         }}
+                                        onEmojiClick={handleEmojiClick}
                                     />
                                 </PickerContainer>
                             }
-                            <MessageInput data-placeholder="Write a message" contentEditable showPlaceholder={!!messageContent} onInput={handleInput} >
+                            <MessageInput data-placeholder="Write a message" contentEditable showPlaceholder={!!messageContent} onInput={handleInput} ref={messageBoxRef}>
 
                             </MessageInput>
                             <ChatControls>
                                 <LeftControls>
-                                    <EditorBtn>
+                                    <EditorBtn onClick={handleBold}>
                                         <BoldIcon />
                                     </EditorBtn>
-                                    <EditorBtn>
+                                    <EditorBtn onClick={handleItalic}>
                                         <ItalicIcon />
                                     </EditorBtn>
-                                    <EditorBtn>
+                                    <EditorBtn onClick={handleLineThrough}>
                                         <UnderlineIcon />
                                     </EditorBtn>
                                     {/* <EditorBtn>

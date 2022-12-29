@@ -84,6 +84,15 @@ export const deletePortfolio = (index) => {
 export const getInfluencers = (url) => {
     return axiosInstance().get(url ? url : "/explore/influencers");
 }
+export const getCreators = (url) => {
+    return axiosInstance().get(url ? url : "/explore/creators");
+}
+export const exploreServices = (url) => {
+    return axiosInstance().get(url ? url : "/explore/services");
+}
+export const exploreAll = (url) => {
+    return axiosInstance().get(url);
+}
 export const getInfluencer = (id) => {
     return axiosInstance().get(`/explore/influencers/${id}`)
 }

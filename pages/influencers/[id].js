@@ -92,19 +92,19 @@ const CreatorProfile = () => {
                 <Stats>
                     <StatWrapper>
                         <StatCard textColor='#2B368C' bgColor="#F9F9FC">
-                            <h3>0</h3>
+                            <h3>{inData?.analytics?.influenzit?.ongoing_campaigns_count}</h3>
                             <p>Ongoing Engagements</p>
                         </StatCard>
                         <StatCard textColor='#019B2C' bgColor="#F7FCF9">
-                            <h3>0</h3>
+                            <h3>{inData?.analytics?.influenzit?.completed_campaigns_count}</h3>
                             <p>Completed Campaigns</p>
                         </StatCard>
                         <StatCard textColor='#FF0000' bgColor="#FFF7F7">
-                            <h3>0</h3>
+                            <h3>{inData?.analytics?.influenzit?.cancelled_campaigns_count}</h3>
                             <p>Cancelled Engagements</p>
                         </StatCard>
                         <StatCard textColor='#000' bgColor="#F8F8F8">
-                            <h3>0%</h3>
+                            <h3>{inData?.analytics?.influenzit?.campaign_engagements}</h3>
                             <p>Total Engagement</p>
                         </StatCard> 
                     </StatWrapper>
@@ -359,8 +359,7 @@ const CreatorProfile = () => {
                         </DataSection>
                         <DataSectionTwo>
                             <Tabs>
-                                <TabBtn>Experience</TabBtn>
-                                <TabBtn>Education</TabBtn>
+                                <TabBtn isActive={true}>Experience</TabBtn>
                             </Tabs>
                             <Content>
                                 <ExperienceWrapper>

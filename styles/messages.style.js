@@ -77,15 +77,15 @@ export const ContextBtn = styled.div`
     cursor: pointer;
 `;
 export const MessagesCont = styled.div`
-    height: calc(100% - 170px);
+    height: calc(100% - 210px);
     min-height: calc(100% - 220px);
-    max-height: calc(100% - 170px);
+    max-height: calc(100% - 210px);
     overflow-y: scroll;
 `;
 export const Editor = styled.div`
-    height: 100px;
+    height: 140px;
     padding: 0 30px;
-    max-height: 100px;
+    max-height: 140px;
     display: flex;
     flex-direction: column;
     border-top: 1px solid #D2D2D2;
@@ -93,9 +93,9 @@ export const Editor = styled.div`
 `;
 export const MessageInput = styled.div`
     outline: none;
-    height: 50%;
+    height: 70%;
     position: relative;
-    max-height: 50%;
+    max-height: 70%;
     overflow-y: scroll;
     cursor: text;
     padding: 10px 0;
@@ -109,11 +109,14 @@ export const MessageInput = styled.div`
         color: #949494;
         font-size: 16px;
     }
+    img {
+        vertical-align: middle;
+    }
 `;
 export const ChatControls = styled.div`
     display: flex;
     justify-content: space-between;
-    min-height: 50%;
+    min-height: 30%;
 
 `;
 export const LeftControls = styled.div`

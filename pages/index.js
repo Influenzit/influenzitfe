@@ -76,7 +76,7 @@ const Home = () => {
           </CustomSelect>
           <button onClick={(e) => {
             e.preventDefault();
-            router.push(`/explore?query=${searchString}&niche=${nicheVal.toLocaleLowerCase()}`);
+            router.push(`/explore?search=${searchString}&niche=${nicheVal.toLocaleLowerCase()}`);
           }}><Image src="/search.svg" height={30} width={30}/></button>
         </form>
       </HeroSectionOne>

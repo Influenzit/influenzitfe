@@ -266,6 +266,6 @@ export const EmptyWrapper = styled.div`
     flex-direction: column;
     padding: 20px 0;
     h3 {
-        color: #555
+        color: #777
     }
 `;

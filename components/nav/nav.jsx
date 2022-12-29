@@ -33,6 +33,7 @@ const Nav = () => {
   const [showSearchRes, setShowSearchRes] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const router = useRouter();
+  const [searchString, setSearchString] = useState("");
   const handleSearchOption = (val) => {
     setSearchBy(val)
     setShowSearchOption(false)
@@ -179,18 +180,28 @@ const Nav = () => {
                         {
                             showSearchBar ? (
                                 <>
+                                    <ConnectDropdown onClick={() => handleConnectOpen()} ref={connectRef}>
+                                        <span>Explore</span><Image src="/down-chev-b.svg" alt="" height={7} width={10} />
+                                        {
+                                            showConnect && <ConnectDropdownCont>
+                                                <Link href="/explore/influencers">
+                                                    <a><span>Influencers</span></a>
+                                                </Link>
+                                                <Link href="/explore/creators">
+                                                    <a><span>Creators</span></a>
+                                                </Link>
+                                                <Link href="/explore/services">
+                                                    <a><span>Services</span></a>
+                                                </Link>
+                                            </ConnectDropdownCont>
+                                        }
+                                    </ConnectDropdown>
                                     <SearchContainer showSearch={showSearchRes} >
-                                        <SearchByBtn onClick={() => setShowSearchOption(!showSearchOption)}>
-                                            <span>{searchBy}</span><Image src="/down-chev-b.svg" alt="" height={7} width={10} />
-                                            {
-                                                showSearchOption && <SearchByOption>
-                                                    <button onClick={() => handleSearchOption("influencers")}>influencers</button>
-                                                    <button onClick={() => handleSearchOption("creators")}>creators</button>
-                                                </SearchByOption>
-                                            }
-                                        </SearchByBtn>
-                                        <input type="text" placeholder="Search by name" />
-                                        <SearchBtnC onClick={() => router.push("/explore")}>
+                                        <input type="text" value={searchString} onChange={(e) => setSearchString(e.target.value)} placeholder="Search by name" />
+                                        <SearchBtnC onClick={(e) => {
+                                            e.preventDefault();
+                                            router.push(`/explore?search=${searchString}`);
+                                        }}>
                                             <Image src="/search-b.svg" alt="" height={25} width={25}/>
                                         </SearchBtnC>
                                     </SearchContainer>
@@ -202,22 +213,6 @@ const Nav = () => {
                                 </>
                             ) : null
                         }
-                        {/* <ConnectDropdown onClick={() => handleConnectOpen()} ref={connectRef}>
-                            <span>My Connects</span><Image src="/down-chev-b.svg" alt="" height={7} width={10} />
-                            {
-                                showConnect && <ConnectDropdownCont>
-                                    <Link href="/dashboard/campaigns">
-                                        <a><HashTagIcon /><span>Campaigns</span></a>
-                                    </Link>
-                                    <Link href="/dashboard/projects">
-                                        <a><BagIcon /><span>Projects</span></a>
-                                    </Link>
-                                    <Link href="/dashboard/collaborations">
-                                        <a><CollaborationIcon /><span>Collaborations</span></a>
-                                    </Link>
-                                </ConnectDropdownCont>
-                            }
-                        </ConnectDropdown> */}
                         <ControlsA>
                             <Link href="/dashboard/notifications">
                                 <a>

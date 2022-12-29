@@ -92,7 +92,7 @@ export const ProfileImageCont = styled.div`
         border: 2px solid #fff;
         background: #14A800;
     }
-    ${breakpoints.lg}{
+    /* ${breakpoints.lg}{
         width: 50px;
         height: 50px;
         ::after {
@@ -100,7 +100,7 @@ export const ProfileImageCont = styled.div`
             width: 12px;
             border: 2px solid #fff;
         }
-    }
+    } */
 `;
 export const InnerWrapper = styled.div`
     position: relative;
@@ -109,8 +109,8 @@ export const InnerWrapper = styled.div`
     height: 50px;
     width: 50px;
     ${breakpoints.lg}{
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         margin: 0 auto;
     }
 `;

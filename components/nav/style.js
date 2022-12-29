@@ -198,8 +198,8 @@ export const ConnectDropdown = styled.div`
     border: none;
     background: #fff;
     padding: 0 10px;
-    width: 170px;
-    min-width: 160px;
+    width: 100px;
+    min-width: 100px;
     display: flex;
     height: 40px;
     align-items: center;
@@ -228,10 +228,10 @@ export const ConnectDropdown = styled.div`
 `;
 export const ConnectDropdownCont = styled.div`
     position: absolute;
-    right: 0;
+    left: 0;
     width: 100%;
     min-width: 160px;
-    top: 40px;
+    top: 45px;
     background: #fff;
     display: flex;
     flex-direction: column;
@@ -284,7 +284,7 @@ export const ConnectDropdownCont = styled.div`
         transform: rotate(-45deg);
         position: absolute;
         top: -6px;
-        right: 30px;
+        right: 72px;
         background: #fff;
         border-top: 1px solid #D2D2D2;
         border-right: 1px solid #D2D2D2;

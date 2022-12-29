@@ -18,7 +18,7 @@ export const Content = styled.div`
     border-radius: 5px;
 `;
 export const Top = styled.div`
-    padding: 10px 20px;
+    padding: 15px 20px;
     border-bottom: 1px solid #D2D2D2;
     display: flex;
     justify-content: space-between;
@@ -28,8 +28,8 @@ export const Top = styled.div`
         row-gap: 15px;
     }
     h2 {
-        color: #333;
-        font-size: 22px;
+        color: #555;
+        font-size: 18px;
     }
 `;
 export const Tabs = styled.div`
@@ -105,4 +105,11 @@ export const PageBtn = styled.button`
     :hover {
         background: #F6F6F6;
     }
+`;
+export const ViewMoreBtn = styled.button`
+    border: none;
+    background: transparent;
+    color: ${colors.primaryColor};
+    font-size: 15px;
+    cursor: pointer;
 `;

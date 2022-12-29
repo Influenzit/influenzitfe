@@ -114,6 +114,9 @@ export const CreatorsCard = styled.div`
     width: 285px;
     border: 1px solid #D2D2D2;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     p {
         font-size: 14px;
         color: #999;

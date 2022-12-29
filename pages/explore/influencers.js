@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import LandingLayout from '../layouts/landing.layout';
-import { Bottom, Container, Content, Filter, ListWrapper, PageBtn, Pages, Tab, Tabs, Top, Wrapper } from '../styles/search.style';
-import ProfileCard from '../components/profile-card';
-import { getExploreNiches, getInfluencers } from '../api/influencer';
+import LandingLayout from '../../layouts/landing.layout';
+import { Bottom, Container, Content, Filter, ListWrapper, PageBtn, Pages, Tab, Tabs, Top, Wrapper } from '../../styles/search.style';
+import ProfileCard from '../../components/profile-card';
+import { getExploreNiches, getInfluencers } from '../../api/influencer';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 
 const Search = () => {
-    const [currentTab, setCurrentTab] = useState("influencer");
     const [getUrl, setGetUrl] = useState("")
+    const router = useRouter();
     const { data: influencersData, refetch: refetchInfluencerData } = useQuery(["get-service"], async () => {
-        return await getInfluencers(getUrl);
+        return await getInfluencers(getUrl ? getUrl : router.asPath);
     }, {
         enabled: false,
         staleTime: Infinity,
@@ -25,33 +26,18 @@ const Search = () => {
     useEffect(() => {
         refetchInfluencerData();
         refetch();
-    }, [])
+    }, [router.asPath])
 
     return (
         <Container>
             <Wrapper>
                 <Content>
                     <Top>
-                        <h2>Start a campaign/project</h2>
-                        <Tabs>
-                            <Tab isActive={currentTab === "influencer"} onClick={() => setCurrentTab("influencer")}>Influencers</Tab>
-                            <Tab isActive={currentTab === "creator"} onClick={() => setCurrentTab("creator")}>Creators</Tab>
-                        </Tabs>
+                        <h2>Inflencers</h2>
                     </Top>
                     <Bottom>
                         <Filter>
                             <p id='explore_pagenumber'>{((influencersData?.data?.data?.current_page - 1) * influencersData?.data?.data?.per_page) + influencersData?.data?.data?.data.length} of {influencersData?.data?.data?.total}</p>
-                            <div>
-                                <p>Filter</p>
-                                <select>
-                                    <option value="">Select a niche</option>
-                                    {
-                                        data?.data?.data?.map((val, i) => (
-                                        <option key={i} value={val.name}>{val.name}</option>
-                                        ))
-                                    }
-                                </select>
-                            </div>
                         </Filter>
                         <ListWrapper>
                             {
@@ -68,7 +54,7 @@ const Search = () => {
                                     })
                                     return <ProfileCard
                                         key={i}
-                                        profileLink={`/influencer/${val.id}`}
+                                        profileLink={`/influencers/${val.id}`}
                                         imgSrc={val?.media.filter(med => med.identifier === 'profile_pic')?.[0]?.url ?? '/profile-2.png'  }
                                         handle={val.twitter}
                                         name={`${val.user.firstname} ${val.user.lastname}`}

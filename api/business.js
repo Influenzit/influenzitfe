@@ -16,7 +16,7 @@ export const getBusinesses = (token) => {
     
 }
 export const updateBusiness = (data, businessId) => {
-    return axiosInstance().patch(`/businesses/${businessId}`, data)
+    return axiosInstance().post(`/businesses/${businessId}`, data)
 }
 export const getBusiness = (businessId) => {
     return axiosInstance().get(`/businesses/${businessId}`);
