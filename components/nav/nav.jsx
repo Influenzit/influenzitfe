@@ -167,7 +167,8 @@ const Nav = () => {
     addEventListener("click", handleClosing);
     if (!!userDetails) {
         const socketInstance = getSocketInstance()
-    
+        
+        console.log(userDetails)
         socketInstance.channel(userDetails.email).listen(".Notification", (e) => {
             setNotificationAvailable(!!e.data.length);
         })
