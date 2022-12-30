@@ -167,23 +167,10 @@ const Nav = () => {
     addEventListener("click", handleClosing);
     if (!!userDetails) {
         const socketInstance = getSocketInstance()
-        socketInstance.connector.pusher.connection.bind('connected', (payload) => {
-            console.log('connected!', payload);
-        });
+    
         socketInstance.private(userDetails.email).listen(".Notification", (e) => {
             setNotificationAvailable(!!e.data.length);
         })
-
-        // The connection to Channels is open and authenticated with your app
-        socketInstance.connector.pusher.connection.bind('connected', (payload) => {
-            console.log('connected!', payload);
-        });
-
-        // PING FROM SERVER
-        socketInstance.connector.pusher.connection.bind('message', (payload) => {
-            console.log('message', payload);
-        });
-
 
     }
     return () => {
