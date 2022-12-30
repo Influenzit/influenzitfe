@@ -12,6 +12,7 @@ import { getUserType, setError, setLoading, setUserType } from '../../app/reduce
 import { useMutation } from '@tanstack/react-query'
 import { accountTypeUpdate, getUserAccount } from '../../api/auth'
 import switchIcon from "../../assets/switch.svg"
+import { getSocketInstance } from '../../socket/instance'
 
 const Nav = () => {
   const user = useSelector(getUser);
@@ -34,6 +35,7 @@ const Nav = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const router = useRouter();
   const [searchString, setSearchString] = useState("");
+  const [notificationAvailable, setNotificationAvailable] = useState(false);
   const handleSearchOption = (val) => {
     setSearchBy(val)
     setShowSearchOption(false)
@@ -163,10 +165,19 @@ const Nav = () => {
     }
   useEffect(() => {
     addEventListener("click", handleClosing);
+    if (!!userDetails) {
+        const socketInstance = getSocketInstance()
+        socketInstance.connector.pusher.connection.bind('connected', (payload) => {
+            console.log('connected!', payload);
+        });
+        socketInstance.private(userDetails.email).listen(".Notification", (e) => {
+            setNotificationAvailable(!!e.data.length);
+        })
+    }
     return () => {
       removeEventListener("click", handleClosing);
     }
-  }, [])
+  }, [userDetails])
   
   return (
     <Container>
@@ -213,14 +224,14 @@ const Nav = () => {
                                 </>
                             ) : null
                         }
-                        <ControlsA>
+                        <ControlsA showNotify={notificationAvailable}>
                             <Link href="/dashboard/notifications">
-                                <a>
+                                <a id="bell-icon">
                                     <BellIcon />
                                 </a>
                             </Link>
                             <Link href="/dashboard/messages">
-                                <a>
+                                <a id="message-icon">
                                     <MailIcon />
                                 </a>
                             </Link>

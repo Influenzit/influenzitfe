@@ -54,7 +54,7 @@ const Search = () => {
             <Wrapper>
                 <Content>
                     <Top>
-                        <h2>Top Influencers</h2>
+                        <h2>{search ? "Influencer search result for: " + search : "Top Influencers"}</h2>
                     </Top>
                     <Bottom>
                         <ListWrapper>
@@ -95,14 +95,14 @@ const Search = () => {
                         <Pages>
                             <ViewMoreBtn onClick={
                                 () => {
-                                    router.push(`/explore/influencers${search && "?search=" + search}`);
+                                    router.push(`/explore/influencers${search ? "?search=" + search : ""}`);
                                 }}>
                                 View All Influencers
                             </ViewMoreBtn>
                         </Pages>
                     </Bottom>
                     <Top>
-                        <h2>Top Creators</h2>
+                        <h2>{search ? "Creator search result for: " + search : "Top Creators"}</h2>
                     </Top>
                     <Bottom>
                     <ListWrapper>
@@ -142,14 +142,14 @@ const Search = () => {
                         <Pages>
                             <ViewMoreBtn onClick={
                                 () => {
-                                    router.push(`/explore/creators${search && "?search=" + search}`);
+                                    router.push(`/explore/creators${search ? "?search=" + search : ""}`);
                                 }}>
                                 View All Creators
                             </ViewMoreBtn>
                         </Pages>
                     </Bottom>
                     <Top>
-                        <h2>Top Services</h2>
+                        <h2>{search ? "Service search result for: " + search : "Top Services"}</h2>
                     </Top>
                     <Bottom>
                     <ListWrapper>
@@ -195,7 +195,7 @@ const Search = () => {
                         <Pages>
                             <ViewMoreBtn onClick={
                                 () => {
-                                    router.push(`/explore/services${search && "?search=" + search}`);
+                                    router.push(`/explore/services${search ? "?search=" + search : ""}`);
                                 }}>
                                 View All Services
                             </ViewMoreBtn>

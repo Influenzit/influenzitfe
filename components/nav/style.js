@@ -380,6 +380,11 @@ export const ControlsA = styled.div`
             }
         }
     }
+    #bell-icon {
+        ::after {
+            display: ${(props) => props.showNotify ? "block" : "none"};
+        }
+    }
 `;
 export const UserBtn = styled.div`
     border: none;

@@ -1,10 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import LandingLayout from '../../layouts/landing.layout'
 import { BackImage, Bottom, Container, HeroSectionOne, ImageCard, Popup, ProfileCategory, ProfileData, ProfileDetails, ProfileImgCont, ProfileStats, SeeMoreCont, Skill, SkillCard, StatCard, Stats, StatWrapper, Top, UserCard, WorkCard, Wrapper } from '../../styles/creator-profile.style'
 
 const CreatorProfile = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  const [inData, setInData] = useState(null);
+  const dispatch = useDispatch();
   const [showEngagePopup, setShowEngagePopup] = useState(false);
   return (
     <Container>

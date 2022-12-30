@@ -110,6 +110,9 @@ export const ViewMoreBtn = styled.button`
     border: none;
     background: transparent;
     color: ${colors.primaryColor};
-    font-size: 15px;
+    font-size: 16px;
     cursor: pointer;
+    padding: 8px 15px;
+    border: 5px;
+    background: ${colors.primaryColor}11;
 `;

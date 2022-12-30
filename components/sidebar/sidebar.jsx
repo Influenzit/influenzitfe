@@ -24,7 +24,7 @@ const Sidebar = () => {
                 <Image src={ user?.account?.media?.[0]?.url ? user?.account?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${userData?.firstname}+${userData?.lastname}&color=FFFFFF&background=12544D`} alt="profile picture" layout='fill' objectFit='cover' objectPosition="center"/>
             </InnerWrapper>
         </ProfileImageCont>
-        <Status>{currentUserType}</Status>
+        <Status>{currentUserType !== "null" ? currentUserType : "None Selected"}</Status>
         <NavButton onClick={() => router.push("/dashboard")} isActive={router.pathname === "/dashboard"}>
             <DashboardIcon />
             <span>Dashbord</span>

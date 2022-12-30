@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, sizes } from "./theme";
+import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.div`
     background: url("/bg.png");
@@ -15,6 +15,14 @@ export const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
     padding: 50px 0;
+    h1 {
+        color: #333;
+    }
+    ${breakpoints.md} {
+        h1 {
+            font-size: 18px;
+        }
+    }
 `;
 export const OptionWrapper = styled.div`
     display: flex;

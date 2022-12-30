@@ -10,8 +10,6 @@ function MyApp({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page)
   return (
     <Provider store={store}>
-      <Script src="https://cdn.tiny.cloud/1/uxnau7otzh0wddqctwllaa833wa4bmzw0cn6hu84u7mx5uiv/tinymce/5/tinymce.min.js" referrerpolicy="origin"></Script>
-
       <QueryClientProvider client={queryClient}>
       {
        getLayout(
