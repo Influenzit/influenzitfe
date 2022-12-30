@@ -6,14 +6,14 @@ export const getSocketInstance = () => {
     window.Pusher = Pusher;
     console.log({
         broadcaster: "pusher",
-        key: process.env.NEXT_PUBLIC_PUSHER_API_KEY,
-        wsHost: process.env.NEXT_PUBLIC_SOCKET_API_URI,
-        authEndpoint: process.env.NEXT_PUBLIC_SOCKET_API_URI + "/broadcasting/auth",
+        key: process.env.NEXT_PUBLIC_SOCKET_KEY,
+        wsHost: process.env.NEXT_PUBLIC_SOCKET_HOST,
+        authEndpoint: process.env.NEXT_PUBLIC_SOCKET_AUTH_ENDPOINT,
         encrypted: true,
         forceTLS: false,
         wsPort: 6001,
         wssPort: 6001,
-        disableStats: true,
+        disableStats: false,
         cluster: "mt1",
         enabledTransports: ["ws", "wss"],
         auth: {
@@ -24,14 +24,14 @@ export const getSocketInstance = () => {
     return (
         new Echo({
             broadcaster: "pusher",
-            key: process.env.NEXT_PUBLIC_PUSHER_API_KEY,
-            wsHost: process.env.NEXT_PUBLIC_SOCKET_API_URI,
-            authEndpoint: process.env.NEXT_PUBLIC_SOCKET_API_URI + "/broadcasting/auth",
+            key: process.env.NEXT_PUBLIC_SOCKET_KEY,
+            wsHost: process.env.NEXT_PUBLIC_SOCKET_HOST,
+            authEndpoint: process.env.NEXT_PUBLIC_SOCKET_AUTH_ENDPOINT,
             encrypted: true,
             forceTLS: false,
             wsPort: 6001,
             wssPort: 6001,
-            disableStats: true,
+            disableStats: false,
             cluster: "mt1",
             enabledTransports: ["ws", "wss"],
             auth: {
