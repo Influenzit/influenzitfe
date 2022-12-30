@@ -168,7 +168,7 @@ const Nav = () => {
     if (!!userDetails) {
         const socketInstance = getSocketInstance()
     
-        socketInstance.private(userDetails.email).listen(".Notification", (e) => {
+        socketInstance.channel(userDetails.email).listen(".Notification", (e) => {
             setNotificationAvailable(!!e.data.length);
         })
 
