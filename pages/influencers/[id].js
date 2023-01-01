@@ -1,12 +1,14 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { getInfluencer } from '../../api/influencer'
+import { startConversation } from '../../api/messaging'
 import { setLoading } from '../../app/reducers/status'
+import { getUser } from '../../app/reducers/user'
 import LandingLayout from '../../layouts/landing.layout'
 import { Controls, CreatorsCard, CreatorDetails, SocialHandle } from '../../styles/business-owner.style'
 import { BackImage, Bottom, Container, HeroSectionOne, Popup, ProfileCategory, ProfileData, ProfileDetails, ProfileImgCont, ProfileStats, SeeMoreCont, SkillCard, StatCard, Stats, StatWrapper, Top, UserCard, WorkCard, Wrapper } from '../../styles/creator-profile.style'
@@ -16,6 +18,7 @@ import { colors } from '../../styles/theme'
 const CreatorProfile = () => {
   const router = useRouter();
   const { id } = router.query;
+  const user = useSelector(getUser);
   const [inData, setInData] = useState(null);
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("instagram");
@@ -33,11 +36,44 @@ const CreatorProfile = () => {
             dispatch(setLoading(false));
         } 
     });
+    const startConversationMutation = useMutation((data) => {
+        return startConversation(data);
+    }, {
+        onSuccess(successRes) {
+            const res = successRes.data;
+            if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: res.message}));
+            } else {
+                router.push("/dashboard/messages");
+            }
+        },
+        onError(error) {
+            const res = error.response.data;
+            if(res){
+            dispatch(setError({error: true, message: res.message}));
+            return;
+            }
+            dispatch(setError({error: true, message: "An error occured"}));
+        }
+    });
     const handleLinkCopy = () => {
         navigator.clipboard.writeText(location.href);
         toast.success("Profile URL copied to clipboard", {
             position: toast.POSITION.TOP_RIGHT
           });
+    }
+    const handleStartConversation = () => {
+        if(user.id) {
+            startConversationMutation.mutate({
+                to_user_id: inData.user_id,
+                text: "Hi " + inData?.user?.firstname,
+            })
+        } else {
+            toast.error("Please login to start a conversation", {
+                position: toast.POSITION.TOP_RIGHT
+              });
+        }
     }
     useEffect(() => {
         dispatch(setLoading(true));
@@ -82,8 +118,7 @@ const CreatorProfile = () => {
                         <div><Image src="/flag.svg" height={25} width={25}/><p>Nigeria</p></div>
                         <div><Image src="/instagram.svg" height={25} width={25}/><p>{inData?.instagram}</p> <span>0</span></div>
                     </ProfileCategory>
-                    <p>{inData?.biography}
-                    </p>
+                    <p>{inData?.biography}</p>
                     {/* <SeeMoreCont>
                         <button>Click to see more</button>
                     </SeeMoreCont> */}
@@ -112,9 +147,9 @@ const CreatorProfile = () => {
                     <button onClick={() => setShowEngagePopup(!showEngagePopup)}>
                         <span>Engage Influencer</span> <Image src="/down-chev.svg" height={10} width={10} />
                         <Popup show={showEngagePopup}>
-                            <Link href="/">
-                                <a><span>Send a message</span><Image src="/arr-r.svg" height={10} width={10} /></a>
-                            </Link>
+                            <button onClick={handleStartConversation}>
+                                <span>Send a message</span><Image src="/arr-r.svg" height={10} width={10} />
+                            </button>
                             <Link href="/">
                                 <a><span>Report Account</span><Image src="/arr-r.svg" height={10} width={10} /></a>
                             </Link>

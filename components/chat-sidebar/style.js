@@ -39,6 +39,7 @@ export const UserCard = styled.button`
     padding: 2px 0;
     align-items: center;
     border-bottom: 1px solid #D2D2D2;
+    cursor: pointer;
     :last-of-type {
         border-bottom: none;
     }
@@ -103,13 +104,14 @@ export const ChatBottom = styled.div`
     align-items: center;
     p {
         font-size: 14px;
-        font-weight: 600;
+        ${(props) => props.isUnread && "font-weight: 600;"}
         color: #111;
         width: 100%;
         max-width: 170px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        text-align: left;
     }
     span {
         padding: 3px 10px;
@@ -117,7 +119,9 @@ export const ChatBottom = styled.div`
         background: #14A800;
         border-radius: 5px;
     }
-
+    img {
+        vertical-align: middle;
+    }
 `;
 export const UserSect = styled.div`
     position: relative;
@@ -141,4 +145,5 @@ export const ProfilePicWrapper = styled.div`
     height: 40px;
     width: 40px;
     border-radius: 50%;
+    overflow: hidden;
 `;

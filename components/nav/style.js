@@ -385,6 +385,11 @@ export const ControlsA = styled.div`
             display: ${(props) => props.showNotify ? "block" : "none"};
         }
     }
+    #mail-icon {
+        ::after {
+            display: ${(props) => props.showMessage ? "block" : "none"};
+        }
+    }
 `;
 export const UserBtn = styled.div`
     border: none;

@@ -54,7 +54,7 @@ const Search = () => {
                                     })
                                     return <ProfileCard
                                         key={i}
-                                        profileLink={`/influencers/${val.id}`}
+                                        profileLink={`/creators/${val.id}`}
                                         imgSrc={val?.media.filter(med => med.identifier === 'profile_pic')?.[0]?.url ?? '/profile-2.png'  }
                                         handle={val.twitter}
                                         name={`${val.user.firstname} ${val.user.lastname}`}

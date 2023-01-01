@@ -3,9 +3,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import { AttachmentIcon, BoldIcon, EmojiIcon, ItalicIcon, MarkupIcon, SendIcon, UnderlineIcon } from '../../assets/svgIcons';
 import ChatSidebar from '../../components/chat-sidebar';
 import LandingLayout from '../../layouts/landing.layout';
-import { ActionBtn, ChatContainer, ChatControls, ChatHeader, Container, ContextBtn, Editor, EditorBtn, HLeft, ImageWrapper, LeftControls, MessageInput, MessagesCont, MessageSection, NonSelectedCont, PickerContainer, RightControls, Wrapper } from '../../styles/messages.style';
+import { ActionBtn, ChatContainer, ChatControls, ChatHeader, Container, ContextBtn, Editor, EditorBtn, HLeft, ImageWrapper, LeftControls, MessageCard, MessageContent, MessageInput, MessagesCont, MessageSection, NonSelectedCont, PickerContainer, RightControls, Wrapper } from '../../styles/messages.style';
 import { colors } from '../../styles/theme';
 import dynamic from 'next/dynamic';
+import { getConversationMessages, getConversations, sendConversationMessage } from '../../api/messaging';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { ProfilePicWrapper, UserSect } from '../../components/chat-sidebar/style';
+import HTMLReactParser from 'html-react-parser';
 
 const Picker = dynamic(
   () => {
@@ -15,11 +19,13 @@ const Picker = dynamic(
 );
 
 const Messages = () => {
-  const [userId, setUserId] = useState("");
+  const [conversationId, setConversationId] = useState("");
   const [messageContent, setMessageContent] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
   const emojiRef = useRef(null);
   const messageBoxRef = useRef(null);
+  const [conversations, setConversations] = useState([]);
+  const [messages, setMessages] = useState([]);
   const handleInput = (e) => {
     if(e.currentTarget.innerHTML === "<br>") {
         setMessageContent("");
@@ -152,24 +158,106 @@ const Messages = () => {
     messageBoxRef.current.appendChild(newEmoji);
     setMessageContent(messageBoxRef.current.innerHTML);
   }
+const { data: conversationData, refetch: refetchConversationData } = useQuery(["get-conversation"], async () => {
+    return await getConversations();
+}, {
+    enabled: false,
+    staleTime: Infinity,
+    retry: false,
+    onSuccess(successRes) {
+        setConversations(successRes.data.data)
+    }
+});
+const { data: messagesData, refetch: refetchMessagesData } = useQuery(["get-messages"], async () => {
+    return await getConversationMessages(conversationId);
+}, {
+    enabled: false,
+    staleTime: Infinity,
+    retry: false,
+    onSuccess(successRes) {
+        setMessages(successRes.data.data.data)
+    }
+});
+const sendMessageMutation = useMutation((data) => {
+    return sendConversationMessage(conversationId, data);
+}, {
+    onSuccess(successRes) {
+        const res = successRes.data;
+        if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: res.message}));
+        } else {
+            refetchMessagesData();
+            setMessageContent("");
+            messageBoxRef.current.innerHTML = "";
+        }
+    },
+    onError(error) {
+        const res = error.response.data;
+        if(res){
+        dispatch(setError({error: true, message: res.message}));
+        return;
+        }
+        dispatch(setError({error: true, message: "An error occured"}));
+    }
+});
+const getCurrentConversation = () => {
+    if(conversationId) {
+        return conversations.filter((val) => val.id === conversationId)[0]
+    } 
+    return null
+}
+const handleMessageSend = () => {
+    sendMessageMutation.mutate({
+        text:  messageBoxRef.current.innerHTML
+    })
+}
+useEffect(() => {
+    refetchConversationData();
+}, [])
+useEffect(() => {
+  if(conversationId){
+    refetchMessagesData();
+  }
+}, [conversationId])
+
+
   return (
     <Container>
         <Wrapper>
-            <ChatSidebar setUserId={setUserId}/>
+            <ChatSidebar setConversationId={setConversationId} conversations={conversations}/>
             <MessageSection>
                 {
-                    userId ? 
+                    conversationId ? 
                     (<ChatContainer>
                         <ChatHeader>
                             <HLeft>
-                                <h2>Ezekiel Alawode</h2>
-                                <p>Last seen: 3 hours ago </p>
+                                <h2>{getCurrentConversation()?.recent_message?.from_user?.firstname} {getCurrentConversation()?.recent_message?.from_user?.lastname}</h2>
+                                {/* <p>Last seen: 3 hours ago </p> */}
                             </HLeft>
                             <ContextBtn>
                                 <Image src="/more-vertical.svg" height={24} width={24}/>
                             </ContextBtn>
                         </ChatHeader>
                         <MessagesCont>
+                            {
+                                messages.map((val, i) => (
+                                    <MessageCard key={i} isOwn={val.is_own}>
+                                        <UserSect>
+                                            <ProfilePicWrapper>
+                                                <Image src={val.from_user.profile_picture} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
+                                            </ProfilePicWrapper>
+                                        </UserSect>
+                                        <MessageContent>
+                                            <h2>{val.from_user?.firstname} {val.from_user?.lastname} <span>{(new Date(val.created_at).toDateString())} {(new Date(val.created_at).toLocaleTimeString())}</span></h2>
+                                            <div>
+                                                {HTMLReactParser(val.text)}
+                                            </div>
+                                        </MessageContent>
+
+                                    </MessageCard>
+                                ))
+                            }
                         </MessagesCont>
                         <Editor>
                             {
@@ -210,7 +298,7 @@ const Messages = () => {
                                     </EditorBtn>
                                 </LeftControls>
                                 <RightControls>
-                                    <ActionBtn style={{ color: colors.primaryColor }}>
+                                    <ActionBtn style={{ color: colors.primaryColor }} onClick={handleMessageSend}>
                                         <SendIcon />
                                     </ActionBtn>
                                 </RightControls>

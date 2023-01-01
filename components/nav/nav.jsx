@@ -165,10 +165,9 @@ const Nav = () => {
     }
   useEffect(() => {
     addEventListener("click", handleClosing);
+    console.log(userDetails);
     if (!!userDetails) {
         const socketInstance = getSocketInstance()
-        
-        console.log('current user', userDetails)
         socketInstance.channel(userDetails.email).listen(".Notification", (e) => {
             setNotificationAvailable(!!e.data.length);
         })
@@ -224,14 +223,14 @@ const Nav = () => {
                                 </>
                             ) : null
                         }
-                        <ControlsA showNotify={notificationAvailable}>
+                        <ControlsA showNotify={notificationAvailable} showMessage={false}>
                             <Link href="/dashboard/notifications">
                                 <a id="bell-icon">
                                     <BellIcon />
                                 </a>
                             </Link>
                             <Link href="/dashboard/messages">
-                                <a id="message-icon">
+                                <a id="mail-icon">
                                     <MailIcon />
                                 </a>
                             </Link>

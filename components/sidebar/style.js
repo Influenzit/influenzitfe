@@ -19,13 +19,13 @@ export const Container = styled.div`
     :hover {
         scrollbar-color: ${colors.primaryColor} ${colors.primaryColor}11;
 
-    ::-webkit-scrollbar-thumb {
-        background-color: ${colors.primaryColor};
-    }
-    ::-webkit-scrollbar {
-        background-color: ${colors.primaryColor}11;
-        width: 3px;
-    }
+        ::-webkit-scrollbar-thumb {
+            background-color: ${colors.primaryColor};
+        }
+        ::-webkit-scrollbar {
+            background-color: ${colors.primaryColor}11;
+            width: 3px;
+        }
     }
     scrollbar-color: transparent transparent;
 

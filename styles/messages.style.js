@@ -77,15 +77,60 @@ export const ContextBtn = styled.div`
     cursor: pointer;
 `;
 export const MessagesCont = styled.div`
-    height: calc(100% - 210px);
-    min-height: calc(100% - 220px);
-    max-height: calc(100% - 210px);
+    height: calc(100% - 180px);
+    min-height: calc(100% - 180px);
+    max-height: calc(100% - 180px);
     overflow-y: scroll;
+    :hover {
+        scrollbar-color: ${colors.primaryColor} ${colors.primaryColor}11;
+
+        ::-webkit-scrollbar-thumb {
+            background-color: ${colors.primaryColor};
+        }
+        ::-webkit-scrollbar {
+            background-color: ${colors.primaryColor}11;
+            width: 3px;
+        }
+    }
+    scrollbar-color: transparent transparent;
+
+    ::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+    ::-webkit-scrollbar {
+        background-color: transparent;
+        width: 3px;
+    }
+`;
+export const MessageCard = styled.div`
+    display: flex;
+    padding: 5px 10px;
+    display: flex;
+    column-gap: 10px;
+`;
+export const MessageContent = styled.div`
+    h2 {
+        font-size: 15px;
+        color: #111;
+        span {
+            font-size: 12px;
+            color: #888;
+            font-weight: 400;
+            margin-left: 10px;
+        }
+    }
+    div {
+        img {
+            vertical-align: middle;
+        }
+        font-size: 14px;
+        color: #333;
+    }
 `;
 export const Editor = styled.div`
-    height: 140px;
+    height: 100px;
     padding: 0 30px;
-    max-height: 140px;
+    max-height: 100px;
     display: flex;
     flex-direction: column;
     border-top: 1px solid #D2D2D2;
@@ -99,6 +144,26 @@ export const MessageInput = styled.div`
     overflow-y: scroll;
     cursor: text;
     padding: 10px 0;
+    :hover {
+        scrollbar-color: ${colors.primaryColor} ${colors.primaryColor}11;
+
+        ::-webkit-scrollbar-thumb {
+            background-color: ${colors.primaryColor};
+        }
+        ::-webkit-scrollbar {
+            background-color: ${colors.primaryColor}11;
+            width: 3px;
+        }
+    }
+    scrollbar-color: transparent transparent;
+
+    ::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+    ::-webkit-scrollbar {
+        background-color: transparent;
+        width: 3px;
+    }
     ::before {
         content: attr(data-placeholder);
         display: ${(props) => !props.showPlaceholder ? "block": "none"};

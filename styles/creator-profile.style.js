@@ -239,6 +239,24 @@ export const Popup = styled.div`
             color: red;
         }
     }
+    button {
+        padding: 10px;
+        text-align: left;
+        margin-top: 0;
+        color: #111;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 400;
+        font: 15px;
+        background: #fff;
+        span {
+            margin-right: 10px;
+        }
+        :hover {
+            background: ${colors.primaryColor}33;
+        }
+    }
 `;
 export const Container = styled.div`
     background: #eee;

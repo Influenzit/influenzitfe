@@ -1,8 +1,11 @@
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { getCreator } from '../../api/influencer'
+import { setLoading } from '../../app/reducers/status'
 import LandingLayout from '../../layouts/landing.layout'
 import { BackImage, Bottom, Container, HeroSectionOne, ImageCard, Popup, ProfileCategory, ProfileData, ProfileDetails, ProfileImgCont, ProfileStats, SeeMoreCont, Skill, SkillCard, StatCard, Stats, StatWrapper, Top, UserCard, WorkCard, Wrapper } from '../../styles/creator-profile.style'
 
@@ -12,6 +15,31 @@ const CreatorProfile = () => {
   const [inData, setInData] = useState(null);
   const dispatch = useDispatch();
   const [showEngagePopup, setShowEngagePopup] = useState(false);
+
+  const { data: creatorData, refetch: refetchCreatorData } = useQuery(["get-creator"], async () => {
+    return await getCreator(id);
+}, {
+    enabled: false,
+    staleTime: Infinity,
+    retry: false,
+    onSuccess() {
+        dispatch(setLoading(false));
+    },
+    onError(res) {
+        dispatch(setLoading(false));
+    } 
+});
+useEffect(() => {
+    dispatch(setLoading(true));
+    if(id){
+        refetchCreatorData();
+    }
+}, [router.pathname, id]);
+useEffect(() => {
+    if(creatorData?.data?.data) {
+        setInData(creatorData?.data?.data);
+    }
+}, [creatorData])
   return (
     <Container>
         <HeroSectionOne>
@@ -20,7 +48,7 @@ const CreatorProfile = () => {
             <UserCard>
                 <ProfileStats>
                     <ProfileImgCont>
-                        <Image src="/profile-2.png" alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                        <Image src={inData?.media?.[0]?.url ? inData?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${inData?.user?.firstname}+${inData?.user?.lastname}&color=FFFFFF&background=12544D`}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                     </ProfileImgCont>
                     <ProfileData>
                         <div>
@@ -37,42 +65,30 @@ const CreatorProfile = () => {
                     <button>Share Profile</button>
                 </ProfileStats>
                 <ProfileDetails>
-                    <h2>Ezekiel Alawode</h2>
+                    <h2>{inData?.user?.firstname} {inData?.user.lastname}</h2>
                     <ProfileCategory>
                         <div><Image src="/niche.svg" height={25} width={25}/><p>Creators&apos;s Niche</p></div>
                         <div><Image src="/flag.svg" height={25} width={25}/><p>Nigeria</p></div>
-                        <div><Image src="/instagram.svg" height={25} width={25}/><p>itzphoenixgold</p> <span>744</span></div>
+                        <div><Image src="/instagram.svg" height={25} width={25}/><p>{inData?.instagram}</p> <span>0</span></div>
                     </ProfileCategory>
-                    <p>Excepteur sint occaecat cupidatat non proident,
-                         saeunt in culpa qui officia deserunt mollit anim laborum. 
-                         Seden utem perspiciatis undesieu omnis voluptatem accusantium doque 
-                         laudantium, totam rem aiam eaqueiu ipsa quae ab illoion inventore veritatisetm 
-                         quasitea architecto beataea dictaed quia couuntur magni dolores 
-                         eos aquist ratione vtatem seque nesnt. Excepteur sint occaecat cupidatat non proident, 
-                         saeunt in culpa qui officia deserunt mollit anim laborum with excepteur 
-                         sint occaecat cupidatat non proident.
-                    </p>
-                    <SeeMoreCont>
-                        <button>Click to see more</button>
-                    </SeeMoreCont>
-                    
+                    <p>{inData?.biography}</p>  
                 </ProfileDetails>
                 <Stats>
                     <StatWrapper>
                         <StatCard textColor='#2B368C' bgColor="#F9F9FC">
-                            <h3>5</h3>
+                            <h3>{inData?.analytics?.influenzit?.ongoing_campaigns_count}</h3>
                             <p>Ongoing Engagements</p>
                         </StatCard>
                         <StatCard textColor='#019B2C' bgColor="#F7FCF9">
-                            <h3>5</h3>
+                            <h3>{inData?.analytics?.influenzit?.completed_campaigns_count}</h3>
                             <p>Completed Campaigns</p>
                         </StatCard>
                         <StatCard textColor='#FF0000' bgColor="#FFF7F7">
-                            <h3>5</h3>
+                            <h3>{inData?.analytics?.influenzit?.cancelled_campaigns_count}</h3>
                             <p>Cancelled Engagements</p>
                         </StatCard>
                         <StatCard textColor='#000' bgColor="#F8F8F8">
-                            <h3>75%</h3>
+                            <h3>{inData?.analytics?.influenzit?.campaign_engagements}</h3>
                             <p>Total Engagement</p>
                         </StatCard> 
                     </StatWrapper>
@@ -82,9 +98,6 @@ const CreatorProfile = () => {
                         <Popup show={showEngagePopup}>
                             <Link href="/">
                                 <a><span>Send a message</span><Image src="/arr-r.svg" height={10} width={10} /></a>
-                            </Link>
-                            <Link href="/">
-                                <a><span>Start a Project</span><Image src="/arr-r.svg" height={10} width={10} /></a>
                             </Link>
                             <Link href="/">
                                 <a><span>Report Account</span><Image src="/arr-r.svg" height={10} width={10} /></a>
@@ -98,14 +111,11 @@ const CreatorProfile = () => {
                 <SkillCard>
                     <Top><h3>Skills</h3></Top>
                     <Bottom>
-                        <Skill>HTML 5</Skill>
-                        <Skill>CSS</Skill>
-                        <Skill>WordPress</Skill>
-                        <Skill>UI/UX</Skill>
-                        <Skill>UI/UX Prototyping</Skill>
-                        <Skill>Product Design</Skill>
-                        <Skill>Logo Design</Skill>
-                        <Skill>Frontend Development</Skill>
+                        {
+                            inData?.skills.map((val, i) => (
+                                <Skill key={i}>{val.name}</Skill>
+                            ))
+                        }
                     </Bottom>
                 </SkillCard>
                 <SkillCard>

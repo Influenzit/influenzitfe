@@ -87,6 +87,9 @@ export const getInfluencers = (url) => {
 export const getCreators = (url) => {
     return axiosInstance().get(url ? url : "/explore/creators");
 }
+export const getCreator = (id) => {
+    return axiosInstance().get(`/explore/creators/${id}`)
+}
 export const exploreServices = (url) => {
     return axiosInstance().get(url ? url : "/explore/services");
 }
