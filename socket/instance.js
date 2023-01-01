@@ -5,25 +5,42 @@ export const getSocketInstance = () => {
     const token = typeof window !== "undefined" && localStorage.getItem("token");
     window.Pusher = Pusher;
 
+
+
+    let options = {}
+    if(process.env.SOCKET_SERVER === 'echo'){
+      options = {
+        broadcaster: "pusher",
+        key: process.env.NEXT_PUBLIC_ECHO_SOCKET_KEY,
+        wsHost: process.env.NEXT_PUBLIC_ECHO_SOCKET_HOST,
+        forceTLS: false,
+        encrypted: false,
+        wsPort: process.env.NEXT_PUBLIC_ECHO_SOCKET_PORT,
+        wssPort: process.env.NEXT_PUBLIC_ECHO_SOCKET_SSL_PORT,
+        cluster: process.env.NEXT_PUBLIC_ECHO_SOCKET_CLUSTER,
+        
+      }
+    }else{
+      options = {
+        broadcaster: "pusher",
+        key: process.env.NEXT_PUBLIC_PUSHER_SOCKET_KEY,
+        cluster: process.env.NEXT_PUBLIC_PUSHER_SOCKET_CLUSTER,
+        encrypted: true,
+        forceTLS: true,
+      }
+    }
+
     const socketInstance = new Echo({
-      broadcaster: "pusher",
-      key: process.env.NEXT_PUBLIC_SOCKET_KEY,
-      wsHost: process.env.NEXT_PUBLIC_SOCKET_HOST,
+      ...options, 
       authEndpoint: process.env.NEXT_PUBLIC_SOCKET_AUTH_ENDPOINT,
-      encrypted: true,
-      forceTLS: false,
-      wsPort: process.env.NEXT_PUBLIC_SOCKET_PORT,
-      wssPort: process.env.NEXT_PUBLIC_SOCKET_SSL_PORT,
       disableStats: process.env.NEXT_PUBLIC_SOCKET_DISABLE_STAT,
-      cluster: "mt1",
       enabledTransports: process.env.NEXT_PUBLIC_SOCKET_ENABLED_TRANSPORT.split(','),
       auth: {
         headers: {
           authorization: !!token ? `Bearer ${token}` : "",
         },
-      },
+      }
     })
-
 
     if(process.env.NEXT_PUBLIC_SOCKET_ENABLE_LOG){
 
@@ -44,6 +61,5 @@ export const getSocketInstance = () => {
 
     }
 
-  
     return socketInstance
 }
