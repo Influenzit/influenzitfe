@@ -231,7 +231,7 @@ useEffect(() => {
                     (<ChatContainer>
                         <ChatHeader>
                             <HLeft>
-                                <h2>{getCurrentConversation()?.recent_message?.from_user?.firstname} {getCurrentConversation()?.recent_message?.from_user?.lastname}</h2>
+                                <h2>{getCurrentConversation()?.heading?.title}</h2>
                                 {/* <p>Last seen: 3 hours ago </p> */}
                             </HLeft>
                             <ContextBtn>
@@ -248,7 +248,7 @@ useEffect(() => {
                                             </ProfilePicWrapper>
                                         </UserSect>
                                         <MessageContent>
-                                            <h2>{val.from_user?.firstname} {val.from_user?.lastname} <span>{(new Date(val.created_at).toDateString())} {(new Date(val.created_at).toLocaleTimeString())}</span></h2>
+                                            <h2>{val.from_user?.firstname} {val.from_user?.lastname} <span>{val.created_at}</span></h2>
                                             <div>
                                                 {HTMLReactParser(val.text)}
                                             </div>
