@@ -21,13 +21,13 @@ const ChatSidebar = ({ setConversationId, conversations }) => {
                     <UserCard key={i} onClick={() => setConversationId(val.id)}>
                         <UserSect>
                             <ProfilePicWrapper>
-                                <Image src={val.recent_message.from_user.profile_picture} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
+                                <Image src={val.heading.image} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
                             </ProfilePicWrapper>
                         </UserSect>
                         <ChatDetails>
                             <ChatTop>
-                                <p>{val.recent_message.from_user.firstname} {val.recent_message.from_user.lastname}</p>
-                                <span>45 minutes</span>
+                                <p>{val.heading.title}</p>
+                                <span>{val.recent_message.created_at}</span>
                             </ChatTop>
                             <ChatBottom isUnread={!!val.unread_count}>
                                 <p>{HTMLReactParser(val.recent_message.text)}</p>
