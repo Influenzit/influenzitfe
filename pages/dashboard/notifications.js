@@ -62,7 +62,7 @@ const Notifications = () => {
                                     </ImgWrapper>
                                     <NotifyContent>
                                         <p>{val.data.text}</p>
-                                        <p>{(new Date(val.data.created_at).toDateString)} {(new Date(val.data.created_at).toLocaleTimeString)}</p>
+                                        <p>{(new Date(val.created_at).toDateString())} {(new Date(val.created_at).toLocaleTimeString())}</p>
                                     </NotifyContent>
                                     {/* <button>
                                         <Image src="/cancel-b.svg" alt="" height={18} width={18} />
