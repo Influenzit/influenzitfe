@@ -83,7 +83,6 @@ export const MessagesCont = styled.div`
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
     :hover {
         scrollbar-color: ${colors.primaryColor} ${colors.primaryColor}11;
 
@@ -107,9 +106,12 @@ export const MessagesCont = styled.div`
 `;
 export const MessageCard = styled.div`
     display: flex;
-    padding: 5px 10px;
+    padding: 12px 10px;
     display: flex;
     column-gap: 10px;
+    border: thin solid whitesmoke;
+    border-radius: 20px;
+    margin:  10px 20px;
 `;
 export const MessageContent = styled.div`
     h2 {
@@ -221,4 +223,28 @@ export const PickerContainer = styled.div`
     top: -300px;
     z-index: 99;
 
+`;
+export const UserSect = styled.div`
+    position: relative;
+    height: 30px;
+    width: 30px;
+    ::after {
+        height: 7px;
+        width: 7px;
+        display: block;
+        content: "";
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        background: #14A800;
+    }
+`;
+export const ProfilePicWrapper = styled.div`
+    position: relative;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    overflow: hidden;
 `;

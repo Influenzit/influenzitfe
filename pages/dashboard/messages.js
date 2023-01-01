@@ -3,12 +3,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { AttachmentIcon, BoldIcon, EmojiIcon, ItalicIcon, MarkupIcon, SendIcon, UnderlineIcon } from '../../assets/svgIcons';
 import ChatSidebar from '../../components/chat-sidebar';
 import LandingLayout from '../../layouts/landing.layout';
-import { ActionBtn, ChatContainer, ChatControls, ChatHeader, Container, ContextBtn, Editor, EditorBtn, HLeft, ImageWrapper, LeftControls, MessageCard, MessageContent, MessageInput, MessagesCont, MessageSection, NonSelectedCont, PickerContainer, RightControls, Wrapper } from '../../styles/messages.style';
+import { ActionBtn, ChatContainer, ChatControls, ChatHeader, Container, ContextBtn, Editor, EditorBtn, HLeft, ImageWrapper, LeftControls, MessageCard, MessageContent, MessageInput, MessagesCont, MessageSection, NonSelectedCont, PickerContainer, ProfilePicWrapper, RightControls, UserSect, Wrapper } from '../../styles/messages.style';
 import { colors } from '../../styles/theme';
 import dynamic from 'next/dynamic';
 import { getConversationMessages, getConversations, sendConversationMessage } from '../../api/messaging';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { ProfilePicWrapper, UserSect } from '../../components/chat-sidebar/style';
 import HTMLReactParser from 'html-react-parser';
 
 const Picker = dynamic(
