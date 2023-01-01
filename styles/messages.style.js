@@ -81,6 +81,9 @@ export const MessagesCont = styled.div`
     min-height: calc(100% - 180px);
     max-height: calc(100% - 180px);
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
     :hover {
         scrollbar-color: ${colors.primaryColor} ${colors.primaryColor}11;
 
@@ -111,7 +114,7 @@ export const MessageCard = styled.div`
 export const MessageContent = styled.div`
     h2 {
         font-size: 15px;
-        color: #111;
+        color: #777;
         span {
             font-size: 12px;
             color: #888;
