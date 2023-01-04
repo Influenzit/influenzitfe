@@ -113,7 +113,7 @@ export const ChatBottom = styled.div`
         white-space: nowrap;
         text-align: left;
     }
-    span {
+    #unread-count {
         padding: 3px 10px;
         color: white;
         background: #14A800;

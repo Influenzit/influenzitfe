@@ -33,7 +33,7 @@ const ChatSidebar = ({ setConversationId, conversations }) => {
                             </ChatTop>
                             <ChatBottom isUnread={!!val.unread_count}>
                                 <p>{HTMLReactParser(val.recent_message.text)}</p>
-                                <span>{val.unread_count}</span>
+                                <span id="unread-count">{val.unread_count}</span>
                             </ChatBottom>
                         </ChatDetails>
                     </UserCard>
