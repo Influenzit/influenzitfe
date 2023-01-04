@@ -7,12 +7,13 @@ import { useRouter } from 'next/router';
 import { EmptyWrapper, ImageWrap, ServRate, ServStats, ServUserCard, TopImg } from '../../styles/influencer-profile';
 import Image from 'next/image';
 import { CreatorDetails, CreatorsCard } from '../../styles/business-owner.style';
+import { getQueryString } from '../../helpers/helper';
 
 const Search = () => {
     const [getUrl, setGetUrl] = useState("");
     const router = useRouter();
     const { data: servicesData, refetch: refetchServicesData } = useQuery(["get-service"], async () => {
-        return await exploreServices(getUrl ? getUrl : router.asPath);
+        return await exploreServices(getQueryString(getUrl ? getUrl : router.asPath));
     }, {
         enabled: false,
         staleTime: Infinity,

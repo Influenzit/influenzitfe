@@ -5,12 +5,13 @@ import ProfileCard from '../../components/profile-card';
 import { getExploreNiches, getInfluencers } from '../../api/influencer';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { getQueryString } from '../../helpers/helper';
 
 const Search = () => {
     const [getUrl, setGetUrl] = useState("")
     const router = useRouter();
     const { data: influencersData, refetch: refetchInfluencerData } = useQuery(["get-service"], async () => {
-        return await getInfluencers(getUrl ? getUrl : router.asPath);
+        return await getInfluencers(getQueryString(getUrl ? getUrl : router.asPath));
     }, {
         enabled: false,
         staleTime: Infinity,

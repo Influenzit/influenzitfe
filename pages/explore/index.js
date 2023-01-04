@@ -8,12 +8,13 @@ import { EmptyWrapper, ImageWrap, ServRate, ServStats, ServUserCard, TopImg } fr
 import Image from 'next/image';
 import { CreatorDetails, CreatorsCard } from '../../styles/business-owner.style';
 import { useRouter } from 'next/router';
+import { getQueryString } from '../../helpers/helper';
 
 const Search = () => {
     const router = useRouter();
     const { search } = router.query;
     const { data, refetch } = useQuery(["get-influencers"], async () => {
-        return await exploreAll(router.asPath);
+        return await exploreAll(getQueryString(router.asPath));
     }, {
         enabled: false,
         staleTime: Infinity,
