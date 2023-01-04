@@ -18,7 +18,9 @@ const ChatSidebar = ({ setConversationId, conversations }) => {
         <Bottom>
             {
                 conversations.map((val, i) => (
-                    <UserCard key={i} onClick={() => setConversationId(val.id)}>
+                    <UserCard key={i} onClick={() => {
+                            setConversationId(val.id);
+                        }}>
                         <UserSect>
                             <ProfilePicWrapper>
                                 <Image src={val.heading?.image} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />

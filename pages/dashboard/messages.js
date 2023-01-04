@@ -30,6 +30,7 @@ const Messages = () => {
   const [messages, setMessages] = useState([]);
   const messagesRef = useRef(null);
   const user = useSelector(getUser);
+  const [socketSet, setSocketSet] = useState(false);
   const handleInput = (e) => {
     if(e.currentTarget.innerHTML === "<br>") {
         setMessageContent("");
@@ -179,7 +180,7 @@ const { data: messagesData, refetch: refetchMessagesData } = useQuery(["get-mess
     staleTime: Infinity,
     retry: false,
     onSuccess(successRes) {
-        setMessages(successRes.data.data.data)
+        setMessages(successRes.data.data.data.reverse());
     }
 });
 const sendMessageMutation = useMutation((data) => {
@@ -193,6 +194,7 @@ const sendMessageMutation = useMutation((data) => {
         } else {
             setMessageContent("");
             messageBoxRef.current.innerHTML = "";
+            console.log("send",conversationId);
         }
     },
     onError(error) {
@@ -216,41 +218,41 @@ const handleMessageSend = () => {
     })
 }
 const handleConversation = (conversation) => {
-    console.log("wey",conversationId, "ee", conversation.id)
-    if(conversationId === conversation.id) {
+    if(conversation){
         setMessages((oldMessages) => {
             const copyOldMessages = JSON.parse(JSON.stringify(oldMessages));
             copyOldMessages.push(conversation.recent_message);
             return copyOldMessages;
         })
-    }
-    setConversations((oldConversations) => {
-        let copyOldConversations = JSON.parse(JSON.stringify(oldConversations));
-        copyOldConversations = copyOldConversations.map((val) => {
-            if(conversation.id === val.id) {
-                return conversation;
-            } 
-            return val;
+        setConversations((oldConversations) => {
+            let copyOldConversations = JSON.parse(JSON.stringify(oldConversations));
+            copyOldConversations = copyOldConversations.map((val) => {
+                if(conversation.id === val.id) {
+                    return conversation;
+                } 
+                return val;
+            })
+            return copyOldConversations;
         })
-        return copyOldConversations;
-    })
+    }
 }
 useEffect(() => {
     refetchConversationData();
-    if(!!user) {
-        console.log(user)
-        const socketInstance = getSocketInstance()
+    console.log("saa");
+    if(!!user && !socketSet) {
+        const socketInstance = getSocketInstance();
         socketInstance.channel(user.email).listen(".Conversation", (e) => {
             handleConversation(e.data);
         })
+        setSocketSet(true);
     }
 }, [user])
 
 useEffect(() => {
-  console.log(conversationId);
   if(conversationId){
     refetchMessagesData();
   }
+  console.log("another");
 }, [conversationId])
 useEffect(() => {
     if(messagesRef.current) {
