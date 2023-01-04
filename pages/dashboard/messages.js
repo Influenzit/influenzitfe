@@ -9,6 +9,9 @@ import dynamic from 'next/dynamic';
 import { getConversationMessages, getConversations, sendConversationMessage } from '../../api/messaging';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import HTMLReactParser from 'html-react-parser';
+import { getSocketInstance } from '../../socket/instance';
+import { useSelector } from 'react-redux';
+import { getUser } from '../../app/reducers/user';
 
 const Picker = dynamic(
   () => {
@@ -25,6 +28,8 @@ const Messages = () => {
   const messageBoxRef = useRef(null);
   const [conversations, setConversations] = useState([]);
   const [messages, setMessages] = useState([]);
+  const messagesRef = useRef(null);
+  const user = useSelector(getUser);
   const handleInput = (e) => {
     if(e.currentTarget.innerHTML === "<br>") {
         setMessageContent("");
@@ -186,7 +191,6 @@ const sendMessageMutation = useMutation((data) => {
             dispatch(setLoading(false));
             dispatch(setError({error: true, message: res.message}));
         } else {
-            refetchMessagesData();
             setMessageContent("");
             messageBoxRef.current.innerHTML = "";
         }
@@ -211,14 +215,49 @@ const handleMessageSend = () => {
         text:  messageBoxRef.current.innerHTML
     })
 }
+const handleConversation = (conversation) => {
+    console.log("wey",conversationId, "ee", conversation.id)
+    if(conversationId === conversation.id) {
+        setMessages((oldMessages) => {
+            const copyOldMessages = JSON.parse(JSON.stringify(oldMessages));
+            copyOldMessages.push(conversation.recent_message);
+            return copyOldMessages;
+        })
+    }
+    setConversations((oldConversations) => {
+        let copyOldConversations = JSON.parse(JSON.stringify(oldConversations));
+        copyOldConversations = copyOldConversations.map((val) => {
+            if(conversation.id === val.id) {
+                return conversation;
+            } 
+            return val;
+        })
+        return copyOldConversations;
+    })
+}
 useEffect(() => {
     refetchConversationData();
-}, [])
+    if(!!user) {
+        console.log(user)
+        const socketInstance = getSocketInstance()
+        socketInstance.channel(user.email).listen(".Conversation", (e) => {
+            handleConversation(e.data);
+        })
+    }
+}, [user])
+
 useEffect(() => {
+  console.log(conversationId);
   if(conversationId){
     refetchMessagesData();
   }
 }, [conversationId])
+useEffect(() => {
+    if(messagesRef.current) {
+        messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    }
+}, [messages])
+
 
 
   return (
@@ -238,9 +277,9 @@ useEffect(() => {
                                 <Image src="/more-vertical.svg" height={24} width={24}/>
                             </ContextBtn>
                         </ChatHeader>
-                        <MessagesCont>
+                        <MessagesCont ref={messagesRef}>
                             {
-                                messages.map((val, i) => (
+                               messages.map((val, i) => (
                                     <MessageCard key={i} isOwn={val.is_own}>
                                         <UserSect>
                                             <ProfilePicWrapper>

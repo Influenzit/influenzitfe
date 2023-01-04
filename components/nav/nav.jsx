@@ -165,7 +165,6 @@ const Nav = () => {
     }
   useEffect(() => {
     addEventListener("click", handleClosing);
-    console.log(userDetails);
     if (!!userDetails) {
         const socketInstance = getSocketInstance()
         socketInstance.channel(userDetails.email).listen(".Notification", (e) => {
