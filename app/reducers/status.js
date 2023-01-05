@@ -6,6 +6,7 @@ const initialState =  {
     error: false,
     message: "",
     userType: "",
+    currentConversation: 0,
 }
 const statusSlice = createSlice({
     name: "status",
@@ -25,7 +26,11 @@ const statusSlice = createSlice({
         setUserType(state, { payload }) {
             state.userType = payload;
             localStorage.setItem("user-type", payload);
-        }
+        },
+        setCurrentConversation(state, { payload }) {
+            state.currentConversation = payload;
+            sessionStorage.setItem("cid", payload);
+        },
     }
 });
 export const isLoading = (state) => state.status.loading;
@@ -33,5 +38,6 @@ export const isError = (state) => state.status.error;
 export const getMessage = (state) => state.status.message;
 export const getUserType = (state) => state.status.userType;
 export const isSuccess = (state) => state.status.success;
-export const { setLoading, setError, setSuccess, setUserType } = statusSlice.actions
+export const getCurrentConversationId = (state) => state.status.currentConversation;
+export const { setLoading, setError, setSuccess, setUserType, setCurrentConversation } = statusSlice.actions
 export default statusSlice.reducer

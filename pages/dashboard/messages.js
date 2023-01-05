@@ -10,8 +10,9 @@ import { getConversationMessages, getConversations, sendConversationMessage } fr
 import { useMutation, useQuery } from '@tanstack/react-query';
 import HTMLReactParser from 'html-react-parser';
 import { getSocketInstance } from '../../socket/instance';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../app/reducers/user';
+import { getCurrentConversationId, setCurrentConversation } from '../../app/reducers/status';
 
 const Picker = dynamic(
   () => {
@@ -21,7 +22,6 @@ const Picker = dynamic(
 );
 
 const Messages = () => {
-  const [conversationId, setConversationId] = useState("");
   const [messageContent, setMessageContent] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
   const emojiRef = useRef(null);
@@ -31,6 +31,8 @@ const Messages = () => {
   const messagesRef = useRef(null);
   const user = useSelector(getUser);
   const [socketSet, setSocketSet] = useState(false);
+  const conversationId = useSelector(getCurrentConversationId);
+  const dispatch = useDispatch();
   const handleInput = (e) => {
     if(e.currentTarget.innerHTML === "<br>") {
         setMessageContent("");
@@ -206,6 +208,9 @@ const sendMessageMutation = useMutation((data) => {
         dispatch(setError({error: true, message: "An error occured"}));
     }
 });
+const handleSetConversationId = (id) => {
+    dispatch(setCurrentConversation(id));
+} 
 const getCurrentConversation = () => {
     if(conversationId) {
         return conversations.filter((val) => val.id === conversationId)[0]
@@ -219,32 +224,46 @@ const handleMessageSend = () => {
 }
 const handleConversation = (conversation) => {
     if(conversation){
-        setMessages((oldMessages) => {
-            const copyOldMessages = JSON.parse(JSON.stringify(oldMessages));
-            copyOldMessages.push(conversation.recent_message);
-            return copyOldMessages;
-        })
+        if(conversation.id === Number(sessionStorage.getItem("cid"))) {
+            console.log("ego")
+            setMessages((oldMessages) => {
+                const copyOldMessages = JSON.parse(JSON.stringify(oldMessages));
+                copyOldMessages.push(conversation.recent_message);
+                return copyOldMessages;
+            })
+        }
         setConversations((oldConversations) => {
             let copyOldConversations = JSON.parse(JSON.stringify(oldConversations));
+            let cantFindOne = true;
             copyOldConversations = copyOldConversations.map((val) => {
                 if(conversation.id === val.id) {
+                    foundOne = false;
                     return conversation;
                 } 
                 return val;
             })
+            if(cantFindOne) {
+                copyOldConversations.push(conversation);
+            }
             return copyOldConversations;
         })
     }
 }
 useEffect(() => {
     refetchConversationData();
-    console.log("saa");
+    const socketInstance = getSocketInstance();
     if(!!user && !socketSet) {
-        const socketInstance = getSocketInstance();
         socketInstance.channel(user.email).listen(".Conversation", (e) => {
             handleConversation(e.data);
         })
         setSocketSet(true);
+    }
+    return () => {
+        if(!!user) {
+            socketInstance.channel(user.email).stopListening(".Conversation", (e) => {
+                handleConversation(e.data);
+            })
+        }
     }
 }, [user])
 
@@ -252,7 +271,6 @@ useEffect(() => {
   if(conversationId){
     refetchMessagesData();
   }
-  console.log("another");
 }, [conversationId])
 useEffect(() => {
     if(messagesRef.current) {
@@ -265,7 +283,7 @@ useEffect(() => {
   return (
     <Container>
         <Wrapper>
-            <ChatSidebar setConversationId={setConversationId} conversations={conversations}/>
+            <ChatSidebar setConversationId={handleSetConversationId} conversations={conversations}/>
             <MessageSection>
                 {
                     conversationId ? 
