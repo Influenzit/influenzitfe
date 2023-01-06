@@ -237,7 +237,7 @@ const handleConversation = (conversation) => {
             let cantFindOne = true;
             copyOldConversations = copyOldConversations.map((val) => {
                 if(conversation.id === val.id) {
-                    cantFoundOne = false;
+                    cantFindOne = false;
                     return conversation;
                 } 
                 return val;
