@@ -251,7 +251,7 @@ const Information = () => {
                                     <Image src="/facebook.svg" height={25} width={25}/><span>Facebook</span>
                                 </a>
                             </Link>
-                            <Link href="/">
+                            <Link href={`${process.env.NEXT_PUBLIC_API_URI}/accounts/connect?provider=instagram&user=${user.id}`}>
                                 <a>
                                     <Image src="/instagram.svg" height={25} width={25}/><span>Instagram</span>
                                 </a>
