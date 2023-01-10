@@ -7,6 +7,10 @@ export const createAccount = (data) => {
 export const loginUser = (data) => {
     return axiosInstance().post("/auth/login", data);
 }
+
+export const socialLogin = (data) => {
+    return axiosInstance().post("/auth/social/login", data);
+}
 export const forgotPassword = (data) => {
     return axiosInstance().post("/auth/password/forgot-password", data);
 }

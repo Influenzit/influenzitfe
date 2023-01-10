@@ -36,6 +36,12 @@ export const Container = styled.div`
         background-color: transparent;
         width: 3px;
     }
+    ${breakpoints.sm}{
+        position: fixed;
+        left: ${(props) => props.showSidebar ? "0" : "-100px"};
+        z-index: 90;
+        top: 70px;
+    }
 `;
 export const NavButton = styled.button`
     width: 90%;

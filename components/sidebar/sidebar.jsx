@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { getUserType } from '../../app/reducers/status';
+import { getShowSidebar, getUserType } from '../../app/reducers/status';
 import { getUser } from '../../app/reducers/user';
 import { BagIcon, BoxIcon, DashboardIcon, HashTagIcon, LockIcon, SettingsIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
 import { Container, InnerWrapper, NavButton, ProfileImageCont, Status } from './style'
@@ -10,6 +10,7 @@ import { Container, InnerWrapper, NavButton, ProfileImageCont, Status } from './
 const Sidebar = () => {
     const user = useSelector(getUser);
     const currentUserType = useSelector(getUserType);
+    const showSidebar = useSelector(getShowSidebar);
     const router = useRouter();
     const [userData, setUserData] = useState({});
     useEffect(() => {
@@ -18,7 +19,7 @@ const Sidebar = () => {
       }
     }, [user])
   return (
-    <Container>
+    <Container showSidebar={showSidebar}>
         <ProfileImageCont>
             <InnerWrapper>
                 <Image src={ user?.account?.media?.[0]?.url ? user?.account?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${userData?.firstname}+${userData?.lastname}&color=FFFFFF&background=12544D`} alt="profile picture" layout='fill' objectFit='cover' objectPosition="center"/>

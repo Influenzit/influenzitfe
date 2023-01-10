@@ -85,7 +85,7 @@ const Home = () => {
           <InfoCard primary={false}>
             <h3>Are you a business owner?</h3>
             <p>Find The <b><i>Perfect Influencer</i></b> To Ignite Your Business Sales!</p>
-            <Link href="" passHref>
+            <Link href="/explore" passHref>
               <a>Find Influencer</a>
             </Link>
           </InfoCard>

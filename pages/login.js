@@ -3,8 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { useDispatch } from 'react-redux'
-import { loginUser } from '../api/auth'
+import { loginUser, socialLogin } from '../api/auth'
 import { getBusinesses } from '../api/business'
 import { setBusinesses } from '../app/reducers/business'
 import { setError, setLoading, setUserType } from '../app/reducers/status'
@@ -71,6 +72,59 @@ const Login = () => {
       dispatch(setError({error: true, message: "An error occured"}));
     }
   })
+  const socialMutation = useMutation(userData => {
+    return socialLogin(userData);
+  }, {
+    onSuccess(successRes) {
+      const res = successRes.data.data
+      if(res.errors || res.status === "error") {
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: res.message}));
+      } else {
+        localStorage.setItem("token", res.token);
+        const { is_influencer, is_creator, is_businessowner } = res.user.account;
+        if (is_businessowner) {
+          dispatch(setUserType("Business Owner"));
+          getBusinesses(res.token).then((bizRes) => {
+            if (bizRes.data && res) {
+              dispatch(setLoading(false));
+              dispatch(setBusinesses(bizRes.data.data))
+              dispatch(updateUser(res.user));
+              dispatch(setError({error: false, message: ""}));
+              localStorage.setItem("user-id", res.user.id);
+              router.push("/dashboard");
+            }
+          }).catch( _ => {
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: "An error occured"}))
+          })
+        } else {
+          dispatch(setLoading(false));
+          dispatch(updateUser(res.user));
+          dispatch(setError({error: false, message: ""}));
+          localStorage.setItem("token", res.token);
+          localStorage.setItem("user-id", res.user.id);
+          
+          if (is_influencer || is_creator) {
+            is_influencer ? dispatch(setUserType("Influencer")) : (is_creator && dispatch(setUserType("Creator")))
+            router.push("/dashboard");
+          } else {
+            router.push("/dashboard/account-type");
+          }
+        }
+      }
+    },
+    onError(error) {
+      const res = error.response.data;
+      if(res){
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: res.message}));
+        return;
+      }
+      dispatch(setLoading(false));
+      dispatch(setError({error: true, message: "An error occured"}));
+    }
+  })
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -85,6 +139,12 @@ const Login = () => {
         email,
         password,
     })
+  }
+  const handleFacebookLogin = (res) => {
+   dispatch(setLoading(true));
+   socialMutation.mutate({
+    access_token: res.accessToken
+   })
   }
   return (
     <Container>
@@ -137,12 +197,18 @@ const Login = () => {
               <p>OR</p>
             </OrContainer>
             <SocialLogin>
-              <FacebookBtn>
-                <SocialIcon>
-                  <Image src="/facebook-r.svg" alt="" height={22} width={22} />
-                </SocialIcon>
-                <span>Continue With Facebook</span>
-              </FacebookBtn>
+              <FacebookLogin
+                appId="3349779741932998"
+                callback={handleFacebookLogin}
+                render={(renderProps) => (
+                  <FacebookBtn  onClick={renderProps.onClick}>
+                    <SocialIcon>
+                      <Image src="/facebook-r.svg" alt="" height={22} width={22} />
+                    </SocialIcon>
+                    <span>Continue With Facebook</span>
+                  </FacebookBtn>
+                )}
+              />
               <GoogleBtn>
                 <SocialIcon>
                   <Image src="/google-r.svg" alt="" height={22} width={22} />

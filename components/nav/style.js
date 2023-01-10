@@ -493,8 +493,8 @@ export const SidebarBtn = styled.button`
     border: none;
     display: none;
     cursor: pointer;
-    margin-left: 10px;
-    ${breakpoints.lg} {
+    margin: 0 15px 0 2px;
+    ${breakpoints.sm} {
         display: block;
         height: 29px;
         width: 29px;

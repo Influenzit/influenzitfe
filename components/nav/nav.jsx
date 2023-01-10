@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { clearUser, getUser, updateUser } from '../../app/reducers/user'
 import { clearBusiness } from '../../app/reducers/business'
-import { getUserType, setError, setLoading, setUserType } from '../../app/reducers/status'
+import { getShowSidebar, getUserType, setError, setLoading, setShowSidebar, setUserType } from '../../app/reducers/status'
 import { useMutation } from '@tanstack/react-query'
 import { accountTypeUpdate, getUserAccount } from '../../api/auth'
 import switchIcon from "../../assets/switch.svg"
@@ -21,6 +21,7 @@ const Nav = () => {
   const [showSearchBar, setShowSearchBar] = useState(true);
   const [searchBy, setSearchBy] = useState("influencers");
   const currentAcctType = useSelector(getUserType);
+  const rShowSidebar = useSelector(getShowSidebar);
   const switchRef = useRef(null);
   const connectRef = useRef(null);
   const profileRef = useRef(null);
@@ -32,7 +33,7 @@ const Nav = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showSwitchAccount, setShowSwitchAccount] = useState(false);
   const [showSearchRes, setShowSearchRes] = useState(false);
-  const [showSidebar, setShowSidebar] = useState(false);
+//   const [showSidebar, setShowSidebar] = useState(false);
   const router = useRouter();
   const [searchString, setSearchString] = useState("");
   const [notificationAvailable, setNotificationAvailable] = useState(false);
@@ -45,14 +46,14 @@ const Nav = () => {
     setShowConnect(false);
     setShowDropdown(false);
     setShowSearchRes(false);
-    setShowSidebar(false);
+    // setShowSidebar(false);
   }
   
   const handleProfileOpen = () => {
     setShowConnect(false);
     setShowSwitchAccount(false);
     setShowSearchRes(false);
-    setShowSidebar(false);
+    // setShowSidebar(false);
     setShowDropdown(!showDropdown);
   }
   const handleConnectOpen = () => {
@@ -60,14 +61,10 @@ const Nav = () => {
     setShowDropdown(false);
     setShowSwitchAccount(false);
     setShowSearchRes(false);
-    setShowSidebar(false);
+    // setShowSidebar(false);
   }
   const handleShowSidebar = () => {
-    setShowConnect(false);
-    setShowDropdown(false);
-    setShowSwitchAccount(false);
-    setShowSearchRes(false);
-    setShowSidebar(!showSidebar);
+   dispatch(setShowSidebar(!rShowSidebar))
   }
   const mutation = useMutation(profileData => {
     return accountTypeUpdate(profileData);
@@ -159,9 +156,9 @@ const Nav = () => {
         if(switchRef.current && !switchRef.current.innerHTML.includes(e.target.innerHTML)) {
             setShowSwitchAccount(false);
         }
-        if(sidebarRef.current && sidebarBtn.current && !sidebarRef.current.innerHTML.includes(e.target.innerHTML) && !sidebarBtn.current.innerHTML.includes(e.target.innerHTML)) {
-            setShowSidebar(false);
-        }
+        // if(sidebarRef.current && sidebarBtn.current && !sidebarRef.current.innerHTML.includes(e.target.innerHTML) && !sidebarBtn.current.innerHTML.includes(e.target.innerHTML)) {
+        //     setShowSidebar(false);
+        // }
     }
   useEffect(() => {
     addEventListener("click", handleClosing);
@@ -180,9 +177,18 @@ const Nav = () => {
   return (
     <Container>
         <Wrapper>
-            <Logo href="/">
-                <Image src="/influenzit.svg" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
-            </Logo>
+            <div style={{ display: "flex" }}>
+                {
+                    router.pathname.includes("/dashboard") && isLoggedIn && (
+                        <SidebarBtn onClick={handleShowSidebar} ref={sidebarBtn}>
+                            <HamburgerIcon />
+                        </SidebarBtn>
+                    )
+                }
+                <Logo href="/">
+                    <Image src="/influenzit.svg" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
+                </Logo>
+            </div>
             {
                 isLoggedIn ? (
                     <Right>
@@ -258,9 +264,6 @@ const Nav = () => {
                                 </SwitchDropdownCont>
                             }
                         </SwitchBtn>
-                        <SidebarBtn onClick={handleShowSidebar} ref={sidebarBtn}>
-                            <HamburgerIcon />
-                        </SidebarBtn>
                     </Right>
                 ) : (
                     <Right>
@@ -276,14 +279,11 @@ const Nav = () => {
                                 <GetStartedBtn>Get Started</GetStartedBtn>
                             </Link>
                         </Controls>
-                        <SidebarBtn onClick={() => setShowSidebar(!showSidebar)} ref={sidebarBtn}>
-                            <HamburgerIcon />
-                        </SidebarBtn>
                     </Right>
                 )
             }
 
-            <ResponsiveNav show={showSidebar} ref={sidebarRef} onClick={() => setShowSidebar(false)}>
+            {/* <ResponsiveNav show={showSidebar} ref={sidebarRef} onClick={() => setShowSidebar(false)}>
             {
                 !isLoggedIn ? (
                         <NavLinks show={true}>
@@ -305,7 +305,7 @@ const Nav = () => {
                 )
             }
 
-        </ResponsiveNav>
+            </ResponsiveNav> */}
         </Wrapper>
     </Container>
   )
