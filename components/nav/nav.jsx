@@ -267,8 +267,23 @@ const Nav = () => {
                     </Right>
                 ) : (
                     <Right>
+                        <ConnectDropdown onClick={() => handleConnectOpen()} ref={connectRef}>
+                            <span>Explore</span><Image src="/down-chev-b.svg" alt="" height={7} width={10} />
+                            {
+                                showConnect && <ConnectDropdownCont>
+                                    <Link href="/explore/influencers">
+                                        <a><span>Influencers</span></a>
+                                    </Link>
+                                    <Link href="/explore/creators">
+                                        <a><span>Creators</span></a>
+                                    </Link>
+                                    <Link href="/explore/services">
+                                        <a><span>Services</span></a>
+                                    </Link>
+                                </ConnectDropdownCont>
+                            }
+                        </ConnectDropdown>
                         <NavLinks>
-                            <Link href="/explore">Explore</Link>
                             <Link href="/pricing">Pricing</Link>
                         </NavLinks>
                         <Controls>
