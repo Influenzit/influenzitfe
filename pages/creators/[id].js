@@ -1,14 +1,15 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { getCreator } from '../../api/influencer'
+import { startConversation } from '../../api/messaging'
 import { setLoading } from '../../app/reducers/status'
 import LandingLayout from '../../layouts/landing.layout'
 import { BackImage, Bottom, Container, HeroSectionOne, ImageCard, Popup, ProfileCategory, ProfileData, ProfileDetails, ProfileImgCont, ProfileStats, SeeMoreCont, Skill, SkillCard, StatCard, Stats, StatWrapper, Top, UserCard, WorkCard, Wrapper } from '../../styles/creator-profile.style'
-
+import { toast } from 'react-toastify'
 const CreatorProfile = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -29,6 +30,39 @@ const CreatorProfile = () => {
         dispatch(setLoading(false));
     } 
 });
+const startConversationMutation = useMutation((data) => {
+    return startConversation(data);
+}, {
+    onSuccess(successRes) {
+        const res = successRes.data;
+        if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: res.message}));
+        } else {
+            router.push("/dashboard/messages");
+        }
+    },
+    onError(error) {
+        const res = error.response.data;
+        if(res){
+        dispatch(setError({error: true, message: res.message}));
+        return;
+        }
+        dispatch(setError({error: true, message: "An error occured"}));
+    }
+});
+const handleStartConversation = () => {
+    if(user.id) {
+        startConversationMutation.mutate({
+            to_user_id: inData.user_id,
+            text: "Hi " + inData?.user?.firstname,
+        })
+    } else {
+        toast.error("Please login to start a conversation", {
+            position: toast.POSITION.TOP_RIGHT
+          });
+    }
+}
 useEffect(() => {
     dispatch(setLoading(true));
     if(id){
@@ -96,9 +130,9 @@ useEffect(() => {
                     <button onClick={() => setShowEngagePopup(!showEngagePopup)}>
                         <span>Engage Creator</span> <Image src="/down-chev.svg" height={10} width={10} />
                         <Popup show={showEngagePopup}>
-                            <Link href="/">
-                                <a><span>Send a message</span><Image src="/arr-r.svg" height={10} width={10} /></a>
-                            </Link>
+                            <button onClick={handleStartConversation}>
+                                <span>Send a message</span><Image src="/arr-r.svg" height={10} width={10} />
+                            </button>
                             <Link href="/">
                                 <a><span>Report Account</span><Image src="/arr-r.svg" height={10} width={10} /></a>
                             </Link>
