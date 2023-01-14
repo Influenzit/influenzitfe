@@ -11,6 +11,7 @@ const activeLabel = `
         padding: 0 10px;
         font-size: 12px;
         color: ${colors.primaryColor};
+        z-index: 10;
     }
 `;
 const inActiveLabel = `
@@ -269,7 +270,7 @@ export const UploadContainer = styled.div`
     }
 `;
 export const ImagePreview = styled.div`
-    border: 3px dashed ${colors.primaryColor};
+    /* border: 3px dashed ${colors.primaryColor}; */
     background-color: white;
     border-radius: 10px;
     height: 150px;

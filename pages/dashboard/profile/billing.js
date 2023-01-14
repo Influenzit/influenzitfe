@@ -11,7 +11,8 @@ import { useQuery } from '@tanstack/react-query'
 import { moneyStandard } from '../../../helpers/helper'
 
 const Billing = () => {
-    const [wallet, setWallet] = useState({})
+    const [wallet, setWallet] = useState({});
+    const [walletList, setWalletList] = useState([]);
     const { data: walletData, refetch: refetchWalletData } = useQuery(["get-wallet"], async () => {
         return await getWallet();
     }
@@ -22,12 +23,13 @@ const Billing = () => {
     
     useEffect(() => {
         if(walletData){
-            setWallet(walletData.data.data)
+            setWallet(walletData.data.data);
         }
     }, [walletData])
     useEffect(() => {
         if(walletTransData){
-            console.log(walletTransData.data)
+            setWalletList(walletTransData.data.data)
+            console.log(walletTransData.data.data);
         }
     }, [walletTransData])
     
@@ -42,15 +44,15 @@ const Billing = () => {
                     <WalletCardWrapper>
                         <WalletCard>
                             <p>Wallet Balance</p>
-                            <h3>₦ {wallet && moneyStandard(wallet.amount ?? 0)}</h3>
+                            <h3>₦ {wallet && moneyStandard(wallet?.amount ?? 0)}</h3>
                         </WalletCard>
                         <WalletCard>
                             <p>Total Spent</p>
-                            <h3>₦ {wallet && moneyStandard(wallet.total_spent ?? 0)}</h3>
+                            <h3>₦ {wallet && moneyStandard(wallet?.total_spent ?? 0)}</h3>
                         </WalletCard>
                         <WalletCard>
                             <p>Escrow Balance</p>
-                            <h3>₦ {wallet && moneyStandard(wallet.escrow_balance ?? 0)}</h3>
+                            <h3>₦ {wallet && moneyStandard(wallet?.escrow_balance ?? 0)}</h3>
                         </WalletCard>
                         <FundBtn>
                             <Image src={plusCircleIcon} alt="plus-circle" height={26} width={26}/>
@@ -65,7 +67,7 @@ const Billing = () => {
                     <TableWrapper>
                         <TableControls>
                             <SearchContainer>
-                                <input type="text" placeholder="Search by influencer"/>
+                                <input type="text" placeholder="Search by Transaction ID"/>
                                 <button>
                                     <Image src="/search-b.svg" alt="" height={22} width={22}/>
                                 </button>
@@ -90,69 +92,33 @@ const Billing = () => {
                                     </TrH>
                                 </THead>
                                 <TBody>
-                                    <Tr>
-                                        <Td cellWidth="20px">
-                                        </Td>
-                                        <Td cellWidth="150px">Sep 31, 2022</Td>
-                                        <Td cellWidth="300px">Paid for campaign</Td>
-                                        <Td cellWidth="200px">31DB61B3D651E3C</Td>
-                                        <Td cellWidth="110px">Success</Td>
-                                        <Td cellWidth="150px"><CAmount status="success">₦70,000</CAmount></Td>
-                                    </Tr>
-                                    <Tr>
-                                        <Td cellWidth="20px">
-                                        </Td>
-                                        <Td cellWidth="150px">Sep 31, 2022</Td>
-                                        <Td cellWidth="300px">Paid for campaign</Td>
-                                        <Td cellWidth="200px">31DB61B3D651E3C</Td>
-                                        <Td cellWidth="110px">Failed</Td>
-                                        <Td cellWidth="150px"><CAmount status="failed">₦70,000</CAmount></Td>
-                                    </Tr>
-                                    <Tr>
-                                        <Td cellWidth="20px">
-                                        </Td>
-                                        <Td cellWidth="150px">Sep 31, 2022</Td>
-                                        <Td cellWidth="300px">Paid for campaign</Td>
-                                        <Td cellWidth="200px">31DB61B3D651E3C</Td>
-                                        <Td cellWidth="110px">Pending</Td>
-                                        <Td cellWidth="150px"><CAmount status="pending">₦70,000</CAmount></Td>
-                                    </Tr>
-                                    <Tr>
-                                        <Td cellWidth="20px">
-                                        </Td>
-                                        <Td cellWidth="150px">Sep 31, 2022</Td>
-                                        <Td cellWidth="300px">Paid for campaign</Td>
-                                        <Td cellWidth="200px">31DB61B3D651E3C</Td>
-                                        <Td cellWidth="110px">Success</Td>
-                                        <Td cellWidth="150px"><CAmount status="success">₦70,000</CAmount></Td>
-                                    </Tr>
-                                    <Tr>
-                                        <Td cellWidth="20px">
-                                        </Td>
-                                        <Td cellWidth="150px">Sep 31, 2022</Td>
-                                        <Td cellWidth="300px">Paid for campaign</Td>
-                                        <Td cellWidth="200px">31DB61B3D651E3C</Td>
-                                        <Td cellWidth="110px">Success</Td>
-                                        <Td cellWidth="150px"><CAmount status="success">₦70,000</CAmount></Td>
-                                    </Tr>
+                                    {
+                                        walletList?.data?.map((trans, i) => (
+
+                                            <Tr>
+                                                <Td cellWidth="20px">
+                                            </Td>
+                                            <Td cellWidth="150px">{(new Date(trans.created_at)).toDateString()}</Td>
+                                            <Td cellWidth="300px">{trans.remark}</Td>
+                                            <Td cellWidth="200px">{trans.reference}</Td>
+                                            <Td cellWidth="110px">{trans.status}</Td>
+                                            <Td cellWidth="150px"><CAmount status={trans.status === "Pending" ? "pending" : trans.status === "Completed" ? "success" : "failed"}>{trans.currency} {moneyStandard(trans.amount)}</CAmount></Td>
+                                        </Tr>
+                                        ))
+                                    }
                                 </TBody>
                             </Table>
                         </TableContent>
                         <TableFooter>
-                            <p>Showing 10 of 500</p>
+                            <p>Showing {((walletList?.current_page - 1) * walletList?.per_page) + walletList?.data?.length} of {walletList?.total}</p>
                             <Pagination>
-                                <NavBtn>
+                                <NavBtn onClick={() => walletList?.current_page.prev_page_url && setGetUrl(walletList?.current_page.prev_page_url.replace(process.env.NEXT_PUBLIC_API_URI + "/api/v1", ""))}>
                                     <ChevronLeft />
                                 </NavBtn>
                                 <Pages>
-                                    <PageBtn activePage={true}>1</PageBtn>
-                                    <PageBtn>2</PageBtn>
-                                    <PageBtn>3</PageBtn>
-                                    <PageBtn>4</PageBtn>
-                                    -
-                                    <PageBtn>50</PageBtn>
+                                    <PageBtn activePage={true}>{walletList?.current_page}</PageBtn>
                                 </Pages>
-                                <NavBtn>
+                                <NavBtn onClick={() => walletList?.current_page.next_page_url && setGetUrl(walletList?.current_page.next_page_url.replace(process.env.NEXT_PUBLIC_API_URI + "/api/v1", ""))}>
                                     <ChevronRight />
                                 </NavBtn>
                             </Pagination>

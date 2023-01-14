@@ -147,7 +147,7 @@ const Information = () => {
             return copyVal;
         })
       }
-      const handleSetFiles = (file) => {
+    const handleSetFiles = (file) => {
         if(file.size < 5000000){
             setFileSelected(file);
             setImgSrc(URL.createObjectURL(file));

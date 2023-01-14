@@ -9,11 +9,15 @@ import { setBusinesses } from '../../../app/reducers/business';
 import { setError, setLoading, setUserType } from '../../../app/reducers/status';
 import { getUser, updateUser } from '../../../app/reducers/user';
 import LandingLayout from '../../../layouts/landing.layout';
-import { Center, Container, FormFields, FormHeader, FormWrapper, ImagePreview, Input, InputContainer, SubmitButton, UploadContainer, Wrapper } from '../../../styles/auth.style'
+import { Center, Container, FormFields, FormHeader, FormWrapper, ImagePreview, Input, InputContainer, SubmitButton, Wrapper } from '../../../styles/auth.style'
+import { UploadContainer, UploadHeader, UploadInfo } from '../../../styles/profile.style';
 
 const BusinessOwner = () => {
   const user = useSelector(getUser);
   const router = useRouter();
+  const [fileSelected, setFileSelected] = useState(null);
+  const [imgSrc, setImgSrc] = useState("");
+  const [dataEnter, setDataEnter] = useState(false);
   const [formVal, setFormVal] = useState({
     businessName: "",
     rc: "",
@@ -21,7 +25,6 @@ const BusinessOwner = () => {
     email: "",
     tel: "",
     website: "",
-    file: null,
   })
   const handleInputChange = (val, field) => {
     setFormVal((prevVal) => {
@@ -81,9 +84,31 @@ const BusinessOwner = () => {
     formdata.append("email", formVal.email);
     formdata.append("website", formVal.website);
     formdata.append("is_registered", 1);
-    // formdata.append("thumbnail", formVal.file);
+    formdata.append("thumbnail", fileSelected);
     formdata.append("phone", formVal.tel);
     mutation.mutate(formdata);
+  }
+  const handleSetFiles = (file) => {
+      if(file.size < 5000000){
+          setFileSelected(file);
+          setImgSrc(URL.createObjectURL(file));
+      }
+  }
+  const handleFileChange = (e) => {
+      handleSetFiles(e.target.files[0]);
+  }
+  const handleDrop = (e) => {
+      e.preventDefault();
+      handleSetFiles(e.dataTransfer.files[0]);
+  }
+  const handleDragOver = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setDataEnter(true);
+  }
+  const handleDragLeave = (e) => {
+      e.preventDefault();
+      setDataEnter(false);
   }
  
   useEffect(() => {
@@ -116,7 +141,6 @@ const BusinessOwner = () => {
                 type="text"
                 value={formVal.rc}
                 onChange={(e) => handleInputChange(e.target.value, "rc")}
-                required
                 />
               </InputContainer>
               <InputContainer hasContent={formVal.tin}>
@@ -125,7 +149,6 @@ const BusinessOwner = () => {
                   type="text"
                   value={formVal.tin}
                   onChange={(e) => handleInputChange(e.target.value, "tin")}
-                  required
                   />
               </InputContainer>
               <InputContainer hasContent={formVal.email}>
@@ -143,7 +166,6 @@ const BusinessOwner = () => {
                 type="text"
                 value={formVal.website}
                 onChange={(e) => handleInputChange(e.target.value, "website")}
-                required
                 />
               </InputContainer>
               <InputContainer hasContent={formVal.tel}>
@@ -155,21 +177,19 @@ const BusinessOwner = () => {
                 required
                 />
               </InputContainer>
-              <UploadContainer>
-                <p>{formVal.file && formVal.file.name}</p>
-                <label htmlFor='file-input-id'>Upload Thumbnail</label>
-                <Input
-                type="file"
-                accept='image/*'
-                id="file-input-id"
-                onChange={(e) => handleInputChange(e.target.files[0], "file")}
-                required
-                hidden
-                />
+              <UploadContainer onDrop={handleDrop} onDragLeave={handleDragLeave} onDragOver={handleDragOver} style={{ marginBottom: "20px" }}>
+                  <UploadHeader >
+                      <label htmlFor="upload-input">Click to upload</label>
+                      <span> or drag and drop here.</span>
+                  </UploadHeader>
+                  <UploadInfo>
+                      Maximum file size 5MB
+                  </UploadInfo>
+                  <input type="file" hidden id="upload-input" accept="image/*" onChange={handleFileChange}/>
               </UploadContainer>
               {
-                formVal.file && <ImagePreview>
-                  <Image src={URL.createObjectURL(formVal.file)} height={120} width={300}/>
+                fileSelected && <ImagePreview>
+                  <Image src={imgSrc} height={120} width={300}/>
                 </ImagePreview>
               }
               <SubmitButton type="submit">Create</SubmitButton>
