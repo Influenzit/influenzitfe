@@ -13,7 +13,7 @@ import { getSocketInstance } from '../../socket/instance';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../app/reducers/user';
 import { getCurrentConversationId, setCurrentConversation } from '../../app/reducers/status';
-
+import MobileChatbar from '../../components/mobile-chatbar';
 const Picker = dynamic(
   () => {
     return import('emoji-picker-react');
@@ -282,6 +282,8 @@ useEffect(() => {
 
   return (
     <Container>
+
+        <MobileChatbar setConversationId={handleSetConversationId} conversations={conversations}/>
         <Wrapper>
             <ChatSidebar setConversationId={handleSetConversationId} conversations={conversations}/>
             <MessageSection>
@@ -332,7 +334,6 @@ useEffect(() => {
                                 </PickerContainer>
                             }
                             <MessageInput data-placeholder="Write a message" contentEditable showPlaceholder={!!messageContent} onInput={handleInput} ref={messageBoxRef}>
-
                             </MessageInput>
                             <ChatControls>
                                 <LeftControls>
@@ -368,7 +369,7 @@ useEffect(() => {
                                 <Image src="/work.svg" alt="" layout='fill' objectFit='contain' objectPosition="center"/>
                             </ImageWrapper>
                             <h2>Select a conversation</h2>
-                            <p>Click on any name on the left sidebar to start a chat</p>
+                            <p>Click on any name on the chatbar to start a chat</p>
                         </NonSelectedCont>
                     )
                 }

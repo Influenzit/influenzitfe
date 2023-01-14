@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { breakpoints } from "../../styles/theme";
 
 export const Container = styled.div`
     width: 350px;
@@ -7,6 +8,9 @@ export const Container = styled.div`
     height: 100%;
     max-height: 100%;
     background: #fff;
+    ${breakpoints.md} {
+        display: none;
+    }
 `;
 export const Top = styled.div`
     padding: 20px;

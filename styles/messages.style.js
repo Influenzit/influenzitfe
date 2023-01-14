@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, sizes } from "./theme";
+import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.div`
     background: #F7FAFC;
@@ -35,6 +35,7 @@ export const NonSelectedCont = styled.div`
     p {
         font-size: 14px;
         color: #333;
+        text-align: center;
     }
 `;
 export const ImageWrapper = styled.div`
@@ -59,11 +60,13 @@ export const ChatHeader = styled.div`
 export const HLeft = styled.div`
     h2 {
         font-size: 20px;
+        ${breakpoints.md} {
+            font-size: 16px;
+        }
     }
     p {
         font-size: 12px;
         color: rgba(0,0,0, 0.5);
-
     }
 `;
 export const ContextBtn = styled.div`
