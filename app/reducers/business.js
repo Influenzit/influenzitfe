@@ -23,5 +23,6 @@ const businessSlice = createSlice({
     }
 })
 export const getBusinessesFromState = (state) => state.business.businesses;
+export const getCurrentBusiness = (state) => state.business.currentBusiness;
 export const { setBusinesses, setCurrentBusiness, clearBusiness } = businessSlice.actions;
 export default businessSlice.reducer

@@ -18,11 +18,13 @@ import { getExploreService } from '../../api/influencer';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { setError, setLoading, setSuccess } from '../../app/reducers/status';
+import { getUserType, setError, setLoading, setSuccess } from '../../app/reducers/status';
 import { moneyStandard } from '../../helpers/helper';
 import { usePaystackPayment } from 'react-paystack';
 import { createPaymentLog, processPayment } from '../../api/payment';
 import { getUser } from '../../app/reducers/user';
+import { getCurrentBusiness } from '../../app/reducers/business';
+import { toast } from 'react-toastify';
 
 function NextArrow(props) {
     const { className, style, onClick } = props;
@@ -58,6 +60,8 @@ const ServiceView = () => {
   const [makePayment, setMakePayment] = useState(false);
   const router = useRouter();
   const user = useSelector(getUser);
+  const accountType = useSelector(getUserType);
+  const currentBusiness = useSelector(getCurrentBusiness);
   const dispatch = useDispatch();
   const { id } = router.query;
   const { data: serviceData, refetch: refetchServiceData } = useQuery(["get-service"], async () => {
@@ -175,17 +179,31 @@ const ServiceView = () => {
     // handles create Service
     const handleCreatePaymentLog = () => {
         if(!!user){
-            dispatch(setLoading(true));
-            createPaymentLogMutation.mutate({
-                channel: "paystack",
-                payment_type: "service_payment",
-                amount: getCurrentPackage()?.amount,
-                currency: getCurrentPackage()?.currency,
-                package_id: getCurrentPackage()?.id,
-                meta: { business_id: 1}
-            });
+            if(accountType === "Business Owner") {
+                if(inData?.user?.id !== user.id) {
+                    dispatch(setLoading(true));
+                    createPaymentLogMutation.mutate({
+                        channel: "paystack",
+                        payment_type: "service_payment",
+                        amount: getCurrentPackage()?.amount,
+                        currency: getCurrentPackage()?.currency,
+                        package_id: getCurrentPackage()?.id,
+                        meta: { business_id: currentBusiness.id}
+                    });
+                } else {
+                    toast.error("You can't pay for your services", {
+                        position: toast.POSITION.TOP_RIGHT
+                    });
+                }
+            } else {
+                toast.error("Only business owners can pay for services", {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+            }
         } else {
-            dispatch(setError({error: true, message: "Please login to make payment"}));
+            toast.error("Please login to make payment", {
+                position: toast.POSITION.TOP_RIGHT
+              });
         }
     }
     useEffect(() => {
