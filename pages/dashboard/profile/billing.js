@@ -44,15 +44,15 @@ const Billing = () => {
                     <WalletCardWrapper>
                         <WalletCard>
                             <p>Wallet Balance</p>
-                            <h3>₦ {wallet && moneyStandard(wallet?.amount ?? 0)}</h3>
+                            <h3>₦ {wallet && moneyStandard(wallet?.wallet_balance?.NGN ?? 0)}</h3>
                         </WalletCard>
                         <WalletCard>
                             <p>Total Spent</p>
-                            <h3>₦ {wallet && moneyStandard(wallet?.total_spent ?? 0)}</h3>
+                            <h3>₦ {wallet && moneyStandard(wallet?.total_spent?.NGN ?? 0)}</h3>
                         </WalletCard>
                         <WalletCard>
                             <p>Escrow Balance</p>
-                            <h3>₦ {wallet && moneyStandard(wallet?.escrow_balance ?? 0)}</h3>
+                            <h3>₦ {wallet && moneyStandard(wallet?.escrow_balance?.NGN ?? 0)}</h3>
                         </WalletCard>
                         <FundBtn>
                             <Image src={plusCircleIcon} alt="plus-circle" height={26} width={26}/>
