@@ -85,9 +85,10 @@ const Billing = () => {
                                         <Th cellWidth="20px">
                                         </Th>
                                         <Th cellWidth="150px">Date</Th>
-                                        <Th cellWidth="300px">Description</Th>
+                                        <Th cellWidth="250px">Description</Th>
                                         <Th cellWidth="200px">Trasaction ID</Th>
                                         <Th cellWidth="110px">Status</Th>
+                                        <Th cellWidth="100px">Type</Th>
                                         <Th cellWidth="150px">Amount</Th>
                                     </TrH>
                                 </THead>
@@ -99,9 +100,10 @@ const Billing = () => {
                                                 <Td cellWidth="20px">
                                             </Td>
                                             <Td cellWidth="150px">{(new Date(trans.created_at)).toDateString()}</Td>
-                                            <Td cellWidth="300px">{trans.remark}</Td>
-                                            <Td cellWidth="200px">{trans.reference}</Td>
+                                            <Td cellWidth="250px">{trans.remark}</Td>
+                                            <Td cellWidth="200px">{trans.txnref}</Td>
                                             <Td cellWidth="110px">{trans.status}</Td>
+                                            <Td cellWidth="100px">{trans.txntype}</Td>
                                             <Td cellWidth="150px"><CAmount status={trans.status === "Pending" ? "pending" : trans.status === "Completed" ? "success" : "failed"}>{trans.currency} {moneyStandard(trans.amount)}</CAmount></Td>
                                         </Tr>
                                         ))
