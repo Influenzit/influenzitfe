@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { CountryDropdown } from 'react-country-region-selector'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 import { accountMedia, getUserAccount, updateAccount } from '../../../api/auth'
 import { getUserType, setError, setLoading, setSuccess } from '../../../app/reducers/status'
 import { getUser, updateUser } from '../../../app/reducers/user'
@@ -58,7 +59,6 @@ const Information = () => {
                             });
                         }
                       }).catch(err => {
-                        console.log(err);
                           dispatch(setLoading(false));
                           dispatch(setError({error: true, message: "An error occured"}));
                         })
