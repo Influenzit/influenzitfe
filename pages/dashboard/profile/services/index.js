@@ -101,7 +101,7 @@ const Services = () => {
                                         <button onClick={() => handleDeleteService(val.id)} id="del">Delete</button>
                                     </div>
                                     <div>
-                                        <button>Edit</button>
+                                        <button onClick={() => router.push(`/dashboard/profile/services/edit/${val.id}`)}>Edit</button>
                                     </div>
                                 </ServStats>
                             </ServiceCard>

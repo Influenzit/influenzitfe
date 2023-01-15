@@ -10,8 +10,8 @@ import { CancelIcon, DeleteIcon } from '../../../../../../assets/svgIcons'
 import { AddFeatureBtn, FeatureCell, HeadingCell, InputCell, PackageColumn, PricingContainer, SubHeadingCell, TitleColumn } from '../../../../../../components/nav/style'
 import ProfileSidebar from '../../../../../../components/profile-sidebar';
 import LandingLayout from '../../../../../../layouts/landing.layout';
-import { CheckContainer, FrameContainer } from '../../../../../../styles/auth.style'
-import { Bottom, BottomAdd,  Container, Content, Control, ControlFlex, CurrentToggle, DeleteBtn, FormContainer, Heading, InputContainer, InputFlex, List, ListB, ListContainer, Wrapper } from '../../../../../../styles/profile.style'
+import { CheckContainer, FrameContainer } from '../../../../../../styles/auth.style';
+import { Bottom, Container, Content, FormContainer, Heading, Wrapper } from '../../../../../../styles/profile.style';
 
 const Services = () => {
     const router = useRouter();

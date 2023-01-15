@@ -66,7 +66,7 @@ const ProfileSidebar = () => {
                     <LockIcon />
                     <span>Password & Security</span>
                 </button>
-                <button onClick={() => router.push("/dashboard/profile/billing")}>
+                <button onClick={() => router.push("/dashboard/profile/wallet")}>
                     <WalletIcon />
                     <span>Billing & Payments</span>
                 </button>

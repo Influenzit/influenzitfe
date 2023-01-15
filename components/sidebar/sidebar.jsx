@@ -70,7 +70,7 @@ const Sidebar = () => {
                 </NavButton>
             )
         }
-        <NavButton onClick={() => router.push("/dashboard/profile/billing")} isActive={router.pathname.includes("/dashboard/profile/billing")}>
+        <NavButton onClick={() => router.push("/dashboard/profile/wallet")} isActive={router.pathname.includes("/dashboard/profile/wallet")}>
             <WalletIcon />
             <span>Wallet</span>
         </NavButton>

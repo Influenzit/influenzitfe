@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { accountMedia, getUserAccount, updateAccount } from '../../../api/auth'
 import { getUserType, setError, setLoading, setSuccess } from '../../../app/reducers/status'
 import { getUser, updateUser } from '../../../app/reducers/user'
-import ProfileSidebar from '../../../components/profile-sidebar'
 import LandingLayout from '../../../layouts/landing.layout'
 import { AddSocialBtn, AvailableSwitch, Bottom, ConnectButton, Container, Content, FormContainerM, Heading, InputContainer, InputFlex, ProfileImageCont, ProfilePicWrapper, TopFlex, UploadContainer, UploadHeader, UploadInfo, Wrapper } from '../../../styles/profile.style'
 
@@ -54,7 +53,9 @@ const Information = () => {
                         if(userRes.data.data) {
                           dispatch(updateUser(userRes.data.data));
                           dispatch(setLoading(false));
-                          dispatch(setSuccess({success: true, message: "Account updated successful"}));
+                          toast.success("Account updated successfully", {
+                                position: toast.POSITION.TOP_RIGHT
+                            });
                         }
                       }).catch(err => {
                         console.log(err);
@@ -93,7 +94,9 @@ const Information = () => {
                     if(userRes.data.data) {
                         dispatch(updateUser(userRes.data.data));
                         dispatch(setLoading(false));
-                        dispatch(setSuccess({success: true, message: "Image uploaded successful"}));
+                        toast.success("Image uploaded successfully", {
+                            position: toast.POSITION.TOP_RIGHT
+                        });
                     }
                     }).catch(err => {
                         dispatch(setLoading(false));
