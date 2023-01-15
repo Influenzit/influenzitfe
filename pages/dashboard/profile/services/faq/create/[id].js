@@ -31,8 +31,11 @@ const Services = () => {
         enabled: false,
         staleTime: Infinity,
         retry: false,
-        onSuccess() {
+        onSuccess(res) {
             dispatch(setLoading(false));
+            if(res.data.data.faqs.length) {
+                router.push("/dashboard/profile/services");
+            }
         },
         onError(res) {
             dispatch(setLoading(false));

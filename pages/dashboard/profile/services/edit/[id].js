@@ -6,10 +6,11 @@ import { getUserType, setLoading } from '../../../../../app/reducers/status';
 import { getUser } from '../../../../../app/reducers/user';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { getService, updateServices } from '../../../../../api/influencer';
-import { Bottom, Container, Content, CurrentToggle, FormContainer, Heading, InputContainer, Wrapper } from '../../../../../styles/profile.style';
+import { Bottom, Container, Content, CurrentToggle, EditLinks, FormContainer, Heading, InputContainer, Wrapper } from '../../../../../styles/profile.style';
 import { CheckContainer, FrameContainer } from '../../../../../styles/auth.style';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 
 const EditService = () => {
   const router = useRouter();
@@ -107,7 +108,7 @@ const EditService = () => {
         <Wrapper>
             <Content>
                 <Heading>
-                    <h2>Add new service</h2>
+                    <h2>Update service</h2>
                 </Heading>
                 
                 <FormContainer>
@@ -149,6 +150,10 @@ const EditService = () => {
                         </button>
                         <span>Negotiable</span>
                     </CurrentToggle>
+                    <EditLinks>
+                      <Link href={`/dashboard/profile/services/faq/edit/${id}`}>Edit FAQs</Link>
+                      <Link href={`/dashboard/profile/services/pricing/edit/${id}`}>Edit Packages</Link>
+                    </EditLinks>
                 </FormContainer>
                 <Bottom>
                     <button onClick={handleUpdateService}>Update Service</button>

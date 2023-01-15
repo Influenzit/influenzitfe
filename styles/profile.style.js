@@ -139,6 +139,7 @@ export const InputContainer = styled.div`
         height: 140px;
         padding: 15px;
         outline: none;
+        font-size: 15px;
     }
     label {
         font-size: 14px;
@@ -465,6 +466,9 @@ export const FaqCont = styled.div`
         font-size: 16px;
         color: #111;
         padding-bottom: 10px;
+        display: flex;
+        align-items: center;
+        column-gap: 15px;
     }
 `;
 export const SmallHeader = styled.p`
@@ -580,5 +584,13 @@ export const ConnectButton = styled.div`
         padding: 7px 15px;
         border-radius: 5px;
         background: ${colors.primaryColor}11;
+    }
+`;
+export const EditLinks = styled.div`
+    display: flex;
+    column-gap: 15px;
+    justify-content: center;
+    a {
+        color: ${colors.primaryColor};
     }
 `;

@@ -49,6 +49,9 @@ const Services = () => {
         retry: false,
         onSuccess() {
             dispatch(setLoading(false));
+            if(res.data.data.packages.length) {
+                router.push("/dashboard/profile/services");
+            }
         },
         onError(res) {
             dispatch(setLoading(false));

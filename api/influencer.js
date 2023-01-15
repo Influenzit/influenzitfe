@@ -60,12 +60,18 @@ export const uploadServiceMedia = (serviceId, data) => {
 export const createServicePackage = (serviceId, data) => {
     return axiosInstance().post(`/services/${serviceId}/packages`, data)
 }
+export const updateServicePackage = (serviceId, data) => {
+    return axiosInstance().patch(`/services/${serviceId}/packages`, data)
+}
 export const deleteService = (index) => {
     return axiosInstance().delete(`/services/${index}`)
 }
 // Service Faq API Request
 export const createFaqServices = (serviceId, data) => {
     return axiosInstance().post(`/services/${serviceId}/faqs`, data)
+}
+export const updateServiceFaq = (serviceId, data) => {
+    return axiosInstance().patch(`/services/${serviceId}/faqs`, data)
 }
 
 // Portfolios API Request
