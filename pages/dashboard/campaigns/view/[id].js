@@ -12,6 +12,8 @@ import LandingLayout from '../../../../layouts/landing.layout'
 import { getUserType } from '../../../../app/reducers/status'
 import { Bottom, Container, ControlContainer, CurrentPackage, Desc, Details, DetailsContainer, FormContainer, ImageWrapper, MDetails, MDone, Milestone, MilestoneHeader, MilestoneList, Milestones, MStatus, OuterContainer, SubDetails, Top, TopBtn, UpdateModal, Wrapper } from '../../../../styles/view.style'
 import { AddSocialBtn, InputContainer } from '../../../../styles/profile.style'
+import { toast } from 'react-toastify'
+import { createDispute } from '../../../../api/support'
 
 const CampaignView = () => {
   const [show, setShow] = useState(false);
@@ -23,6 +25,9 @@ const CampaignView = () => {
   const [campaignDetails, setCampaignDetails] = useState({});
   const [showUpdate, setShowUpdate] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const [showDispute, setShowDispute] = useState(false);
+  const [disputeSubject, setDisputeSubject] = useState("");
+  const [disputeMessage, setDisputeMessage] = useState("");
   const [campaign, setCampaign] = useState({
     duration_count: "",
     duration_type: "Day",
@@ -139,6 +144,33 @@ const CampaignView = () => {
           dispatch(setError({error: true, message: "An error occured"}));
       }
   });
+  const createDisputeMutation = useMutation( disputeData => {
+    return createDispute(disputeData);
+}, {
+    onSuccess(successRes) {
+        const res = successRes.data;
+        if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: res.message}));
+        } else { 
+            dispatch(setLoading(false));
+            toast.success("Dispute created successfully", {
+              position: toast.POSITION.TOP_RIGHT
+            });
+            setShowDispute(false);
+        }
+    },
+    onError(error) {
+        const res = error.response.data;
+        if(res){
+          dispatch(setLoading(false));
+          dispatch(setError({error: true, message: res.message}));
+          return;
+        }
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: "An error occured"}));
+    }
+});
   const handleMilestoneAdd = () => {
     if(milestone.title && milestone.description && milestone.duration_count && milestone.start_date && milestone.end_date && milestone.duration_type){
       dispatch(setLoading(true));
@@ -168,6 +200,18 @@ const CampaignView = () => {
     dispatch(setLoading(true));
     setCompleted(true);
     updateCampaignMutation.mutate({status: "completed"});
+  }
+  const handleCreateDispute = () => {
+    if(!disputeSubject && !disputeSubject) {
+      return;
+    } else {
+      dispatch(setLoading(true));
+      createDisputeMutation.mutate({
+        subject: disputeSubject,
+        message: disputeMessage,
+        campaign_id: id,
+      })
+    }
   }
   useEffect(() => {
     if(id){
@@ -253,12 +297,12 @@ const CampaignView = () => {
               <AddSocialBtn onClick={() => setShowMilestone(true)}><Image src="/plus.svg" alt="plus" height={22} width={22} /><span>Add Milestone</span></AddSocialBtn>
             </Milestones>
             <ControlContainer>
-              <button>Report Account</button>
+              <button onClick={() => setShowDispute(true) }>Create Dispute</button>
               {
                 (campaignDetails?.provider?.id && user?.id && (user?.id === campaignDetails?.provider?.id) && accountType && (accountType === "Influencer")) ?
                 <button onClick={setShowUpdate} >Update</button>: (campaignDetails?.provider?.id && user?.id && (user?.id !== campaignDetails?.provider?.id)) ? (
                   <button onClick={handleCampaignCompleted}><span><CheckIcon /></span> Mark As Completed</button>
-                ) : (<button></button>)
+                ) : (<button hidden></button>)
               }
             </ControlContainer>
           </Bottom>
@@ -305,6 +349,30 @@ const CampaignView = () => {
             </InputContainer>
             <button onClick={() => setShowUpdate(false)}>Go back</button>
             <button onClick={handleCampaignUpdate}>Update</button>
+          </FormContainer>
+        </UpdateModal>
+      )}
+      {showDispute &&(
+        <UpdateModal>
+          <FormContainer>
+            <h3>Create Dispute</h3>
+            <InputContainer>
+              <label>Subject</label>
+              <input type="text"
+               value={disputeSubject}
+               onChange={(e) => setDisputeSubject(e.target.value)}
+              />
+            </InputContainer>
+            <InputContainer>
+              <label>Message</label>
+              <textarea
+               value={disputeMessage}
+               onChange={(e) => setDisputeMessage(e.target.value)}
+              >
+              </textarea>
+            </InputContainer>
+            <button onClick={() => setShowDispute(false)}>Go back</button>
+            <button onClick={handleCreateDispute}>Create Dispute</button>
           </FormContainer>
         </UpdateModal>
       )}

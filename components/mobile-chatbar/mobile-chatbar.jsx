@@ -3,13 +3,18 @@ import React from 'react'
 import { ChatTitle } from './style'
 import { ChatCount, Container, ProfilePicWrapper, UserCard } from './style'
 
-const MobileChatbar = ({ setConversationId, conversations }) => {
+const MobileChatbar = ({ setConversationId, conversations, setSupportId }) => {
   return (
     <Container>
             {
                 conversations.map((val, i) => (
                     <UserCard key={i} onClick={() => {
-                            setConversationId(val.id);
+                            if(setSupportId) {
+                                setSupportId(val.id);
+                                setConversationId(val.conversation_id);
+                            } else {
+                                setConversationId(val.id);
+                            }
                         }}>
                         <ProfilePicWrapper>
                             <Image src={val.heading?.image} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />

@@ -3,19 +3,27 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getCreator } from '../../api/influencer'
 import { startConversation } from '../../api/messaging'
 import { setLoading } from '../../app/reducers/status'
 import LandingLayout from '../../layouts/landing.layout'
 import { BackImage, Bottom, Container, HeroSectionOne, ImageCard, Popup, ProfileCategory, ProfileData, ProfileDetails, ProfileImgCont, ProfileStats, SeeMoreCont, Skill, SkillCard, StatCard, Stats, StatWrapper, Top, UserCard, WorkCard, Wrapper } from '../../styles/creator-profile.style'
 import { toast } from 'react-toastify'
+import { FormContainer, UpdateModal } from '../../styles/view.style'
+import { InputContainer } from '../../styles/profile.style'
+import { createDispute } from '../../api/support'
+import { getUser } from '../../app/reducers/user'
 const CreatorProfile = () => {
   const router = useRouter();
   const { id } = router.query;
   const [inData, setInData] = useState(null);
+  const user = useSelector(getUser);
   const dispatch = useDispatch();
   const [showEngagePopup, setShowEngagePopup] = useState(false);
+  const [showDispute, setShowDispute] = useState(false);
+  const [disputeSubject, setDisputeSubject] = useState("");
+  const [disputeMessage, setDisputeMessage] = useState("");
 
   const { data: creatorData, refetch: refetchCreatorData } = useQuery(["get-creator"], async () => {
     return await getCreator(id);
@@ -51,8 +59,35 @@ const startConversationMutation = useMutation((data) => {
         dispatch(setError({error: true, message: "An error occured"}));
     }
 });
+const createDisputeMutation = useMutation( disputeData => {
+    return createDispute(disputeData);
+}, {
+    onSuccess(successRes) {
+        const res = successRes.data;
+        if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: res.message}));
+        } else { 
+            dispatch(setLoading(false));
+            toast.success("Dispute created successfully", {
+              position: toast.POSITION.TOP_RIGHT
+            });
+            setShowDispute(false);
+        }
+    },
+    onError(error) {
+        const res = error.response.data;
+        if(res){
+          dispatch(setLoading(false));
+          dispatch(setError({error: true, message: res.message}));
+          return;
+        }
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: "An error occured"}));
+    }
+});
 const handleStartConversation = () => {
-    if(user.id) {
+    if(user?.id) {
         startConversationMutation.mutate({
             to_user_id: inData.user_id,
             text: "Hi " + inData?.user?.firstname,
@@ -60,9 +95,30 @@ const handleStartConversation = () => {
     } else {
         toast.error("Please login to start a conversation", {
             position: toast.POSITION.TOP_RIGHT
-          });
+        });
     }
 }
+const handleReportAccount = () => {
+    if(user?.id) {
+       setShowDispute(true);
+    } else {
+        toast.error("Please login before you can report account", {
+            position: toast.POSITION.TOP_RIGHT
+        });
+    }
+}
+const handleCreateDispute = () => {
+    if(!disputeSubject && !disputeSubject) {
+      return;
+    } else {
+      dispatch(setLoading(true));
+      createDisputeMutation.mutate({
+        subject: disputeSubject,
+        message: disputeMessage,
+        account_id: id,
+      })
+    }
+  }
 useEffect(() => {
     dispatch(setLoading(true));
     if(id){
@@ -133,9 +189,9 @@ useEffect(() => {
                             <button onClick={handleStartConversation}>
                                 <span>Send a message</span><Image src="/arr-r.svg" height={10} width={10} />
                             </button>
-                            <Link href="/">
-                                <a><span>Report Account</span><Image src="/arr-r.svg" height={10} width={10} /></a>
-                            </Link>
+                            <button onClick={handleReportAccount}>
+                                <span>Report Account</span><Image src="/arr-r.svg" height={10} width={10} />
+                            </button>
                         </Popup>
                     </button>
                 </Stats>
@@ -192,6 +248,30 @@ useEffect(() => {
                 </SkillCard>
             </Wrapper>
         </HeroSectionOne>
+        {showDispute &&(
+            <UpdateModal>
+            <FormContainer>
+                <h3>Report Account</h3>
+                <InputContainer>
+                    <label>Subject</label>
+                    <input type="text"
+                    value={disputeSubject}
+                    onChange={(e) => setDisputeSubject(e.target.value)}
+                    />
+                </InputContainer>
+                <InputContainer>
+                    <label>Message</label>
+                    <textarea
+                    value={disputeMessage}
+                    onChange={(e) => setDisputeMessage(e.target.value)}
+                    >
+                    </textarea>
+                </InputContainer>
+                <button onClick={() => setShowDispute(false)}>Go back</button>
+                <button onClick={handleCreateDispute}>Create Dispute</button>
+            </FormContainer>
+            </UpdateModal>
+        )}
     </Container>
   )
 }

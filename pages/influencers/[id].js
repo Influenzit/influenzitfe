@@ -12,8 +12,10 @@ import { getUser } from '../../app/reducers/user'
 import LandingLayout from '../../layouts/landing.layout'
 import { Controls, CreatorsCard, CreatorDetails, SocialHandle } from '../../styles/business-owner.style'
 import { BackImage, Bottom, Container, HeroSectionOne, Popup, ProfileCategory, ProfileData, ProfileDetails, ProfileImgCont, ProfileStats, SeeMoreCont, SkillCard, StatCard, Stats, StatWrapper, Top, UserCard, WorkCard, Wrapper } from '../../styles/creator-profile.style'
-import { AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, ImageWrap, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, TabBtn, Tabs, TopImg } from '../../styles/influencer-profile'
-import { colors } from '../../styles/theme'
+import { AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, ImageWrap, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, TabBtn, Tabs, TopImg } from '../../styles/influencer-profile';
+import { FormContainer, UpdateModal } from '../../styles/view.style'
+import { InputContainer } from '../../styles/profile.style'
+import { createDispute } from '../../api/support'
 
 const CreatorProfile = () => {
   const router = useRouter();
@@ -23,6 +25,9 @@ const CreatorProfile = () => {
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("instagram");
   const [showEngagePopup, setShowEngagePopup] = useState(false);
+  const [showDispute, setShowDispute] = useState(false);
+  const [disputeSubject, setDisputeSubject] = useState("");
+  const [disputeMessage, setDisputeMessage] = useState("");
   const { data: influencerData, refetch: refetchInfluencerData } = useQuery(["get-influencer"], async () => {
         return await getInfluencer(id);
     }, {
@@ -63,8 +68,35 @@ const CreatorProfile = () => {
             position: toast.POSITION.TOP_RIGHT
           });
     }
+    const createDisputeMutation = useMutation( disputeData => {
+        return createDispute(disputeData);
+    }, {
+        onSuccess(successRes) {
+            const res = successRes.data;
+            if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: res.message}));
+            } else { 
+                dispatch(setLoading(false));
+                toast.success("Dispute created successfully", {
+                  position: toast.POSITION.TOP_RIGHT
+                });
+                setShowDispute(false);
+            }
+        },
+        onError(error) {
+            const res = error.response.data;
+            if(res){
+              dispatch(setLoading(false));
+              dispatch(setError({error: true, message: res.message}));
+              return;
+            }
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: "An error occured"}));
+        }
+    });
     const handleStartConversation = () => {
-        if(user.id) {
+        if(user?.id) {
             startConversationMutation.mutate({
                 to_user_id: inData.user_id,
                 text: "Hi " + inData?.user?.firstname,
@@ -75,6 +107,27 @@ const CreatorProfile = () => {
               });
         }
     }
+    const handleReportAccount = () => {
+        if(user?.id) {
+           setShowDispute(true);
+        } else {
+            toast.error("Please login before you can report account", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        }
+    }
+    const handleCreateDispute = () => {
+        if(!disputeSubject && !disputeSubject) {
+          return;
+        } else {
+          dispatch(setLoading(true));
+          createDisputeMutation.mutate({
+            subject: disputeSubject,
+            message: disputeMessage,
+            account_id: id,
+          })
+        }
+      }
     useEffect(() => {
         dispatch(setLoading(true));
         if(id){
@@ -150,9 +203,9 @@ const CreatorProfile = () => {
                             <button onClick={handleStartConversation}>
                                 <span>Send a message</span><Image src="/arr-r.svg" height={10} width={10} />
                             </button>
-                            <Link href="/">
-                                <a><span>Report Account</span><Image src="/arr-r.svg" height={10} width={10} /></a>
-                            </Link>
+                            <button onClick={handleReportAccount}>
+                                <span>Report Account</span><Image src="/arr-r.svg" height={10} width={10} />
+                            </button>
                         </Popup>
                     </button>
                 </Stats>
@@ -582,6 +635,30 @@ const CreatorProfile = () => {
                 </SkillCard>
             </Wrapper>
         </HeroSectionOne>
+        {showDispute &&(
+            <UpdateModal>
+            <FormContainer>
+                <h3>Report Account</h3>
+                <InputContainer>
+                    <label>Subject</label>
+                    <input type="text"
+                    value={disputeSubject}
+                    onChange={(e) => setDisputeSubject(e.target.value)}
+                    />
+                </InputContainer>
+                <InputContainer>
+                    <label>Message</label>
+                    <textarea
+                    value={disputeMessage}
+                    onChange={(e) => setDisputeMessage(e.target.value)}
+                    >
+                    </textarea>
+                </InputContainer>
+                <button onClick={() => setShowDispute(false)}>Go back</button>
+                <button onClick={handleCreateDispute}>Create Dispute</button>
+            </FormContainer>
+            </UpdateModal>
+        )}
     </Container>
   )
 }

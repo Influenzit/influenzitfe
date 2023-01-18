@@ -82,6 +82,10 @@ const Sidebar = () => {
             <LockIcon />
             <span>Security</span>
         </NavButton>
+        <NavButton onClick={() => router.push("/dashboard/support")} isActive={router.pathname.includes("/dashboard/profile/password")}>
+            <Image src="/customer-care.png" alt="" width={30} height={30}/>
+            <span>Support</span>
+        </NavButton>
     </Container>
   )
 }

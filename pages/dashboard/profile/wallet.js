@@ -96,16 +96,16 @@ const Billing = () => {
                                     {
                                         walletList?.data?.map((trans, i) => (
 
-                                            <Tr>
+                                            <Tr key={i}>
                                                 <Td cellWidth="20px">
-                                            </Td>
-                                            <Td cellWidth="150px">{(new Date(trans.created_at)).toDateString()}</Td>
-                                            <Td cellWidth="250px">{trans.remark}</Td>
-                                            <Td cellWidth="200px">{trans.txnref}</Td>
-                                            <Td cellWidth="110px">{trans.status}</Td>
-                                            <Td cellWidth="100px">{trans.txntype}</Td>
-                                            <Td cellWidth="150px"><CAmount status={trans.status === "Pending" ? "pending" : trans.status === "Completed" ? "success" : "failed"}>{trans.currency} {moneyStandard(trans.amount)}</CAmount></Td>
-                                        </Tr>
+                                                </Td>
+                                                <Td cellWidth="150px">{(new Date(trans.created_at)).toDateString()}</Td>
+                                                <Td cellWidth="250px">{trans.remark}</Td>
+                                                <Td cellWidth="200px">{trans.txnref}</Td>
+                                                <Td cellWidth="110px">{trans.status}</Td>
+                                                <Td cellWidth="100px">{trans.txntype}</Td>
+                                                <Td cellWidth="150px"><CAmount status={trans.status === "Pending" ? "pending" : trans.status === "Completed" ? "success" : "failed"}>{trans.currency} {moneyStandard(trans.amount)}</CAmount></Td>
+                                            </Tr>
                                         ))
                                     }
                                 </TBody>

@@ -213,48 +213,33 @@ export const Popup = styled.div`
     position: absolute;
     left: 0;
     top: 43px;
-    width: 200px;
+    width: 100%;
     flex-direction: column;
     border: 1px solid #D2D2D2;
     border-radius: 3px;
     background: #fff;
     box-shadow: 0px 4px 12px 0px #0000001A;
     z-index: 99;
-    a {
-        padding: 10px;
-        text-align: left;
-        color: #111;
-        display: inline-flex;
-        align-items: center;
-        justify-content: space-between;
-        font-weight: 400;
-        font: 15px;
-        span {
-            margin-right: 10px;
-        }
-        :hover {
-            background: ${colors.primaryColor}33;
-        }
-        :last-child {
-            color: red;
-        }
-    }
     button {
         padding: 10px;
         text-align: left;
-        margin-top: 0;
         color: #111;
         display: inline-flex;
         align-items: center;
         justify-content: space-between;
         font-weight: 400;
         font: 15px;
-        background: #fff;
+        background: transparent;
+        margin-top: 0;
         span {
             margin-right: 10px;
         }
         :hover {
             background: ${colors.primaryColor}33;
+        }
+        :last-of-type {
+
+            color: red;
         }
     }
 `;
