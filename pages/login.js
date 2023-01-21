@@ -2,7 +2,8 @@ import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { useDispatch } from 'react-redux'
 import { loginUser, socialLogin } from '../api/auth'
@@ -12,6 +13,9 @@ import { setError, setLoading, setUserType } from '../app/reducers/status'
 import { updateUser } from '../app/reducers/user'
 import LandingLayout from '../layouts/landing.layout'
 import { Bottom, Center, CheckContainer, Container, FacebookBtn, FormFields, FormHeader, FormWrapper, FrameContainer, GoogleBtn, HelpSection, Input, InputContainer, OrContainer, RememberMe, SocialIcon, SocialLogin, SubmitButton, Wrapper } from '../styles/auth.style'
+
+
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -140,12 +144,19 @@ const Login = () => {
         password,
     })
   }
+
+
   const handleFacebookLogin = (res) => {
    dispatch(setLoading(true));
    socialMutation.mutate({
-    access_token: res.accessToken
+    code: res.accessToken,
+    provider: 'facebook'
    })
   }
+
+
+  
+
   return (
     <Container>
       <Wrapper>
@@ -209,12 +220,14 @@ const Login = () => {
                   </FacebookBtn>
                 )}
               />
-              <GoogleBtn>
+                  
+              <GoogleBtn  >
                 <SocialIcon>
                   <Image src="/google-r.svg" alt="" height={22} width={22} />
                 </SocialIcon>
                 <span>Continue With Google</span>
               </GoogleBtn>
+                  
             </SocialLogin>
           </Center>
           <Bottom>
