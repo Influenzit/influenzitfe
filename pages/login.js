@@ -1,3 +1,4 @@
+import { useGoogleLogin } from '@react-oauth/google'
 import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -75,7 +76,7 @@ const Login = () => {
       dispatch(setLoading(false));
       dispatch(setError({error: true, message: "An error occured"}));
     }
-  })
+  });
   const socialMutation = useMutation(userData => {
     return socialLogin(userData);
   }, {
@@ -153,10 +154,19 @@ const Login = () => {
     provider: 'facebook'
    })
   }
-
-
-  
-
+  const handleGoogleLogin = (token) => {
+    dispatch(setLoading(true));
+    socialMutation.mutate({
+      code: token,
+      provider: 'google'
+    })
+  }
+  const googleLogin = useGoogleLogin({
+    onSuccess: tokenResponse => handleGoogleLogin(tokenResponse.access_token),
+  });
+  const handleFailure = () => {
+    dispatch(setLoading(false));
+  }
   return (
     <Container>
       <Wrapper>
@@ -211,6 +221,7 @@ const Login = () => {
               <FacebookLogin
                 appId="3349779741932998"
                 callback={handleFacebookLogin}
+                onFailure={handleFailure}
                 render={(renderProps) => (
                   <FacebookBtn  onClick={renderProps.onClick}>
                     <SocialIcon>
@@ -221,7 +232,7 @@ const Login = () => {
                 )}
               />
                   
-              <GoogleBtn  >
+              <GoogleBtn onClick={googleLogin}>
                 <SocialIcon>
                   <Image src="/google-r.svg" alt="" height={22} width={22} />
                 </SocialIcon>

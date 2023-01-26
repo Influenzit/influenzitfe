@@ -16,6 +16,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getUserAccount } from '../api/auth'
 import AdminNav from '../components/admin-nav'
 import Sidebar from '../components/sidebar'
+import { toast } from 'react-toastify'
 
 const LandingLayout = ({children, title, description}) => {
   const user = useSelector(getUser);
@@ -29,29 +30,44 @@ const LandingLayout = ({children, title, description}) => {
   const [show, setShow] = useState(false);
   
   const { data, refetch } = useQuery(["get-user"], async () => {
-    return await getUserAccount(localStorage.getItem("user-id"));
-}, {
-    staleTime: false,
-    enabled: false,
-    retry: false,
-    onSuccess(res) {
-        dispatch(setLoading(false));
-        dispatch(updateUser(res.data.data));
-    },
-    onError(res) {
-        dispatch(setLoading(false));
-        if (router.pathname.includes("/dashboard")) {
-          router.replace("/login")
-        }
-    } 
-});
-  
+      return await getUserAccount(localStorage.getItem("user-id"));
+  }, {
+      staleTime: false,
+      enabled: false,
+      retry: false,
+      onSuccess(res) {
+          dispatch(setLoading(false));
+          dispatch(updateUser(res.data.data));
+      },
+      onError(res) {
+          dispatch(setLoading(false));
+          if (router.pathname.includes("/dashboard")) {
+            router.replace("/login")
+          }
+      } 
+  });
   useEffect(() => {
     setIsLoggedIn(!!user);
   }, [user]);
+  const offlineFunc = () => {
+    toast.error("You are offline", {
+      position: toast.POSITION.TOP_RIGHT
+    });
+  }
+  const onlineFunc = () => {
+    toast.success("You are back online", {
+      position: toast.POSITION.TOP_RIGHT
+    });
+  }
   useEffect(() => {
     dispatch(setUserType(localStorage.getItem("user-type")));
     refetch();
+    addEventListener("offline", offlineFunc)
+    addEventListener("online", onlineFunc)
+    return () => {
+      removeEventListener("offline", offlineFunc)
+      removeEventListener("online", onlineFunc)
+    }
   }, [])
   
   useEffect(() => {

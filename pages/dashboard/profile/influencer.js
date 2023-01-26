@@ -182,6 +182,7 @@ const Information = () => {
         startDate: "",
         endDate: "",
         isPresent: true,
+        description: "",
     })
 
     // gets experiences
@@ -300,7 +301,7 @@ const Information = () => {
 
     // handles create experience
     const handleCreateExperience = () => {
-        if(newExperience.company && newExperience.position && newExperience.startDate && (newExperience.endDate || newExperience.isPresent)) {
+        if(newExperience.company && newExperience.position && newExperience.description && newExperience.startDate && (newExperience.endDate || newExperience.isPresent)) {
             dispatch(setLoading(true));
             createExperienceMutation.mutate({
                 position: newExperience.position,
@@ -308,6 +309,7 @@ const Information = () => {
                 start_date: newExperience.startDate,
                 end_date: newExperience.endDate,
                 is_present: newExperience.isPresent,
+                description: newExperience.description,
             });
         } else {
             dispatch(setError({message: "Enter required fields", error: true}));
@@ -640,6 +642,15 @@ const Information = () => {
                                             }
                                         </InputContainer>
                                     </InputFlex>
+                                    <InputFlex>
+                                        <InputContainer>
+                                            <label>Description</label>
+                                            <textarea
+                                                value={val.description}
+                                                onChange={(e) => handleExperienceChange(e.target.value, "description", i)}
+                                            />
+                                        </InputContainer>
+                                    </InputFlex>
                                     <ControlFlex>
                                         <CurrentToggle>
                                             <button onClick={() => handleExperienceChange(!experienceList[i].is_present, "is_present", i)}>
@@ -705,6 +716,15 @@ const Information = () => {
                     </>
                     }
 
+                    </InputContainer>
+                </InputFlex>
+                <InputFlex>
+                    <InputContainer>
+                        <label>Description</label>
+                        <textarea
+                            value={newExperience.description}
+                            onChange={(e) => handleNewExperienceChange(e.target.value, "description")}
+                        />
                     </InputContainer>
                 </InputFlex>
                 <ControlFlex>
