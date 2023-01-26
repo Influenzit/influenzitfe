@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "export": "next export",
-    "deploy": "(next export || cp -r out/* ../)",
+    "prod": "(next export && cp -r out/* ../)",
     "start": "next start",
     "lint": "next lint"
   },

@@ -307,7 +307,7 @@ useEffect(() => {
                                     <MessageCard key={i} isOwn={val.is_own}>
                                         <UserSect>
                                             <ProfilePicWrapper>
-                                                <Image src={val.from_user.profile_picture} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
+                                                <Image src={val.from_user.profile_pic} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
                                             </ProfilePicWrapper>
                                         </UserSect>
                                         <MessageContent>
