@@ -4,15 +4,17 @@ import LandingLayout from '../../../layouts/landing.layout'
 import plusCircleIcon from '../../../assets/plus-circle.svg'
 import { CAmount, CContent, Container, Content, CustomContent, FundBtn, Heading, WalletCard, WalletCardWrapper, Wrapper } from '../../../styles/profile.style'
 import Image from 'next/image'
-import { FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableWrapper, TBody, Td, Th, THead, Tr, TrH } from '../../../styles/connect-pages.style'
+import { ActionBtn, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableWrapper, TBody, Td, Th, THead, Tr, TrH } from '../../../styles/connect-pages.style'
 import { ChevronLeft, ChevronRight } from '../../../assets/svgIcons'
 import { getWallet, getWalletTransactions } from '../../../api/wallet'
 import { useQuery } from '@tanstack/react-query'
 import { moneyStandard } from '../../../helpers/helper'
+import { useRouter } from 'next/router'
 
 const Billing = () => {
     const [wallet, setWallet] = useState({});
     const [walletList, setWalletList] = useState([]);
+    const router = useRouter();
     const { data: walletData, refetch: refetchWalletData } = useQuery(["get-wallet"], async () => {
         return await getWallet();
     }
@@ -85,11 +87,14 @@ const Billing = () => {
                                         <Th cellWidth="20px">
                                         </Th>
                                         <Th cellWidth="150px">Date</Th>
-                                        <Th cellWidth="250px">Description</Th>
-                                        <Th cellWidth="200px">Trasaction ID</Th>
+                                        <Th cellWidth="200px">Description</Th>
+                                        <Th cellWidth="150px">Trasaction ID</Th>
                                         <Th cellWidth="110px">Status</Th>
                                         <Th cellWidth="100px">Type</Th>
                                         <Th cellWidth="150px">Amount</Th>
+                                        <Th cellWidth="100px">
+                                            Action
+                                        </Th>
                                     </TrH>
                                 </THead>
                                 <TBody>
@@ -100,11 +105,14 @@ const Billing = () => {
                                                 <Td cellWidth="20px">
                                                 </Td>
                                                 <Td cellWidth="150px">{(new Date(trans.created_at)).toDateString()}</Td>
-                                                <Td cellWidth="250px">{trans.remark}</Td>
-                                                <Td cellWidth="200px">{trans.txnref}</Td>
+                                                <Td cellWidth="200px">{trans.remark}</Td>
+                                                <Td cellWidth="150px">{trans.txnref}</Td>
                                                 <Td cellWidth="110px">{trans.status}</Td>
                                                 <Td cellWidth="100px">{trans.txntype}</Td>
                                                 <Td cellWidth="150px"><CAmount status={trans.status === "Pending" ? "pending" : trans.status === "Completed" ? "success" : "failed"}>{trans.currency} {moneyStandard(trans.amount)}</CAmount></Td>
+                                                <Td cellWidth="100px">
+                                                    <ActionBtn onClick={() => router.push(`/dashboard/transaction/${trans.id}`)}>View</ActionBtn>
+                                                </Td>
                                             </Tr>
                                         ))
                                     }

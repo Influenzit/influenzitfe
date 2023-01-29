@@ -9,6 +9,9 @@ export const getMessages = (id) => {
 export const postMessages = (id, body) => {
     return axiosInstance().post("/supports/" + id + "/messages", body);
 }
+export const updateSupport = (id, body) => {
+    return axiosInstance().patch("/supports/" + id, body);
+}
 export const createDispute = (data) => {
     return axiosInstance().post("/supports", data)
 }

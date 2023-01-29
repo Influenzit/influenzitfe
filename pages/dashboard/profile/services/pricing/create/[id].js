@@ -47,7 +47,7 @@ const Services = () => {
         enabled: false,
         staleTime: Infinity,
         retry: false,
-        onSuccess() {
+        onSuccess(res) {
             dispatch(setLoading(false));
             if(res.data.data.packages.length) {
                 router.push("/dashboard/profile/services");
@@ -64,7 +64,6 @@ const Services = () => {
     }, {
         onSuccess(successRes) {
             const res = successRes.data;
-            refetchServiceData();
             if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
                 dispatch(setLoading(false));
                 dispatch(setError({error: true, message: res.message}));

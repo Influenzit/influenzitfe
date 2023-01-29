@@ -57,6 +57,13 @@ export const ChatHeader = styled.div`
     padding: 0 30px;
     border-bottom: 1px solid #D2D2D2;
 `;
+export const CloseBtn = styled.button`
+    background: transparent;
+    outline: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+`;
 export const HLeft = styled.div`
     h2 {
         font-size: 20px;

@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { AttachmentIcon, BoldIcon, EmojiIcon, ItalicIcon, MarkupIcon, SendIcon, UnderlineIcon } from '../../assets/svgIcons';
 import ChatSidebar from '../../components/support-sidebar';
 import LandingLayout from '../../layouts/landing.layout';
-import { ActionBtn, ChatContainer, ChatControls, ChatHeader, Container, ContextBtn, Editor, EditorBtn, HLeft, ImageWrapper, LeftControls, MessageCard, MessageContent, MessageInput, MessagesCont, MessageSection, NonSelectedCont, PickerContainer, ProfilePicWrapper, RightControls, UserSect, Wrapper } from '../../styles/messages.style';
+import { ActionBtn, ChatContainer, ChatControls, ChatHeader, CloseBtn, Container, ContextBtn, Editor, EditorBtn, HLeft, ImageWrapper, LeftControls, MessageCard, MessageContent, MessageInput, MessagesCont, MessageSection, NonSelectedCont, PickerContainer, ProfilePicWrapper, RightControls, UserSect, Wrapper } from '../../styles/messages.style';
 import { colors } from '../../styles/theme';
 import dynamic from 'next/dynamic';
 import { getConversationMessages, getConversations, sendConversationMessage } from '../../api/messaging';
@@ -12,9 +12,10 @@ import HTMLReactParser from 'html-react-parser';
 import { getSocketInstance } from '../../socket/instance';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../app/reducers/user';
-import { getCurrentConversationId, setCurrentConversation } from '../../app/reducers/status';
+import { getCurrentConversationId, setCurrentConversation, setLoading } from '../../app/reducers/status';
 import MobileChatbar from '../../components/mobile-chatbar';
-import { getMessages, getSupportConversations, postMessages } from '../../api/support';
+import { getMessages, getSupportConversations, postMessages, updateSupport } from '../../api/support';
+import { toast } from 'react-toastify';
 const Picker = dynamic(
   () => {
     return import('emoji-picker-react');
@@ -211,6 +212,31 @@ const sendMessageMutation = useMutation((data) => {
         dispatch(setError({error: true, message: "An error occured"}));
     }
 });
+const updateSupportMutation = useMutation((data) => {
+    return updateSupport(supportId, data);
+}, {
+    onSuccess(successRes) {
+        const res = successRes.data;
+        if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: res.message}));
+        } else {
+            refetchConversationData();
+            dispatch(setLoading(false));
+            toast.success("Ticket closed successfully", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        }
+    },
+    onError(error) {
+        const res = error.response.data;
+        if(res){
+        dispatch(setError({error: true, message: res.message}));
+        return;
+        }
+        dispatch(setError({error: true, message: "An error occured"}));
+    }
+});
 const handleSetConversationId = (id) => {
     dispatch(setCurrentConversation(id));
 } 
@@ -234,39 +260,16 @@ const handleConversation = (conversation) => {
                 return copyOldMessages;
             })
         }
-        // setConversations((oldConversations) => {
-        //     let copyOldConversations = JSON.parse(JSON.stringify(oldConversations));
-        //     let cantFindOne = true;
-        //     copyOldConversations = copyOldConversations.map((val) => {
-        //         if(conversation.id === val.id) {
-        //             cantFindOne = false;
-        //             return conversation;
-        //         } 
-        //         return val;
-        //     })
-        //     if(cantFindOne) {
-        //         copyOldConversations.push(conversation);
-        //     }
-        //     return copyOldConversations;
-        // })
     }
+}
+const handleCloseTicket = () => {
+    dispatch(setLoading(true));
+    updateSupportMutation.mutate({
+        status: "Closed",
+    })
 }
 useEffect(() => {
     refetchConversationData();
-    // const socketInstance = getSocketInstance();
-    // if(!!user && !socketSet) {
-    //     socketInstance.channel(user.email).listen(".Conversation", (e) => {
-    //         handleConversation(e.data);
-    //     })
-    //     setSocketSet(true);
-    // }
-    // return () => {
-    //     if(!!user) {
-    //         socketInstance.channel(user.email).stopListening(".Conversation", (e) => {
-    //             handleConversation(e.data);
-    //         })
-    //     }
-    // }
 }, [user])
 
 useEffect(() => {
@@ -297,9 +300,16 @@ useEffect(() => {
                                 <h2>{getCurrentConversation()?.subject}</h2>
                                 {/* <p>Last seen: 3 hours ago </p> */}
                             </HLeft>
-                            <ContextBtn>
-                                <Image src="/more-vertical.svg" height={24} width={24}/>
-                            </ContextBtn>
+                            {getCurrentConversation()?.status === "Open" ? (
+                                    <CloseBtn onClick={handleCloseTicket}>
+                                        Close Tickect
+                                    </CloseBtn>
+                                ):(
+                                    <CloseBtn>
+                                        Tickect Closed
+                                    </CloseBtn>
+                                )
+                            }
                         </ChatHeader>
                         <MessagesCont ref={messagesRef}>
                             {
@@ -321,50 +331,54 @@ useEffect(() => {
                                 ))
                             }
                         </MessagesCont>
-                        <Editor>
-                            {
-                                showEmoji && 
-                                <PickerContainer ref={emojiRef}>
-                                    <Picker 
-                                        height="350px"
-                                        emojiStyle="facebook"
-                                        previewConfig={{
-                                            showPreview: false,
-                                        }}
-                                        onEmojiClick={handleEmojiClick}
-                                    />
-                                </PickerContainer>
-                            }
-                            <MessageInput data-placeholder="Write a message" contentEditable showPlaceholder={!!messageContent} onInput={handleInput} ref={messageBoxRef}>
-                            </MessageInput>
-                            <ChatControls>
-                                <LeftControls>
-                                    <EditorBtn onClick={handleBold}>
-                                        <BoldIcon />
-                                    </EditorBtn>
-                                    <EditorBtn onClick={handleItalic}>
-                                        <ItalicIcon />
-                                    </EditorBtn>
-                                    <EditorBtn onClick={handleLineThrough}>
-                                        <UnderlineIcon />
-                                    </EditorBtn>
-                                    {/* <EditorBtn>
-                                        <MarkupIcon />
-                                    </EditorBtn> */}
-                                    <EditorBtn>
-                                        <AttachmentIcon />
-                                    </EditorBtn>
-                                    <EditorBtn onClick={() => setShowEmoji(!showEmoji)}>
-                                        <EmojiIcon />
-                                    </EditorBtn>
-                                </LeftControls>
-                                <RightControls>
-                                    <ActionBtn style={{ color: colors.primaryColor }} onClick={handleMessageSend}>
-                                        <SendIcon />
-                                    </ActionBtn>
-                                </RightControls>
-                            </ChatControls>
-                        </Editor>
+                        {
+                            getCurrentConversation()?.status === "Open" && (
+                                <Editor>
+                                    {
+                                        showEmoji && 
+                                        <PickerContainer ref={emojiRef}>
+                                            <Picker 
+                                                height="350px"
+                                                emojiStyle="facebook"
+                                                previewConfig={{
+                                                    showPreview: false,
+                                                }}
+                                                onEmojiClick={handleEmojiClick}
+                                            />
+                                        </PickerContainer>
+                                    }
+                                    <MessageInput data-placeholder="Write a message" contentEditable showPlaceholder={!!messageContent} onInput={handleInput} ref={messageBoxRef}>
+                                    </MessageInput>
+                                    <ChatControls>
+                                        <LeftControls>
+                                            <EditorBtn onClick={handleBold}>
+                                                <BoldIcon />
+                                            </EditorBtn>
+                                            <EditorBtn onClick={handleItalic}>
+                                                <ItalicIcon />
+                                            </EditorBtn>
+                                            <EditorBtn onClick={handleLineThrough}>
+                                                <UnderlineIcon />
+                                            </EditorBtn>
+                                            {/* <EditorBtn>
+                                                <MarkupIcon />
+                                            </EditorBtn> */}
+                                            <EditorBtn>
+                                                <AttachmentIcon />
+                                            </EditorBtn>
+                                            <EditorBtn onClick={() => setShowEmoji(!showEmoji)}>
+                                                <EmojiIcon />
+                                            </EditorBtn>
+                                        </LeftControls>
+                                        <RightControls>
+                                            <ActionBtn style={{ color: colors.primaryColor }} onClick={handleMessageSend}>
+                                                <SendIcon />
+                                            </ActionBtn>
+                                        </RightControls>
+                                    </ChatControls>
+                                </Editor>
+                            )
+                        }
                     </ChatContainer>) : (
                         <NonSelectedCont>
                             <ImageWrapper>

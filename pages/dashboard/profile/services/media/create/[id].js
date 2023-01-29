@@ -32,7 +32,7 @@ const Services = () => {
         enabled: false,
         staleTime: Infinity,
         retry: false,
-        onSuccess() {
+        onSuccess(res) {
             dispatch(setLoading(false));
             if(res.data.data.media.length) {
                 router.push("/dashboard/profile/services");

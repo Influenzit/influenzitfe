@@ -47,7 +47,6 @@ const Services = () => {
     }, {
         onSuccess(successRes) {
             const res = successRes.data;
-            refetchServiceData();
             if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
                 dispatch(setLoading(false));
                 dispatch(setError({error: true, message: res.message}));
