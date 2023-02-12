@@ -172,7 +172,8 @@ const Login = () => {
       <Wrapper>
         <FormWrapper>
           <FormHeader>
-            <h2>Login to Influenzit</h2>
+            <h2>Login to your account</h2>
+            <p>Welcome back! Please enter your details.</p>
           </FormHeader>
           <Center>
             <FormFields onSubmit={handleSubmit}>
@@ -181,6 +182,7 @@ const Login = () => {
                 <Input
                 type="email"
                 value={email}
+                placeholder="Enter your email"
                 onChange={handleEmailChange}
                 required
                 />
@@ -188,36 +190,33 @@ const Login = () => {
               <InputContainer hasContent={password}>
                 <label>Password</label>
                 <Input
-                type="password"
-                value={password}
-                onChange={handlePasswordChange}
-                required
+                  type="password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  placeholder="Enter your password"
+                  style={{ color: "#667085" }}
+                  required
                 />
               </InputContainer>
-              <SubmitButton type="submit">Login</SubmitButton>
+              <HelpSection>
+                <RememberMe>
+                </RememberMe>
+                <Link href="/reset-password">
+                  <a>Forgot Password</a>
+                </Link>
+              </HelpSection>
+              <SubmitButton type="submit">Sign in</SubmitButton>
             </FormFields>
-            <HelpSection>
-              <RememberMe>
-                <button onClick={() => setRemember(!remember)}>
-                  <FrameContainer>
-                    <Image src="/check-frame.svg" alt="" height={18} width={18} />
-                  </FrameContainer>
-                  {
-                    remember && <CheckContainer>
-                      <Image src="/check-b.svg" alt="" height={10} width={13} />
-                    </CheckContainer>
-                  }
-                </button>
-                <span>Remember Me</span>
-              </RememberMe>
-              <Link href="/reset-password">
-                <a>Forgot Password</a>
-              </Link>
-            </HelpSection>
             <OrContainer>
               <p>OR</p>
             </OrContainer>
             <SocialLogin>
+              <GoogleBtn onClick={googleLogin}>
+                <SocialIcon>
+                  <Image src="/google-r.svg" alt="" height={22} width={22} />
+                </SocialIcon>
+                <span>Sign in with Google</span>
+              </GoogleBtn>
               <FacebookLogin
                 appId="3349779741932998"
                 callback={handleFacebookLogin}
@@ -227,22 +226,14 @@ const Login = () => {
                     <SocialIcon>
                       <Image src="/facebook-r.svg" alt="" height={22} width={22} />
                     </SocialIcon>
-                    <span>Continue With Facebook</span>
+                    <span>Sign in with Facebook</span>
                   </FacebookBtn>
                 )}
               />
-                  
-              <GoogleBtn onClick={googleLogin}>
-                <SocialIcon>
-                  <Image src="/google-r.svg" alt="" height={22} width={22} />
-                </SocialIcon>
-                <span>Continue With Google</span>
-              </GoogleBtn>
-                  
             </SocialLogin>
           </Center>
           <Bottom>
-            <p>Don&apos;t have an account? <Link href="/register"><a>Register Here</a></Link></p>
+            <p>Don&apos;t have an account? <Link href="/register"><a>Sign up</a></Link></p>
           </Bottom>
         </FormWrapper>
       </Wrapper>

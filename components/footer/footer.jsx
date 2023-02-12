@@ -9,63 +9,60 @@ const Footer = () => {
         <Wrapper>
             <Top>
                 <MainSection>
-                    <Image src="/influenzit-w.svg" alt="" height={25} width={120} />
-                    <p>Join our newsletter</p>
-                    <form>
-                        <input type="email" placeholder="Email address" />
-                        <button>
-                            <Image src="/send.svg" alt="" height={30} width={30}/>
-                        </button>
-                    </form>
-                </MainSection>
-                <Section>
-                    <h3>Company</h3>
-                    <ul>
-                        <li><Link href="/about">About us</Link></li>
-                        <li><Link href="/how-it-works">How it works</Link></li>
-                        <li><Link href="/contact">Contact</Link></li>
-                        <li><Link href="/faqs">FAQs</Link></li>
-                    </ul>
-                </Section>
-                <Section>
-                    <h3>Get engaged</h3>
-                    <ul>
-                        <li><Link href="/explore">Search by niche</Link></li>
-                        <li><Link href="/register">Become a creator</Link></li>
-                        <li><Link href="/login">Login</Link></li>
-                        <li><Link href="/ebooks">Ebooks</Link></li>
-                    </ul>
-                </Section>
-                <Section>
-                    <h3>Company</h3>
+                    <Image src="/influenzit.svg" alt="" height={25} width={120} />
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
                     <ul>
                         <li><Link href="mailto:help@influenzit.com">help@influenzit.com</Link></li>
                         <li><Link href="tel:+2349098765432">+2349098765432</Link></li>
                     </ul>
-                    <SocialLinks>
-                        <Link href="https://" target="_blank">
-                            <Image src="/facebook.svg" height={25} width={25}/>
-                        </Link>
-                        <Link href="https://" target="_blank">
-                            <Image src="/twitter.svg" height={25} width={25}/>
-                        </Link>
-                        <Link href="https://" target="_blank">
-                            <Image src="/instagram.svg" height={25} width={25}/>
-                        </Link>
-                        <Link href="https://" target="_blank">
-                            <Image src="/linkedin.svg" height={25} width={25}/>
-                        </Link>
-                        <Link href="https://" target="_blank">
-                            <Image src="/pintrest.svg" height={25} width={25}/>
-                        </Link>
-                    </SocialLinks>
+                </MainSection>
+                <Section>
+                    <h3>Company</h3>
+                    <ul>
+                        <li><Link href="/about">About</Link></li>
+                        <li><Link href="/contact">Contact</Link></li>
+                    </ul>
+                </Section>
+                <Section>
+                    <h3>Discover</h3>
+                    <ul>
+                        <li><Link href="/explore">Find Influencers</Link></li>
+                        <li><Link href="/explore">Find Creators</Link></li>
+                        <li><Link href="/explore">Buy Services</Link></li>
+                    </ul>
+                </Section>
+                <Section>
+                    <h3>Information</h3>
+                    <ul>
+                        <li><Link href="/explore">How it Works</Link></li>
+                        <li><Link href="/faqs">Frequently Asked Questions</Link></li>
+                        <li><Link href="/blog">Blog</Link></li>
+                        <li><Link href="/resources">Resources</Link></li>
+                    </ul>
                 </Section>
             </Top>
             <Bottom>
-                <p>Copyright &copy; 2022 Influnzeit, All Right Reserved Websitechic.</p>
+                <p>&copy; 2023. Influenzit. All rights reserved.</p>
                 <BottomLinks>
-                    <Link href="/terms">Terms of Use</Link>
+                    <Link href="/terms">Terms &amp; Conditions</Link>
                     <Link href="/privacy">Privacy Policy</Link>
+                </BottomLinks>
+                <BottomLinks>
+                    <Link href="/">
+                        <a>
+                            <Image src="/facebook.svg" alt="" height={20} width={20} />
+                        </a>
+                    </Link>
+                    <Link href="/">
+                        <a>
+                            <Image src="/twitter.svg" alt="" height={20} width={20} />
+                        </a>
+                    </Link>
+                    <Link href="/">
+                        <a>
+                            <Image src="/instagram.svg" alt="" height={20} width={20} />
+                        </a>
+                    </Link>
                 </BottomLinks>
             </Bottom>
         </Wrapper>

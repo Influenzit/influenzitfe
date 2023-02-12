@@ -26,13 +26,14 @@ const inActiveLabel = `
 `;
 
 export const Container = styled.div`
-    background: url("/bg.png");
+    background: #fff;
     background-size: cover;
     background-position: center;
+    padding-top: 50px;
     min-height: calc(100vh - 140px);
 `;
 export const Center = styled.div`
-    padding: 15px 45px;
+    padding: 15px 0;
     p {
         color: #333333;
     }
@@ -63,72 +64,92 @@ export const FormWrapper = styled.div`
     background: #fff;
     border-radius: 5px;
     width: 100%;
-    max-width: 500px;
+    max-width: 450px;
     min-width: 320px;
     ${breakpoints.lg}{
         width: 80%;
     }
 `;
+export const BannerReg = styled.div`
+    width: 50%;
+    min-width: 50%;
+    max-width: 50%;
+    background: url("/banner-3.png");
+    background-size: cover;
+    background-position: right;
+    background-repeat: no-repeat;
+    display: flex;
+    height: 800px;
+`;
 export const FormHeader = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid #D2D2D2;
+    flex-direction: column;
     height: 60px;
     h2 {
-        font-weight: 500;
-        font-size: 22px;
-        color: #111;
+        font-weight: 600;
+        font-size: 28px;
+        color: #101828;
+    }
+    p {
+        color: #667085;
+        margin-top: 10px;
     }
 `;
 export const FormFields = styled.form`
     display: block;
     width: 100%;
     padding:20px 0;
-    
+`;
+export const FlexInput = styled.div`
+    display: flex;
+    column-gap: 10px;
 `;
 export const InputContainer = styled.div`
     position: relative;
-    height: 45px;
-    border: 1px solid #D2D2D2;
-    border-radius: 3px;
     margin-bottom: 15px;
-    padding-right: 10px;
-    display: flex;
-    align-items: center;
-    ${(props) => props.hasContent ? activeLabel: inActiveLabel}
-    :focus-within {
-        ${activeLabel}
+    label {
+        display: inline-block;
+        margin-bottom: 8px;
+        color: #344054;
+        font-weight: 500;
     }
     select {
-        border: none;
-        height: 100%;
+        height: 45px;
         width: 100%;
         outline: none;
+        color: #667085;
         padding-left: 17px;
         z-index: 1;
         background: transparent;
+        border: 1px solid #D0D5DD;
+        border-radius: 8px;
     }
 `;
 export const SubmitButton = styled.button`
     padding: 12px 0;
     width: 100%;
+    margin-top: 18px;
     color: #fff;
     background: ${colors.primaryColor};
-    border-radius: 3px;
+    border-radius: 8px;
     font-size: 16px;
     border: none;
     cursor: pointer;
     font-weight: 500;
 `;
 export const Input = styled.input`
-    border: none;
-    height: 100%;
+    height: 45px;
     width: 100%;
     outline: none;
+    color: #667085;
     padding-left: 17px;
     z-index: 1;
     background: transparent;
+    border: 1px solid #D0D5DD;
+    font-size: 16px;
+    border-radius: 8px;
 `;
 export const HelpSection = styled.div`
     display: flex;
@@ -171,7 +192,7 @@ export const OrContainer = styled.div`
     padding: 5px 0;
     position: relative;
     height: 40px;
-    margin: 20px 0;
+    margin: 10px 0;
     ::before {
         content: "";
         display: block;
@@ -195,8 +216,11 @@ export const SocialLogin = styled.div`
 export const FacebookBtn = styled.button`
     width: 100%;
     border: none;
-    background: #3B5998;
-    color: white;
+    background: #fff;
+    color: #344054;
+    box-shadow: 0px 1px 2px 0px #1018280D;
+    border: 1px solid #D0D5DD;
+    border-radius: 8px;
     height: 45px;
     margin: 7px 0;
     display: flex;
@@ -213,19 +237,16 @@ export const FacebookBtn = styled.button`
     }
 `;
 export const SocialIcon = styled.div`
-    position: absolute;
-    left: 35px;
-    ${breakpoints.md} {
-        left: 15px;
-    }
+    margin-right: 15px;
 `;
 export const GoogleBtn = styled.button`
     width: 100%;
     border: none;
     background: #fff;
-    color: #111;
-    box-shadow: 0px 0px 15px 0px #0000001A;
-    border: 1px solid #D2D2D2;
+    color: #344054;
+    box-shadow: 0px 1px 2px 0px #1018280D;
+    border: 1px solid #D0D5DD;
+    border-radius: 8px;
     height: 45px;
     margin: 7px 0;
     display: flex;
@@ -245,13 +266,12 @@ export const Bottom = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    border-top: 1px solid #D2D2D2;
-    height: 60px;
+    height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #667085;
     a {
-        color: ${colors.primaryColor}
-    }
-    ${breakpoints.md} {
-        font-size: 14px;
+        color: ${colors.primaryColor};
     }
 `;
 export const UploadContainer = styled.div`

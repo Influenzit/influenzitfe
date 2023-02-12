@@ -5,46 +5,43 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { getExploreNiches } from "../api/influencer"
 import LandingLayout from "../layouts/landing.layout"
-import { CustomSelect, HeroSectionFive, HeroSectionFour, HeroSectionOne, HeroSectionThree, HeroSectionTwo, ImgSlider, ImgWrapper, InfoCard, InfoDetails, InfoList, InfoSectOne, ListItem, NicheCard, NicheWrapper, ReviewCard, ReviewWrapper, SlideBtn, SlideControl, UserCard, UserDetails, UserImage, WrapperFive, WrapperFour, WrapperThree, WrapperTwo } from "../styles/home.style"
+import { Answer, Banner, BannerImg, CustomSelect, Faq, FaqWrapper, HeroSectionFive, HeroSectionFour, HeroSectionOne, HeroSectionSix, HeroSectionThree, HeroSectionTwo, ImageWrapper, ImgSlider, ImgW1, ImgWrapper, Info, InfoCard, InfoCardM, InfoDetails, InfoList, InfoSectOne, ListItem, NicheCard, NicheWrapper, Question, ReviewCard, ReviewWrapper, SlideBtn, SlideControl, UserCard, UserDetails, UserImage, WrapperFive, WrapperFour, WrapperOne, WrapperSix, WrapperThree, WrapperTwo } from "../styles/home.style"
 
 const Home = () => {
-  const [currSlideOne, setCurrSlideOne] = useState(1);
-  const [currSlideTwo, setCurrSlideTwo] = useState(1);
-  const router = useRouter();
-  let slideOneCtrl = [];
-  let slideTwoCtrl = [];
-
-  const slideOneCount = 2;
-  const slideTwoCount = 2;
-  for (let i = 0; i < slideOneCount; i++) {
-    slideOneCtrl.push(i)
-  }
-  for (let i = 0; i < slideTwoCount; i++) {
-    slideTwoCtrl.push(i)
-  }
-  let intervalId;
+  const [faq, setFaq] = useState({});
   const [nicheVal, setNicheVal] = useState("");
   const [searchString, setSearchString] = useState("");
-
-  useEffect(() => {
-    intervalId = setInterval(() => {
-      if (currSlideOne < slideOneCount) {
-        setCurrSlideOne((prev) => prev + 1)
+  const handleFaqToggle = (index) => {
+    console.log(index)
+    setFaq((prev) => {
+      let copyOfPrev = {...prev};
+      if(!!copyOfPrev?.[index]) {
+        copyOfPrev = {...copyOfPrev, [index]: false}
       } else {
-        setCurrSlideOne(1)
+        copyOfPrev = {...copyOfPrev, [index]: true}
       }
-      if (currSlideTwo < slideTwoCount) {
-        setCurrSlideTwo((prev) => prev + 1)
-      } else {
-        setCurrSlideTwo(1)
-      }
-      
-    }, 7000)
-  
-    return () => {
-      clearInterval(intervalId);
+      console.log(copyOfPrev);
+      return copyOfPrev;
+    })
+  }
+  const faqs = [
+    {
+      question: "Is there a free trial available?",
+      answer: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible.",
+    },
+    {
+      question: "Can I change my plan later?",
+      answer: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible.",
+    },
+    {
+      question: "Is there a free trial available?",
+      answer: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible.",
+    },
+    {
+      question: "Can I change my plan later?",
+      answer: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible.",
     }
-  }, [currSlideOne, currSlideTwo])
+  ]
   const { data, refetch } = useQuery(["get-niche"], async () => {
       return await getExploreNiches();
   }, {
@@ -59,266 +56,218 @@ const Home = () => {
   return (
     <div>
       <HeroSectionOne>
-        <h1>We Connect <span>Brands</span> With The Perfect <span>Influencers</span> To <span>Multiply</span> Their <span>Sales.</span></h1>
-        <p>Find results-focused influencers in just a few clicks.</p>
-        <form>
-          <input type="text" value={searchString} onChange={(e) => setSearchString(e.target.value)} placeholder="Search by keyword or niche" />
-          <CustomSelect>
-            <span>in:</span>
-            <select val={nicheVal} onChange={(e) => setNicheVal(e.target.value)}>
-              <option value="">Select a niche</option>
-              {
-                data?.data?.data?.map((val, i) => (
-                  <option key={i} value={val.name}>{val.name}</option>
-                ))
-              }
-            </select>
-          </CustomSelect>
-          <button onClick={(e) => {
-            e.preventDefault();
-            router.push(`/explore?search=${searchString}&niche=${nicheVal.toLocaleLowerCase()}`);
-          }}><Image src="/search.svg" height={30} width={30}/></button>
-        </form>
+        <WrapperOne>
+          <h1>Find the Perfect <span>Influencer</span> for your Business with just a Few Clicks</h1>
+          <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+          <form>
+            <CustomSelect borderLeft>
+              <label>Category</label>
+              <select val={nicheVal} onChange={(e) => setNicheVal(e.target.value)}>
+                <option value="Influencer">Influencer</option>
+                <option value="Creator">Creator</option>
+                <option value="Creator">Business Owner</option>
+              </select>
+            </CustomSelect>
+            <CustomSelect borderLeft>
+              <label>Platform</label>
+              <select val={nicheVal} onChange={(e) => setNicheVal(e.target.value)}>
+                <option value="">Choose a platform</option>
+                {
+                  data?.data?.data?.map((val, i) => (
+                    <option key={i} value={val.name}>{val.name}</option>
+                  ))
+                }
+              </select>
+            </CustomSelect>
+            <CustomSelect>
+              <label>Search</label>
+              <input type="text" value={searchString} onChange={(e) => setSearchString(e.target.value)} placeholder="Enter keyword, niche or category" />
+            </CustomSelect>
+            <button onClick={(e) => {
+              e.preventDefault();
+              router.push(`/explore?search=${searchString}&niche=${nicheVal.toLocaleLowerCase()}`);
+            }}><Image src="/search.svg" height={20} width={20}/></button>
+          </form>
+          <BannerImg>
+          </BannerImg>
+        </WrapperOne>
       </HeroSectionOne>
       <HeroSectionTwo>
-        <WrapperTwo>
-          <InfoCard primary={false}>
-            <h3>Are you a business owner?</h3>
-            <p>Find The <b><i>Perfect Influencer</i></b> To Ignite Your Business Sales!</p>
-            <Link href="/explore" passHref>
-              <a>Find Influencer</a>
-            </Link>
-          </InfoCard>
-          <InfoCard primary={true}>
-            <h3>Are you an influencer?</h3>
-            <p>Work with the <b><i>best brands</i></b> that match your audience, passion, and purpose.</p>
-            <Link href="" passHref>
-              <a>Find Brands</a>
-            </Link>
-          </InfoCard>
-        </WrapperTwo>
+        <h1>Access Data . Run Campaigns <br /><span>Drive Sales</span></h1>
+        <p>Discover the top influencers for your product. Efficiently identify and engage with the most relevant key creators for your brand, then start driving revenue from their audiences.</p>
       </HeroSectionTwo>
       <HeroSectionThree>
         <WrapperThree>
-          <h1>Explore Niches</h1>
-          <p>Find the best influencer to grow your business.</p>
-          <NicheWrapper>
-            <NicheCard>
-              <span id="niche-icon">
-                <Image src="/shop.svg" alt="" height={55} width={55} />
-              </span>
-              <h4>Fashion</h4>
-              <div>
-                <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/explore?niche=fashion" passHref>
-                  <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
+          <InfoCardM>
+              <Info>
+                <span>SEARCH INFLUENCERS</span>
+                <h1>Find the right influencer for your business needs</h1>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <Link href="/explore" passHref>
+                  <a>Find Influencers</a>
                 </Link>
-              </div>
-            </NicheCard>
-            <NicheCard>
-              <span id="niche-icon">
-                <Image src="/shop.svg" alt="" height={55} width={55} />
-              </span>
-              <h4>Beauty</h4>
-              <div>
-                <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/explore?niche=beauty" passHref>
-                  <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
+              </Info>
+              <ImageWrapper>
+                <Image src="/hero1.png" alt='' layout='fill' objectFit='contain' objectPosition="right" />
+              </ImageWrapper>
+            </InfoCardM>
+            <InfoCardM>
+              <ImageWrapper>
+                <Image src="/hero2.png" alt='' layout='fill' objectFit='contain' objectPosition="left" />
+              </ImageWrapper>
+              <Info leftP>
+                <span>INFLUENCER INSIGHTS</span>
+                <h1>Make better decisions with detailed analytics</h1>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <Link href="/explore" passHref>
+                  <a>Find Influencers</a>
                 </Link>
-              </div>
-            </NicheCard>
-            <NicheCard>
-              <span id="niche-icon">
-                <Image src="/plane.svg" alt="" height={55} width={55} />
-              </span>
-              <h4>Travel &amp; Tourism</h4>
-              <div>
-                <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/explore?niche=tourism" passHref>
-                  <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
+              </Info>
+            </InfoCardM>
+            <InfoCardM>
+              <Info>
+                <span>PROJECT MANAGEMENT</span>
+                <h1>Manage campaigns and projects seamlessly</h1>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <Link href="/explore" passHref>
+                  <a>Find Influencers</a>
                 </Link>
-              </div>
-            </NicheCard>
-            <NicheCard>
-              <span id="niche-icon">
-                <Image src="/computer.svg" alt="" height={55} width={55} />
-              </span>
-              <h4>Tech and Gadgets</h4>
-              <div>
-                <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/explore?niche=tech" passHref>
-                  <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
+              </Info>
+              <ImageWrapper>
+                <Image src="/hero4.png" alt='' layout='fill' objectFit='contain' objectPosition="right" />
+              </ImageWrapper>
+            </InfoCardM>
+            <InfoCardM>
+              <ImageWrapper>
+                <Image src="/hero3.png" alt='' layout='fill' objectFit='contain' objectPosition="left" />
+              </ImageWrapper>
+              <Info leftP>
+                <span>SECURE PAYMENTS</span>
+                <h1>Handle influencer payments easily</h1>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <Link href="/explore" passHref>
+                  <a>Find Influencers</a>
                 </Link>
-              </div>
-            </NicheCard>
-            <NicheCard>
-              <span id="niche-icon">
-                <Image src="/media.svg" alt="" height={55} width={55} />
-              </span>
-              <h4>Entertainment</h4>
-              <div>
-                <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/explore?niche=entertainment" passHref>
-                  <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
-                </Link>
-              </div>
-            </NicheCard>
-            <NicheCard>
-              <span id="niche-icon">
-                <Image src="/ball.svg" alt="" height={55} width={55} />
-              </span>
-              <h4>Sports</h4>
-              <div>
-                <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/explore?niche=sports" passHref>
-                  <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
-                </Link>
-              </div>
-            </NicheCard>
-            <NicheCard>
-              <span id="niche-icon">
-                <Image src="/health.svg" alt="" height={55} width={55} />
-              </span>
-              <h4>Health</h4>
-              <div>
-                <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/explore?niche=health" passHref>
-                  <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
-                </Link>
-              </div>
-            </NicheCard>
-            <NicheCard>
-              <span id="niche-icon">
-                <Image src="/bag.svg" alt="" height={55} width={55} />
-              </span>
-              <h4>Business</h4>
-              <div>
-                <p>Consectetur adipisicing elitaed eiusmod tempor incididuatna labore et dolore magna.</p>
-                <Link href="/explore?niche=business" passHref>
-                  <a>Explore <Image src="/arrow-b.svg" width={30} height={10}/></a>
-                </Link>
-              </div>
-            </NicheCard>
-          </NicheWrapper>
-          <Link href="/">
-            <a id="search-by">Search by niche</a>
-          </Link>
-        
+              </Info>
+            </InfoCardM>
         </WrapperThree>
       </HeroSectionThree>
       <HeroSectionFour>
         <WrapperFour>
-          <InfoSectOne>
-            <ImgSlider>
-              <ImgWrapper showImg={currSlideOne === 1}>
-                <Image src="/hero-2.png" alt="info" layout="fill" objectFit="cover" objectPosition="center" quality={100}/>
-              </ImgWrapper>
-              <ImgWrapper showImg={currSlideOne === 2}>
-                <Image src="/hero-3.png" alt="info" layout="fill" objectFit="cover" objectPosition="center" quality={100}/>
-              </ImgWrapper>
-              <SlideControl>
-                {
-                  slideOneCtrl.map((val) => (
-                    <SlideBtn key={val} onClick={() => setCurrSlideOne(val + 1)} isActive={currSlideOne === val + 1}></SlideBtn>
-                  ))
-                }
-              </SlideControl>
-            </ImgSlider>
-            <InfoDetails>
-              <h3>A whole world of results <span>focused influencers</span> at your fingertips.</h3>
-              <p>Run Your First Successful Influencing Campaign With INFLUENZIT.</p>
-              <InfoList>
-                <ListItem>
-                  <Image src="/check-square.svg" alt="check square" height={25} width={25} />
-                  <span>Free trial</span>
-                </ListItem>
-                <ListItem>
-                  <Image src="/check-square.svg" alt="check square" height={25} width={25} />
-                  <span>Easy set-up</span>
-                </ListItem>
-                <ListItem>
-                  <Image src="/check-square.svg" alt="check square" height={25} width={25} />
-                  <span>Powerful algorithm that produces excellent influencer matches in seconds</span>
-                </ListItem>
-                <ListItem>
-                  <Image src="/check-square.svg" alt="check square" height={25} width={25} />
-                  <span>Cancel anytime</span>
-                </ListItem>
-              </InfoList>
-              <Link href="/contact">
-                <a>Let us help you!</a>
-              </Link>
-            </InfoDetails>
-          </InfoSectOne>
-          <InfoSectOne>
-            <InfoDetails>
-              <h3><span>Don&apos;t settle.</span><br /> More Collaboration.<br /> More Deals. More Money.</h3>
-              <p>Seal More Deals from our unlimited pool of quality brands to collaborate with!</p>
-              <InfoList>
-                <ListItem>
-                  <Image src="/check-square.svg" alt="check square" height={25} width={25} />
-                  <span>Sign up for free</span>
-                </ListItem>
-                <ListItem>
-                  <Image src="/check-square.svg" alt="check square" height={25} width={25} />
-                  <span>Easy account set-up</span>
-                </ListItem>
-                <ListItem>
-                  <Image src="/check-square.svg" alt="check square" height={25} width={25} />
-                  <span>Powerful algorithm that produces excellent brand matches in seconds.</span>
-                </ListItem>
-              </InfoList>
-              <Link href="/register">
-                <a>Become a creator</a>
-              </Link>
-            </InfoDetails>
-            <ImgSlider>
-              <ImgWrapper showImg={currSlideOne === 1}>
-                <Image src="/hero-3.png" alt="info" layout="fill" objectFit="cover" objectPosition="center" quality={100}/>
-              </ImgWrapper>
-              <ImgWrapper showImg={currSlideOne === 2}>
-                <Image src="/hero-2.png" alt="info" layout="fill" objectFit="cover" objectPosition="center" quality={100}/>
-              </ImgWrapper>
-              <SlideControl>
-                {
-                  slideOneCtrl.map((val) => (
-                    <SlideBtn key={val} onClick={() => setCurrSlideOne(val + 1)} isActive={currSlideTwo === val + 1}></SlideBtn>
-                  ))
-                }
-              </SlideControl>
-            </ImgSlider>
-          </InfoSectOne>
+          <h1>Over <span>500 Influencers</span> Available</h1>
+          <p>When you choose Influenzit over other solutions, you'll grow 2.3x faster, and save hundreds of hours wasted on boring manual work.</p>
+          <NicheWrapper>
+            <NicheCard>
+              <ImgW1 id="anim">
+                <Image src="/niche1.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <ImgW1>
+                <Image src="/layer.svg" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <span>Food</span>
+            </NicheCard>
+            <NicheCard>
+              <ImgW1 id="anim">
+                <Image src="/niche2.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <ImgW1>
+                <Image src="/layer.svg" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <span>Fashion</span>
+            </NicheCard>
+            <NicheCard>
+              <ImgW1 id="anim">
+                <Image src="/niche3.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <ImgW1>
+                <Image src="/layer.svg" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <span>Travel</span>
+            </NicheCard>
+            <NicheCard>
+              <ImgW1 id="anim">
+                <Image src="/niche4.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <ImgW1>
+                <Image src="/layer.svg" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <span>Lifestyle</span>
+            </NicheCard>
+            <NicheCard>
+              <ImgW1 id="anim">
+                <Image src="/niche5.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <ImgW1>
+                <Image src="/layer.svg" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <span>Tech</span>
+            </NicheCard>
+            <NicheCard>
+              <ImgW1 id="anim">
+                <Image src="/niche6.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <ImgW1>
+                <Image src="/layer.svg" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <span>Family &amp; Children</span>
+            </NicheCard>
+            <NicheCard>
+              <ImgW1 id="anim">
+                <Image src="/niche7.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <ImgW1>
+                <Image src="/layer.svg" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <span>Health &amp; Fitness</span>
+            </NicheCard>
+            <NicheCard>
+              <ImgW1 id="anim">
+                <Image src="/niche8.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <ImgW1>
+                <Image src="/layer.svg" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
+              </ImgW1>
+              <span>Hair</span>
+            </NicheCard>
+          </NicheWrapper>
+          <Link href="/explore" passHref>
+            <a>Explore all influencers</a>
+          </Link>
         </WrapperFour>
       </HeroSectionFour>
       <HeroSectionFive>
         <WrapperFive>
-          <h1>Join the league of <span>business</span> enjoying <span>influencer marketing</span>.</h1>
+          <p id="heading">Testimonials</p>
+          <h1>Don't take our word for it</h1>
           <ReviewWrapper>
             <ReviewCard>
+              <h3>Testimonial Heading</h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget leo rutrum, ullamcorper dolor eu, faucibus massa.</p>
               <UserCard>
                 <UserImage>
                   <Image src="/review.png" alt="review-img" layout="fill" objectFit="cover" objectPosition="center"/>
                 </UserImage>
                 <UserDetails>
-                  <h4>Ezekiel Alwode</h4>
-                  <p>Developer</p>
+                  <h4>Samuel Bezoz</h4>
+                  <p>CEO at Krystal Shoe Palace</p>
                 </UserDetails>
               </UserCard>
             </ReviewCard>
             <ReviewCard>
+              <h3>Testimonial Heading</h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget leo rutrum, ullamcorper dolor eu, faucibus massa.</p>
               <UserCard>
                 <UserImage>
                   <Image src="/review.png" alt="review-img" layout="fill" objectFit="cover" objectPosition="center"/>
                 </UserImage>
                 <UserDetails>
-                  <h4>Ezekiel Alwode</h4>
-                  <p>Developer</p>
+                  <h4>Aaron Musk</h4>
+                  <p>CEO at Krystal Bag Palace</p>
                 </UserDetails>
               </UserCard>
             </ReviewCard>
             <ReviewCard>
+              <h3>Testimonial Heading</h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget leo rutrum, ullamcorper dolor eu, faucibus massa.</p>
               <UserCard>
                 <UserImage>
@@ -333,6 +282,42 @@ const Home = () => {
           </ReviewWrapper>
         </WrapperFive>
       </HeroSectionFive>
+      <HeroSectionSix>
+        <WrapperSix>
+          <h1>Frequently asked questions</h1>
+          <p>Everything you need to know about the product and billing.</p>
+          <FaqWrapper>
+            {
+              faqs.map((val, i) => (
+                <Faq>
+                  <Question onClick={() => handleFaqToggle(i)}>
+                    <span>{val.question}</span>
+                    <span>{faq?.[i] ? (<Image src="/close.svg" alt="" height={20} width={20} />) : (<Image src="/open.svg" alt="" height={20} width={20} />)}</span>
+                  </Question>
+                  {
+                    faq?.[i] && (
+                      <Answer>
+                        {val.answer}
+                      </Answer>
+                    )
+                  }
+                </Faq>
+              ))
+            }
+            <Link href="/faqs" passHref>
+              <a>View all FAQs</a>
+            </Link>
+          </FaqWrapper>
+          <Banner>
+            <div>
+              <h2>Take your sales to the next level with Influenzit</h2>
+              <Link href="/register" passHref>
+                <a>Get Started</a>
+              </Link>
+            </div>
+          </Banner>
+        </WrapperSix>
+      </HeroSectionSix>
     </div>
   )
 }

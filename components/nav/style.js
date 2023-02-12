@@ -4,13 +4,12 @@ import { breakpoints, colors, sizes } from "../../styles/theme";
 
 export const Container = styled.nav`
     height: 70px;
-    background: white;
+    background: ${({showBg}) => showBg ? "#fff" : "linear-gradient(180deg, #FFF, transparent)"};
     width: 100%;
     position: fixed;
     top: 0;
     display: flex;
     z-index: 999999;
-    box-shadow: 0 0 8px #ddd;
 `;
 export const Wrapper = styled.div`
     width: 98%;
@@ -28,6 +27,12 @@ export const Logo = styled(Link)`
     }
 `;
 export const Right = styled.div`
+    display: flex;
+    align-items: center;
+    width: calc(200% / 3);
+    justify-content: space-between;
+`;
+export const Center = styled.div`
     display: flex;
     align-items: center;
 `;
@@ -72,11 +77,13 @@ export const SearchBtn = styled.button`
 export const LoginBtn = styled.a`
     color: ${colors.primaryColor};
     border: 2px solid ${colors.primaryColor};
-    border-radius: 4px;
+    border-radius: 8px;
     background: white;
     text-decoration: none;
     padding: 10px 20px;
     transition: .5s ease;
+    font-size: 14px;
+    font-weight: 500;
     :hover {
         background: ${colors.primaryColor};
         color: white;
@@ -93,12 +100,14 @@ export const LoginBtn = styled.a`
 export const GetStartedBtn = styled.a`
     color: white;
     border: 2px solid ${colors.primaryColor};
-    border-radius: 4px;
+    border-radius: 8px;
     background: ${colors.primaryColor};
     text-decoration: none;
     padding: 10px 20px;
     margin-left: 20px;
     transition: .5s ease;
+    font-size: 14px;
+    font-weight: 500;
     :hover {
         background: white;
         color: ${colors.primaryColor};
@@ -196,7 +205,6 @@ export const SearchBtnC = styled.button`
 `;
 export const ConnectDropdown = styled.div`
     border: none;
-    background: #fff;
     padding: 0 10px;
     width: 100px;
     min-width: 100px;
@@ -236,9 +244,8 @@ export const ConnectDropdownCont = styled.div`
     display: flex;
     flex-direction: column;
     color: #111;
-    box-shadow: 0px 4px 12px 0px #0000001A;
-    border: 1px solid #D2D2D2;
-    border-radius: 2px;
+    box-shadow: 0px 3px 8px 0px #2A29391A;
+    border-radius: 8px;
     button {
         background: transparent;
         border: none;
@@ -254,6 +261,7 @@ export const ConnectDropdownCont = styled.div`
         }
         :hover {
             color: ${colors.primaryColor};
+            background: #2A29390D;
         }
         ${breakpoints.sm} {
             font-size: 12px;
@@ -271,23 +279,11 @@ export const ConnectDropdownCont = styled.div`
         }
         :hover {
             color: ${colors.primaryColor};
+            background: #2A29390D;
         }
         ${breakpoints.sm} {
             font-size: 12px;
         }
-    }
-    ::after {
-        content: "";
-        display: block;
-        height: 10px;
-        width: 10px;
-        transform: rotate(-45deg);
-        position: absolute;
-        top: -6px;
-        right: 72px;
-        background: #fff;
-        border-top: 1px solid #D2D2D2;
-        border-right: 1px solid #D2D2D2;
     }
 `;
 export const SwitchDropdownCont = styled.div`

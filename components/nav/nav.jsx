@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, GetStartedBtn, LoginBtn, Logo, NavLinks, ProfilePicWrapper, ResponsiveNav, Right, SearchBtn, SearchBtnC, SearchBtnResponsive, SearchByBtn, SearchByOption, SearchContainer, SidebarBtn, SwitchBtn, SwitchDropdownCont, UserBtn, UserDropdown, Wrapper } from './style'
+import { Center, ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, GetStartedBtn, LoginBtn, Logo, NavLinks, ProfilePicWrapper, ResponsiveNav, Right, SearchBtn, SearchBtnC, SearchBtnResponsive, SearchByBtn, SearchByOption, SearchContainer, SidebarBtn, SwitchBtn, SwitchDropdownCont, UserBtn, UserDropdown, Wrapper } from './style'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -33,6 +33,7 @@ const Nav = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showSwitchAccount, setShowSwitchAccount] = useState(false);
   const [showSearchRes, setShowSearchRes] = useState(false);
+  const [showBg, setShowBg] = useState(false);
 //   const [showSidebar, setShowSidebar] = useState(false);
   const router = useRouter();
   const [searchString, setSearchString] = useState("");
@@ -160,8 +161,16 @@ const Nav = () => {
         //     setShowSidebar(false);
         // }
     }
+    const toggleBG = (e) => {
+       if(window.screenTop > 100 || document.documentElement.scrollTop > 100  || document.body.scrollTop > 100) {
+        setShowBg(true);
+       } else {
+        setShowBg(false);
+       }
+    }
   useEffect(() => {
     addEventListener("click", handleClosing);
+    addEventListener("scroll", toggleBG);
     if (!!userDetails) {
         const socketInstance = getSocketInstance()
         socketInstance.channel(userDetails.email).listen(".Notification", (e) => {
@@ -171,11 +180,12 @@ const Nav = () => {
     }
     return () => {
       removeEventListener("click", handleClosing);
+      removeEventListener("scroll", toggleBG);
     }
   }, [userDetails])
   
   return (
-    <Container>
+    <Container showBg={showBg}>
         <Wrapper>
             <div style={{ display: "flex" }}>
                 {
@@ -267,25 +277,30 @@ const Nav = () => {
                     </Right>
                 ) : (
                     <Right>
-                        <ConnectDropdown onClick={() => handleConnectOpen()} ref={connectRef}>
-                            <span>Explore</span><Image src="/down-chev-b.svg" alt="" height={7} width={10} />
-                            {
-                                showConnect && <ConnectDropdownCont>
-                                    <Link href="/explore/influencers">
-                                        <a><span>Influencers</span></a>
-                                    </Link>
-                                    <Link href="/explore/creators">
-                                        <a><span>Creators</span></a>
-                                    </Link>
-                                    <Link href="/explore/services">
-                                        <a><span>Services</span></a>
-                                    </Link>
-                                </ConnectDropdownCont>
-                            }
-                        </ConnectDropdown>
-                        <NavLinks>
-                            <Link href="/pricing">Pricing</Link>
-                        </NavLinks>
+                        <Center>
+                            <NavLinks>
+                                <Link href="/register">Join Influencers</Link>
+                            </NavLinks>
+                            <ConnectDropdown onClick={() => handleConnectOpen()} ref={connectRef}>
+                                <span>Explore</span><Image src="/down-chev-b.svg" alt="" height={7} width={10} />
+                                {
+                                    showConnect && <ConnectDropdownCont>
+                                        <Link href="/explore/influencers">
+                                            <a><span>Influencers</span></a>
+                                        </Link>
+                                        <Link href="/explore/creators">
+                                            <a><span>Creators</span></a>
+                                        </Link>
+                                        <Link href="/explore/services">
+                                            <a><span>Services</span></a>
+                                        </Link>
+                                    </ConnectDropdownCont>
+                                }
+                            </ConnectDropdown>
+                            <NavLinks>
+                                <Link href="/pricing">Pricing</Link>
+                            </NavLinks>
+                        </Center>
                         <Controls>
                             <Link href="/login" passHref>
                                 <LoginBtn>Login</LoginBtn>

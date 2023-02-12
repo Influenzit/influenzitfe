@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { breakpoints } from "./theme";
 
 export const Container = styled.div`
-    padding-top: 70px;
 `;
 export const Wrapper = styled.main`
     display: flex;

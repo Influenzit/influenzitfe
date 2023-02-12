@@ -3,13 +3,25 @@ import { colors } from "../../styles/theme";
 
 export const Container = styled.div`
     height: auto;
-    width: 285px;
-    border: 1px solid #D2D2D2;
-    text-align: center;
-    min-height: 400px;
+    width: 250px;
+    border: 1px solid #2A29391A;
+    box-shadow: 0px 16px 24px 0px #2A29391A;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
     p {
         font-size: 14px;
-        color: #999;
+        color:#555461;
+    }
+    cursor: pointer;
+    button {
+        border: none;
+        outline: none;
+        background: transparent;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        z-index: 999;
     }
 `;
 export const SocialHandle = styled.div`
@@ -55,10 +67,27 @@ export const TopImg = styled.div`
     position: relative;
 `;
 export const CreatorDetails = styled.div`
-    padding: 10px 5px;
+    padding: 10px 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 50%;
-    min-height: 50%;
+    background: #fff;
+    h4 {
+        font-size: 17px;
+        font-weight: 500;
+        color: #1F2024;
+        padding: 10px 0 4px 0;
+    }
+    p {
+        color: #555461;
+        font-size: 13px;
+    }
+`;
+export const Stats = styled.div`
+    display: flex;
+    justify-content: space-between;
+    div {
+        display: flex;
+        column-gap: 10px;
+    }
 `;
