@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
-import LandingLayout from '../../layouts/landing.layout';
 import { useMutation } from "@tanstack/react-query"
 import { BannerReg, Bottom, Center, Container, FacebookBtn, FlexInput, FormFields, FormHeader, FormWrapper, GoogleBtn, Input, InputContainer, SocialIcon, SocialLogin, SubmitButton, Wrapper } from '../../styles/auth.style'
 import { createAccount, socialLogin } from '../../api/auth';
@@ -11,9 +10,10 @@ import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props
 import { setBusinesses } from '../../app/reducers/business';
 import { updateUser } from '../../app/reducers/user';
 import { useGoogleLogin } from '@react-oauth/google';
+import { Logo } from '../../components/nav/style';
 import Image from 'next/image';
 
-const BusinessOwner = () => {
+const Register = () => {
   const router = useRouter();
   const [formVal, setFormVal] = useState({
     firstname: "",
@@ -57,8 +57,8 @@ const BusinessOwner = () => {
         dispatch(setError({error: true, message: res.message}));
       } else {
         localStorage.setItem("token", res.token);
-        const { is_influencer, is_creator, is_businessowner } = res.user.account;
-        if (is_businessowner) {
+        const { is_influencer, is_creator, is_Register } = res.user.account;
+        if (is_Register) {
           dispatch(setUserType("Business Owner"));
           getBusinesses(res.token).then((bizRes) => {
             if (bizRes.data && res) {
@@ -133,9 +133,14 @@ const BusinessOwner = () => {
   }
   if (mutation.isLoading) dispatch(setLoading(true));
   return (
-    <Container style={{ paddingTop: "20px"}}>
-      <Wrapper style={{ flexDirection: "row", justifyContent: "space-between" }}>
+    <Container style={{ paddingTop: "0"}}>
+      <Wrapper style={{ flexDirection: "row", justifyContent: "space-between", padding: "0" }}>
         <FormWrapper>
+          <div style={{ margin: "20px 0 40px 0"}}>
+            <Logo href="/">
+                <Image src="/influenzit.svg" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
+            </Logo>
+          </div>
           <FormHeader style={{ alignItems: "flex-start" }}>
             <h2>Sign up</h2>
           </FormHeader>
@@ -228,9 +233,5 @@ const BusinessOwner = () => {
     </Container>
   )
 }
-BusinessOwner.getLayout = (page) => (
-    <LandingLayout>
-        {page}
-    </LandingLayout>
-)
-export default BusinessOwner;
+
+export default Register;

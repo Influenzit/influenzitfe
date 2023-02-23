@@ -11,11 +11,12 @@ import { setLoading } from '../../app/reducers/status'
 import { getUser } from '../../app/reducers/user'
 import LandingLayout from '../../layouts/landing.layout'
 import { Controls, CreatorsCard, CreatorDetails, SocialHandle } from '../../styles/business-owner.style'
-import { BackImage, Bottom, Container, HeroSectionOne, Popup, ProfileCategory, ProfileData, ProfileDetails, ProfileImgCont, ProfileStats, SeeMoreCont, SkillCard, StatCard, Stats, StatWrapper, Top, UserCard, WorkCard, Wrapper } from '../../styles/creator-profile.style'
+import { BackImage, Bottom, Container, HeroSectionOne, ImageContainer, Popup, ProfileCategory, ProfileData, ProfileDetails, ProfileImgCont, ProfileStats, SeeMoreCont, SkillCard, StatCard, Stats, StatWrapper, Top, UserCard, WorkCard, Wrapper } from '../../styles/creator-profile.style'
 import { AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, ImageWrap, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, TabBtn, Tabs, TopImg } from '../../styles/influencer-profile';
 import { FormContainer, UpdateModal } from '../../styles/view.style'
 import { InputContainer } from '../../styles/profile.style'
 import { createDispute } from '../../api/support'
+import ServiceCard from '../../components/service-card'
 
 const CreatorProfile = () => {
   const router = useRouter();
@@ -143,105 +144,97 @@ const CreatorProfile = () => {
   return (
     <Container>
         <HeroSectionOne>
-            <BackImage>
-            <Image src="/profile.png" alt="" layout="fill" objectPosition="center" objectFit="cover" id="back-img"/>
-            <UserCard>
-                <ProfileStats>
-                    <ProfileImgCont>
-                        <Image src={inData?.media?.[0]?.url ? inData?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${inData?.user?.firstname}+${inData?.user?.lastname}&color=FFFFFF&background=12544D`}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
-                    </ProfileImgCont>
-                    <ProfileData>
-                        <div>
-                            <Image src="/users.svg" height={20} width={20} />
-                            <span>{inData?.gender}</span>
-                        </div>
-                        <div>
-                            <Image src="/verified.svg" height={20} width={20} />
-                            <span>Verified</span>
-                        </div>
-                    </ProfileData>
-                    <p>0/5 (<span>0 Feedbacks</span>)</p>
-                    <p>Member since {(new Date(inData?.created_at).toDateString())}</p>
-                    <button onClick={handleLinkCopy}>Share Profile</button>
-                </ProfileStats>
-                <ProfileDetails>
-                    <h2>{inData?.user?.firstname} {inData?.user.lastname}</h2>
-                    <ProfileCategory>
-                        <div><Image src="/niche.svg" height={25} width={25}/><p>Influencer&apos;s Niche</p></div>
-                        <div><Image src="/flag.svg" height={25} width={25}/><p>Nigeria</p></div>
-                        <div><Image src="/instagram.svg" height={25} width={25}/><p>{inData?.instagram}</p> <span>0</span></div>
-                    </ProfileCategory>
-                    <p>{inData?.biography}</p>
-                    {/* <SeeMoreCont>
-                        <button>Click to see more</button>
-                    </SeeMoreCont> */}
-                    
-                </ProfileDetails>
-                <Stats>
-                    <StatWrapper>
-                        <StatCard textColor='#2B368C' bgColor="#F9F9FC">
-                            <h3>{inData?.analytics?.influenzit?.ongoing_campaigns_count}</h3>
-                            <p>Ongoing Engagements</p>
-                        </StatCard>
-                        <StatCard textColor='#019B2C' bgColor="#F7FCF9">
-                            <h3>{inData?.analytics?.influenzit?.completed_campaigns_count}</h3>
-                            <p>Completed Campaigns</p>
-                        </StatCard>
-                        <StatCard textColor='#FF0000' bgColor="#FFF7F7">
-                            <h3>{inData?.analytics?.influenzit?.cancelled_campaigns_count}</h3>
-                            <p>Cancelled Engagements</p>
-                        </StatCard>
-                        <StatCard textColor='#000' bgColor="#F8F8F8">
-                            <h3>{inData?.analytics?.influenzit?.campaign_engagements}</h3>
-                            <p>Total Engagement</p>
-                        </StatCard> 
-                    </StatWrapper>
-                    <p>Send Offer to this creator by clicking on the button.</p>
-                    <button onClick={() => setShowEngagePopup(!showEngagePopup)}>
-                        <span>Engage Influencer</span> <Image src="/down-chev.svg" height={10} width={10} />
-                        <Popup show={showEngagePopup}>
-                            <button onClick={handleStartConversation}>
-                                <span>Send a message</span><Image src="/arr-r.svg" height={10} width={10} />
-                            </button>
-                            <button onClick={handleReportAccount}>
-                                <span>Report Account</span><Image src="/arr-r.svg" height={10} width={10} />
-                            </button>
-                        </Popup>
-                    </button>
-                </Stats>
-            </UserCard>
-            </BackImage>
+            {/* <BackImage>
+                <UserCard>
+                    <ProfileStats>
+                        <ProfileImgCont>
+                            <Image src={inData?.media?.[0]?.url ? inData?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${inData?.user?.firstname}+${inData?.user?.lastname}&color=FFFFFF&background=12544D`}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                        </ProfileImgCont>
+                        <ProfileData>
+                            <div>
+                                <Image src="/users.svg" height={20} width={20} />
+                                <span>{inData?.gender}</span>
+                            </div>
+                            <div>
+                                <Image src="/verified.svg" height={20} width={20} />
+                                <span>Verified</span>
+                            </div>
+                        </ProfileData>
+                        <p>0/5 (<span>0 Feedbacks</span>)</p>
+                        <p>Member since {(new Date(inData?.created_at).toDateString())}</p>
+                        <button onClick={handleLinkCopy}>Share Profile</button>
+                    </ProfileStats>
+                    <ProfileDetails>
+                        <h2>{inData?.user?.firstname} {inData?.user.lastname}</h2>
+                        <ProfileCategory>
+                            <div><Image src="/niche.svg" height={25} width={25}/><p>Influencer&apos;s Niche</p></div>
+                            <div><Image src="/flag.svg" height={25} width={25}/><p>Nigeria</p></div>
+                            <div><Image src="/instagram.svg" height={25} width={25}/><p>{inData?.instagram}</p> <span>0</span></div>
+                        </ProfileCategory>
+                        <p>{inData?.biography}</p>
+                        <SeeMoreCont>
+                            <button>Click to see more</button>
+                        </SeeMoreCont>
+                        
+                    </ProfileDetails>
+                    <Stats>
+                        <StatWrapper>
+                            <StatCard textColor='#2B368C' bgColor="#F9F9FC">
+                                <h3>{inData?.analytics?.influenzit?.ongoing_campaigns_count}</h3>
+                                <p>Ongoing Engagements</p>
+                            </StatCard>
+                            <StatCard textColor='#019B2C' bgColor="#F7FCF9">
+                                <h3>{inData?.analytics?.influenzit?.completed_campaigns_count}</h3>
+                                <p>Completed Campaigns</p>
+                            </StatCard>
+                            <StatCard textColor='#FF0000' bgColor="#FFF7F7">
+                                <h3>{inData?.analytics?.influenzit?.cancelled_campaigns_count}</h3>
+                                <p>Cancelled Engagements</p>
+                            </StatCard>
+                            <StatCard textColor='#000' bgColor="#F8F8F8">
+                                <h3>{inData?.analytics?.influenzit?.campaign_engagements}</h3>
+                                <p>Total Engagement</p>
+                            </StatCard> 
+                        </StatWrapper>
+                        <p>Send Offer to this creator by clicking on the button.</p>
+                        <button onClick={() => setShowEngagePopup(!showEngagePopup)}>
+                            <span>Engage Influencer</span> <Image src="/down-chev.svg" height={10} width={10} />
+                            <Popup show={showEngagePopup}>
+                                <button onClick={handleStartConversation}>
+                                    <span>Send a message</span><Image src="/arr-r.svg" height={10} width={10} />
+                                </button>
+                                <button onClick={handleReportAccount}>
+                                    <span>Report Account</span><Image src="/arr-r.svg" height={10} width={10} />
+                                </button>
+                            </Popup>
+                        </button>
+                    </Stats>
+                </UserCard>
+            </BackImage> */}
+            
             <Wrapper>
+                <ImageContainer>
+                    <div id='right'>
+                        <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                    </div>
+                    <div id='left'>
+                        
+                    </div>
+                </ImageContainer>
                 <SkillCard>
                     <Top><h3>Services</h3></Top>
                     <Bottom style={{ columnGap: "15px"}}>
                         {
                            inData?.services.map((val, i) => (
-                            <CreatorsCard key={i} style={{ cursor: "pointer" }} onClick={() => router.push(`/services/${val.id}`)}>
-                                <TopImg>
-                                    <Image src={val.media[0]?.url ?? "/web-services.jpg"} alt="" layout="fill" objectPosition="center" objectFit='cover' />
-                                </TopImg>
-                                <CreatorDetails>
-                                    <ServUserCard>
-                                        <ImageWrap>
-                                            <Image src={inData?.media?.[0]?.url ? inData?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${inData?.user?.firstname}+${inData?.user?.lastname}&color=FFFFFF&background=12544D`} alt="" layout="fill" objectPosition="center" objectFit='cover'/>
-                                        </ImageWrap>
-                                        <p>{val.description}</p>
-                                    </ServUserCard>
-                                    <ServRate>
-                                        starting from <span>{val.currency} {val.starting_from}</span> 
-                                    </ServRate>
-                                </CreatorDetails>
-                                <ServStats>
-                                    <div>
-                                        <Image src="/star.svg" height={20} width={20} />
-                                        <span>0/5 (0)</span>
-                                    </div>
-                                    <div>
-                                        <span>0 in queue</span>
-                                    </div>
-                                </ServStats>
-                            </CreatorsCard>
+                            <ServiceCard
+                                key={i}
+                                title={val.name}
+                                imgSrc={val.media[0]?.url ?? "/web-services.jpg"}
+                                userName={inData?.user?.name}
+                                price={`${val.currency} ${val.starting_from}`}
+                                serviceLink={`/services/${val.id}`}
+                                profileImg={inData?.user?.profile_pic}
+                            />
                            )) 
                         }
                     </Bottom>

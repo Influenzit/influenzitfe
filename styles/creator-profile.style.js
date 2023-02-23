@@ -244,13 +244,13 @@ export const Popup = styled.div`
     }
 `;
 export const Container = styled.div`
-    background: #eee;
+    background: #FAFBFC;
 `;
 export const Wrapper = styled.div`
     width: 98%;
     margin: 0 auto;
     max-width: ${sizes.wrapperWidth};
-    padding-top: 300px;
+    padding-top: 90px;
     padding-bottom: 30px;
     ${breakpoints.lg}{
         padding-top: 20px;
@@ -339,4 +339,14 @@ export const WorkCard = styled.div`
        
     }
 `;
-
+export const ImageContainer = styled.div`
+    height: 450px;
+    border-radius: 16px;
+    overflow: hidden;
+    width: 100%;
+    #right {
+        position: relative;
+        height: 100%;
+        width: 100%;
+    }
+`;

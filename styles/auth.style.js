@@ -66,6 +66,7 @@ export const FormWrapper = styled.div`
     width: 100%;
     max-width: 450px;
     min-width: 320px;
+    padding-bottom: 30px;
     ${breakpoints.lg}{
         width: 80%;
     }
