@@ -37,14 +37,14 @@ const FAQs = () => {
                 <TopBanner>
                     <span>FREQUENTLY ASKED QUESTIONS</span>
                     <h1>Help Center</h1>
-                    <p>Everything you need to know about the product and billing. Can't find the answer you're looking for. Please contact our support team</p>
+                    <p>Everything you need to know about the product and billing. Can&apos;t find the answer you&apos;re looking for. Please contact our support team</p>
                 </TopBanner>
             </Section>
             <Wrapper>
                 <h2>Business Owners</h2>
                 <Faqs>
                     {faqs.map((val, i) => (
-                        <Faq>
+                        <Faq key={i}>
                             <h3>{val.question}</h3>
                             <p>{val.answer}</p>
                         </Faq>
@@ -53,7 +53,7 @@ const FAQs = () => {
                 <h2>Inflencers / Creators</h2>
                 <Faqs>
                     {faqs.map((val, i) => (
-                        <Faq>
+                        <Faq key={i}>
                             <h3>{val.question}</h3>
                             <p>{val.answer}</p>
                         </Faq>
@@ -62,7 +62,7 @@ const FAQs = () => {
                 <Banner>
                     <Image src="/banner-s.png" height={40} width={85}/>
                     <h3>Still have questions?</h3>
-                    <p>Can't find the answer you're looking for? Please chat to our friendly team.</p>
+                    <p>Can&apos;t find the answer you&apos;re looking for? Please chat to our friendly team.</p>
                     <Link href="/contact" passHref>
                         <a>Get in touch</a>
                     </Link>

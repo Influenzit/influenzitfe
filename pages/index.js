@@ -155,7 +155,7 @@ const Home = () => {
       <HeroSectionFour>
         <WrapperFour>
           <h1>Over <span>500 Influencers</span> Available</h1>
-          <p>When you choose Influenzit over other solutions, you'll grow 2.3x faster, and save hundreds of hours wasted on boring manual work.</p>
+          <p>When you choose Influenzit over other solutions, you&apos;ll grow 2.3x faster, and save hundreds of hours wasted on boring manual work.</p>
           <NicheWrapper>
             <NicheCard>
               <ImgW1 id="anim">
@@ -238,7 +238,7 @@ const Home = () => {
       <HeroSectionFive>
         <WrapperFive>
           <p id="heading">Testimonials</p>
-          <h1>Don't take our word for it</h1>
+          <h1>Don&apos;t take our word for it</h1>
           <ReviewWrapper>
             <ReviewCard>
               <h3>Testimonial Heading</h3>
@@ -289,7 +289,7 @@ const Home = () => {
           <FaqWrapper>
             {
               faqs.map((val, i) => (
-                <Faq>
+                <Faq key={i}>
                   <Question onClick={() => handleFaqToggle(i)}>
                     <span>{val.question}</span>
                     <span>{faq?.[i] ? (<Image src="/close.svg" alt="" height={20} width={20} />) : (<Image src="/open.svg" alt="" height={20} width={20} />)}</span>
