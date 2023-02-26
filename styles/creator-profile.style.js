@@ -273,8 +273,8 @@ export const Top = styled.div`
 export const Bottom = styled.div`
     display: flex; 
     flex-wrap: wrap;
-    column-gap: 20px;
-    padding: 15px 20px;
+    column-gap: 36px;
+    padding: 15px 0;
     row-gap: 15px;
     ${breakpoints.md}{
         column-gap: 10px;
@@ -344,9 +344,167 @@ export const ImageContainer = styled.div`
     border-radius: 16px;
     overflow: hidden;
     width: 100%;
-    #right {
+    #img {
         position: relative;
         height: 100%;
         width: 100%;
+    }
+`;
+export const ImageContainerTwo = styled.div`
+    height: 450px;
+    border-radius: 16px;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    column-gap: 5px;
+    .wrap {
+        width: 50%;
+        max-width: 50%;
+        min-width: 50%;
+        height: 100%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        row-gap: 5px;
+    }
+    .wrap-top {
+        height: 60%;
+        max-height: 60%;
+        position: relative;
+    }
+    .wrap-bottom {
+        height: 40%;
+        max-height: 40%;
+        display: flex;
+        column-gap: 5px;
+        position: relative;
+        div {
+            position: relative;
+            width: 50%;
+            max-width: 50%;
+            min-width: 50%;
+        }
+    }
+`;
+export const BottomSection = styled.div`
+    display: flex;
+    margin-top: 35px;
+    column-gap: 20px;
+`;
+export const LeftSection = styled.div`
+    width: calc(100% - 380px);
+    min-width: calc(100% - 380px);
+`;
+export const UserCardSection = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
+export const UserImage = styled.div`
+`;
+export const Info = styled.div`
+`;
+export const Tags = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 15px;
+    padding: 20px 0;
+    row-gap: 15px;
+`;
+export const Tag = styled.span`
+    padding: 8px 20px;
+    background: rgba(42, 41, 57, 0.08);
+    border-radius: 99px;
+`;
+export const RightSection = styled.div`
+    width: 360px;
+    h3 {
+        color: #2A2939;
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+`;
+export const SocialWrapper = styled.div`
+    display: flex;
+    column-gap: 10px;
+    width: 100%;
+    margin: 10px 0;
+`;
+export const Social = styled.div`
+    background: #FFFFFF;
+    border: 1px solid rgba(42, 41, 57, 0.1);
+    border-radius: 8px;
+    display: flex;
+    column-gap: 10px;
+    padding: 15px;
+    width: 50%;
+    min-width: calc(50% - 5px);
+    div {
+        h4 {
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(42, 41, 57, 0.5);
+        }
+        p {
+            font-size: 14px;
+        }
+    }
+`;
+export const CollaborateBtn = styled.button`
+    background: ${colors.primaryColor};
+    color: #fff;
+    width: 100%;
+    padding: 8px 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    outline: none;
+    font-size: 17px;
+    border-radius: 8px;
+    column-gap: 10px;
+    margin-bottom: 15px;
+`;
+export const Campaign = styled.div`
+    margin: 10px 0;
+    background: #FFFFFF;
+    border: 1px solid rgba(42, 41, 57, 0.1);
+    border-radius: 16px;
+    display: flex;
+    .cont {
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 50%;
+        min-width: 50%;
+        max-width: 50%;
+        :first-of-type {
+            border-right: 1px solid rgba(42, 41, 57, 0.1);
+        }
+        h1 {
+            font-weight: 700;
+            font-size: 40px;
+            color: #2A2939;
+        }
+        p {
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            color: rgba(42, 41, 57, 0.5);
+            font-weight: 600;
+            font-size: 12px;
+        }
+        div {
+            display: flex;
+            column-gap: 3px;
+        }
+    }
+`;
+export const Listing = styled.div`
+    h3 {
+        font-size: 24px;
+        color: #2A2939;
     }
 `;

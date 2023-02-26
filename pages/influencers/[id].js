@@ -5,18 +5,20 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { getInfluencer } from '../../api/influencer'
+import { getInfluencer, getInfluencers } from '../../api/influencer'
 import { startConversation } from '../../api/messaging'
 import { setLoading } from '../../app/reducers/status'
 import { getUser } from '../../app/reducers/user'
 import LandingLayout from '../../layouts/landing.layout'
 import { Controls, CreatorsCard, CreatorDetails, SocialHandle } from '../../styles/business-owner.style'
-import { BackImage, Bottom, Container, HeroSectionOne, ImageContainer, Popup, ProfileCategory, ProfileData, ProfileDetails, ProfileImgCont, ProfileStats, SeeMoreCont, SkillCard, StatCard, Stats, StatWrapper, Top, UserCard, WorkCard, Wrapper } from '../../styles/creator-profile.style'
-import { AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, ImageWrap, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, TabBtn, Tabs, TopImg } from '../../styles/influencer-profile';
-import { FormContainer, UpdateModal } from '../../styles/view.style'
+import { BackImage, Bottom, BottomSection, Campaign, CollaborateBtn, Container, HeroSectionOne, ImageContainer, ImageContainerTwo, Info, LeftSection, Listing, RightSection, SkillCard, Social, SocialWrapper, Tag, Tags, Top, UserCardSection, WorkCard, Wrapper } from '../../styles/creator-profile.style'
+import { AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, TabBtn, Tabs, TopImg } from '../../styles/influencer-profile';
+import { Details, FormContainer, UpdateModal } from '../../styles/view.style'
 import { InputContainer } from '../../styles/profile.style'
 import { createDispute } from '../../api/support'
 import ServiceCard from '../../components/service-card'
+import { UserDetails, UserImage } from '../../styles/home.style'
+import ProfileCard from '../../components/profile-card'
 
 const CreatorProfile = () => {
   const router = useRouter();
@@ -41,6 +43,13 @@ const CreatorProfile = () => {
         onError(res) {
             dispatch(setLoading(false));
         } 
+    });
+    const { data: influencersData, refetch: refetchInfluencersData } = useQuery(["get-influencers"], async () => {
+        return await getInfluencers("");
+    }, {
+        enabled: false,
+        staleTime: Infinity,
+        retry: false
     });
     const startConversationMutation = useMutation((data) => {
         return startConversation(data);
@@ -131,6 +140,7 @@ const CreatorProfile = () => {
       }
     useEffect(() => {
         dispatch(setLoading(true));
+        refetchInfluencersData();
         if(id){
             refetchInfluencerData();
         }
@@ -213,83 +223,119 @@ const CreatorProfile = () => {
             </BackImage> */}
             
             <Wrapper>
-                <ImageContainer>
-                    <div id='right'>
-                        <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
-                    </div>
-                    <div id='left'>
-                        
-                    </div>
-                </ImageContainer>
-                <SkillCard>
-                    <Top><h3>Services</h3></Top>
-                    <Bottom style={{ columnGap: "15px"}}>
-                        {
-                           inData?.services.map((val, i) => (
-                            <ServiceCard
-                                key={i}
-                                title={val.name}
-                                imgSrc={val.media[0]?.url ?? "/web-services.jpg"}
-                                userName={inData?.user?.name}
-                                price={`${val.currency} ${val.starting_from}`}
-                                serviceLink={`/services/${val.id}`}
-                                profileImg={inData?.user?.profile_pic}
-                            />
-                           )) 
-                        }
-                    </Bottom>
-                </SkillCard>
-                <SectionTwo>
-                    <Left>
+                {
+                    (inData?.media.length <= 1) && (
+                        <ImageContainer>
+                            <div id="img">
+                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                            </div>
+                        </ImageContainer>
+                    )
+                }
+                {
+                    (inData?.media.length === 2) && (
+                        <ImageContainerTwo>
+                            <div className='wrap'>
+                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                            </div>
+                            <div className='wrap'>
+                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                            </div>
+                        </ImageContainerTwo>
+                    )
+                }
+                {
+                    (inData?.media.length === 3) && (
+                        <ImageContainerTwo>
+                            <div className='wrap'>
+                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                            </div>
+                            <div className="wrap">
+                                <div className='wrap-top'>
+                                    <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                </div>
+                                <div className='wrap-bottom'>
+                                    <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                </div>
+                            </div>
+                        </ImageContainerTwo>
+                    )
+                }
+                {
+                    (inData?.media.length === 4) && (
+                        <ImageContainerTwo>
+                            <div className='wrap'>
+                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                            </div>
+                            <div className='wrap'>
+                                <div className='wrap-top'>
+                                    <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                </div>
+                                <div className='wrap-bottom'>
+                                    <div>
+                                        <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                    </div>
+                                    <div>
+                                        <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </ImageContainerTwo>
+                    )
+                }
+                <BottomSection>
+                    <LeftSection>
+                        <UserCardSection>
+                            <UserDetails>
+                                <h2>{inData?.user?.name}</h2>
+                                <div>
+                                    <p>
+                                        <Image src="/nigeria.svg"  alt="" height={16} width={16}/>
+                                        <span>Nigeria</span>
+                                    </p>
+                                    <Image src="/dot.svg"  alt="" height={4} width={4}/>
+                                    <p>
+                                        <Image src="/gender.svg"  alt="" height={16} width={16}/>
+                                        <span>{inData?.gender}</span>
+                                    </p>
+                                    <Image src="/dot.svg"  alt="" height={4} width={4}/>
+                                    <p>
+                                        <Image src="/star-p.svg"  alt="" height={16} width={16}/>
+                                        <span>5.0 (20 ratings)</span>
+                                    </p>
+                                </div>
+                            </UserDetails>
+                            <UserImage>
+                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                            </UserImage>
+                        </UserCardSection>
+                        <Info>
+                            <p>{inData?.biography}</p>
+                            <Tags>
+                                {
+                                    inData?.skills.map((val, i) => (
+                                        <Tag key={i}>{val.name}</Tag>
+                                    ))
+                                }
+                            </Tags>
+                        </Info>
                         <DataSection>
                             <Tabs>
                                 <TabBtn isActive={currentTab === "instagram"} onClick={() => setCurrentTab("instagram")}>Instagram</TabBtn>
                                 <TabBtn isActive={currentTab === "facebook"} onClick={() => setCurrentTab("facebook")}>Facebook</TabBtn>
                                 <TabBtn isActive={currentTab === "twitter"} onClick={() => setCurrentTab("twitter")}>Twitter</TabBtn>
                                 <TabBtn isActive={currentTab === "tiktok"} onClick={() => setCurrentTab("tiktok")}>TikTok</TabBtn>
+                                <TabBtn isActive={currentTab === "youtube"} onClick={() => setCurrentTab("youtube")}>Youtube</TabBtn>
                             </Tabs>
                             {
                                 currentTab === "instagram" && inData?.instagram_verified ? (
                                     <Content>
-                                        <PostWrapper>
-                                            <SocialPost>
-                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                                <PostLayer>
-                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                                </PostLayer>
-                                            </SocialPost>
-                                            <SocialPost>
-                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                                <PostLayer>
-                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                                </PostLayer>
-                                            </SocialPost>
-                                            <SocialPost>
-                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                                <PostLayer>
-                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                                </PostLayer>
-                                            </SocialPost>
-                                        </PostWrapper>
-                                        <PostStats>
-                                            <div>
-                                                <p><span>123</span>Posts</p>
-                                            </div>
-                                            <div>
-                                                <p><span>540</span>Followers</p>
-                                            </div>
-                                            <div>
-                                                <p><span>78%</span>Engagements</p>
-                                            </div>
-                                        </PostStats>
+                                       
                                     </Content>
                                 ) : (currentTab === "instagram") && (
                                     <Content>
                                         <EmptyWrapper>
-                                            <Image src="/empty.png" alt="" height={150} width={150}/>
+                                            <Image src="/empty.png" alt="" height={120} width={120}/>
                                             <h3>Instagram not connected yet</h3>
                                         </EmptyWrapper>
                                     </Content>
@@ -298,45 +344,12 @@ const CreatorProfile = () => {
                             {
                                 currentTab === "facebook" && inData?.facebook_verified ? (
                                     <Content>
-                                        <PostWrapper>
-                                            <SocialPost>
-                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                                <PostLayer>
-                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                                </PostLayer>
-                                            </SocialPost>
-                                            <SocialPost>
-                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                                <PostLayer>
-                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                                </PostLayer>
-                                            </SocialPost>
-                                            <SocialPost>
-                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                                <PostLayer>
-                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                                </PostLayer>
-                                            </SocialPost>
-                                        </PostWrapper>
-                                        <PostStats>
-                                            <div>
-                                                <p><span>123</span>Posts</p>
-                                            </div>
-                                            <div>
-                                                <p><span>540</span>Followers</p>
-                                            </div>
-                                            <div>
-                                                <p><span>78%</span>Engagements</p>
-                                            </div>
-                                        </PostStats>
+                                       
                                     </Content>
                                 ) : (currentTab === "facebook") && (
                                     <Content>
                                         <EmptyWrapper>
-                                            <Image src="/empty.png" alt="" height={150} width={150}/>
+                                            <Image src="/empty.png" alt="" height={120} width={120}/>
                                             <h3>Facebook not connected yet</h3>
                                         </EmptyWrapper>
                                     </Content>
@@ -345,45 +358,12 @@ const CreatorProfile = () => {
                             {
                                 currentTab === "twitter" && inData?.twitter_verified ? (
                                     <Content>
-                                        <PostWrapper>
-                                            <SocialPost>
-                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                                <PostLayer>
-                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                                </PostLayer>
-                                            </SocialPost>
-                                            <SocialPost>
-                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                                <PostLayer>
-                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                                </PostLayer>
-                                            </SocialPost>
-                                            <SocialPost>
-                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                                <PostLayer>
-                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                                </PostLayer>
-                                            </SocialPost>
-                                        </PostWrapper>
-                                        <PostStats>
-                                            <div>
-                                                <p><span>123</span>Posts</p>
-                                            </div>
-                                            <div>
-                                                <p><span>540</span>Followers</p>
-                                            </div>
-                                            <div>
-                                                <p><span>78%</span>Engagements</p>
-                                            </div>
-                                        </PostStats>
+                                       
                                     </Content>
                                 ) : (currentTab === "twitter") && (
                                     <Content>
                                         <EmptyWrapper>
-                                            <Image src="/empty.png" alt="" height={150} width={150}/>
+                                            <Image src="/empty.png" alt="" height={120} width={120}/>
                                             <h3>Twitter not connected yet</h3>
                                         </EmptyWrapper>
                                     </Content>
@@ -392,240 +372,203 @@ const CreatorProfile = () => {
                              {
                                 currentTab === "tiktok" && inData?.tiktok_verified ? (
                                     <Content>
-                                        <PostWrapper>
-                                            <SocialPost>
-                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                                <PostLayer>
-                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                                </PostLayer>
-                                            </SocialPost>
-                                            <SocialPost>
-                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                                <PostLayer>
-                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                                </PostLayer>
-                                            </SocialPost>
-                                            <SocialPost>
-                                                <Image src="/social-post.png" alt="" layout="fill" objectPosition="center" objectFit="cover"/>
-                                                <PostLayer>
-                                                    <p><Image src="/heart.svg" height={20} width={20} /><span>5</span></p>
-                                                    <p><Image src="/chat.svg" height={20} width={20} /><span>5</span></p>
-                                                </PostLayer>
-                                            </SocialPost>
-                                        </PostWrapper>
-                                        <PostStats>
-                                            <div>
-                                                <p><span>123</span>Posts</p>
-                                            </div>
-                                            <div>
-                                                <p><span>540</span>Followers</p>
-                                            </div>
-                                            <div>
-                                                <p><span>78%</span>Engagements</p>
-                                            </div>
-                                        </PostStats>
+                                        
                                     </Content>
                                 ) : (currentTab === "tiktok") && (
                                     <Content>
                                         <EmptyWrapper>
-                                            <Image src="/empty.png" alt="" height={150} width={150}/>
+                                            <Image src="/empty.png" alt="" height={120} width={120}/>
                                             <h3>TikTok not connected yet</h3>
                                         </EmptyWrapper>
                                     </Content>
                                 )
                             }
-                            
+                             {
+                                currentTab === "youtube" && inData?.tiktok_verified ? (
+                                    <Content>
+                                        
+                                    </Content>
+                                ) : (currentTab === "youtube") && (
+                                    <Content>
+                                        <EmptyWrapper>
+                                            <Image src="/empty.png" alt="" height={120} width={120}/>
+                                            <h3>Youtube not connected yet</h3>
+                                        </EmptyWrapper>
+                                    </Content>
+                                )
+                            }
                         </DataSection>
-                        <DataSectionTwo>
-                            <Tabs>
-                                <TabBtn isActive={true}>Experience</TabBtn>
-                            </Tabs>
-                            <Content>
-                                <ExperienceWrapper>
-                                <WorkCard>
-                                    <h3>Lead UI/UX Designer &amp; Wordpress Developer | Websitechic Digital influencer</h3>
-                                    <div>
-                                        <p><Image src="/bag-icon.svg" height={20} width={20} /><span>Company Name</span></p>
-                                        <p><Image src="/calendar.svg" height={20} width={20} /><span>March 2020 - Present</span></p>
-                                    </div>
-                                    <p>Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem accusantium doque laudantium, totam rem aiam eaqueiu ipsa quae ab illoion inventore veritatisetm quasitea architecto beataea dictaed quia couuntur magni dolores eos aquist ratione vtatem seque nesnt. Neque porro quamest quioremas ipsum quiatem dolor sitem ameteism conctetur adipisci velit sedate quianon.</p>
-                                </WorkCard> 
-                                <WorkCard>
-                                    <h3>Lead UI/UX Designer &amp; Wordpress Developer | Websitechic Digital influencer</h3>
-                                    <div>
-                                        <p><Image src="/bag-icon.svg" height={20} width={20} /><span>Company Name</span></p>
-                                        <p><Image src="/calendar.svg" height={20} width={20} /><span>March 2020 - Present</span></p>
-                                    </div>
-                                    <p>Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem accusantium doque laudantium, totam rem aiam eaqueiu ipsa quae ab illoion inventore veritatisetm quasitea architecto beataea dictaed quia couuntur magni dolores eos aquist ratione vtatem seque nesnt. Neque porro quamest quioremas ipsum quiatem dolor sitem ameteism conctetur adipisci velit sedate quianon.</p>
-                                </WorkCard> 
-                                </ExperienceWrapper>
-                            </Content>
-                        </DataSectionTwo>
-                    </Left>
-                    <Right>
-                        <SkillCard>
-                            <Top>
-                                <h3>Social Profiles</h3>
-                            </Top>
-                            <Bottom style={{ flexDirection: "column"}}>
-                                <SocialStats>
-                                    <Image src="/instagram.svg" height={25} width={25}/>
-                                    <p>{inData?.instagram}</p>
-                                    <span>{inData?.analytics?.instagram?.count ?? 0}</span>
-                                </SocialStats>
-                                <SocialStats>
-                                    <Image src="/twitter.svg" height={25} width={25}/>
-                                    <p>{inData?.twitter}</p>
-                                    <span>{inData?.analytics?.twitter?.count ?? 0}</span>
-                                </SocialStats>
-                                <SocialStats>
-                                    <Image src="/facebook.svg" height={25} width={25}/>
-                                    <p>{inData?.facebook}</p>
-                                    <span>{inData?.analytics?.facebook?.count}</span>
-                                </SocialStats>
-                                <SocialStats>
-                                    <Image src="/tiktok.svg" height={25} width={25}/>
-                                    <p>{inData?.tiktok}</p>
-                                    <span>{inData?.analytics?.tiktok?.count}</span>
-                                </SocialStats>
-                            </Bottom>
-                        </SkillCard>
-                        <SkillCard>
-                            <Top>
-                                <h3>Awards &amp; Certifications</h3>
-                            </Top>
-                            <Bottom style={{ flexDirection: "column"}}>
-                                <AwardCard>
-                                    <Image src="/award.svg" height={50} width={50}/>
-                                    <div>
-                                        <p>Public Engagement</p>
-                                        <span>Feb 09, 2021</span>
-                                    </div>
-                                </AwardCard>
-                                <AwardCard>
-                                    <Image src="/award.svg" height={50} width={50}/>
-                                    <div>
-                                        <p>Public Engagement</p>
-                                        <span>Feb 09, 2021</span>
-                                    </div>
-                                </AwardCard>
-                                <AwardCard>
-                                    <Image src="/award.svg" height={50} width={50}/>
-                                    <div>
-                                        <p>Public Engagement</p>
-                                        <span>Feb 09, 2021</span>
-                                    </div>
-                                </AwardCard>
-                            </Bottom>
-                        </SkillCard>
-                        <SkillCard>
-                            <Top>
-                                <h3>My Skills</h3>
-                            </Top>
-                            <Bottom style={{ flexDirection: "column"}}>
-                                {
-                                    inData?.skills.map((val, i) => (
-                                        <SkillGuage level={val.rate} key={i}>
-                                            <p>{val.name}</p>
-                                            <div></div>
-                                        </SkillGuage>
-                                    ))
-                                }
-                            </Bottom>
-                        </SkillCard>
-                    </Right>
-                </SectionTwo>
-                <SkillCard>
-                    <Top><h3>Similar Creators</h3></Top>
-                    <Bottom style={{ justifyContent: "space-between"}}>
-                        <CreatorsCard>
-                            <TopImg>
-                                <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center"/>
-                            </TopImg>
-                            <CreatorDetails>
-                                <h4>Ezekiel Phoenixgold</h4>
-                                <p>Male | Lagos, Nigeria</p>
-                                <SocialHandle>
-                                <Link href="/" targer="_blank" passHref>
-                                    <a><Image src="/twitter.svg" alt="" height={16} width={16}/><span>itzphoenixgold | 16k reach</span></a>
-                                </Link>
-                                </SocialHandle>
-                                <p>Laptop Lifestyle | Photography | Fashion</p>
-                                <Controls>
-                                <Link href="/" passHref>
-                                    <a>Engage</a>
-                                </Link>
-                                {/* <button><Image src="/list.svg" alt="" height={24} width={24}/></button> */}
-                                </Controls>
-                            </CreatorDetails>
-                        </CreatorsCard>
-                        <CreatorsCard>
-                            <TopImg>
-                                <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center"/>
-                            </TopImg>
-                            <CreatorDetails>
-                                <h4>Ezekiel Phoenixgold</h4>
-                                <p>Male | Lagos, Nigeria</p>
-                                <SocialHandle>
-                                <Link href="/" targer="_blank" passHref>
-                                    <a><Image src="/twitter.svg" alt="" height={16} width={16}/><span>itzphoenixgold | 16k reach</span></a>
-                                </Link>
-                                </SocialHandle>
-                                <p>Laptop Lifestyle | Photography | Fashion</p>
-                                <Controls>
-                                <Link href="/" passHref>
-                                    <a>Engage</a>
-                                </Link>
-                                {/* <button><Image src="/list.svg" alt="" height={24} width={24}/></button> */}
-                                </Controls>
-                            </CreatorDetails>
-                        </CreatorsCard>
-                        <CreatorsCard>
-                            <TopImg>
-                                <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center"/>
-                            </TopImg>
-                            <CreatorDetails>
-                                <h4>Ezekiel Phoenixgold</h4>
-                                <p>Male | Lagos, Nigeria</p>
-                                <SocialHandle>
-                                <Link href="/" targer="_blank" passHref>
-                                    <a><Image src="/twitter.svg" alt="" height={16} width={16}/><span>itzphoenixgold | 16k reach</span></a>
-                                </Link>
-                                </SocialHandle>
-                                <p>Laptop Lifestyle | Photography | Fashion</p>
-                                <Controls>
-                                <Link href="/" passHref>
-                                    <a>Engage</a>
-                                </Link>
-                                {/* <button><Image src="/list.svg" alt="" height={24} width={24}/></button> */}
-                                </Controls>
-                            </CreatorDetails>
-                        </CreatorsCard>
-                        <CreatorsCard>
-                            <TopImg>
-                                <Image src="/profile-2.png" alt="" layout="fill" objectPosition="center"/>
-                            </TopImg>
-                            <CreatorDetails>
-                                <h4>Ezekiel Phoenixgold</h4>
-                                <p>Male | Lagos, Nigeria</p>
-                                <SocialHandle>
-                                <Link href="/" targer="_blank" passHref>
-                                    <a><Image src="/twitter.svg" alt="" height={16} width={16}/><span>itzphoenixgold | 16k reach</span></a>
-                                </Link>
-                                </SocialHandle>
-                                <p>Laptop Lifestyle | Photography | Fashion</p>
-                                <Controls>
-                                <Link href="/" passHref>
-                                    <a>Engage</a>
-                                </Link>
-                                {/* <button><Image src="/list.svg" alt="" height={24} width={24}/></button> */}
-                                </Controls>
-                            </CreatorDetails>
-                        </CreatorsCard>
+                    </LeftSection>
+                    <RightSection>
+                        <h3>Social Media Handles</h3>
+                        <SocialWrapper>
+                            <Social>
+                                <div>
+                                    <Image src="/instagram.png" alt="" height={32} width={32} />
+                                </div>
+                                <div>
+                                    <h4>INSTAGRAM</h4>
+                                    <p>@{inData?.instagram}</p>
+                                </div>
+                            </Social>
+                            <Social>
+                                <div>
+                                    <Image src="/youtube.svg" alt="" height={32} width={32} />
+                                </div>
+                                <div>
+                                    <h4>YOUTUBE</h4>
+                                    <p>@{inData?.youtube}</p>
+                                </div>
+                            </Social>
+                        </SocialWrapper>
+                        <SocialWrapper>
+                            <Social>
+                                <div>
+                                    <Image src="/tiktok.png" alt="" height={32} width={32} />
+                                </div>
+                                <div>
+                                    <h4>TIKTOK</h4>
+                                    <p>@{inData?.tiktok}</p>
+                                </div>
+                            </Social>
+                            <Social>
+                                <div>
+                                    <Image src="/twitter.png" alt="" height={32} width={32} />
+                                </div>
+                                <div>
+                                    <h4>TWITTER</h4>
+                                    <p>@{inData?.twitter}</p>
+                                </div>
+                            </Social>
+                        </SocialWrapper>
+                        <SocialWrapper>
+                            <Social style={{ minWidth: "100%" }}>
+                                <div>
+                                    <Image src="/facebook.png" alt="" height={32} width={32} />
+                                </div>
+                                <div>
+                                    <h4>FACEBOOK</h4>
+                                    <p>@{inData?.facebook}</p>
+                                </div>
+                            </Social>
+                        </SocialWrapper>
+                        <CollaborateBtn onClick={handleStartConversation}>
+                            <Image src="/envelope.svg" alt="" height={28} width={28} />
+                            <span>Collaborate with Influencer</span>
+                        </CollaborateBtn>
+                        <h3>Performance</h3>
+                        <Campaign>
+                            <div className='cont'>
+                                <h1>{inData?.analytics.influenzit.completed_campaigns_count}</h1>
+                                <p>Completed <br /> Campaigns</p>
+                            </div>
+                            <div className='cont'>
+                                <h1>5.0</h1>
+                                <div>
+                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
+                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
+                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
+                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
+                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
+                                </div>
+                                <p>20 ratings</p>
+                            </div>
+                        </Campaign>
+                    </RightSection>
+                </BottomSection>
+                {inData?.services.length ?
+                    <Listing>
+                        <h3>Services</h3>
+                        <Bottom style={{ columnGap: "15px"}}>
+                            {
+                            inData?.services.map((val, i) => (
+                                <ServiceCard
+                                    key={i}
+                                    title={val.name}
+                                    imgSrc={val.media[0]?.url ?? "/web-services.jpg"}
+                                    userName={inData?.user?.name}
+                                    price={`${val.currency} ${val.starting_from}`}
+                                    serviceLink={`/services/${val.id}`}
+                                    profileImg={inData?.user?.profile_pic}
+                                />
+                            )) 
+                            }
+                        </Bottom>
+                    </Listing> : null
+                }
+                {/* {inData?.services.length ?
+                    <Listing>
+                        <h3>Portfolio</h3>
+                        <Bottom style={{ columnGap: "15px"}}>
+                            {
+                            inData?.services.map((val, i) => (
+                                <ServiceCard
+                                    key={i}
+                                    title={val.name}
+                                    imgSrc={val.media[0]?.url ?? "/web-services.jpg"}
+                                    userName={inData?.user?.name}
+                                    price={`${val.currency} ${val.starting_from}`}
+                                    serviceLink={`/services/${val.id}`}
+                                    profileImg={inData?.user?.profile_pic}
+                                />
+                            )) 
+                            }
+                        </Bottom>
+                    </Listing> : null
+                } */}
+                {/* {inData?.reviews.length ?
+                    <Listing>
+                        <h3>Reviews</h3>
+                        <Bottom style={{ columnGap: "15px"}}>
+                            {
+                                inData?.services.map((val, i) => (
+                                   <ReviewCard>
+                                        <h3>Testimonial Heading</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget leo rutrum, ullamcorper dolor eu, faucibus massa.</p>
+                                        <UserCard>
+                                            <UserImage>
+                                            <Image src="/review.png" alt="review-img" layout="fill" objectFit="cover" objectPosition="center"/>
+                                            </UserImage>
+                                            <UserDetails>
+                                            <h4>Aaron Musk</h4>
+                                            <p>CEO at Krystal Bag Palace</p>
+                                            </UserDetails>
+                                        </UserCard>
+                                    </ReviewCard>
+                                )) 
+                            }
+                        </Bottom>
+                    </Listing> : null
+                } */}
+                <Listing>
+                    <h3>Similar creators</h3>
+                    <Bottom>
+                        {
+                            influencersData?.data?.data?.data.splice(0, 4).map((val, i) => {
+                                let genSkills = "";
+                                val.skills.forEach((val, i) => {
+                                    if(i < 5){
+                                        if (i !== 0) {
+                                            genSkills += `| ${val.name} `
+                                        } else {
+                                            genSkills += `${val.name} `
+                                        }
+                                    }
+                                })
+                                return <ProfileCard
+                                    key={i}
+                                    profileLink={`/influencers/${val.id}`}
+                                    imgSrc={val?.media.filter(med => med.identifier === 'profile_pic')?.[0]?.url ?? '/niche8.png'  }
+                                    handle={val.twitter}
+                                    name={`${val.user.firstname} ${val.user.lastname}`}
+                                    sex={val.gender}
+                                    skills={genSkills}
+                                    address={val.address}
+                                />
+                            })
+                        }
                     </Bottom>
-                </SkillCard>
+                </Listing>
             </Wrapper>
         </HeroSectionOne>
         {showDispute &&(

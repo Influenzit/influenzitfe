@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { breakpoints } from "./theme";
+import { breakpoints, colors } from "./theme";
 
 export const ServiceCard = styled.div`
     width: 100%;
@@ -168,28 +168,33 @@ export const DataSectionTwo = styled.div`
 `;
 export const Tabs = styled.div`
     display: flex;
-    height: 60px;
-    column-gap: 10px;
+    height: 50px;
+    column-gap: 15px;
 `;
 export const TabBtn = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
+    color: ${(props) => props.isActive ? colors.primaryColor : "#6A6974"};
     cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
     border: none;
-    background: white;
-    font-size: 17px;
-    color: #333;
-    max-width: 260px;
-    opacity: ${(props) => props.isActive ? "1" : "0.6"};
+    background: transparent;
+    position: relative;
+    ::after {
+        content: "";
+        position: absolute;
+        display: block;
+        width: 100%;
+        background: ${(props) => props.isActive ? colors.primaryColor : "transparent"};
+        height: 4px;
+        bottom: 0;
+        border-top-left-radius: 99px;
+        border-top-right-radius: 99px;
+    }
 `;
 export const Content = styled.div`
-    margin-top: 5px;
-    background: #fff;
+    margin-top: 15px;
     height: calc(100% - 65px);
-    padding: 15px;
+    padding: 15px 0;
 `;
 export const PostWrapper = styled.div`
     display: flex;
@@ -265,7 +270,12 @@ export const EmptyWrapper = styled.div`
     justify-content: center;
     flex-direction: column;
     padding: 20px 0;
+    background: #FFFFFF;
+    border: 1px solid rgba(42, 41, 57, 0.1);
+    border-radius: 16px;
     h3 {
-        color: #777
+        color: #000;
+        font-size: 20px;
+        font-weight: 600;
     }
 `;

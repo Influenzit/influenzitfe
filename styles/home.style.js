@@ -586,14 +586,31 @@ export const UserCard = styled.div`
     }
 `;
 export const UserImage = styled.div`
-    height: 50px;
-    width: 50px;
+    height: 80px;
+    width: 80px;
     position: relative;
     border-radius: 50%;
     overflow: hidden;
 `;
 export const UserDetails = styled.div`
-    padding-left: 15px;
+   h2 {
+    font-size: 45px;
+    font-weight: 700;
+    color: #2A2939;
+   }
+   div {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    margin-top: 10px;
+   }
+   p {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+    color: #555461;
+    font-size: 14px;
+   }
 `;
 export const FaqWrapper = styled.div`
     width: 60%;
