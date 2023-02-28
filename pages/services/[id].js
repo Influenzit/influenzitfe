@@ -14,7 +14,7 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useEffect } from 'react';
-import { getExploreService } from '../../api/influencer';
+import { exploreServices, getExploreService } from '../../api/influencer';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,6 +25,10 @@ import { createPaymentLog, processPayment } from '../../api/payment';
 import { getUser } from '../../app/reducers/user';
 import { getCurrentBusiness } from '../../app/reducers/business';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
+import { Answer, Faq, Question } from '../../styles/home.style';
+import { Listing, Bottom } from '../../styles/creator-profile.style';
+import ServiceCard from '../../components/service-card';
 
 function NextArrow(props) {
     const { className, style, onClick } = props;
@@ -78,6 +82,13 @@ const ServiceView = () => {
             router.push("/explore");
         } 
     });
+    const { data: servicesData, refetch: refetchServicesData } = useQuery(["get-services"], async () => {
+        return await exploreServices("");
+    }, {
+        enabled: false,
+        staleTime: Infinity,
+        retry: false
+    });
   const [showFaq, setShowFaq] = useState(null);
   const handleToggle = (i) => {
     if(showFaq[i]){
@@ -98,6 +109,7 @@ const ServiceView = () => {
   useEffect(() => {
     if (id) {
         refetchServiceData();
+        refetchServicesData();
     }
   }, [id]);
   useEffect(() => {
@@ -216,182 +228,98 @@ const ServiceView = () => {
   
   return (
     <Container>
-        <TopTabContainer>
-            <WrapperT>
-                <LeftControl>
-                    <DetailTab>Overview</DetailTab>
-                    <DetailTab>About Influencer</DetailTab>
-                    <DetailTab>FAQs</DetailTab>
-                    <DetailTab>Reviews</DetailTab>
-                </LeftControl>
-                <RightControl>
-                    <button>
-                        <Image src={heartIcon} height={21} width={21} />
-                    </button>
-                    <button>
-                        <Image src={shareIcon} height={21} width={21} />
-                    </button>
-                </RightControl>
-            </WrapperT>
-        </TopTabContainer>
         <Wrapper>
+            <ImageSlides>
+                {
+                    inData?.media && (
+                        <Slider 
+                            dots={false}
+                            infinite={true}
+                            speed={500}
+                            slidesToShow={1}
+                            slidesToScroll={1}
+                            prevArrow={<PrevArrow />}
+                            nextArrow={<NextArrow />}
+                        > 
+                            {
+                                inData?.media.map((val, i) => {
+                                    return (
+                                        <Images key={i}>
+                                            <Image src={val.url} layout='fill' objectFit='cover' objectPosition='center' quality={100} />
+                                        </Images>
+                                    )
+                                })
+                            }
+                            {
+                                (inData?.media.length === 0) && (
+                                    <Images>
+                                        <Image src={"/web-services.jpg"} layout='fill' objectFit='cover' objectPosition='center' quality={100} />
+                                    </Images>
+                                ) 
+                            }
+                        </Slider>
+                    )
+                }
+            </ImageSlides>
             <ContainerB>
                 <Left>
                     <Section>
-                        <CurrentPosition>
-                            <p>Dashboard &gt; Services &gt; {id}</p>
-                        </CurrentPosition>
                         <h2>{inData?.name}</h2>
-                        <ImageSlides>
-                            {
-                                inData?.media && (
-                                    <Slider 
-                                        dots={false}
-                                        infinite={true}
-                                        speed={500}
-                                        slidesToShow={1}
-                                        slidesToScroll={1}
-                                        prevArrow={<PrevArrow />}
-                                        nextArrow={<NextArrow />}
-                                    > 
-                                        {
-                                            inData?.media.map((val, i) => {
-                                                return (
-                                                    <Images key={i}>
-                                                        <Image src={val.url} layout='fill' objectFit='cover' objectPosition='center' quality={100} />
-                                                    </Images>
-                                                )
-                                            })
-                                        }
-                                        {
-                                           (inData?.media.length === 0) && (
-                                                <Images>
-                                                    <Image src={"/web-services.jpg"} layout='fill' objectFit='cover' objectPosition='center' quality={100} />
-                                                </Images>
-                                            ) 
-                                        }
-                                    </Slider>
-                                )
-                            }
-                        </ImageSlides>
-                        <Header style={{ paddingLeft: "0" }}>
-                            <h3>Description</h3>
-                        </Header>
                         <Desc>
                            {inData?.description}
                         </Desc>
                     </Section>
                     <SectionM>
-                        <Header>
-                            <h3>About the Influencer</h3>
-                        </Header>
                         <AboutWrapper>
                             <ProfileCard>
-                                <ImageWrapper>
-                                    <Image src={inData?.user?.account?.media?.[0]?.url ? inData?.user?.account?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${inData?.user?.firstname}+${inData?.user?.lastname}&color=FFFFFF&background=12544D`} layout='fill' objectFit="cover" objectPosition="center" />
-                                </ImageWrapper>
-                                <ProfileDetails>
-                                    <h3>{inData?.user?.firstname} {inData?.user?.lastname}</h3>
-                                    <Stars>
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={starIcon} height={15} width={15} />
-                                    </Stars>
-                                    <div><Image src="/flag.svg" height={25} width={25}/><p>{inData?.user.account.address}</p></div>
-                                    <p>Member since {(new Date(inData?.user?.created_at).toDateString())}.</p>
-                                </ProfileDetails>
+                                <div id="right">
+                                    <ImageWrapper>
+                                        <Image src={inData?.user?.account?.media?.[0]?.url ? inData?.user?.account?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${inData?.user?.firstname}+${inData?.user?.lastname}&color=FFFFFF&background=12544D`} layout='fill' objectFit="cover" objectPosition="center" />
+                                    </ImageWrapper>
+                                    <ProfileDetails>
+                                        <h3>{inData?.user?.firstname} {inData?.user?.lastname}</h3>
+                                        <div>
+                                            <p>
+                                                <Image src="/nigeria.svg"  alt="" height={16} width={16}/>
+                                                <span>Nigeria</span>
+                                            </p>
+                                            <Image src="/dot.svg"  alt="" height={4} width={4}/>
+                                            <p>
+                                                <Image src="/gender.svg"  alt="" height={16} width={16}/>
+                                                <span>{inData?.user?.account?.gender}</span>
+                                            </p>
+                                        </div>
+                                    </ProfileDetails>
+                                </div>
+                                <Link href={`/influencers/${inData?.user?.account?.id}`}>View profile</Link>
                             </ProfileCard>
                             <Bio>
                                 {inData?.user?.biography}
                             </Bio>
                         </AboutWrapper>
                     </SectionM>
-                    <SectionM>
-                        <Header>
-                            <h3>Frequently Asked Questions</h3>
-                        </Header>
+                    <Section>
+                        <h3>FAQs</h3>
                         <FaqWrapper>
                             {
-                                inData?.faqs.map((val, i) => (
-                                    <FaqCont key={i}>
-                                        <FaqQuest onClick={() => handleToggle(i)} isActive={showFaq?.[i]}>
-                                            <h4>{val.question}</h4>
-                                            <button><Image src={(showFaq?.[i]) ? chevUpIcon : chevDownIcon} alt="" height={10} width={17}/></button>
-                                        </FaqQuest>
-                                        {
-                                            showFaq?.[i] && <FaqAns>{val.answer}</FaqAns>
-                                        }
-                                    </FaqCont>
-                                ))
+                            inData?.faqs.map((val, i) => (
+                                <Faq key={i}>
+                                <Question onClick={() => handleToggle(i)}>
+                                    <span>{val.question}</span>
+                                    <span>{showFaq?.[i] ? (<Image src="/close.svg" alt="" height={20} width={20} />) : (<Image src="/open.svg" alt="" height={20} width={20} />)}</span>
+                                </Question>
+                                {
+                                    showFaq?.[i] && (
+                                    <Answer>
+                                        {val.answer}
+                                    </Answer>
+                                    )
+                                }
+                                </Faq>
+                            ))
                             }
                         </FaqWrapper>
-                    </SectionM>
-                    <SectionM>
-                        <Header>
-                            <h3>Reviews</h3>
-                        </Header>
-                        <ReviewWrapper>
-                            <Review>
-                                <ReviewL>
-                                    <ReviewImg>
-                                        <Image src="/p-2.svg" alt="" height={60} width={60} quality={100}/>
-                                    </ReviewImg>
-                                </ReviewL>
-                                <ReviewR>
-                                    <h4>Megayard</h4>
-                                    <RCountry><Image src="/flag.svg" height={25} width={25}/><p>Lagos, Nigeria</p></RCountry>
-                                    <Stars>
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={starIcon} height={15} width={15} />
-                                    </Stars>
-                                    <ReviewMsg>Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem.</ReviewMsg>
-                                </ReviewR>
-                            </Review>
-                            <Review>
-                                <ReviewL>
-                                    <ReviewImg>
-                                        <Image src="/p-2.svg" alt="" height={60} width={60} quality={100}/>
-                                    </ReviewImg>
-                                </ReviewL>
-                                <ReviewR>
-                                    <h4>Megayard</h4>
-                                    <RCountry><Image src="/flag.svg" height={25} width={25}/><p>Lagos, Nigeria</p></RCountry>
-                                    <Stars>
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={starIcon} height={15} width={15} />
-                                    </Stars>
-                                    <ReviewMsg>Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem.</ReviewMsg>
-                                </ReviewR>
-                            </Review>
-                            <Review>
-                                <ReviewL>
-                                    <ReviewImg>
-                                        <Image src="/p-2.svg" alt="" height={60} width={60} quality={100}/>
-                                    </ReviewImg>
-                                </ReviewL>
-                                <ReviewR>
-                                    <h4>Megayard</h4>
-                                    <RCountry><Image src="/flag.svg" height={25} width={25}/><p>Lagos, Nigeria</p></RCountry>
-                                    <Stars>
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={fillStarIcon} height={15} width={15} />
-                                        <Image src={starIcon} height={15} width={15} />
-                                    </Stars>
-                                    <ReviewMsg>Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem lorem.</ReviewMsg>
-                                </ReviewR>
-                            </Review>
-                        </ReviewWrapper>
-                    </SectionM>
+                    </Section>
                 </Left>
                 <Right>
                     <PackageCard>
@@ -404,27 +332,43 @@ const ServiceView = () => {
                         </PackageTabs>
                         <Package>
                             <PHead>
-                                <p style={{ textTransform: "uppercase" }}>{getCurrentPackage()?.name}</p>
                                 <p>{getCurrentPackage()?.currency} {moneyStandard(getCurrentPackage()?.amount ?? 0)}</p>
                             </PHead>
-                            <PDetails>
-                                {getCurrentPackage()?.description}
-                            </PDetails>
                             <PFeatures>
                                 {
                                     getCurrentPackage()?.features.map((feature, i) => (
                                         <Feature key={i}>
-                                            <Image src="/check-square.svg" alt="" width={25} height={25}/>
+                                            <Image src="/dot.svg" alt="" width={5} height={5}/>
                                             <p>{feature.name}</p>
                                         </Feature>
                                     ))
                                 }
                             </PFeatures>
-                            <ContinueBtn onClick={handleCreatePaymentLog}>Continue with {getCurrentPackage()?.name} ({getCurrentPackage()?.currency} {moneyStandard(getCurrentPackage()?.amount ?? 0)})</ContinueBtn>
+                            <ContinueBtn onClick={handleCreatePaymentLog}><span>Continue</span> <Image src="/arrow-w.svg" alt="" width={12} height={11}/></ContinueBtn>
                         </Package>
                     </PackageCard>
                 </Right>
             </ContainerB>
+            <Listing>
+                <h3>Similar services</h3>
+                <Bottom>
+                    {
+                        servicesData?.data?.data?.data.slice(0,4).map((val, i) => {
+                            return (
+                                <ServiceCard
+                                    key={i}
+                                    title={val.name}
+                                    imgSrc={val.media[0]?.url ?? "/web-services.jpg"}
+                                    userName={`${val.user.firstname} ${val.user.lastname}`}
+                                    price={`${val.currency} ${val.starting_from}`}
+                                    serviceLink={`/services/${val.id}`}
+                                    profileImg={val.user.profile_pic}
+                                />
+                            )
+                        })
+                    }
+                </Bottom>
+            </Listing>
         </Wrapper>
     </Container>
   )

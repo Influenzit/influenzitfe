@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { colors, sizes } from "./theme";
 
 export const Container = styled.div`
-     background: #F7FAFC;
+     background: #FAFBFC;
 `;
 export const TopTabContainer = styled.div`
     width: 100%;
@@ -74,10 +74,20 @@ export const Left = styled.div`
     flex-direction: column;
     row-gap: 20px;
     max-width: calc(100% - 380px);
+    min-width: calc(100% - 380px);
 `;
 export const Section = styled.div`
-    background: #fff;
-    padding: 30px;
+    padding-top: 10px;
+    h2 {
+        font-weight: 700;
+        font-size: 32px;
+        color: ${colors.textColor};
+    }
+    h3 {
+        font-weight: 700;
+        font-size: 24px;
+        color: ${colors.textColor};
+    }
 `;
 export const CurrentPosition = styled.div`
     font-size: 14px;
@@ -88,6 +98,8 @@ export const ImageSlides = styled.div`
     width: 100%;
     margin: 20px 0;
     position: relative;
+    border-radius: 16px;
+    overflow: hidden;
 `;
 export const CtrlBtn = styled.button`
     border: none;
@@ -118,19 +130,38 @@ export const Header = styled.div`
     }
 `;
 export const Desc = styled.p`
-    color: #666666;
+    color: #555461;
     padding-top: 15px;
 `;
 export const SectionM = styled.div`
-    background: #fff;
+    border-bottom: 1px solid rgba(42, 41, 57, 0.2);
+    border-top: 1px solid rgba(42, 41, 57, 0.2);
 `;
 export const AboutWrapper = styled.div`
-    padding: 15px 30px;
-`;
-export const ProfileCard = styled.div`
+    padding: 15px 0;
     display: flex;
     align-items: center;
+`;
+export const ProfileCard = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     column-gap: 20px;
+    #right {
+        display: flex;
+        column-gap: 15px;
+        align-items: center;
+    }
+    a {
+        display: inline-flex;
+        padding: 10px 20px;
+        background: ${colors.primaryColor};
+        color: #fff;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 14px;
+    }
 `;
 export const Bio = styled.p`
     font-size: 16px;
@@ -139,12 +170,16 @@ export const Bio = styled.p`
 `;
 export const ImageWrapper = styled.div`
     position: relative;
-    height: 150px;
-    width: 150px;
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    overflow: hidden;
 `;
 export const ProfileDetails = styled.div`
     h3 {
-        margin-bottom: 10px;
+        color: ${colors.textColor};
+        font-weight: 600;
+        font-size: 24px;
     }
     p {
         font-size: 14px;
@@ -154,14 +189,17 @@ export const ProfileDetails = styled.div`
     div {
         display: flex;
         align-items: center;
+        column-gap: 10px;
         margin: 5px 0;
         p {
-            padding-left: 15px;
+            display: flex;
+            align-items: center;
+            column-gap: 5px;
         }
     }
 `;
 export const FaqWrapper = styled.div`
-     padding: 15px 30px;
+     padding: 15px 0px;
 `;
 export const FaqCont = styled.div`
 `;
@@ -216,38 +254,43 @@ export const Right = styled.div`
 export const PackageCard = styled.div`
     position: sticky;
     top: 150px;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #EAEAEB;
+    border-radius: 16px;
 `;
 export const PackageTabs = styled.div`
     display: flex;
     column-gap: 5px;
+    background: #F9FAFB;
+    padding: 4px;
+    border: 1px solid #EAEAEB;
+    border-radius: 8px;
 `;
 export const PackageTab = styled.button`
-    background: ${(props) => props.isActive ? "#fff" : "#FAFAFA"};
+    background: ${(props) => props.isActive ? colors.textColor : "transparent"};
+    color: ${(props) => !props.isActive ? colors.textColor : "#fff"};
     border: none;
     font-size: 16px;
-    padding: 13px 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
     width: calc((100% - 10px)/3);
     cursor: pointer;
-    border-bottom: 3px solid ${(props) => props.isActive ? colors.primaryColor : "transparent"};
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: 4px;
 `;
 export const Package = styled.div`
     background: #fff;
-    padding: 0 20px 20px 20px;
 `;
 export const PHead = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
+    padding: 10px 0;
     p {
         color: ${colors.primaryColor};
-        font-weight: 500;
-        font-size: 16px;
-        :last-of-type {
-            font-weight: 400;
-            font-size: 20px;
-            color: #333;
-        }
+        font-weight: 600;
+        font-size: 32px;
     }
 
 `;
@@ -266,8 +309,8 @@ export const Feature = styled.div`
     margin-bottom: 8px;
     p {
         max-width: calc(100% - 32px);
-        font-size: 15px;
-        color: ${colors.primaryColor};
+        font-size: 14px;
+        color: #000;
     }
 `;
 export const Stars = styled.div`
@@ -278,10 +321,14 @@ export const ContinueBtn = styled.button`
     background: ${colors.primaryColor};
     border: none;
     color: #fff;
-    padding: 10px 0;
+    padding: 16px 0;
     width: 100%;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 15px;
-    border-radius: 3px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 7px;
     cursor: pointer;
 `;

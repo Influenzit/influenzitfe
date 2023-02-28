@@ -42,8 +42,8 @@ const LandingLayout = ({children, title, description}) => {
       onError(res) {
           dispatch(setLoading(false));
           if (router.pathname.includes("/dashboard")) {
-            router.replace("/login");
             localStorage.clear();
+            router.replace("/login");
           }
       } 
   });

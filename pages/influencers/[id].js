@@ -544,7 +544,7 @@ const CreatorProfile = () => {
                     <h3>Similar creators</h3>
                     <Bottom>
                         {
-                            influencersData?.data?.data?.data.splice(0, 4).map((val, i) => {
+                            influencersData?.data?.data?.data.slice(0, 4).map((val, i) => {
                                 let genSkills = "";
                                 val.skills.forEach((val, i) => {
                                     if(i < 5){
