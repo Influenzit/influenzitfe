@@ -11,13 +11,12 @@ import { setLoading } from '../../app/reducers/status'
 import { getUser } from '../../app/reducers/user'
 import LandingLayout from '../../layouts/landing.layout'
 import { Controls, CreatorsCard, CreatorDetails, SocialHandle } from '../../styles/business-owner.style'
-import { BackImage, Bottom, BottomSection, Campaign, CollaborateBtn, Container, HeroSectionOne, ImageContainer, ImageContainerTwo, Info, LeftSection, Listing, RightSection, SkillCard, Social, SocialWrapper, Tag, Tags, Top, UserCardSection, WorkCard, Wrapper } from '../../styles/creator-profile.style'
+import { BackImage, Bottom, BottomSection, Campaign, CollaborateBtn, Container, HeroSectionOne, ImageContainer, ImageContainerTwo, Info, LeftSection, Listing, RightSection, SkillCard, Social, SocialWrapper, Tag, Tags, Top, UserCardSection, WorkCard, Wrapper, UserDetails, UserImage } from '../../styles/creator-profile.style'
 import { AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, TabBtn, Tabs, TopImg } from '../../styles/influencer-profile';
 import { Details, FormContainer, UpdateModal } from '../../styles/view.style'
 import { InputContainer } from '../../styles/profile.style'
 import { createDispute } from '../../api/support'
 import ServiceCard from '../../components/service-card'
-import { UserDetails, UserImage } from '../../styles/home.style'
 import ProfileCard from '../../components/profile-card'
 
 const CreatorProfile = () => {
@@ -541,7 +540,7 @@ const CreatorProfile = () => {
                     </Listing> : null
                 } */}
                 <Listing>
-                    <h3>Similar creators</h3>
+                    <h3>Similar influencers</h3>
                     <Bottom>
                         {
                             influencersData?.data?.data?.data.slice(0, 4).map((val, i) => {

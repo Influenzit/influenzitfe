@@ -10,16 +10,26 @@ export const Container = styled.nav`
     top: 0;
     display: flex;
     z-index: 999999;
+    ${({showBg}) => showBg && "border-bottom: 1px solid #EAEAEB"};
 `;
 export const Wrapper = styled.div`
-    width: 98%;
+    width:  ${({fullWidth}) => fullWidth ? "100%" : "98%"};
     height: 100%;
-    max-width: ${sizes.wrapperWidth};
+    max-width:  ${({fullWidth}) => fullWidth ? "100%" : sizes.wrapperWidth};
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: relative;
+     ${({fullWidth}) => fullWidth && "padding-right: 25px"};
+    #logo {
+        display: flex;
+        ${({fullWidth}) => fullWidth && "width: 230px"};
+        ${({fullWidth}) => fullWidth && "padding-left: 16px"};
+        ${({fullWidth}) => fullWidth && "max-width: 230px"};
+        ${({fullWidth}) => fullWidth && "border-right: 1px solid #EAEAEB"};
+        height: 100%;
+    }
 `;
 export const Logo = styled(Link)`
     img {
@@ -30,7 +40,7 @@ export const Right = styled.div`
     display: flex;
     align-items: center;
     width: calc(200% / 3);
-    justify-content: space-between;
+    justify-content: ${({isLoggedIn}) => isLoggedIn ? "flex-end" : "space-between"};
 `;
 export const Center = styled.div`
     display: flex;
@@ -353,6 +363,12 @@ export const SwitchDropdownCont = styled.div`
 export const ControlsA = styled.div`
     display: flex;
     align-items: center;
+    height: 100%;
+    min-height: 32px;
+    border-right: 1px solid #EAEAEB;
+    border-left: 1px solid #EAEAEB;
+    column-gap: 5px;
+    padding: 0 10px;
     a {
         padding: 0 10px;
         position: relative;
@@ -387,6 +403,20 @@ export const ControlsA = styled.div`
         }
     }
 `;
+export const Qlinks = styled.div`
+    display: flex;
+    column-gap: 25px;
+    justify-content: flex-end;
+    padding-right: 20px;
+    a {
+        font-size: 14px;
+        color: ${colors.textColor};
+        :hover {
+            color: ${colors.primaryColor};
+        }
+    }
+
+`;
 export const UserBtn = styled.div`
     border: none;
     background: transparent;
@@ -395,7 +425,7 @@ export const UserBtn = styled.div`
     display: flex;
     align-items: center;
     padding: 0 0 0 15px;
-    ::after {
+    /* ::after {
         height: 11px;
         width: 11px;
         display: block;
@@ -412,15 +442,15 @@ export const UserBtn = styled.div`
             right: 3px;
             bottom: 1px;
         }
-    }
+    } */
     ${breakpoints.sm} {
         padding: 5px;
     }
 `;
 export const ProfilePicWrapper = styled.div`
     position: relative;
-    height: 40px;
-    width: 40px;
+    height: 32px;
+    width: 32px;
     border-radius: 50%;
     overflow: hidden;
     ${breakpoints.sm} {

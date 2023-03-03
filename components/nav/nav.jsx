@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Center, ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, GetStartedBtn, LoginBtn, Logo, NavLinks, ProfilePicWrapper, ResponsiveNav, Right, SearchBtn, SearchBtnC, SearchBtnResponsive, SearchByBtn, SearchByOption, SearchContainer, SidebarBtn, SwitchBtn, SwitchDropdownCont, UserBtn, UserDropdown, Wrapper } from './style'
+import { Center, ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, GetStartedBtn, LoginBtn, Logo, NavLinks, ProfilePicWrapper, Qlinks, ResponsiveNav, Right, SearchBtn, SearchBtnC, SearchBtnResponsive, SearchByBtn, SearchByOption, SearchContainer, SidebarBtn, SwitchBtn, SwitchDropdownCont, UserBtn, UserDropdown, Wrapper } from './style'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -185,9 +185,9 @@ const Nav = () => {
   }, [userDetails])
   
   return (
-    <Container showBg={showBg}>
-        <Wrapper>
-            <div style={{ display: "flex" }}>
+    <Container showBg={router.pathname.includes("/dashboard") ? true : showBg}>
+        <Wrapper fullWidth={router.pathname.includes("/dashboard")}>
+            <div id="logo">
                 {
                     router.pathname.includes("/dashboard") && isLoggedIn && (
                         <SidebarBtn onClick={handleShowSidebar} ref={sidebarBtn}>
@@ -201,8 +201,8 @@ const Nav = () => {
             </div>
             {
                 isLoggedIn ? (
-                    <Right>
-                        {
+                    <Right isLoggedIn>
+                        {/* {
                             showSearchBar ? (
                                 <>
                                     <ConnectDropdown onClick={() => handleConnectOpen()} ref={connectRef}>
@@ -237,16 +237,27 @@ const Nav = () => {
                                     </SearchBtnResponsive>
                                 </>
                             ) : null
-                        }
-                        <ControlsA showNotify={notificationAvailable} showMessage={false}>
-                            <Link href="/dashboard/notifications">
-                                <a id="bell-icon">
-                                    <BellIcon />
-                                </a>
+                        } */}
+                        <Qlinks>
+                            <Link href="/explore/influencers" passHref>
+                                <a>Find Influencers</a>
                             </Link>
+                            <Link href="/explore/creators" passHref>
+                                <a>Find Creators</a>
+                            </Link>
+                            <Link href="/explore/services" passHref>
+                                <a>Find Services</a>
+                            </Link>
+                        </Qlinks>
+                        <ControlsA showNotify={notificationAvailable} showMessage={false}>
                             <Link href="/dashboard/messages">
                                 <a id="mail-icon">
                                     <MailIcon />
+                                </a>
+                            </Link>
+                            <Link href="/dashboard/notifications">
+                                <a id="bell-icon">
+                                    <BellIcon />
                                 </a>
                             </Link>
                         </ControlsA>
@@ -264,7 +275,7 @@ const Nav = () => {
                                 </UserDropdown>
                             }
                         </UserBtn>
-                        <SwitchBtn onClick={() => toggleSwitchAccount()} ref={switchRef}>
+                        {/* <SwitchBtn onClick={() => toggleSwitchAccount()} ref={switchRef}>
                             <Image src={switchIcon} alt="" height={24} width={24} />
                             {
                                 showSwitchAccount && <SwitchDropdownCont>
@@ -273,7 +284,7 @@ const Nav = () => {
                                     <button onClick={() => handleAccountChange("Influencer")}><span>Influencer</span></button>
                                 </SwitchDropdownCont>
                             }
-                        </SwitchBtn>
+                        </SwitchBtn> */}
                     </Right>
                 ) : (
                     <Right>

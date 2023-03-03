@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { getShowSidebar, getUserType } from '../../app/reducers/status';
 import { getUser } from '../../app/reducers/user';
-import { BagIcon, BoxIcon, DashboardIcon, HashTagIcon, LockIcon, SettingsIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
+import { BagIcon, BoxIcon, DashboardIcon, HashTagIcon, LockIcon, MailIcon, SettingsIcon, SupportIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
 import { Container, InnerWrapper, NavButton, ProfileImageCont, Status } from './style'
 
 const Sidebar = () => {
@@ -20,15 +20,9 @@ const Sidebar = () => {
     }, [user])
   return (
     <Container showSidebar={showSidebar}>
-        <ProfileImageCont>
-            <InnerWrapper>
-                <Image src={ user?.account?.media?.[0]?.url ? user?.account?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${userData?.firstname}+${userData?.lastname}&color=FFFFFF&background=12544D`} alt="profile picture" layout='fill' objectFit='cover' objectPosition="center"/>
-            </InnerWrapper>
-        </ProfileImageCont>
-        <Status>{currentUserType !== "null" ? currentUserType : "None Selected"}</Status>
         <NavButton onClick={() => router.push("/dashboard")} isActive={router.pathname === "/dashboard"}>
             <DashboardIcon />
-            <span>Dashbord</span>
+            <span>Home</span>
         </NavButton>
         {
             (currentUserType === "Business Owner" || currentUserType === "Creator") && (
@@ -54,18 +48,18 @@ const Sidebar = () => {
                 </NavButton>
             )
         }
-        {
+        {/* {
             (currentUserType === "Influencer" || currentUserType === "Creator") && (
                 <NavButton onClick={() => router.push("/dashboard/profile/influencer")} isActive={router.pathname === "/dashboard/profile/influencer" }>
                     <BagIcon />
                     <span>Profile</span>
                 </NavButton>
             )
-        }
+        } */}
         {
             (currentUserType === "Influencer" || currentUserType === "Creator") && (
                 <NavButton onClick={() => router.push("/dashboard/profile/services")} isActive={router.pathname.includes("/dashboard/profile/services")}>
-                    <BoxIcon />
+                    <BagIcon />
                     <span>Services</span>
                 </NavButton>
             )
@@ -74,16 +68,20 @@ const Sidebar = () => {
             <WalletIcon />
             <span>Wallet</span>
         </NavButton>
-        <NavButton onClick={() => router.push("/dashboard/profile")} isActive={router.pathname === "/dashboard/profile"}>
-            <UserIcon />
-            <span>Account</span>
+        <NavButton onClick={() => router.push("/dashboard/messages")} isActive={router.pathname.includes("/dashboard/messages")}>
+            <MailIcon />
+            <span>Messages</span>
         </NavButton>
-        <NavButton onClick={() => router.push("/dashboard/profile/password")} isActive={router.pathname.includes("/dashboard/profile/password")}>
+        <NavButton onClick={() => router.push("/dashboard/profile")} isActive={router.pathname === "/dashboard/profile"}>
+            <SettingsIcon />
+            <span>Account Settings</span>
+        </NavButton>
+        {/* <NavButton onClick={() => router.push("/dashboard/profile/password")} isActive={router.pathname.includes("/dashboard/profile/password")}>
             <LockIcon />
             <span>Security</span>
-        </NavButton>
-        <NavButton onClick={() => router.push("/dashboard/support")} isActive={router.pathname.includes("/dashboard/profile/password")}>
-            <Image src="/customer-care.png" alt="" width={30} height={30}/>
+        </NavButton> */}
+        <NavButton onClick={() => router.push("/dashboard/support")} isActive={router.pathname.includes("/dashboard/support")}>
+            <SupportIcon />
             <span>Support</span>
         </NavButton>
     </Container>

@@ -579,6 +579,7 @@ export const UserCard = styled.div`
     display: flex;
     padding-top: 20px;
     align-items: center;
+    column-gap: 10px;
      p {
         font-size: 15px;
         color: #555461;
@@ -586,30 +587,24 @@ export const UserCard = styled.div`
     }
 `;
 export const UserImage = styled.div`
-    height: 80px;
-    width: 80px;
+    height: 64px;
+    width: 64px;
     position: relative;
     border-radius: 50%;
     overflow: hidden;
 `;
 export const UserDetails = styled.div`
-   h2 {
-    font-size: 45px;
-    font-weight: 700;
-    color: #2A2939;
-   }
-   div {
-    display: flex;
-    align-items: center;
-    column-gap: 10px;
-    margin-top: 10px;
+   h4 {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    color: #170F49;
    }
    p {
-    display: flex;
-    align-items: center;
-    column-gap: 5px;
-    color: #555461;
-    font-size: 14px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #6A6974;
    }
 `;
 export const FaqWrapper = styled.div`
