@@ -13,7 +13,7 @@ const Footer = ({type, category, setCategory, followers, setFollowers, location,
   }
   return (
     <Container>
-        <TopWrap>
+        {/* <TopWrap>
             <Wrap>
 
             </Wrap>
@@ -25,8 +25,9 @@ const Footer = ({type, category, setCategory, followers, setFollowers, location,
             </Wrap>
         </TopWrap>
         <BottomWrap>
-            <button>Clear filter</button>  
-        </BottomWrap>
+            <button onClick={clearFilter}>Clear filters</button>
+            <button><Image /><span>Advanced filters</span></button>
+        </BottomWrap> */}
     </Container>
   )
 }

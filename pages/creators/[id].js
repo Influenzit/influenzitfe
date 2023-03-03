@@ -16,6 +16,7 @@ import { createDispute } from '../../api/support'
 import { getUser } from '../../app/reducers/user'
 import { Content, DataSection, EmptyWrapper, TabBtn, Tabs } from '../../styles/influencer-profile'
 import ProfileCard from '../../components/profile-card'
+import ServiceCard from '../../components/service-card'
 
 const CreatorProfile = () => {
   const router = useRouter();
