@@ -11,7 +11,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: 'phplaravel-870335-3074787.cloudwaysapps.com',
+        hostname: 'phplaravel-870335-3074787.cloudwaysapps.]scom',
         port: '80',
         pathname: '/storage/**',
       },
