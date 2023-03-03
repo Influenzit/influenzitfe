@@ -108,4 +108,4 @@ Contact.getLayout = (page) => {
   return <LandingLayout>{page}</LandingLayout>;
 };
 
-export default Contact;
+export default Contact
