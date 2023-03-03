@@ -1,31 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import {
-  Center,
-  ConnectDropdown,
-  ConnectDropdownCont,
-  Container,
-  Controls,
-  ControlsA,
-  GetStartedBtn,
-  LoginBtn,
-  Logo,
-  NavLinks,
-  ProfilePicWrapper,
-  ResponsiveNav,
-  Right,
-  SearchBtn,
-  SearchBtnC,
-  SearchBtnResponsive,
-  SearchByBtn,
-  SearchByOption,
-  SearchContainer,
-  SidebarBtn,
-  SwitchBtn,
-  SwitchDropdownCont,
-  UserBtn,
-  UserDropdown,
-  Wrapper,
-} from "./style";
+import React, { useEffect, useState, useRef } from 'react'
+import { Center, ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, GetStartedBtn, LoginBtn, Logo, NavLinks, ProfilePicWrapper, ResponsiveNav, Right, SearchBtn, SearchBtnC, SearchBtnResponsive, SearchByBtn, SearchByOption, SearchContainer, SidebarBtn, SwitchBtn, SwitchDropdownCont, UserBtn, UserDropdown, Wrapper } from './style'
 
 import Image from "next/image";
 import Link from "next/link";
@@ -256,196 +230,132 @@ const Nav = () => {
 
   return (
     <Container showBg={showBg}>
-      <Wrapper>
-        <div style={{ display: "flex" }}>
-          {router.pathname.includes("/dashboard") && isLoggedIn && (
-            <SidebarBtn onClick={handleShowSidebar} ref={sidebarBtn}>
-              <HamburgerIcon />
-            </SidebarBtn>
-          )}
-          <Logo href="/">
-            <Image
-              src="/influenzit.svg"
-              alt="logo"
-              height={30}
-              width={120}
-              style={{ cursor: "pointer" }}
-            />
-          </Logo>
-        </div>
-        {isLoggedIn ? (
-          <Right>
-            {showSearchBar ? (
-              <>
-                <ConnectDropdown
-                  onClick={() => handleConnectOpen()}
-                  ref={connectRef}
-                >
-                  <span>Explore</span>
-                  <Image src="/down-chev-b.svg" alt="" height={7} width={10} />
-                  {showConnect && (
-                    <ConnectDropdownCont>
-                      <Link href="/explore/influencers">
-                        <a>
-                          <span>Influencers</span>
-                        </a>
-                      </Link>
-                      <Link href="/explore/creators">
-                        <a>
-                          <span>Creators</span>
-                        </a>
-                      </Link>
-                      <Link href="/explore/services">
-                        <a>
-                          <span>Services</span>
-                        </a>
-                      </Link>
-                    </ConnectDropdownCont>
-                  )}
-                </ConnectDropdown>
-                <SearchContainer showSearch={showSearchRes}>
-                  <input
-                    type="text"
-                    value={searchString}
-                    onChange={(e) => setSearchString(e.target.value)}
-                    placeholder="Search by name"
-                  />
-                  <SearchBtnC
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(`/explore?search=${searchString}`);
-                    }}
-                  >
-                    <Image src="/search-b.svg" alt="" height={25} width={25} />
-                  </SearchBtnC>
-                </SearchContainer>
-                <SearchBtnResponsive
-                  onClick={() => {
-                    setShowSearchRes(!showSearchRes);
-                  }}
-                >
-                  <Image src="/search-b.svg" alt="" height={25} width={25} />
-                </SearchBtnResponsive>
-              </>
-            ) : null}
-            <ControlsA showNotify={notificationAvailable} showMessage={false}>
-              <Link href="/dashboard/notifications">
-                <a id="bell-icon">
-                  <BellIcon />
-                </a>
-              </Link>
-              <Link href="/dashboard/messages">
-                <a id="mail-icon">
-                  <MailIcon />
-                </a>
-              </Link>
-            </ControlsA>
-            <UserBtn onClick={() => handleProfileOpen()} ref={profileRef}>
-              <ProfilePicWrapper>
-                <Image
-                  src={
-                    user?.account?.media?.[0]?.url
-                      ? user?.account?.media?.[0]?.url
-                      : `https://ui-avatars.com/api/?name=${userDetails?.firstname}+${userDetails?.lastname}&color=FFFFFF&background=12544D`
-                  }
-                  alt="profile-picture"
-                  layout="fill"
-                  objectPosition="center"
-                  objectFit="cover"
-                />
-              </ProfilePicWrapper>
-              {showDropdown && (
-                <UserDropdown>
-                  <button onClick={() => router.push("/dashboard")}>
-                    <DashboardIcon />
-                    <span>Dashboard</span>
-                  </button>
-                  <button
-                    onClick={() =>
-                      router.push(
-                        currentAcctType === "Influencer"
-                          ? `/influencer/${userDetails.account.id}`
-                          : currentAcctType === "Creator"
-                          ? "/creators/profile"
-                          : "/business-owner/profile"
-                      )
-                    }
-                  >
-                    <UserIcon />
-                    <span>Profile</span>
-                  </button>
-                  {/* <button onClick={() => router.push("/dashboard/profile/billing")}><WalletIcon /><span>Wallet</span></button>
+        <Wrapper>
+            <div style={{ display: "flex" }}>
+                {
+                    router.pathname.includes("/dashboard") && isLoggedIn && (
+                        <SidebarBtn onClick={handleShowSidebar} ref={sidebarBtn}>
+                            <HamburgerIcon />
+                        </SidebarBtn>
+                    )
+                }
+                <Logo href="/">
+                    <Image src="/influenzit.svg" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
+                </Logo>
+            </div>
+            {
+                isLoggedIn ? (
+                    <Right>
+                        {
+                            showSearchBar ? (
+                                <>
+                                    <ConnectDropdown onClick={() => handleConnectOpen()} ref={connectRef}>
+                                        <span>Explore</span><Image src="/down-chev-b.svg" alt="" height={7} width={10} />
+                                        {
+                                            showConnect && <ConnectDropdownCont>
+                                                <Link href="/explore/influencers">
+                                                    <a><span>Influencers</span></a>
+                                                </Link>
+                                                <Link href="/explore/creators">
+                                                    <a><span>Creators</span></a>
+                                                </Link>
+                                                <Link href="/explore/services">
+                                                    <a><span>Services</span></a>
+                                                </Link>
+                                            </ConnectDropdownCont>
+                                        }
+                                    </ConnectDropdown>
+                                    <SearchContainer showSearch={showSearchRes} >
+                                        <input type="text" value={searchString} onChange={(e) => setSearchString(e.target.value)} placeholder="Search by name" />
+                                        <SearchBtnC onClick={(e) => {
+                                            e.preventDefault();
+                                            router.push(`/explore?search=${searchString}`);
+                                        }}>
+                                            <Image src="/search-b.svg" alt="" height={25} width={25}/>
+                                        </SearchBtnC>
+                                    </SearchContainer>
+                                    <SearchBtnResponsive onClick={() => {
+                                        setShowSearchRes(!showSearchRes)
+                                    }}>
+                                        <Image src="/search-b.svg" alt="" height={25} width={25}/>
+                                    </SearchBtnResponsive>
+                                </>
+                            ) : null
+                        }
+                        <ControlsA showNotify={notificationAvailable} showMessage={false}>
+                            <Link href="/dashboard/notifications">
+                                <a id="bell-icon">
+                                    <BellIcon />
+                                </a>
+                            </Link>
+                            <Link href="/dashboard/messages">
+                                <a id="mail-icon">
+                                    <MailIcon />
+                                </a>
+                            </Link>
+                        </ControlsA>
+                        <UserBtn onClick={() => handleProfileOpen()} ref={profileRef}>
+                            <ProfilePicWrapper>
+                                <Image src={user?.account?.media?.[0]?.url ? user?.account?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${userDetails?.firstname}+${userDetails?.lastname}&color=FFFFFF&background=12544D`} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
+                            </ProfilePicWrapper>
+                            {
+                                showDropdown && <UserDropdown>
+                                    <button onClick={() => router.push("/dashboard")}><DashboardIcon /><span>Dashboard</span></button>
+                                    <button onClick={() => router.push(currentAcctType === "Influencer" ? `/influencer/${userDetails.account.id}` : currentAcctType === "Creator" ? "/creators/profile" : "/business-owner/profile")}><UserIcon /><span>Profile</span></button>
+                                    {/* <button onClick={() => router.push("/dashboard/profile/billing")}><WalletIcon /><span>Wallet</span></button>
                                     <button onClick={() => router.push("/dashboard/profile")}><SettingsIcon /><span>Settings</span></button> */}
-                  <button onClick={logout}>
-                    <LogoutIcon />
-                    <span>Logout</span>
-                  </button>
-                </UserDropdown>
-              )}
-            </UserBtn>
-            <SwitchBtn onClick={() => toggleSwitchAccount()} ref={switchRef}>
-              <Image src={switchIcon} alt="" height={24} width={24} />
-              {showSwitchAccount && (
-                <SwitchDropdownCont>
-                  <button onClick={() => handleAccountChange("Business Owner")}>
-                    <span>Business Owner</span>
-                  </button>
-                  <button onClick={() => handleAccountChange("Creator")}>
-                    <span>Creator</span>
-                  </button>
-                  <button onClick={() => handleAccountChange("Influencer")}>
-                    <span>Influencer</span>
-                  </button>
-                </SwitchDropdownCont>
-              )}
-            </SwitchBtn>
-          </Right>
-        ) : (
-          <Right>
-            <Center>
-              <NavLinks>
-                <Link href="/register">Join Influencers</Link>
-              </NavLinks>
-              <ConnectDropdown
-                onClick={() => handleConnectOpen()}
-                ref={connectRef}
-              >
-                <span>Explore</span>
-                <Image src="/down-chev-b.svg" alt="" height={7} width={10} />
-                {showConnect && (
-                  <ConnectDropdownCont>
-                    <Link href="/explore/influencers">
-                      <a>
-                        <span>Influencers</span>
-                      </a>
-                    </Link>
-                    <Link href="/explore/creators">
-                      <a>
-                        <span>Creators</span>
-                      </a>
-                    </Link>
-                    <Link href="/explore/services">
-                      <a>
-                        <span>Services</span>
-                      </a>
-                    </Link>
-                  </ConnectDropdownCont>
-                )}
-              </ConnectDropdown>
-              <NavLinks>
-                <Link href="/pricing">Pricing</Link>
-              </NavLinks>
-            </Center>
-            <Controls>
-              <Link href="/login" passHref>
-                <LoginBtn>Login</LoginBtn>
-              </Link>
-              <Link href="/register" passHref>
-                <GetStartedBtn>Get Started</GetStartedBtn>
-              </Link>
-            </Controls>
-          </Right>
-        )}
+                                    <button onClick={logout}><LogoutIcon /><span>Logout</span></button>
+                                </UserDropdown>
+                            }
+                        </UserBtn>
+                        <SwitchBtn onClick={() => toggleSwitchAccount()} ref={switchRef}>
+                            <Image src={switchIcon} alt="" height={24} width={24} />
+                            {
+                                showSwitchAccount && <SwitchDropdownCont>
+                                    <button onClick={() => handleAccountChange("Business Owner")}><span>Business Owner</span></button>
+                                    <button onClick={() => handleAccountChange("Creator")}><span>Creator</span></button>
+                                    <button onClick={() => handleAccountChange("Influencer")}><span>Influencer</span></button>
+                                </SwitchDropdownCont>
+                            }
+                        </SwitchBtn>
+                    </Right>
+                ) : (
+                    <Right>
+                        <Center>
+                            <NavLinks>
+                                <Link href="/register">Join Influencers</Link>
+                            </NavLinks>
+                            <ConnectDropdown onClick={() => handleConnectOpen()} ref={connectRef}>
+                                <span>Explore</span><Image src="/down-chev-b.svg" alt="" height={7} width={10} />
+                                {
+                                    showConnect && <ConnectDropdownCont>
+                                        <Link href="/explore/influencers">
+                                            <a><span>Influencers</span></a>
+                                        </Link>
+                                        <Link href="/explore/creators">
+                                            <a><span>Creators</span></a>
+                                        </Link>
+                                        <Link href="/explore/services">
+                                            <a><span>Services</span></a>
+                                        </Link>
+                                    </ConnectDropdownCont>
+                                }
+                            </ConnectDropdown>
+                            <NavLinks>
+                                <Link href="/pricing">Pricing</Link>
+                            </NavLinks>
+                        </Center>
+                        <Controls>
+                            <Link href="/login" passHref>
+                                <LoginBtn>Login</LoginBtn>
+                            </Link>
+                            <Link href="/register" passHref>
+                                <GetStartedBtn>Get Started</GetStartedBtn>
+                            </Link>
+                        </Controls>
+                    </Right>
+                )
+            }
 
         {/* <ResponsiveNav show={showSidebar} ref={sidebarRef} onClick={() => setShowSidebar(false)}>
             {

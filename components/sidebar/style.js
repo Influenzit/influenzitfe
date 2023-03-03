@@ -2,13 +2,13 @@ import styled from "styled-components";
 import { breakpoints, colors } from "../../styles/theme";
 
 export const Container = styled.div`
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+    width: 230px;
+    max-width: 230px;
+    min-width: 230px;
     position: fixed;
     row-gap: 3px;
-    min-height: calc(100vh - 80px);
-    max-height: calc(100vh - 80px);
+    min-height: calc(100vh - 70px);
+    max-height: calc(100vh - 70px);
     background: #fff;
     z-index: 9;
     display: flex;
@@ -16,6 +16,8 @@ export const Container = styled.div`
     align-items: center;
     padding-top: 20px;
     overflow-y: scroll;
+    top: 70px;
+    border-right: 1px solid #EAEAEB;
     :hover {
         scrollbar-color: ${colors.primaryColor} ${colors.primaryColor}11;
 
@@ -45,29 +47,30 @@ export const Container = styled.div`
 `;
 export const NavButton = styled.button`
     width: 90%;
-    height: 80px;
-    min-height: 80px;
+    height: 40px;
+    min-height: 40px;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
+    padding: 0 15px;
+    column-gap: 10px;
     position: relative;
-    background: ${(props) => props.isActive ? `${colors.primaryColor}11` : "transparent"};
+    font-weight: 500;
+    background: ${(props) => props.isActive ? `${colors.textColor}` : "transparent"};
     svg {
-        color: ${colors.primaryColor};
-        height: 28px;
-        width: 28px;
+        color: ${(props) => props.isActive ? "#fff" : colors.textColor};
+        height: 15px;
+        width: 15px;
         margin-bottom: 5px;
     }
     span {
-        color: ${colors.primaryColor};
+        color: ${(props) => props.isActive ? "#fff" : colors.textColor};
         font-size: 12px;
     }
     :hover {
-        background: #f3f3f3;
+        background: ${(props) => !props.isActive && `${colors.textColor}11`};
     }
     /* ::after {
         content: "";

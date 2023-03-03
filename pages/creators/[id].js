@@ -4,26 +4,38 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCreator } from '../../api/influencer'
+import { getCreator, getCreators } from '../../api/influencer'
 import { startConversation } from '../../api/messaging'
 import { setLoading } from '../../app/reducers/status'
 import LandingLayout from '../../layouts/landing.layout'
-import { BackImage, Bottom, Container, HeroSectionOne, ImageCard, Popup, ProfileCategory, ProfileData, ProfileDetails, ProfileImgCont, ProfileStats, SeeMoreCont, Skill, SkillCard, StatCard, Stats, StatWrapper, Top, UserCard, WorkCard, Wrapper } from '../../styles/creator-profile.style'
+import { BackImage, Bottom, BottomSection, Campaign, CollaborateBtn, Container, HeroSectionOne, ImageCard, ImageContainer, ImageContainerTwo, Info, LeftSection, Listing, Popup, ProfileCategory, ProfileData, ProfileDetails, ProfileImgCont, ProfileStats, RightSection, SeeMoreCont, Skill, SkillCard, Social, SocialWrapper, StatCard, Stats, StatWrapper, Tag, Tags, Top, UserCard, UserCardSection, UserImage, WorkCard, Wrapper, UserDetails } from '../../styles/creator-profile.style'
 import { toast } from 'react-toastify'
 import { FormContainer, UpdateModal } from '../../styles/view.style'
 import { InputContainer } from '../../styles/profile.style'
 import { createDispute } from '../../api/support'
 import { getUser } from '../../app/reducers/user'
+import { Content, DataSection, EmptyWrapper, TabBtn, Tabs } from '../../styles/influencer-profile'
+import ProfileCard from '../../components/profile-card'
+import ServiceCard from '../../components/service-card'
+
 const CreatorProfile = () => {
   const router = useRouter();
   const { id } = router.query;
   const [inData, setInData] = useState(null);
   const user = useSelector(getUser);
+  const [currentTab, setCurrentTab] = useState("instagram");
   const dispatch = useDispatch();
   const [showEngagePopup, setShowEngagePopup] = useState(false);
   const [showDispute, setShowDispute] = useState(false);
   const [disputeSubject, setDisputeSubject] = useState("");
   const [disputeMessage, setDisputeMessage] = useState("");
+  const { data: creatorsData, refetch: refetchCreatorsData } = useQuery(["get-creators"], async () => {
+        return await getCreators("");
+    }, {
+        enabled: false,
+        staleTime: Infinity,
+        retry: false
+    });
 
   const { data: creatorData, refetch: refetchCreatorData } = useQuery(["get-creator"], async () => {
     return await getCreator(id);
@@ -121,6 +133,7 @@ const handleCreateDispute = () => {
   }
 useEffect(() => {
     dispatch(setLoading(true));
+    refetchCreatorsData();
     if(id){
         refetchCreatorData();
     }
@@ -133,119 +146,309 @@ useEffect(() => {
   return (
     <Container>
         <HeroSectionOne>
-            <BackImage>
-            <Image src="/profile.png" alt="" layout="fill" objectPosition="center" objectFit="cover" id="back-img"/>
-            <UserCard>
-                <ProfileStats>
-                    <ProfileImgCont>
-                        <Image src={inData?.media?.[0]?.url ? inData?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${inData?.user?.firstname}+${inData?.user?.lastname}&color=FFFFFF&background=12544D`}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
-                    </ProfileImgCont>
-                    <ProfileData>
-                        <div>
-                            <Image src="/users.svg" height={20} width={20} />
-                            <span>Male</span>
-                        </div>
-                        <div>
-                            <Image src="/verified.svg" height={20} width={20} />
-                            <span>Verified</span>
-                        </div>
-                    </ProfileData>
-                    <p>0/5 (<span>0 Feedbacks</span>)</p>
-                    <p>Member since Feb 09, 2021.</p>
-                    <button>Share Profile</button>
-                </ProfileStats>
-                <ProfileDetails>
-                    <h2>{inData?.user?.firstname} {inData?.user.lastname}</h2>
-                    <ProfileCategory>
-                        <div><Image src="/niche.svg" height={25} width={25}/><p>Creators&apos;s Niche</p></div>
-                        <div><Image src="/flag.svg" height={25} width={25}/><p>Nigeria</p></div>
-                        <div><Image src="/instagram.svg" height={25} width={25}/><p>{inData?.instagram}</p> <span>0</span></div>
-                    </ProfileCategory>
-                    <p>{inData?.biography}</p>  
-                </ProfileDetails>
-                <Stats>
-                    <StatWrapper>
-                        <StatCard textColor='#2B368C' bgColor="#F9F9FC">
-                            <h3>{inData?.analytics?.influenzit?.ongoing_campaigns_count}</h3>
-                            <p>Ongoing Engagements</p>
-                        </StatCard>
-                        <StatCard textColor='#019B2C' bgColor="#F7FCF9">
-                            <h3>{inData?.analytics?.influenzit?.completed_campaigns_count}</h3>
-                            <p>Completed Campaigns</p>
-                        </StatCard>
-                        <StatCard textColor='#FF0000' bgColor="#FFF7F7">
-                            <h3>{inData?.analytics?.influenzit?.cancelled_campaigns_count}</h3>
-                            <p>Cancelled Engagements</p>
-                        </StatCard>
-                        <StatCard textColor='#000' bgColor="#F8F8F8">
-                            <h3>{inData?.analytics?.influenzit?.campaign_engagements}</h3>
-                            <p>Total Engagement</p>
-                        </StatCard> 
-                    </StatWrapper>
-                    <p>Send Offer to this creator by clicking on the button.</p>
-                    <button onClick={() => setShowEngagePopup(!showEngagePopup)}>
-                        <span>Engage Creator</span> <Image src="/down-chev.svg" height={10} width={10} />
-                        <Popup show={showEngagePopup}>
-                            <button onClick={handleStartConversation}>
-                                <span>Send a message</span><Image src="/arr-r.svg" height={10} width={10} />
-                            </button>
-                            <button onClick={handleReportAccount}>
-                                <span>Report Account</span><Image src="/arr-r.svg" height={10} width={10} />
-                            </button>
-                        </Popup>
-                    </button>
-                </Stats>
-            </UserCard>
-            </BackImage>
             <Wrapper>
-                <SkillCard>
-                    <Top><h3>Skills</h3></Top>
+                {
+                    (inData?.media.length <= 1) && (
+                        <ImageContainer>
+                            <div id="img">
+                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                            </div>
+                        </ImageContainer>
+                    )
+                }
+                {
+                    (inData?.media.length === 2) && (
+                        <ImageContainerTwo>
+                            <div className='wrap'>
+                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                            </div>
+                            <div className='wrap'>
+                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                            </div>
+                        </ImageContainerTwo>
+                    )
+                }
+                {
+                    (inData?.media.length === 3) && (
+                        <ImageContainerTwo>
+                            <div className='wrap'>
+                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                            </div>
+                            <div className="wrap">
+                                <div className='wrap-top'>
+                                    <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                </div>
+                                <div className='wrap-bottom'>
+                                    <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                </div>
+                            </div>
+                        </ImageContainerTwo>
+                    )
+                }
+                {
+                    (inData?.media.length === 4) && (
+                        <ImageContainerTwo>
+                            <div className='wrap'>
+                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                            </div>
+                            <div className='wrap'>
+                                <div className='wrap-top'>
+                                    <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                </div>
+                                <div className='wrap-bottom'>
+                                    <div>
+                                        <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                    </div>
+                                    <div>
+                                        <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </ImageContainerTwo>
+                    )
+                }
+                <BottomSection>
+                    <LeftSection>
+                        <UserCardSection>
+                            <UserDetails>
+                                <h2>{inData?.user?.name}</h2>
+                                <div>
+                                    <p>
+                                        <Image src="/nigeria.svg"  alt="" height={16} width={16}/>
+                                        <span>Nigeria</span>
+                                    </p>
+                                    <Image src="/dot.svg"  alt="" height={4} width={4}/>
+                                    <p>
+                                        <Image src="/gender.svg"  alt="" height={16} width={16}/>
+                                        <span>{inData?.gender}</span>
+                                    </p>
+                                    <Image src="/dot.svg"  alt="" height={4} width={4}/>
+                                    <p>
+                                        <Image src="/star-p.svg"  alt="" height={16} width={16}/>
+                                        <span>5.0 (20 ratings)</span>
+                                    </p>
+                                </div>
+                            </UserDetails>
+                            <UserImage>
+                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                            </UserImage>
+                        </UserCardSection>
+                        <Info>
+                            <p>{inData?.biography}</p>
+                            <Tags>
+                                {
+                                    inData?.skills.map((val, i) => (
+                                        <Tag key={i}>{val.name}</Tag>
+                                    ))
+                                }
+                            </Tags>
+                        </Info>
+                        <DataSection>
+                            <Tabs>
+                                <TabBtn isActive={currentTab === "instagram"} onClick={() => setCurrentTab("instagram")}>Instagram</TabBtn>
+                                <TabBtn isActive={currentTab === "facebook"} onClick={() => setCurrentTab("facebook")}>Facebook</TabBtn>
+                                <TabBtn isActive={currentTab === "twitter"} onClick={() => setCurrentTab("twitter")}>Twitter</TabBtn>
+                                <TabBtn isActive={currentTab === "tiktok"} onClick={() => setCurrentTab("tiktok")}>TikTok</TabBtn>
+                                <TabBtn isActive={currentTab === "youtube"} onClick={() => setCurrentTab("youtube")}>Youtube</TabBtn>
+                            </Tabs>
+                            {
+                                currentTab === "instagram" && inData?.instagram_verified ? (
+                                    <Content>
+                                        
+                                    </Content>
+                                ) : (currentTab === "instagram") && (
+                                    <Content>
+                                        <EmptyWrapper>
+                                            <Image src="/empty.png" alt="" height={120} width={120}/>
+                                            <h3>Instagram not connected yet</h3>
+                                        </EmptyWrapper>
+                                    </Content>
+                                )
+                            }
+                            {
+                                currentTab === "facebook" && inData?.facebook_verified ? (
+                                    <Content>
+                                        
+                                    </Content>
+                                ) : (currentTab === "facebook") && (
+                                    <Content>
+                                        <EmptyWrapper>
+                                            <Image src="/empty.png" alt="" height={120} width={120}/>
+                                            <h3>Facebook not connected yet</h3>
+                                        </EmptyWrapper>
+                                    </Content>
+                                )
+                            }
+                            {
+                                currentTab === "twitter" && inData?.twitter_verified ? (
+                                    <Content>
+                                        
+                                    </Content>
+                                ) : (currentTab === "twitter") && (
+                                    <Content>
+                                        <EmptyWrapper>
+                                            <Image src="/empty.png" alt="" height={120} width={120}/>
+                                            <h3>Twitter not connected yet</h3>
+                                        </EmptyWrapper>
+                                    </Content>
+                                )
+                            }
+                                {
+                                currentTab === "tiktok" && inData?.tiktok_verified ? (
+                                    <Content>
+                                        
+                                    </Content>
+                                ) : (currentTab === "tiktok") && (
+                                    <Content>
+                                        <EmptyWrapper>
+                                            <Image src="/empty.png" alt="" height={120} width={120}/>
+                                            <h3>TikTok not connected yet</h3>
+                                        </EmptyWrapper>
+                                    </Content>
+                                )
+                            }
+                                {
+                                currentTab === "youtube" && inData?.tiktok_verified ? (
+                                    <Content>
+                                        
+                                    </Content>
+                                ) : (currentTab === "youtube") && (
+                                    <Content>
+                                        <EmptyWrapper>
+                                            <Image src="/empty.png" alt="" height={120} width={120}/>
+                                            <h3>Youtube not connected yet</h3>
+                                        </EmptyWrapper>
+                                    </Content>
+                                )
+                            }
+                        </DataSection>
+                    </LeftSection>
+                    <RightSection>
+                        <h3>Social Media Handles</h3>
+                        <SocialWrapper>
+                            <Social>
+                                <div>
+                                    <Image src="/instagram.png" alt="" height={32} width={32} />
+                                </div>
+                                <div>
+                                    <h4>INSTAGRAM</h4>
+                                    <p>@{inData?.instagram}</p>
+                                </div>
+                            </Social>
+                            <Social>
+                                <div>
+                                    <Image src="/youtube.svg" alt="" height={32} width={32} />
+                                </div>
+                                <div>
+                                    <h4>YOUTUBE</h4>
+                                    <p>@{inData?.youtube}</p>
+                                </div>
+                            </Social>
+                        </SocialWrapper>
+                        <SocialWrapper>
+                            <Social>
+                                <div>
+                                    <Image src="/tiktok.png" alt="" height={32} width={32} />
+                                </div>
+                                <div>
+                                    <h4>TIKTOK</h4>
+                                    <p>@{inData?.tiktok}</p>
+                                </div>
+                            </Social>
+                            <Social>
+                                <div>
+                                    <Image src="/twitter.png" alt="" height={32} width={32} />
+                                </div>
+                                <div>
+                                    <h4>TWITTER</h4>
+                                    <p>@{inData?.twitter}</p>
+                                </div>
+                            </Social>
+                        </SocialWrapper>
+                        <SocialWrapper>
+                            <Social style={{ minWidth: "100%" }}>
+                                <div>
+                                    <Image src="/facebook.png" alt="" height={32} width={32} />
+                                </div>
+                                <div>
+                                    <h4>FACEBOOK</h4>
+                                    <p>@{inData?.facebook}</p>
+                                </div>
+                            </Social>
+                        </SocialWrapper>
+                        <CollaborateBtn onClick={handleStartConversation}>
+                            <Image src="/envelope.svg" alt="" height={28} width={28} />
+                            <span>Collaborate with Influencer</span>
+                        </CollaborateBtn>
+                        <h3>Performance</h3>
+                        <Campaign>
+                            <div className='cont'>
+                                <h1>{inData?.analytics.influenzit.completed_campaigns_count}</h1>
+                                <p>Completed <br /> Campaigns</p>
+                            </div>
+                            <div className='cont'>
+                                <h1>5.0</h1>
+                                <div>
+                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
+                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
+                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
+                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
+                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
+                                </div>
+                                <p>20 ratings</p>
+                            </div>
+                        </Campaign>
+                    </RightSection>
+                </BottomSection>
+                {inData?.services.length ?
+                    <Listing>
+                        <h3>Services</h3>
+                        <Bottom style={{ columnGap: "15px"}}>
+                            {
+                            inData?.services.map((val, i) => (
+                                <ServiceCard
+                                    key={i}
+                                    title={val.name}
+                                    imgSrc={val.media[0]?.url ?? "/web-services.jpg"}
+                                    userName={inData?.user?.name}
+                                    price={`${val.currency} ${val.starting_from}`}
+                                    serviceLink={`/services/${val.id}`}
+                                    profileImg={inData?.user?.profile_pic}
+                                />
+                            )) 
+                            }
+                        </Bottom>
+                    </Listing> : null
+                }
+                 <Listing>
+                    <h3>Similar creators</h3>
                     <Bottom>
                         {
-                            inData?.skills.map((val, i) => (
-                                <Skill key={i}>{val.name}</Skill>
-                            ))
+                            creatorsData?.data?.data?.data.slice(0, 4).map((val, i) => {
+                                let genSkills = "";
+                                val.skills.forEach((val, i) => {
+                                    if(i < 5){
+                                        if (i !== 0) {
+                                            genSkills += `| ${val.name} `
+                                        } else {
+                                            genSkills += `${val.name} `
+                                        }
+                                    }
+                                })
+                                return <ProfileCard
+                                    key={i}
+                                    profileLink={`/influencers/${val.id}`}
+                                    imgSrc={val?.media.filter(med => med.identifier === 'profile_pic')?.[0]?.url ?? '/niche8.png'  }
+                                    handle={val.twitter}
+                                    name={`${val.user.firstname} ${val.user.lastname}`}
+                                    sex={val.gender}
+                                    skills={genSkills}
+                                    address={val.address}
+                                />
+                            })
                         }
                     </Bottom>
-                </SkillCard>
-                <SkillCard>
-                    <Top><h3>Portfolio</h3></Top>
-                    <Bottom style={{ justifyContent: "space-between"}}>
-                        <ImageCard>
-                            <Image src="/portfolio.png" layout='fill' objectFit='cover' objectPosition='center' />
-                        </ImageCard>
-                        <ImageCard>
-                            <Image src="/portfolio.png" layout='fill' objectFit='cover' objectPosition='center' />
-                        </ImageCard>
-                        <ImageCard>
-                            <Image src="/portfolio.png" layout='fill' objectFit='cover' objectPosition='center' />
-                        </ImageCard>
-                        <ImageCard>
-                            <Image src="/portfolio.png" layout='fill' objectFit='cover' objectPosition='center' />
-                        </ImageCard>
-                    </Bottom>
-                </SkillCard>
-                <SkillCard>
-                    <Top><h3>Work Experience</h3></Top>
-                    <Bottom>
-                        <WorkCard>
-                            <h3>Lead UI/UX Designer &amp; Wordpress Developer | Websitechic Digital Service</h3>
-                            <div>
-                                <p><Image src="/bag-icon.svg" height={20} width={20} /><span>Company Name</span></p>
-                                <p><Image src="/calendar.svg" height={20} width={20} /><span>March 2020 - Present</span></p>
-                            </div>
-                            <p>Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem accusantium doque laudantium, totam rem aiam eaqueiu ipsa quae ab illoion inventore veritatisetm quasitea architecto beataea dictaed quia couuntur magni dolores eos aquist ratione vtatem seque nesnt. Neque porro quamest quioremas ipsum quiatem dolor sitem ameteism conctetur adipisci velit sedate quianon.</p>
-                        </WorkCard>
-                        <WorkCard>
-                            <h3>Front End Web Developer &amp; Creative Designer</h3>
-                            <div>
-                                <p><Image src="/bag-icon.svg" height={20} width={20} /><span>Company Name</span></p>
-                                <p><Image src="/calendar.svg" height={20} width={20} /><span>May 2018 - Jun 2019</span></p>
-                            </div>
-                            <p>Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu omnis voluptatem accusantium doque laudantium, totam rem aiam eaqueiu ipsa quae ab illoion inventore veritatisetm quasitea architecto beataea dictaed quia couuntur magni dolores eos aquist ratione vtatem seque nesnt. Neque porro quamest quioremas ipsum quiatem dolor sitem ameteism conctetur adipisci velit sedate quianon.</p>
-                        </WorkCard>
-                    </Bottom>
-                </SkillCard>
+                </Listing>
             </Wrapper>
         </HeroSectionOne>
         {showDispute &&(

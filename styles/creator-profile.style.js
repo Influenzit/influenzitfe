@@ -33,6 +33,27 @@ export const UserCard = styled.div`
        flex-direction: column;
     }
 `;
+export const UserDetails = styled.div`
+   h2 {
+    font-size: 45px;
+    font-weight: 700;
+    color: #2A2939;
+   }
+   div {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 5px;
+    margin-top: 10px;
+   }
+   p {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    color: #555461;
+    font-size: 14px;
+   }
+`;
 export const ProfileStats = styled.div`
     margin-right: 20px;
     display: flex;
@@ -401,6 +422,11 @@ export const UserCardSection = styled.div`
     align-items: center;
 `;
 export const UserImage = styled.div`
+    height: 80px;
+    width: 80px;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
 `;
 export const Info = styled.div`
 `;
