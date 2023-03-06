@@ -1,241 +1,137 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { useState } from 'react'
 import { CancelIcon, CheckIcon } from '../assets/svgIcons'
 import LandingLayout from '../layouts/landing.layout'
-import { Bottom, HeroSectionOne, HeroSectionTwo, PricingContainer, PricingContent, PricingItem, PricingListCont, PricingType, PricingWrapper, SocialLinks, Top, Wrapper } from '../styles/pricing.style'
+import { ReviewCard, ReviewWrapper, UserCard, UserDetails, UserImage, WrapperFive } from '../styles/home.style'
+import { BillCard, BillContainer, BillRate, Bottom, HeroSectionOne, HeroSectionTwo, Outlilnes, Outline, PricingContainer, PricingContent, PricingItem, PricingListCont, PricingType, PricingWrapper, SocialLinks, Top, Wrapper } from '../styles/pricing.style'
+import { Section, TopBanner } from '../styles/search.style'
 
 const Pricing = () => {
+  const [isYearly, setIsYearly] = useState(true);
   return (
     <div>
-        <HeroSectionOne>
-            <h1>Pricing</h1>
-        </HeroSectionOne>
+        <Section>
+            <TopBanner>
+                <h1>Drive sales from your most influential customers with Influenzit</h1>
+                <Outlilnes>
+                    <Outline>
+                        <Image src="/check.svg" height={25} width={25}/>
+                        <span>Analyze Influencers</span>
+                    </Outline>
+                    <Outline>
+                        <Image src="/check.svg" height={25} width={25}/>
+                        <span>Secure Transactions</span>
+                    </Outline>
+                    <Outline>
+                        <Image src="/check.svg" height={25} width={25}/>
+                        <span>Cancel Anytime</span>
+                    </Outline>
+                </Outlilnes>
+                <BillRate isYearly={isYearly}>
+                    <p>Billed Yearly</p>
+                    <button onClick={() => setIsYearly(!isYearly)}>
+                        <span></span>
+                    </button>
+                    <p>Billed Monthly</p>
+                </BillRate>
+                <BillContainer>
+                    <BillCard>
+                        <p>Starter</p>
+                        <h1>Free</h1>
+                        <span>{isYearly ? "per year" : "per month"}</span>
+                        <div>
+                            <span>Access to 100 influencers</span>
+                            <span>Influencer Statistics Summary</span>
+                            <span>10% Transaction fee</span>
+                            <span>Access to all social networks</span>
+                            <span>Access to 100 influencers</span>
+                            <span>Influencer Statistics Summary</span>
+                            <span>10% Transaction fee</span>
+                            <span>Access to all social networks</span>
+                        </div>
+                    </BillCard>
+                    <BillCard isOdd>
+                        <h3>MOST POPULAR</h3>
+                        <p>Business</p>
+                        <h1>{isYearly ? "₦20,000" : "₦2,000"}</h1>
+                        <span>{isYearly ? "per year" : "per month"}</span>
+                        <div>
+                            <span>Access to 100 influencers</span>
+                            <span>Influencer Statistics Summary</span>
+                            <span>10% Transaction fee</span>
+                            <span>Access to all social networks</span>
+                            <span>Access to 100 influencers</span>
+                            <span>Influencer Statistics Summary</span>
+                            <span>10% Transaction fee</span>
+                            <span>Access to all social networks</span>
+                        </div>
+                    </BillCard>
+                    <BillCard>
+                        <p>GOLD</p>
+                        <h1>{isYearly ? "₦50,000" : "₦5,000"}</h1>
+                        <span>{isYearly ? "per year" : "per month"}</span>
+                        <div>
+                            <span>Access to 100 influencers</span>
+                            <span>Influencer Statistics Summary</span>
+                            <span>10% Transaction fee</span>
+                            <span>Access to all social networks</span>
+                            <span>Access to 100 influencers</span>
+                            <span>Influencer Statistics Summary</span>
+                            <span>10% Transaction fee</span>
+                            <span>Access to all social networks</span>
+                        </div>
+                    </BillCard>
+                </BillContainer>
+            </TopBanner>
+        </Section>
         <HeroSectionTwo>
-            <Wrapper>
-                <h3>Join the league of <span>business brands and agencies</span> already on the <span>Business plan</span></h3>
-                <PricingWrapper>
-                    <PricingContainer>
-                        <PricingContent>
-                            <PricingType>
-                                <h3>Starter</h3>
-                                <p>For small campaigns.</p>
-                            </PricingType>
-                            <SocialLinks>
-                                <span>
-                                    <Image src="/facebook.svg" height={25} width={25}/>
-                                </span>
-                                <span>
-                                    <Image src="/twitter.svg" height={25} width={25}/>
-                                </span>
-                                <span>
-                                    <Image src="/instagram.svg" height={25} width={25}/>
-                                </span>
-                                <span>
-                                    <Image src="/youtube.svg" height={25} width={25}/>
-                                </span>
-                                <span>
-                                    <Image src="/tiktok.svg" height={25} width={25}/>
-                                </span>
-                            </SocialLinks>
-                            <PricingListCont>
-                                <p>Included features:</p>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CancelIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CancelIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CancelIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CancelIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CancelIcon />
-                                </PricingItem>
-                                <Link href="/" passHref>
-                                    <a>Contact Us</a>
-                                </Link>
-                            </PricingListCont>
-                        </PricingContent>
-                    </PricingContainer>
-                    <PricingContainer>
-                        <Top>
-                            <Image src="/fire.svg" alt="fire" height={30} width={40}/>
-                            <span>The Most Popular</span>
-                        </Top>
-                        <PricingContent>
-                            <PricingType>
-                                <h3>Business</h3>
-                                <p>For advance needs.</p>
-                            </PricingType>
-                            <SocialLinks>
-                                <span>
-                                    <Image src="/facebook.svg" height={25} width={25}/>
-                                </span>
-                                <span>
-                                    <Image src="/twitter.svg" height={25} width={25}/>
-                                </span>
-                                <span>
-                                    <Image src="/instagram.svg" height={25} width={25}/>
-                                </span>
-                                <span>
-                                    <Image src="/youtube.svg" height={25} width={25}/>
-                                </span>
-                                <span>
-                                    <Image src="/tiktok.svg" height={25} width={25}/>
-                                </span>
-                            </SocialLinks>
-
-                            <PricingListCont>
-                                <p>Included features:</p>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CancelIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CancelIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CancelIcon />
-                                </PricingItem>
-                                <Link href="/" passHref>
-                                    <a>Contact Us</a>
-                                </Link>
-                            </PricingListCont>
-                        </PricingContent>
-                        <Bottom></Bottom>
-                    </PricingContainer>
-                    <PricingContainer>
-                        <PricingContent>
-                            <PricingType>
-                                <h3>Gold</h3>
-                                <p>For large campaigns.</p>
-                            </PricingType>
-                            <SocialLinks>
-                            <span>
-                                    <Image src="/facebook.svg" height={25} width={25}/>
-                                </span>
-                                <span>
-                                    <Image src="/twitter.svg" height={25} width={25}/>
-                                </span>
-                                <span>
-                                    <Image src="/instagram.svg" height={25} width={25}/>
-                                </span>
-                                <span>
-                                    <Image src="/youtube.svg" height={25} width={25}/>
-                                </span>
-                                <span>
-                                    <Image src="/tiktok.svg" height={25} width={25}/>
-                                </span>
-                            </SocialLinks>
-                            <PricingListCont>
-                                <p>Included features:</p>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <PricingItem>
-                                    <span>Access to 500 influencers</span>
-                                    <CheckIcon />
-                                </PricingItem>
-                                <Link href="/" passHref>
-                                    <a>Contact Us</a>
-                                </Link>
-                            </PricingListCont>
-                        </PricingContent>
-                    </PricingContainer>
-                </PricingWrapper>
-            </Wrapper>
+            <WrapperFive>
+                <p id="heading">Testimonials</p>
+                <h1>Don&apos;t take our word for it</h1>
+                <ReviewWrapper>
+                    <ReviewCard>
+                    <h3>Testimonial Heading</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget leo rutrum, ullamcorper dolor eu, faucibus massa.</p>
+                    <UserCard>
+                        <UserImage>
+                            <Image src="/review.png" alt="review-img" layout="fill" objectFit="cover" objectPosition="center"/>
+                        </UserImage>
+                        <UserDetails>
+                            <h4>Samuel Bezoz</h4>
+                            <p>CEO at Krystal Shoe Palace</p>
+                        </UserDetails>
+                    </UserCard>
+                    </ReviewCard>
+                    <ReviewCard>
+                    <h3>Testimonial Heading</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget leo rutrum, ullamcorper dolor eu, faucibus massa.</p>
+                    <UserCard>
+                        <UserImage>
+                            <Image src="/review.png" alt="review-img" layout="fill" objectFit="cover" objectPosition="center"/>
+                        </UserImage>
+                        <UserDetails>
+                        <h4>Aaron Musk</h4>
+                        <p>CEO at Krystal Bag Palace</p>
+                        </UserDetails>
+                    </UserCard>
+                    </ReviewCard>
+                    <ReviewCard>
+                    <h3>Testimonial Heading</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget leo rutrum, ullamcorper dolor eu, faucibus massa.</p>
+                    <UserCard>
+                        <UserImage>
+                        <Image src="/review.png" alt="review-img" layout="fill" objectFit="cover" objectPosition="center"/>
+                        </UserImage>
+                        <UserDetails>
+                        <h4>Ezekiel Alwode</h4>
+                        <p>Developer</p>
+                        </UserDetails>
+                    </UserCard>
+                    </ReviewCard>
+                </ReviewWrapper>
+            </WrapperFive>
         </HeroSectionTwo>
     </div>
   )
