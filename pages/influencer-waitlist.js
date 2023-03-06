@@ -56,7 +56,7 @@ const InfluencerWaitlist = () => {
             <Info>
                 <Details>
                     <h1>Monetize your audience </h1>
-                    <p>Whether you're a micro-influencer with a focused following or a mini-influencer with a passion for a specific niche, Influenzit connects you with the right brands and campaigns to grow your following and monetize your influence.</p>
+                    <p>Whether you&apos;re a micro-influencer with a focused following or a mini-influencer with a passion for a specific niche, Influenzit connects you with the right brands and campaigns to grow your following and monetize your influence.</p>
                 </Details>
                 <ImgContainer>
                     <Image src="/w-banner-2.png" alt="banner" layout='fill' loading="lazy" objectFit="cover" objectPosition="center" />
@@ -68,7 +68,7 @@ const InfluencerWaitlist = () => {
                 </ImgContainer>
                 <Details isInverse>
                     <h1>Connect to the right brands</h1>
-                    <p>Our platform offers a unique "do it yourself" solution that simplifies the process of finding and collaborating with the right businesses. With real-time access to thousands of industry-specific social media influencers at the click of a button, you can easily find and collaborate with the right partners to elevate your brand perception and increase sales.</p>
+                    <p>Our platform offers a unique &quot;do it yourself&quot; solution that simplifies the process of finding and collaborating with the right businesses. With real-time access to thousands of industry-specific social media influencers at the click of a button, you can easily find and collaborate with the right partners to elevate your brand perception and increase sales.</p>
                 </Details>
             </Info>
             <Info>
