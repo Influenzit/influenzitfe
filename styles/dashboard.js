@@ -2,12 +2,35 @@ import styled from "styled-components";
 import { breakpoints, colors } from "./theme";
 
 export const WelcomeHeading = styled.h2`
-    font-size: 26px;
+    font-weight: 600;
+    font-size: 24px;
     padding-bottom: 10px;
-    color: #333;
-    text-transform: capitalize;
-    span {
-        color: ${colors.primaryColor}
+    color: ${colors.textColor};
+`;
+export const BizCard = styled.div`
+    background: #FFFFFF;
+    padding: 24px;
+    border: 1px solid #EAEAEB;
+    border-radius: 16px;
+    h3 {
+        font-weight: 600;
+        font-size: 18px;
+        color: ${colors.textColor};
+    }
+    p {
+        color: #555461;
+        font-size: 14px;
+        margin: 20px 0;
+    }
+    a {
+        border-radius: 8px;
+        background: ${colors.primaryColor};
+        color: #fff;
+        font-weight: 500;
+        font-size: 14px;
+        padding: 12px 20px;
+        cursor: pointer;
+        display: inline-block;
     }
 `;
 export const CardsWrapper = styled.div`
@@ -45,4 +68,9 @@ export const Card = styled.div`
     h1 {
         color: ${colors.primaryColor};
     }
+`;
+export const ListingWrapper = styled.div`
+
+`;
+export const EmptyList = styled.div`
 `;

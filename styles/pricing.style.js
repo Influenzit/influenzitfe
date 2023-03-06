@@ -221,5 +221,3 @@ export const PricingContent = styled.div`
         }
     }
 `;
-
-
