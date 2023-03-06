@@ -1,6 +1,6 @@
 import React from 'react'
 
-const BusinessOwnerWaitlist = () => {
+const BusinessWaitlist = () => {
   return (
     <div>BusinessOwnerWaitlist</div>
   )
