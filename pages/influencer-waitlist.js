@@ -1,12 +1,50 @@
+import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
+import { createWaitlist } from '../api/waitlist'
+import { isLoading, setError, setLoading } from '../app/reducers/status'
+import Loader from '../components/loading'
 import Footer from '../components/waitlist-footer'
 import { Answer, Faq, FaqWrapper, Question, WrapperSix } from '../styles/home.style'
 import { AccessCard, Banner, CardLayer, Container, Details, ImgContainer, Info, Wrapper } from '../styles/waitlist.style'
 
 const InfluencerWaitlist = () => {
   const [faq, setFaq] = useState({});
+  const [email, setEmail] = useState("");
+  const dispatch = useDispatch();
+  const loadingStatus = useSelector(isLoading);
+  const mutation = useMutation(waitlistData => {
+    return createWaitlist(waitlistData);
+  }, {
+    onSuccess(successRes) {
+        const res = successRes.data;
+        console.log(successRes);
+        toast.success(res.message, {
+            position: toast.POSITION.TOP_RIGHT
+        });
+        setEmail("");
+        dispatch(setLoading(false));
+    },
+    onError(error) {
+        const res = error.response.data;
+        if(res){
+          dispatch(setLoading(false));
+          toast.error(res.message, {
+            position: toast.POSITION.TOP_RIGHT
+          });
+          setEmail("");
+          return;
+        }
+        dispatch(setLoading(false));
+        toast.error("An error occured", {
+            position: toast.POSITION.TOP_RIGHT
+        });
+        setEmail("");
+      }
+  });
   const handleFaqToggle = (index) => {
     console.log(index)
     setFaq((prev) => {
@@ -42,6 +80,15 @@ const InfluencerWaitlist = () => {
         answer: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible.",
     }
   ]
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(setLoading(true));
+    mutation.mutate({
+        email,
+        account_type: "Influencer",
+    })
+  }
+
   return (
     <Container>
         <Banner>
@@ -56,7 +103,7 @@ const InfluencerWaitlist = () => {
             <Info>
                 <Details>
                     <h1>Monetize your audience </h1>
-                    <p>Whether you're a micro-influencer with a focused following or a mini-influencer with a passion for a specific niche, Influenzit connects you with the right brands and campaigns to grow your following and monetize your influence.</p>
+                    <p>Whether you&apos;re a micro-influencer with a focused following or a mini-influencer with a passion for a specific niche, Influenzit connects you with the right brands and campaigns to grow your following and monetize your influence.</p>
                 </Details>
                 <ImgContainer>
                     <Image src="/w-banner-2.png" alt="banner" layout='fill' loading="lazy" objectFit="cover" objectPosition="center" />
@@ -68,7 +115,7 @@ const InfluencerWaitlist = () => {
                 </ImgContainer>
                 <Details isInverse>
                     <h1>Connect to the right brands</h1>
-                    <p>Our platform offers a unique "do it yourself" solution that simplifies the process of finding and collaborating with the right businesses. With real-time access to thousands of industry-specific social media influencers at the click of a button, you can easily find and collaborate with the right partners to elevate your brand perception and increase sales.</p>
+                    <p>Our platform offers a unique &quot;do it yourself&quot; solution that simplifies the process of finding and collaborating with the right businesses. With real-time access to thousands of industry-specific social media influencers at the click of a button, you can easily find and collaborate with the right partners to elevate your brand perception and increase sales.</p>
                 </Details>
             </Info>
             <Info>
@@ -87,8 +134,8 @@ const InfluencerWaitlist = () => {
                 </div>
                 <div>
                     <form>
-                        <input type="email" placeholder="Email Address" />
-                        <button>Sign up</button>
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" />
+                        <button onClick={handleSubmit}>Sign up</button>
                     </form>
                 </div>
             </AccessCard>
@@ -117,6 +164,7 @@ const InfluencerWaitlist = () => {
             </FaqWrapper>
         </WrapperSix>
         <Footer />
+        {loadingStatus && <Loader />}
     </Container>
   )
 }

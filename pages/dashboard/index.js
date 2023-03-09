@@ -6,7 +6,7 @@ import { getUser } from '../../app/reducers/user'
 import { BagIcon, ChevronLeft, ChevronRight, HashTagIcon, SettingsIcon, WalletIcon } from '../../assets/svgIcons'
 import LandingLayout from '../../layouts/landing.layout'
 import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../styles/connect-pages.style'
-import { BizCard, Card, CardsWrapper, ChartContainer, ListingWrapper, WelcomeHeading } from '../../styles/dashboard'
+import { BizCard, CampaignCard, Card, CardsWrapper, ChartContainer, EmptyCard, List, ListingWrapper, ProjectCard, ProjectDetails, Status, UserMiniCard, WelcomeHeading } from '../../styles/dashboard'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useQuery } from '@tanstack/react-query'
 import { getCampaigns } from '../../api/campaigns'
@@ -93,7 +93,7 @@ const Dashboard = () => {
                     </BizCard>
                 )
             }
-            {
+            {/* {
               (currentAcctType === "Business Owner" || (currentAcctType === "Creator")) && (
 
                 <TableWrapper>
@@ -138,16 +138,70 @@ const Dashboard = () => {
                     </TableContent>
                 </TableWrapper>
               )  
-            }
+            } */}
              {
               (currentAcctType === "Business Owner" || (currentAcctType === "Influencer")) && (
                 <ListingWrapper>
-                    <h3>Active Campaigns</h3>
-
+                    <h3 id="h3">Active Campaigns</h3>
+                    {
+                        campaignList.data.length ? (
+                            <List>
+                               { 
+                                campaignList.data.map((val, i) => (
+                                    <ProjectCard key={i}>
+                                        <UserMiniCard>
+                                            <div>
+                                                <h4>{val.provider.name}</h4>
+                                                <p>{val.provider.email}</p>
+                                                <div id="social">
+                                                    <Image src="/facebook-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/instagram-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/twitter-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/tiktok-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/youtube-icon.svg" alt="" height={12} width={12}/>
+                                                </div>
+                                                <div id="star">
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <span>5.0</span>
+                                                </div>
+                                            </div>
+                                        </UserMiniCard>
+                                        <ProjectDetails>
+                                            <div id="img">
+                                                <Image src="/dog.png" layout="fill" objectFit="cover" objectPosition="center"/>
+                                            </div>
+                                            <div>
+                                                <h4>{val.title}</h4>
+                                                <p>{val.description}</p>
+                                            </div>
+                                        </ProjectDetails>
+                                        <Status inProgress={val.status !== "Completed"}>
+                                            <h3>STATUS</h3>
+                                            <div><span></span> {val.status}</div>
+                                        </Status>
+                                    </ProjectCard>
+                                ))
+                               }
+                            </List>
+                        ) : (
+                            <EmptyCard>
+                                <h3>You currently have no active campaigns</h3>
+                                <Link href="/" passHref>
+                                    <a>
+                                        <span>Find Influencers</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
+                                    </a>
+                                </Link>
+                            </EmptyCard>
+                        )
+                    }
                 </ListingWrapper>
               )  
             }
-            {
+            {/* {
                 (currentAcctType === "Business Owner" || currentAcctType === "Influencer") && (
                     <TableWrapper>
                         <TableHeader>
@@ -191,12 +245,69 @@ const Dashboard = () => {
                         </TableContent>
                     </TableWrapper>
                 )
-            }
+            } */}
              {
               (currentAcctType === "Business Owner" || (currentAcctType === "Creator")) && (
                 <ListingWrapper>
-                    <h3>Active Projects</h3>
-                    
+                    <h3 id="h3">Active Projects</h3>
+                    {
+                        projectList.data.length ? (
+                            <List>
+                                {
+                                    projectList.data.map((val, i) => (
+                                        <ProjectCard key={i}>
+                                            <ProjectDetails>
+                                                <div id="img">
+                                                    <Image src="/dog.png" layout="fill" objectFit="cover" objectPosition="center"/>
+                                                </div>
+                                                <div>
+                                                    <h4>{val.title}</h4>
+                                                    <p>{val.description}</p>
+                                                </div>
+                                            </ProjectDetails>
+                                            <UserMiniCard>
+                                                <div id="pic">
+                                                    <Image src={val.provider.profile_pic} layout="fill" objectFit="cover" objectPosition="center"/>
+                                                </div>
+                                                <div>
+                                                    <h4>{val.provider.name}</h4>
+                                                    <p>{val.provider.email}</p>
+                                                    <div id="social">
+                                                        <Image src="/facebook-icon.svg" alt="" height={12} width={12}/>
+                                                        <Image src="/instagram-icon.svg" alt="" height={12} width={12}/>
+                                                        <Image src="/twitter-icon.svg" alt="" height={12} width={12}/>
+                                                        <Image src="/tiktok-icon.svg" alt="" height={12} width={12}/>
+                                                        <Image src="/youtube-icon.svg" alt="" height={12} width={12}/>
+                                                    </div>
+                                                    <div id="star">
+                                                        <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                        <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                        <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                        <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                        <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                        <span>5.0</span>
+                                                    </div>
+                                                </div>
+                                            </UserMiniCard>
+                                            <Status inProgress={val.status !== "Completed"}>
+                                                <h3>STATUS</h3>
+                                                <div><span></span> {val.status}</div>
+                                            </Status>
+                                        </ProjectCard>
+                                    ))
+                                }
+                            </List>
+                        ) : (
+                            <EmptyCard>
+                                <h3>You currently have no active campaigns</h3>
+                                <Link href="/" passHref>
+                                    <a>
+                                        <span>Find Influencers</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
+                                    </a>
+                                </Link>
+                            </EmptyCard>
+                        )
+                    }
                 </ListingWrapper>
               )  
             }

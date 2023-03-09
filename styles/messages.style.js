@@ -3,19 +3,18 @@ import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.div`
     background: #F7FAFC;
-    padding: 20px 0;
 `;
 export const Wrapper = styled.div`
-    max-width: ${sizes.wrapperWidth};
-    width: 98%;
+    width: 100%;
     margin: 0 auto;
-    height: calc(100vh - 180px);
+    height: calc(100vh - 70px);
     overflow: hidden;
-    max-height: calc(100vh - 180px);
+    max-height: calc(100vh - 70px);
     background: #FFFFFF;
     min-height: 480px;
     border-radius: 5px;
     display: flex;
+    margin-top: 70px;
 `;
 export const MessageSection = styled.div`
     width: 100%;
@@ -47,6 +46,7 @@ export const ChatContainer = styled.div`
     display: flex;
     flex-direction: column;
     height: 100%;
+    background: #F9FAFB;
 `;
 export const ChatHeader = styled.div`
     height: 70px;
@@ -87,9 +87,9 @@ export const ContextBtn = styled.div`
     cursor: pointer;
 `;
 export const MessagesCont = styled.div`
-    height: calc(100% - 180px);
-    min-height: calc(100% - 180px);
-    max-height: calc(100% - 180px);
+    height: calc(100% - 110px);
+    min-height: calc(100% - 110px);
+    max-height: calc(100% - 110px);
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
@@ -119,18 +119,20 @@ export const MessageCard = styled.div`
     padding: 12px 10px;
     display: flex;
     column-gap: 10px;
-    border: thin solid whitesmoke;
     border-radius: 20px;
     margin:  10px 20px;
 `;
 export const MessageContent = styled.div`
     h2 {
-        font-size: 15px;
-        color: #777;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 120%;
+        color: #2E384D;
         span {
-            font-size: 12px;
-            color: #888;
-            font-weight: 400;
+            font-weight: 500;
+            font-size: 10px;
+            color: #94949C;
+            line-height: 120%;
             margin-left: 10px;
         }
     }
@@ -138,27 +140,33 @@ export const MessageContent = styled.div`
         img {
             vertical-align: middle;
         }
+        font-weight: 400;
         font-size: 14px;
-        color: #333;
+        line-height: 150%;
+        color: #555461;
     }
 `;
 export const Editor = styled.div`
     height: 100px;
-    padding: 0 30px;
     max-height: 100px;
     display: flex;
     flex-direction: column;
-    border-top: 1px solid #D2D2D2;
+    background: #FFFFFF;
+    border: 1px solid #EAEAEB;
+    border-radius: 16px;
+    width: 95%;
+    margin: 0 auto;
     position: relative;
 `;
 export const MessageInput = styled.div`
     outline: none;
-    height: 70%;
+    height: 100%;
     position: relative;
-    max-height: 70%;
     overflow-y: scroll;
     cursor: text;
     padding: 10px 0;
+    font-size: 14px;
+    color: #94949C;
     :hover {
         scrollbar-color: ${colors.primaryColor} ${colors.primaryColor}11;
 
@@ -197,7 +205,7 @@ export const ChatControls = styled.div`
     display: flex;
     justify-content: space-between;
     min-height: 30%;
-
+    padding: 0 15px;
 `;
 export const LeftControls = styled.div`
     display: flex;
@@ -216,6 +224,8 @@ export const EditorBtn = styled.button`
     padding: 4px;
     cursor: pointer;
     color: #949494;
+    display: flex;
+    align-items: center;
     :hover {
         color: ${colors.primaryColor};
     }
@@ -226,6 +236,12 @@ export const ActionBtn = styled.button`
     background: transparent;
     padding: 4px;
     cursor: pointer;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 120%;
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
 `;
 export const PickerContainer = styled.div`
     position: absolute;
@@ -236,25 +252,24 @@ export const PickerContainer = styled.div`
 `;
 export const UserSect = styled.div`
     position: relative;
-    height: 30px;
-    width: 30px;
+    height: 40px;
+    width: 40px;
     ::after {
-        height: 7px;
-        width: 7px;
+        height: 8px;
+        width: 8px;
         display: block;
         content: "";
         position: absolute;
-        bottom: 0;
-        right: 0;
+        top: -4px;
+        right: 5px;
         border-radius: 50%;
-        border: 2px solid #fff;
-        background: #14A800;
+        background: ${colors.primaryColor};
     }
 `;
 export const ProfilePicWrapper = styled.div`
     position: relative;
-    height: 30px;
-    width: 30px;
+    height: 40px;
+    width: 40px;
     border-radius: 50%;
     overflow: hidden;
 `;
