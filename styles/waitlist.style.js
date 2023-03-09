@@ -47,11 +47,12 @@ export const Banner = styled.div`
         height: auto;
         min-height: auto;
         h1 {
-            font-size: 30px;
+            font-size: 26px;
             color: ${colors.textColor};
         }
         p {
             color: ${colors.textColor};
+            font-size: 17px;
         }
         br {
             display: none;
