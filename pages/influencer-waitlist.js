@@ -1,12 +1,50 @@
+import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
+import { createWaitlist } from '../api/waitlist'
+import { isLoading, setError, setLoading } from '../app/reducers/status'
+import Loader from '../components/loading'
 import Footer from '../components/waitlist-footer'
 import { Answer, Faq, FaqWrapper, Question, WrapperSix } from '../styles/home.style'
 import { AccessCard, Banner, CardLayer, Container, Details, ImgContainer, Info, Wrapper } from '../styles/waitlist.style'
 
 const InfluencerWaitlist = () => {
   const [faq, setFaq] = useState({});
+  const [email, setEmail] = useState("");
+  const dispatch = useDispatch();
+  const loadingStatus = useSelector(isLoading);
+  const mutation = useMutation(waitlistData => {
+    return createWaitlist(waitlistData);
+  }, {
+    onSuccess(successRes) {
+        const res = successRes.data;
+        console.log(successRes);
+        toast.success(res.message, {
+            position: toast.POSITION.TOP_RIGHT
+        });
+        setEmail("");
+        dispatch(setLoading(false));
+    },
+    onError(error) {
+        const res = error.response.data;
+        if(res){
+          dispatch(setLoading(false));
+          toast.error(res.message, {
+            position: toast.POSITION.TOP_RIGHT
+          });
+          setEmail("");
+          return;
+        }
+        dispatch(setLoading(false));
+        toast.error("An error occured", {
+            position: toast.POSITION.TOP_RIGHT
+        });
+        setEmail("");
+      }
+  });
   const handleFaqToggle = (index) => {
     console.log(index)
     setFaq((prev) => {
@@ -42,6 +80,15 @@ const InfluencerWaitlist = () => {
         answer: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible.",
     }
   ]
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(setLoading(true));
+    mutation.mutate({
+        email,
+        account_type: "Influencer",
+    })
+  }
+
   return (
     <Container>
         <Banner>
@@ -87,8 +134,8 @@ const InfluencerWaitlist = () => {
                 </div>
                 <div>
                     <form>
-                        <input type="email" placeholder="Email Address" />
-                        <button>Sign up</button>
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" />
+                        <button onClick={handleSubmit}>Sign up</button>
                     </form>
                 </div>
             </AccessCard>
@@ -117,6 +164,7 @@ const InfluencerWaitlist = () => {
             </FaqWrapper>
         </WrapperSix>
         <Footer />
+        {loadingStatus && <Loader />}
     </Container>
   )
 }

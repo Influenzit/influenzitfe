@@ -2,11 +2,48 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import Footer from '../components/waitlist-footer'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
+import { createWaitlist } from '../api/waitlist'
+import { isLoading, setLoading } from '../app/reducers/status'
 import { Answer, Faq, FaqWrapper, Question, WrapperSix } from '../styles/home.style'
 import { AccessCard, AccessCardT, Banner, CardLayer, Container, Details, FBanner, ImageBanner, ImgContainer, Info, Wrapper } from '../styles/waitlist.style'
+import { useMutation } from '@tanstack/react-query'
+import Loader from '../components/loading'
 
 const BusinessWaitlist = () => {
   const [faq, setFaq] = useState({});
+  const [email, setEmail] = useState("");
+  const dispatch = useDispatch();
+  const loadingStatus = useSelector(isLoading);
+  const mutation = useMutation(waitlistData => {
+    return createWaitlist(waitlistData);
+  }, {
+    onSuccess(successRes) {
+        const res = successRes.data;
+        toast.success(res.message, {
+            position: toast.POSITION.TOP_RIGHT
+        });
+        dispatch(setLoading(false));
+        setEmail("");
+    },
+    onError(error) {
+        const res = error.response.data;
+        if(res){
+          dispatch(setLoading(false));
+          toast.error(res.message, {
+            position: toast.POSITION.TOP_RIGHT
+          });
+          setEmail("");
+          return;
+        }
+        dispatch(setLoading(false));
+        toast.error("An error occured", {
+            position: toast.POSITION.TOP_RIGHT
+        });
+        setEmail("");
+      }
+  });
   const handleFaqToggle = (index) => {
     console.log(index)
     setFaq((prev) => {
@@ -42,6 +79,14 @@ const BusinessWaitlist = () => {
         answer: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible.",
     }
   ]
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(setLoading(true));
+    mutation.mutate({
+        email,
+        account_type: "Business",
+    })
+  }
   return (
     <Container style={{ paddingTop: "0" }}>
         <FBanner>
@@ -70,8 +115,8 @@ const BusinessWaitlist = () => {
                 <p>Join our waitlist today to be the first to know when we launch. As a thank you for your interest, you will receive 6 months of free use without paying any commission when you sign up. Don't miss out on this exclusive opportunity to take your business to the next level with Influenzit.</p>
                 <h4>Sign up now and be a part of the future of influencer marketing.</h4>
                 <form>
-                    <input type="email" placeholder="Email Address" />
-                    <button>Sign up</button>
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}placeholder="Email Address" />
+                    <button onClick={handleSubmit}>Sign up</button>
                 </form>
         </AccessCardT>
         <WrapperSix>
@@ -98,6 +143,7 @@ const BusinessWaitlist = () => {
             </FaqWrapper>
         </WrapperSix>
         <Footer />
+        {loadingStatus && <Loader />}
     </Container>
   )
 }
