@@ -53,6 +53,9 @@ export const Banner = styled.div`
         p {
             color: ${colors.textColor};
         }
+        br {
+            display: none;
+        }
     }
 `;
 export const Wrapper = styled.div`
@@ -72,8 +75,10 @@ export const Wrapper = styled.div`
     #p {
         text-align: center;
         width: 60%;
-        min-width: 350px;
         margin: 0 auto;
+        ${breakpoints.md} {
+            width: 100%;
+        }
     }
     h1 {
         font-weight: 700;
