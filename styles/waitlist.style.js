@@ -112,7 +112,7 @@ export const Info = styled.div`
     ${breakpoints.md} {
         ${({isInverse}) => !isInverse ? "flex-direction: column-reverse;" : "flex-direction: column;"}
         row-gap: 15px;
-        margin-top: 50px;
+        margin: 50px auto 0 auto;
     }
 `;
 export const  Details = styled.div`
