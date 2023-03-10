@@ -8,6 +8,7 @@ import { setLoading } from "../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../assets/svgIcons";
 import Stage1 from "../../../components/Campaign/Stage1";
 import Stage2 from "../../../components/Campaign/Stage2";
+import Stage3 from "../../../components/Campaign/Stage3";
 import LandingLayout from "../../../layouts/landing.layout";
 import {
   ActionBtn,
@@ -207,7 +208,7 @@ const Campaigns = () => {
 
       {newCamPaign && (
         <div className="fixed inset-0 bg-black/30 z-[999999] flex justify-center items-center">
-          <div className="bg-white w-[500px]  p-6 rounded-lg">
+          <div className="bg-white w-[500px]  p-6 rounded-lg overflow-hidden">
             <div className="flex justify-between mb-6">
               <h1 className="text-xl">Create New Campaign</h1>
 
@@ -221,15 +222,18 @@ const Campaigns = () => {
               </button>
             </div>
             <div className="my-4 bg-[#D4D4D8] h-[2px] w-full rounded-lg mt-6">
-              <div className="bg-primary-100 w-1/3 h-full rounded-lg"></div>
+              <div className={`bg-primary-100 w-${step}/3 h-full rounded-lg`}></div>
             </div>
 
-            {step==1 && <Stage1 />}
-            {step==2 && <Stage2 />}
+            {step == 1 && <Stage1 />}
+            {step == 2 && <Stage2 />}
+            {step == 3 && <Stage3 />}
             <div className="flex justify-end">
               <button
                 onClick={() => {
-                  setstep(step + 1);
+                  if (step <= 3) {
+                    setstep(step + 1);
+                  }
                 }}
                 className="bg-primary-100 py-2 px-4 rounded-lg text-white"
               >

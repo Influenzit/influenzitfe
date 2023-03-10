@@ -39,6 +39,40 @@ box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1), 0px 1px 2px rgba(16, 24, 40, 0.06
 border-radius: 8px;
 }
 
+.let {
+    
+  -webkit-animation-duration: 0.8s;
+  animation-duration: 0.8s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.swipeIn {
+  animation-name: swipeIn;
+  -webkit-animation-name: swipeIn;
+}
+
+@keyframes swipeIn {
+  0% {
+      transform: translateX(200%);
+  }
+
+  100% {
+      transform: translateX(0px);
+  }
+}
+
+
+@-webkit-keyframes swipeIn {
+  0% {
+      -webkit-transform: translateX(200%);
+  }
+
+  100% {
+      -webkit-transform: translateX(0px);
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

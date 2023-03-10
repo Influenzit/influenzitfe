@@ -2,7 +2,7 @@ import React from "react";
 
 function Stage1() {
   return (
-    <div>
+    <div >
       <p className="text-xs  text-primary-100">Step 1</p>
       <p className="text-xs ">Describe your Campaign</p>
       <div className="my-6 flex flex-col space-y-2 ">

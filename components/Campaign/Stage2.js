@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 
-function Stage1() {
+function Stage2() {
+  const [mileStone, setmileStone] = useState([5]);
+
+  const mileStoneCopy = [5];
+  const handleIncrement = () => {
+    mileStoneCopy.push(5);
+    setmileStone(mileStoneCopy);
+  };
+  const handlederement = () => {
+    mileStoneCopy.pop;
+    setmileStone(mileStoneCopy);
+  };
   return (
-    <div>
+    <div className="let swipeIn">
       <div className="flex gap-4 items-center">
         <div>
           <p className="text-xs  text-primary-100">Step 1</p>
@@ -14,9 +25,12 @@ function Stage1() {
         </div>
       </div>
       <div className="w-full">
-        {[1, 2].map((item, idx) => (
-          <div className="grid grid-cols-12 gap-4 w-full" key={idx}>
-            <div className="col-span-6">
+        {mileStone.map((item, idx) => (
+          <div
+            className="grid grid-cols-12 gap-4 w-full items-center"
+            key={idx}
+          >
+            <div className="col-span-5">
               <div className="my-6 flex flex-col space-y-2 ">
                 <label htmlFor="b_id">Milestone name</label>
                 <input
@@ -49,12 +63,25 @@ function Stage1() {
                 />
               </div>
             </div>
+            <div>
+              {" "}
+              <button
+                onClick={() => {
+                  handlederement();
+                }}
+                className="outline-none text-[10px] text-red-500 mt-5"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </div>
       <button
-        onClick={() => {}}
-        className="bg-[#F9DADE] py-2 px-4 rounded-lg text-white"
+        onClick={() => {
+          handleIncrement();
+        }}
+        className="bg-[#F9DADE] py-2 px-4 rounded-lg text-white hover:bg-primary-100"
       >
         Add milestone
       </button>
@@ -62,4 +89,4 @@ function Stage1() {
   );
 }
 
-export default Stage1;
+export default Stage2;

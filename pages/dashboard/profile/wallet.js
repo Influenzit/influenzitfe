@@ -1,149 +1,330 @@
-import React, { useEffect, useState } from 'react'
-import ProfileSidebar from '../../../components/profile-sidebar'
-import LandingLayout from '../../../layouts/landing.layout'
-import plusCircleIcon from '../../../assets/plus-circle.svg'
-import { CAmount, CContent, Container, Content, CustomContent, FundBtn, Heading, WalletCard, WalletCardWrapper, Wrapper } from '../../../styles/profile.style'
-import Image from 'next/image'
-import { ActionBtn, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableWrapper, TBody, Td, Th, THead, Tr, TrH } from '../../../styles/connect-pages.style'
-import { ChevronLeft, ChevronRight } from '../../../assets/svgIcons'
-import { getWallet, getWalletTransactions } from '../../../api/wallet'
-import { useQuery } from '@tanstack/react-query'
-import { moneyStandard } from '../../../helpers/helper'
-import { useRouter } from 'next/router'
+import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { getCampaigns } from "../../../api/campaigns";
+import { setLoading } from "../../../app/reducers/status";
+import info from "../../../assets/info.svg";
+import Stage1 from "../../../components/Campaign/Stage1";
+import Stage2 from "../../../components/Campaign/Stage2";
+import Stage3 from "../../../components/Campaign/Stage3";
+import LandingLayout from "../../../layouts/landing.layout";
+import {
+  ActionBtn,
+  Checkbox,
+  Container,
+  FilterContainer,
+  NavBtn,
+  PageBtn,
+  Pages,
+  Pagination,
+  SearchContainer,
+  Table,
+  TableContent,
+  TableControls,
+  TableFooter,
+  TableHeader,
+  TableWrapper,
+  TBody,
+  Td,
+  Th,
+  THead,
+  Tr,
+  TrH,
+  Wrapper,
+} from "../../../styles/connect-pages.style";
 
-const Billing = () => {
-    const [wallet, setWallet] = useState({});
-    const [walletList, setWalletList] = useState([]);
-    const router = useRouter();
-    const { data: walletData, refetch: refetchWalletData } = useQuery(["get-wallet"], async () => {
-        return await getWallet();
+import cancel from "./../../../assets/close.svg";
+
+const Campaigns = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [getUrl, setGetUrl] = useState("");
+  const [newCamPaign, setNewCampaign] = useState(false);
+  const [step, setstep] = useState(1);
+  const [campaignList, setCampaignList] = useState({
+    data: [],
+  });
+  const dummyData = [
+    {
+      date: "Jan 13, 2022",
+      amount: "+₦30,020",
+      Activity: "Deposit",
+      Description: "Deposit to Wallet",
+      status: "Processing",
+    },
+    {
+      date: "Jan 13, 2022",
+      amount: "+₦30,020",
+      Activity: "Deposit",
+      Description: "Deposit to Wallet",
+      status: "Processing",
+    },
+    {
+      date: "Jan 13, 2022",
+      amount: "+₦30,020",
+      Activity: "Deposit",
+      Description: "Deposit to Wallet",
+      status: "Processing",
+    },
+    {
+      date: "Jan 13, 2022",
+      amount: "+₦30,020",
+      Activity: "Deposit",
+      Description: "Deposit to Wallet",
+      status: "Processing",
+    },
+    {
+      date: "Jan 13, 2022",
+      amount: "+₦30,020",
+      Activity: "Deposit",
+      Description: "Deposit to Wallet",
+      status: "Processing",
+    },
+    {
+      date: "Jan 13, 2022",
+      amount: "+₦30,020",
+      Activity: "Deposit",
+      Description: "Deposit to Wallet",
+      status: "Processing",
+    },
+    {
+      date: "Jan 13, 2022",
+      amount: "+₦30,020",
+      Activity: "Deposit",
+      Description: "Deposit to Wallet",
+      status: "Processing",
+    },
+    {
+      date: "Jan 13, 2022",
+      amount: "+₦30,020",
+      Activity: "Deposit",
+      Description: "Deposit to Wallet",
+      status: "Processing",
+    },
+    {
+      date: "Jan 13, 2022",
+      amount: "+₦30,020",
+      Activity: "Deposit",
+      Description: "Deposit to Wallet",
+      status: "Processing",
+    },
+    {
+      date: "Jan 13, 2022",
+      amount: "+₦30,020",
+      Activity: "Deposit",
+      Description: "Deposit to Wallet",
+      status: "Processing",
+    },
+    {
+      date: "Jan 13, 2022",
+      amount: "+₦30,020",
+      Activity: "Deposit",
+      Description: "Deposit to Wallet",
+      status: "Processing",
+    },
+    ,
+  ];
+
+  const { data, refetch } = useQuery(
+    ["get-campaigns"],
+    async () => {
+      return await getCampaigns(getUrl);
+    },
+    {
+      enabled: false,
+      staleTime: Infinity,
+      retry: false,
+      onSuccess(res) {
+        dispatch(setLoading(false));
+        setCampaignList(res.data.data);
+      },
+      onError(res) {
+        dispatch(setLoading(false));
+        dispatch(setError({ error: true, message: "An error occured" }));
+      },
     }
-    );
-    const { data: walletTransData, refetch: refetchWalletTransData } = useQuery(["get-wallet-trans"], async () => {
-        return await getWalletTransactions();
-    });
-    
-    useEffect(() => {
-        if(walletData){
-            setWallet(walletData.data.data);
-        }
-    }, [walletData])
-    useEffect(() => {
-        if(walletTransData){
-            setWalletList(walletTransData.data.data)
-            console.log(walletTransData.data.data);
-        }
-    }, [walletTransData])
-    
+  );
+  useEffect(() => {
+    refetch();
+  }, [getUrl]);
   return (
-    <Container>
-        <Wrapper>
-            <CustomContent>
-                <CContent>
-                    <Heading>
-                        <h2>Business Wallet</h2>
-                    </Heading>
-                    <WalletCardWrapper>
-                        <WalletCard>
-                            <p>Wallet Balance</p>
-                            <h3>₦ {wallet && moneyStandard(wallet?.wallet_balance?.NGN ?? 0)}</h3>
-                        </WalletCard>
-                        <WalletCard>
-                            <p>Total Spent</p>
-                            <h3>₦ {wallet && moneyStandard(wallet?.total_spent?.NGN ?? 0)}</h3>
-                        </WalletCard>
-                        <WalletCard>
-                            <p>Escrow Balance</p>
-                            <h3>₦ {wallet && moneyStandard(wallet?.escrow_balance?.NGN ?? 0)}</h3>
-                        </WalletCard>
-                        <FundBtn>
-                            <Image src={plusCircleIcon} alt="plus-circle" height={26} width={26}/>
-                            <p>Fund Wallet</p>
-                        </FundBtn>
-                    </WalletCardWrapper>
-                </CContent>
-                <CContent>
-                    <Heading>
-                        <h2>Wallet Transactions</h2>
-                    </Heading>
-                    <TableWrapper>
-                        <TableControls>
-                            <SearchContainer>
-                                <input type="text" placeholder="Search by Transaction ID"/>
-                                <button>
-                                    <Image src="/search-b.svg" alt="" height={22} width={22}/>
-                                </button>
-                            </SearchContainer>
-                            <FilterContainer>
-                                <button><Image src="/filter.svg" alt="" height={20} width={20} /><span>Filter</span></button>
-                                <button><Image src="/upload.svg" alt="" height={20} width={20} /><span>Export</span></button>
-                                <button style={{ display: "none" }}></button>
-                            </FilterContainer>
-                        </TableControls>
-                        <TableContent>
-                            <Table>
-                                <THead>
-                                    <TrH>
-                                        <Th cellWidth="20px">
-                                        </Th>
-                                        <Th cellWidth="150px">Date</Th>
-                                        <Th cellWidth="200px">Description</Th>
-                                        <Th cellWidth="150px">Trasaction ID</Th>
-                                        <Th cellWidth="110px">Status</Th>
-                                        <Th cellWidth="100px">Type</Th>
-                                        <Th cellWidth="150px">Amount</Th>
-                                        <Th cellWidth="100px">
-                                            Action
-                                        </Th>
-                                    </TrH>
-                                </THead>
-                                <TBody>
-                                    {
-                                        walletList?.data?.map((trans, i) => (
+    <div className="py-28 px-12">
+      <div className="flex justify-between mb-6">
+        <h1 className="text-xl">Wallet</h1>
 
-                                            <Tr key={i}>
-                                                <Td cellWidth="20px">
-                                                </Td>
-                                                <Td cellWidth="150px">{(new Date(trans.created_at)).toDateString()}</Td>
-                                                <Td cellWidth="200px">{trans.remark}</Td>
-                                                <Td cellWidth="150px">{trans.txnref}</Td>
-                                                <Td cellWidth="110px">{trans.status}</Td>
-                                                <Td cellWidth="100px">{trans.txntype}</Td>
-                                                <Td cellWidth="150px"><CAmount status={trans.status === "Pending" ? "pending" : trans.status === "Completed" ? "success" : "failed"}>{trans.currency} {moneyStandard(trans.amount)}</CAmount></Td>
-                                                <Td cellWidth="100px">
-                                                    <ActionBtn onClick={() => router.push(`/dashboard/transaction/${trans.id}`)}>View</ActionBtn>
-                                                </Td>
-                                            </Tr>
-                                        ))
-                                    }
-                                </TBody>
-                            </Table>
-                        </TableContent>
-                        <TableFooter>
-                            <p>Showing {((walletList?.current_page - 1) * walletList?.per_page) + walletList?.data?.length} of {walletList?.total}</p>
-                            <Pagination>
-                                <NavBtn onClick={() => walletList?.current_page.prev_page_url && setGetUrl(walletList?.current_page.prev_page_url.replace(process.env.NEXT_PUBLIC_API_URI + "/api/v1", ""))}>
-                                    <ChevronLeft />
-                                </NavBtn>
-                                <Pages>
-                                    <PageBtn activePage={true}>{walletList?.current_page}</PageBtn>
-                                </Pages>
-                                <NavBtn onClick={() => walletList?.current_page.next_page_url && setGetUrl(walletList?.current_page.next_page_url.replace(process.env.NEXT_PUBLIC_API_URI + "/api/v1", ""))}>
-                                    <ChevronRight />
-                                </NavBtn>
-                            </Pagination>
-                        </TableFooter>
-                    </TableWrapper>
-                </CContent>
-            </CustomContent>
-        </Wrapper>
-    </Container>
-  )
-}
-Billing.getLayout = (page) => (
-    <LandingLayout>
-        {page}
-    </LandingLayout>
-)
+        <button
+          onClick={() => {
+            setNewCampaign(!newCamPaign);
+          }}
+          className="bg-primary-100 py-2 px-4 rounded-lg text-white"
+        >
+          Fund wallet
+        </button>
+      </div>
 
-export default Billing
+      <div className="grid grid-cols-3 gap-10">
+        <div className="campaign_table hover:transform translate-y-4 duration-200 ease-linear rounded-lg p-4">
+          <div className="border-b">
+            <div className="flex justify-between mb-6">
+              <p className="text-xs text-gray-500">Earnings</p>
+              <Image src={info} alt="info" />
+            </div>
+            <h1 className="text-2xl font-medium">₦200,000</h1>
+          </div>
+          <div className="mt-2">
+            <div className="flex justify-between mb-6">
+              <p className="text-xs text-gray-500">Deposit</p>
+              <Image src={info} alt="info" />
+            </div>
+            <h1 className="text-2xl font-medium">₦120,000</h1>
+          </div>
+        </div>
+        <div className="campaign_table hover:transform translate-y-4 duration-200 ease-linear rounded-lg p-4">
+          <div className="border-b">
+            <div className="flex justify-between mb-6">
+              <p className="text-xs text-gray-500">Expenses</p>
+              <Image src={info} alt="info" />
+            </div>
+            <h1 className="text-2xl font-medium">₦140,000</h1>
+          </div>
+          <div className="mt-2">
+            <div className="flex justify-between mb-6">
+              <p className="text-xs text-gray-500">Escrow</p>
+              <Image src={info} alt="info" />
+            </div>
+            <h1 className="text-2xl font-medium">₦60,000</h1>
+          </div>
+        </div>
+        <div className="campaign_table hover:transform translate-y-4 duration-200 ease-linear rounded-lg p-4">
+          <div className="border-b">
+            <div className="flex justify-between mb-6">
+              <p className="text-xs text-gray-500">Available Funds</p>
+              <Image src={info} alt="info" />
+            </div>
+            <h1 className="text-2xl font-medium">₦200,000</h1>
+          </div>
+          <div className="mt-2">
+            <div className="flex justify-between mb-6">
+              <p className="text-xs text-gray-500">
+                Withdrawn to date: ₦140,000
+              </p>
+              <Image src={info} alt="info" />
+            </div>
+            <button
+              onClick={() => {
+                setNewCampaign(!newCamPaign);
+              }}
+              className="bg-primary-100 py-2 px-4 rounded-lg text-white"
+            >
+              Withdraw Balance
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="table mt-10 campaign_table w-full text-[#667085]">
+        <div className="grid grid-cols-12 gap-4 bg-[#F9FAFB] p-4 rounded-t-lg border-b">
+          <div className="col-span-2">Date</div>
+          <div className="col-span-2">Amount</div>
+          <div className="col-span-2">Activity</div>
+          <div className="col-span-4">Description</div>
+          <div className="col-span-2">Status</div>
+        </div>
+        {dummyData.map((item, idx) => (
+          <div className="grid grid-cols-12 gap-4 p-4 border-b" key={idx}>
+            <div className="col-span-2 text-sm"> {item.date} </div>
+            <div className="col-span-2 text-sm text-green-500">
+              {item.amount}
+            </div>
+            <div className="col-span-2 text-sm flex-col">
+              <p className="text-gray-400">Influencer</p>
+              {item.Activity}
+            </div>
+            <div className="col-span-4 text-sm"> {item.Description} </div>
+
+            <div className="col-span-2">
+              {item.status.toLowerCase() === "processing" && (
+                <div className="rounded-2xl py-1 pl-2 pr-4 bg-[#F2F4F7] text-xs w-max flex space-x-2 items-center text-[#344054]">
+                  <div className="bg-[#667085] rounded-full w-[6px] h-[6px]"></div>
+                  <p>{item.status}</p>
+                </div>
+              )}
+              {item.status.toLowerCase() === "success" && (
+                <div className="rounded-2xl py-1 pl-2 pr-4 bg-[#ECFDF3] text-xs w-max flex space-x-2 items-center text-[#027A48]">
+                  <div className="bg-[#12B76A] rounded-full w-[6px] h-[6px]"></div>
+                  <p>{item.status}</p>
+                </div>
+              )}
+              {item.status.toLowerCase() === "declined" && (
+                <div className="rounded-2xl py-1 pl-2 pr-4 bg-[#FEF3F2] text-xs w-max flex space-x-2 items-center text-[#B42318]">
+                  <div className="bg-[#F04438] rounded-full w-[6px] h-[6px]"></div>
+                  <p>{item.status}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+
+        <div className="flex p-4 justify-between text-sm">
+          <div>
+            <p>Page 1 0f 10</p>
+          </div>
+          <div className="flex items-center space-x-3 text-gray-600">
+            <div className="border shadow-sm px-2 py-[6px] rounded-md ">
+              Previous
+            </div>
+            <div className="border shadow-sm px-2 py-[6px] rounded-md ">
+              Next
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {newCamPaign && (
+        <div className="fixed inset-0 bg-black/30 z-[999999] flex justify-center items-center">
+          <div className="bg-white w-[500px]  p-6 rounded-lg overflow-hidden">
+            <div className="flex justify-between mb-6">
+              <h1 className="text-xl">Create New Campaign</h1>
+
+              <button
+                onClick={() => {
+                  setNewCampaign(!newCamPaign);
+                }}
+                className="outline-none"
+              >
+                <Image src={cancel} alt="cancel" className="h-2 w-2" />
+              </button>
+            </div>
+            <div className="my-4 bg-[#D4D4D8] h-[2px] w-full rounded-lg mt-6">
+              <div
+                className={`bg-primary-100 w-${step}/3 h-full rounded-lg`}
+              ></div>
+            </div>
+
+            {step == 1 && <Stage1 />}
+            {step == 2 && <Stage2 />}
+            {step == 3 && <Stage3 />}
+            <div className="flex justify-end">
+              <button
+                onClick={() => {
+                  if (step <= 3) {
+                    setstep(step + 1);
+                  }
+                }}
+                className="bg-primary-100 py-2 px-4 rounded-lg text-white"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+Campaigns.getLayout = (page) => <LandingLayout>{page}</LandingLayout>;
+
+export default Campaigns;
