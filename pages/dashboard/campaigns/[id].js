@@ -17,9 +17,8 @@ import send from "../../../assets/campaign/send.svg";
 import lock from "../../../assets/campaign/lock.svg";
 import checkmark from "../../../assets/campaign/checkmark.svg";
 import reject from "../../../assets/campaign/cancel.svg";
-import Stage1 from "../../../components/Campaign/Stage1";
-import Stage2 from "../../../components/Campaign/Stage2";
-import Stage3 from "../../../components/Campaign/Stage3";
+
+import RejectModal from "../../../components/Campaign/rejectModal";
 import LandingLayout from "../../../layouts/landing.layout";
 
 import cancel from "./../../../assets/close.svg";
@@ -33,6 +32,7 @@ const Campaigns = () => {
   const [getUrl, setGetUrl] = useState("");
   const [newCamPaign, setNewCampaign] = useState(false);
   const [activetab, setactivetab] = useState("milestone");
+  const [isRejected, setisRejected] = useState(false);
   const [currentValue, setcurrentValue] = useState(4);
   const [campaignList, setCampaignList] = useState({
     data: [],
@@ -71,6 +71,10 @@ const Campaigns = () => {
   ];
   const ratingChanged = (newRating) => {
     console.log(newRating);
+  };
+
+  const handleClose = () => {
+    setisRejected(false);
   };
 
   const { data, refetch } = useQuery(
@@ -244,7 +248,12 @@ const Campaigns = () => {
                     <button className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white">
                       Accept
                     </button>
-                    <button className="mx-2 rounded-lg py-1 px-2  h-auto bg-primary-100 text-[10px] text-white">
+                    <button
+                      onClick={() => {
+                        setisRejected(!isRejected);
+                      }}
+                      className="mx-2 rounded-lg py-1 px-2  h-auto bg-primary-100 text-[10px] text-white"
+                    >
                       Reject
                     </button>
                   </div>
@@ -309,8 +318,9 @@ const Campaigns = () => {
                   <Image src={listnumeral} alt={"img"} className="h-4 w-4" />
                 </div>
                 <div>
-                  <button>
-                    <Image src={send} alt={"img"} className="h-4 w-4" />
+                  <button className="flex items-center space-x-1">
+                    <Image src={send} alt={"img"} className="h-4 w-4" />{" "}
+                    <span className="text-primary-100  text-sm">Send</span>
                   </button>
                 </div>
               </div>
@@ -318,6 +328,8 @@ const Campaigns = () => {
           </div>
         </div>
       </div>
+
+      {isRejected && <RejectModal handleClose={handleClose} />}
     </div>
   );
 };
