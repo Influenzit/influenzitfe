@@ -3,6 +3,9 @@ import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.div`
     padding-top: 8px;
+    ${breakpoints.md} {
+        padding: 8px 15px; 
+    }
 `;
 export const Banner = styled.div`
     background: linear-gradient(89.75deg, rgba(31, 32, 36, 0.5) -0.33%, rgba(31, 32, 36, 0) 82.92%), url("/w-banner-1.png");
@@ -39,8 +42,20 @@ export const Banner = styled.div`
     ${breakpoints.md} {
         padding: 20px;
         height: 50vh;
+        background: transparent;
+        padding: 25px 0;
+        height: auto;
+        min-height: auto;
         h1 {
-            font-size: 30px;
+            font-size: 26px;
+            color: ${colors.textColor};
+        }
+        p {
+            color: ${colors.textColor};
+            font-size: 17px;
+        }
+        br {
+            display: none;
         }
     }
 `;
@@ -52,11 +67,19 @@ export const Wrapper = styled.div`
     #h1 {
         text-align: center;
     }
+    #quick {
+        font-weight: 600;
+        font-size: 24px;
+        text-align: center;
+        color: ${colors.textColor};
+    }
     #p {
         text-align: center;
         width: 60%;
-        min-width: 350px;
         margin: 0 auto;
+        ${breakpoints.md} {
+            width: 100%;
+        }
     }
     h1 {
         font-weight: 700;
@@ -80,6 +103,9 @@ export const Wrapper = styled.div`
         p {
             font-size: 16px;
         }
+        #quick {
+            font-size: 17px;
+        }
      }
 `;
 export const Info = styled.div`
@@ -90,8 +116,9 @@ export const Info = styled.div`
         margin-top: 60px;
     }
     ${breakpoints.md} {
-        ${({isInverse}) => isInverse ? "flex-direction: column-reverse;" : "flex-direction: column;"}
+        ${({isInverse}) => !isInverse ? "flex-direction: column-reverse;" : "flex-direction: column;"}
         row-gap: 15px;
+        margin: 50px auto 0 auto;
     }
 `;
 export const  Details = styled.div`
@@ -171,15 +198,115 @@ export const AccessCard = styled.div`
         div {
             width: 100%;
         }
-         h2 {
+        h2 {
             font-weight: 600;
-            font-size: 25px;
+            font-size: 20px !important;
             color: #fff;
         }
         p {
             color: #fff;
             font-weight: 500;
-            font-size: 16px;
+            font-size: 14px !important;
         }
+    }
+`;
+export const FBanner = styled.div`
+    background: #FCF5EB;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+    h1 {
+        margin-top: 20px;
+        font-size: 45px;
+        color: #2A2939;
+        width: 70%;
+        margin: 50px auto 70px auto;
+        text-align: center;
+    }
+    ${breakpoints.md} {
+        background: transparent;
+        h1 {
+            font-size: 25px;
+            width: 100%;
+            margin: 50px auto 10px auto;
+        }
+    }
+`;
+export const AccessCardT = styled.div`
+    background: linear-gradient(89.75deg, rgba(42, 41, 57, 0.8) -0.33%, rgba(42, 41, 57, 0.8) 82.92%), url("/banner-4.png");
+    padding: 112px 15px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    flex-direction: column;
+    text-align: center;
+    p {
+        width: 70%;
+        max-width: 900px;
+        font-weight: 400;
+        font-size: 18px;
+        padding-bottom: 40px;
+        line-height: 140%;
+    }
+    h4 {
+        font-weight: 600;
+        font-size: 20px;
+        margin-bottom: 24px;
+    }
+    form {
+        width: 100%;
+        height: 60px;
+        border-radius: 99px;
+        background: #fff;
+        display: flex;
+        padding: 8px;
+        max-width: 500px;
+        input {
+            outline: none;
+            border: none;
+            background: transparent;
+            width: 100%;
+            color: #6A6974;
+            font-size: 14px;
+            padding-left: 24px;
+        }
+        button {
+            background: ${colors.primaryColor};
+            border-radius: 100px;
+            color: #fff;
+            font-size: 14px;
+            border: none;
+            outline: none;
+            width: 105px;
+            cursor: pointer;
+        }
+    }
+    ${breakpoints.md} {
+        background: none;
+        color: ${colors.textColor};
+        p {
+            width: 100%;
+        }
+        form {
+            border: 1px solid rgba(42, 41, 57, 0.1);
+        }
+    }
+`;
+export const ImageBanner = styled.div`
+    width: calc(100% - 18px);
+    margin: 0 auto;
+    height: 96vh;
+    min-height: 500px;
+    max-height: 900px;
+    position: relative;
+    margin-top: 28px;
+    border-radius: 24px;
+    overflow: hidden;
+    ${breakpoints.sm} {
+        display: none;
     }
 `;

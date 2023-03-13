@@ -41,10 +41,8 @@ const LandingLayout = ({children, title, description}) => {
       },
       onError(res) {
           dispatch(setLoading(false));
-          if (router.pathname.includes("/dashboard")) {
-            localStorage.clear();
-            router.replace("/login");
-          }
+          localStorage.clear();
+          router.replace("/login");
       } 
   });
   useEffect(() => {
@@ -116,7 +114,7 @@ const LandingLayout = ({children, title, description}) => {
             {router.pathname.includes("/dashboard") && <Sidebar />}
             <Content isPadded={router.pathname.includes("/dashboard")}>
               {children}
-              {isLoggedIn && router.pathname.includes("/dashboard")? (<DashboardFooter />) : (<Footer />)}
+              {isLoggedIn && router.pathname.includes("/dashboard")? null : (<Footer />)}
             </Content>
           </Wrapper>
       </Container>

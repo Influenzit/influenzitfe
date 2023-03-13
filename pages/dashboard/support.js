@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { AttachmentIcon, BoldIcon, EmojiIcon, ItalicIcon, MarkupIcon, SendIcon, UnderlineIcon } from '../../assets/svgIcons';
 import ChatSidebar from '../../components/support-sidebar';
 import LandingLayout from '../../layouts/landing.layout';
-import { ActionBtn, ChatContainer, ChatControls, ChatHeader, CloseBtn, Container, ContextBtn, Editor, EditorBtn, HLeft, ImageWrapper, LeftControls, MessageCard, MessageContent, MessageInput, MessagesCont, MessageSection, NonSelectedCont, PickerContainer, ProfilePicWrapper, RightControls, UserSect, Wrapper } from '../../styles/messages.style';
+import { ActionBtn, AttachBtn, ChatContainer, ChatControls, ChatHeader, CloseBtn, Container, ContextBtn, CreateTicketCont, CTop, Editor, EditorBtn, HLeft, ImageWrapper, InputContainer, InputWrap, LeftControls, MessageCard, MessageContent, MessageInput, MessagesCont, MessageSection, NonSelectedCont, PickerContainer, ProfilePicWrapper, RightControls, StatusC, SubmitSection, UserSect, Wrapper } from '../../styles/messages.style';
 import { colors } from '../../styles/theme';
 import dynamic from 'next/dynamic';
 import { getConversationMessages, getConversations, sendConversationMessage } from '../../api/messaging';
@@ -12,10 +12,11 @@ import HTMLReactParser from 'html-react-parser';
 import { getSocketInstance } from '../../socket/instance';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../app/reducers/user';
-import { getCurrentConversationId, setCurrentConversation, setLoading } from '../../app/reducers/status';
+import { getCurrentConversationId, setCurrentConversation, setError, setLoading } from '../../app/reducers/status';
 import MobileChatbar from '../../components/mobile-chatbar';
-import { getMessages, getSupportConversations, postMessages, updateSupport } from '../../api/support';
+import { createDispute, getMessages, getSupportConversations, postMessages, updateSupport } from '../../api/support';
 import { toast } from 'react-toastify';
+import { UpdateModal } from '../../styles/view.style';
 const Picker = dynamic(
   () => {
     return import('emoji-picker-react');
@@ -35,6 +36,9 @@ const Messages = () => {
   const [socketSet, setSocketSet] = useState(false);
   const conversationId = useSelector(getCurrentConversationId);
   const [supportId, setSupportId] = useState("");
+  const [showCreateTicket, setShowCreateTicket] = useState(false);
+  const [supportSubject, setSupportSubject] = useState("");
+  const [supportMessage, setSupportMessage] = useState("");
   const dispatch = useDispatch();
   const handleInput = (e) => {
     if(e.currentTarget.innerHTML === "<br>") {
@@ -283,24 +287,74 @@ useEffect(() => {
     }
 }, [messages])
 
-
+const createDisputeMutation = useMutation( disputeData => {
+    return createDispute(disputeData);
+}, {
+    onSuccess(successRes) {
+        const res = successRes.data;
+        if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: res.message}));
+        } else { 
+            dispatch(setLoading(false));
+            toast.success("Dispute created successfully", {
+              position: toast.POSITION.TOP_RIGHT
+            });
+            setShowCreateTicket(false);
+        }
+    },
+    onError(error) {
+        const res = error.response.data;
+        if(res){
+          dispatch(setLoading(false));
+          dispatch(setError({error: true, message: res.message}));
+          return;
+        }
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: "An error occured"}));
+    }
+});
+const handleCreateDispute = () => {
+    if(!supportSubject && !supportMessage) {
+      return;
+    } else {
+      dispatch(setLoading(true));
+      createDisputeMutation.mutate({
+        subject: supportSubject,
+        message: supportMessage,
+        account_id: user.account.id,
+      })
+    }
+  }
 
   return (
     <Container>
 
         <MobileChatbar setConversationId={handleSetConversationId} conversations={conversations} setSupportId={setSupportId}/>
         <Wrapper>
-            <ChatSidebar setConversationId={handleSetConversationId} conversations={conversations} setSupportId={setSupportId}/>
+            <ChatSidebar setConversationId={handleSetConversationId} conversations={conversations} setSupportId={setSupportId} supportId={supportId} setShowCreateTicket={setShowCreateTicket}/>
             <MessageSection>
                 {
                     supportId ? 
                     (<ChatContainer>
                         <ChatHeader>
                             <HLeft>
+                                <p><Image src={"/ticket.svg"} alt="rec" height={14} width={14}/> #{getCurrentConversation()?.id}</p>
                                 <h2>{getCurrentConversation()?.subject}</h2>
-                                {/* <p>Last seen: 3 hours ago </p> */}
                             </HLeft>
                             {getCurrentConversation()?.status === "Open" ? (
+                                    <StatusC isActive>
+                                        <span></span>
+                                        <span>Ongoing</span>
+                                    </StatusC>
+                                ):(
+                                    <StatusC>
+                                        <span></span>
+                                        <span>Resolved</span>
+                                    </StatusC>
+                                )
+                            }
+                            {/* {getCurrentConversation()?.status === "Open" ? (
                                     <CloseBtn onClick={handleCloseTicket}>
                                         Close Tickect
                                     </CloseBtn>
@@ -309,7 +363,7 @@ useEffect(() => {
                                         Tickect Closed
                                     </CloseBtn>
                                 )
-                            }
+                            } */}
                         </ChatHeader>
                         <MessagesCont ref={messagesRef}>
                             {
@@ -347,28 +401,30 @@ useEffect(() => {
                                             />
                                         </PickerContainer>
                                     }
-                                    <MessageInput data-placeholder="Write a message" contentEditable showPlaceholder={!!messageContent} onInput={handleInput} ref={messageBoxRef}>
-                                    </MessageInput>
+                                     <div style={{ padding: "0 15px", height: "70%", maxHeight: "70%", borderBottom: "1px solid #EAEAEB" }}>
+                                        <MessageInput data-placeholder="Write a message" contentEditable showPlaceholder={!!messageContent} onInput={handleInput} ref={messageBoxRef}>
+                                        </MessageInput>
+                                    </div>
                                     <ChatControls>
                                         <LeftControls>
-                                            <EditorBtn onClick={handleBold}>
-                                                <BoldIcon />
-                                            </EditorBtn>
-                                            <EditorBtn onClick={handleItalic}>
-                                                <ItalicIcon />
-                                            </EditorBtn>
-                                            <EditorBtn onClick={handleLineThrough}>
-                                                <UnderlineIcon />
-                                            </EditorBtn>
-                                            {/* <EditorBtn>
-                                                <MarkupIcon />
-                                            </EditorBtn> */}
-                                            <EditorBtn>
-                                                <AttachmentIcon />
-                                            </EditorBtn>
-                                            <EditorBtn onClick={() => setShowEmoji(!showEmoji)}>
-                                                <EmojiIcon />
-                                            </EditorBtn>
+                                           <EditorBtn onClick={handleBold}>
+                                        <BoldIcon />
+                                        </EditorBtn>
+                                        <EditorBtn onClick={handleItalic}>
+                                            <ItalicIcon />
+                                        </EditorBtn>
+                                        {/* <EditorBtn onClick={handleLineThrough}>
+                                            <UnderlineIcon />
+                                        </EditorBtn> */}
+                                        {/* <EditorBtn>
+                                            <MarkupIcon />
+                                        </EditorBtn> */}
+                                        <EditorBtn>
+                                            <AttachmentIcon />
+                                        </EditorBtn>
+                                        <EditorBtn onClick={() => setShowEmoji(!showEmoji)}>
+                                            <EmojiIcon />
+                                        </EditorBtn>
                                         </LeftControls>
                                         <RightControls>
                                             <ActionBtn style={{ color: colors.primaryColor }} onClick={handleMessageSend}>
@@ -384,13 +440,45 @@ useEffect(() => {
                             <ImageWrapper>
                                 <Image src="/work.svg" alt="" layout='fill' objectFit='contain' objectPosition="center"/>
                             </ImageWrapper>
-                            <h2>Select a conversation</h2>
-                            <p>Click on any name on the chatbar to start a chat</p>
+                            <h2>Select a ticket</h2>
+                            <p>Click on any ticket on the sidebar to start a chat</p>
                         </NonSelectedCont>
                     )
                 }
             </MessageSection>
         </Wrapper>
+        {showCreateTicket && (
+            <UpdateModal>
+                <CreateTicketCont>
+                    <CTop><h2>Create New Ticket</h2><button onClick={() => setShowCreateTicket(false)}><Image src={"/cancel.svg"} height={17} width={17}/></button></CTop>
+                    <InputWrap>
+                        <InputContainer>
+                            <label>Ticket Issues</label>
+                            <select>
+                                <option>Account Settings</option>
+                            </select>
+                        </InputContainer>
+                        <InputContainer>
+                            <label>Subject</label>
+                            <input type="text" val={supportSubject} onChange={(e) => setSupportSubject(e.target.value)}/>
+                        </InputContainer>
+                    </InputWrap>
+                    <InputContainer style={{ width: "100%" }}>
+                        <label>Description</label>
+                        <textarea val={supportMessage} onChange={(e) => setSupportMessage(e.target.value)}/>
+                    </InputContainer>
+                    <div>
+                        <AttachBtn>
+                            <Image src={"/attach.svg"} height={17} width={17}/>
+                            <span>Attach Files</span>
+                        </AttachBtn>
+                    </div>
+                    <SubmitSection>
+                        <button onClick={handleCreateDispute}>Submit Ticket</button>
+                    </SubmitSection>
+                </CreateTicketCont>
+            </UpdateModal>
+        )}
     </Container>
   )
 }

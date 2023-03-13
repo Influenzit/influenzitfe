@@ -569,8 +569,15 @@ export const WrapperSix = styled.div`
     ${breakpoints.md} {
         padding: 20px 0;
         h1 {
-            font-size: 28px;
-            width: 90%;
+            font-size: 25px;
+            width: 100%;
+        }
+         p {
+            font-size: 16px;
+            width: 80%;
+            min-width: 350px;
+            color: #667085;
+            text-align: center;
         }
     }
     
@@ -644,6 +651,10 @@ export const Question = styled.div`
     height: 40px;
     font-size: 18px;
     font-weight: 600;
+    margin-bottom: 6px;
+    span:first-of-type {
+        max-width: calc(100% - 25px);
+    }
 `;
 export const Answer = styled.div`
     color: #667085;
