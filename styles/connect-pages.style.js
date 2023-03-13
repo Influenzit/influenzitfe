@@ -32,6 +32,20 @@ export const TableHeader = styled.div`
             font-size: 17px;
         }
     }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    button {
+        font-weight: 500;
+        font-size: 14px;
+        border-radius: 8px;
+        background: ${colors.primaryColor};
+        color: #fff;
+        border: none;
+        outline: none;
+        padding: 12px 20px;
+        cursor: pointer;
+    }
 `;
 export const TableControls = styled.div`
     display: flex;
