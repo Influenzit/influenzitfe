@@ -56,6 +56,9 @@ export const ChatHeader = styled.div`
     align-items: center;
     padding: 0 30px;
     border-bottom: 1px solid #D2D2D2;
+    background: #fff;
+    font-size: 18px;
+    color: ${colors.textColor};
 `;
 export const CloseBtn = styled.button`
     background: transparent;
@@ -65,6 +68,9 @@ export const CloseBtn = styled.button`
     cursor: pointer;
 `;
 export const HLeft = styled.div`
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
     h2 {
         font-size: 20px;
         ${breakpoints.md} {
@@ -72,8 +78,12 @@ export const HLeft = styled.div`
         }
     }
     p {
+        font-weight: 600;
         font-size: 12px;
-        color: rgba(0,0,0, 0.5);
+        display: flex;
+        align-items: center;
+        column-gap: 5px;
+        color: #94949C;
     }
 `;
 export const ContextBtn = styled.div`
@@ -87,9 +97,9 @@ export const ContextBtn = styled.div`
     cursor: pointer;
 `;
 export const MessagesCont = styled.div`
-    height: calc(100% - 110px);
-    min-height: calc(100% - 110px);
-    max-height: calc(100% - 110px);
+    height: calc(100% - 180px);
+    min-height: calc(100% - 180px);
+    max-height: calc(100% - 180px);
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
@@ -242,6 +252,10 @@ export const ActionBtn = styled.button`
     display: flex;
     align-items: center;
     column-gap: 5px;
+    svg {
+        height: 15px;
+        width: 15px;
+    }
 `;
 export const PickerContainer = styled.div`
     position: absolute;
@@ -272,4 +286,103 @@ export const ProfilePicWrapper = styled.div`
     width: 40px;
     border-radius: 50%;
     overflow: hidden;
+`;
+export const CreateTicketCont = styled.div`
+    background: #fff;
+    width: 90%;
+    max-width: 700px;
+    border-radius: 16px;
+    padding: 32px;
+    button {
+        cursor: pointer;
+    }
+`;
+export const CTop = styled.div`
+    display: flex;
+    justify-content: space-between;
+    color: ${colors.textColor};
+    font-size: 20px;
+    margin-bottom: 20px;
+    button {
+        background: transparent;
+        border: none;
+        outline: none;
+    }
+`;
+export const InputWrap = styled.div`
+    display: flex;
+    column-gap: 24px;
+`;
+export const InputContainer = styled.div`
+    width: calc(50% - 12px);
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    label {
+        margin-bottom: 6px;
+    }
+    input,select {
+        box-shadow: 0px 1px 2px 0px #1018280D;
+        border-radius: 8px;
+        padding: 10px 14px;
+        border: 1px solid #D0D5DD;
+        outline: none;
+        background: #fff;
+    }
+    textarea {
+        box-shadow: 0px 1px 2px 0px #1018280D;
+        border-radius: 8px;
+        padding: 10px 14px;
+        border: 1px solid #D0D5DD;
+        resize: none;
+        height: 100px;
+        outline: none;
+    }
+`;
+export const AttachBtn = styled.button`
+    display: inline-flex;
+    column-gap: 15px;
+    padding: 12px 20px;
+    background: #D4D4D7;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    border: none;
+    outline: none;
+    color: ${colors.textColor};
+    cursor: pointer;
+`;
+export const SubmitSection = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    button {
+        display: inline-flex;
+        column-gap: 15px;
+        padding: 12px 20px;
+        background: ${colors.primaryColor};
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 14px;
+        border: none;
+        outline: none;
+        color: #fff;
+        cursor: pointer;
+    }
+`;
+export const StatusC = styled.div`
+    background: ${({isActive}) => isActive ? "#FCF5EB":"#12B76A"};
+    font-weight: 500;
+    font-size: 14px;
+    color: ${colors.textColor};
+    padding: 12px 25px;
+    border-radius: 99px;
+    display: flex;
+    column-gap: 15px;
+    align-items: center;
+    span:first-of-type {
+        background: ${({isActive}) => isActive ? "#F79009":"#ECFDF3"};
+        height: 6px;
+        width: 6px;
+        border-radius: 50%;
+    }
 `;

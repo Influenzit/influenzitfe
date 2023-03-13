@@ -33,3 +33,6 @@ export const deleteNiche = (id) => {
 export const getAllProjects = () => {
     return axiosInstance().get("/admin/projects");
 }
+export const getWaitlist = () => {
+    return axiosInstance().get("/admin/waitlist");
+}
