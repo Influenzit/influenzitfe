@@ -3,16 +3,16 @@ import React from 'react'
 import HTMLReactParser from 'html-react-parser';
 import { Bottom, ChatBottom, ChatDetails, ChatTop, Container, ProfilePicWrapper, SearchContainer, Top, UserCard, UserSect } from './style'
 
-const ChatSidebar = ({ setConversationId, conversations }) => {
+const ChatSidebar = ({ setConversationId, conversations, conversationId }) => {
   return (
     <Container>
         <Top>
-            <h2>All messages ({conversations.length}) <Image src="/down-chev-b.svg" height={12} width={20}/></h2>
+            <h2>All messages ({conversations.length})</h2>
             <SearchContainer>
-                <input type="text" placeholder="Search by name"/>
                 <button>
-                    <Image src="/search-b.svg" alt="" height={22} width={22}/>
+                    <Image src="/f-search.svg" alt="" height={22} width={22}/>
                 </button>
+                <input type="text" placeholder="Search people or message"/>
             </SearchContainer>
         </Top>
         <Bottom>
@@ -20,10 +20,10 @@ const ChatSidebar = ({ setConversationId, conversations }) => {
                 conversations.map((val, i) => (
                     <UserCard key={i} onClick={() => {
                             setConversationId(val.id);
-                        }}>
+                        }} isActive={ val.id === conversationId }>
                         <UserSect>
                             <ProfilePicWrapper>
-                                <Image src={val.heading?.image} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
+                                <Image src={val.heading?.image ?? ""} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
                             </ProfilePicWrapper>
                         </UserSect>
                         <ChatDetails>
@@ -33,7 +33,7 @@ const ChatSidebar = ({ setConversationId, conversations }) => {
                             </ChatTop>
                             <ChatBottom isUnread={!!val.unread_count}>
                                 <p>{HTMLReactParser(val.recent_message.text)}</p>
-                                <span id="unread-count">{val.unread_count}</span>
+                                {/* <span id="unread-count">{val.unread_count}</span>s */}
                             </ChatBottom>
                         </ChatDetails>
                     </UserCard>

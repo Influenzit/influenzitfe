@@ -3,7 +3,7 @@ import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.div`
     background: #F7FAFC;
-    padding: 30px 0;
+    padding: 110px 20px 30px 20px;
     min-height: calc(100vh - 140px);
 `;
 export const Wrapper = styled.div`
@@ -31,6 +31,20 @@ export const TableHeader = styled.div`
         h2 {
             font-size: 17px;
         }
+    }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    button {
+        font-weight: 500;
+        font-size: 14px;
+        border-radius: 8px;
+        background: ${colors.primaryColor};
+        color: #fff;
+        border: none;
+        outline: none;
+        padding: 12px 20px;
+        cursor: pointer;
     }
 `;
 export const TableControls = styled.div`

@@ -63,7 +63,6 @@ export const NavButton = styled.button`
         color: ${(props) => props.isActive ? "#fff" : colors.textColor};
         height: 15px;
         width: 15px;
-        margin-bottom: 5px;
     }
     span {
         color: ${(props) => props.isActive ? "#fff" : colors.textColor};

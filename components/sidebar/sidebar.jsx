@@ -40,14 +40,14 @@ const Sidebar = () => {
                 </NavButton>
             )
         }
-        {
+        {/* {
             currentUserType === "Business Owner" && (
                 <NavButton onClick={() => router.push("/dashboard/profile/information")} isActive={router.pathname === "/dashboard/profile/information"}>
                     <BagIcon />
                     <span>Business</span>
                 </NavButton>
             )
-        }
+        } */}
         {/* {
             (currentUserType === "Influencer" || currentUserType === "Creator") && (
                 <NavButton onClick={() => router.push("/dashboard/profile/influencer")} isActive={router.pathname === "/dashboard/profile/influencer" }>

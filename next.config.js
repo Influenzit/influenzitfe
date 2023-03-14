@@ -25,6 +25,21 @@ const nextConfig = {
   },
 
   trailingSlash: true,
+  async redirects() {
+    return [
+      {
+        source: "/:path((?!_next|influencer-waitlist|business-waitlist$).*)/",
+        has: [
+          {
+            type: 'header',
+            key: 'x-redirect-me'
+          }
+        ],
+        destination: "/influencer-waitlist",
+        permanent: true
+      }
+    ]
+  }
 }
 
 module.exports = nextConfig

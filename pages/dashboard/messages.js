@@ -285,20 +285,11 @@ useEffect(() => {
 
         <MobileChatbar setConversationId={handleSetConversationId} conversations={conversations}/>
         <Wrapper>
-            <ChatSidebar setConversationId={handleSetConversationId} conversations={conversations}/>
+            <ChatSidebar setConversationId={handleSetConversationId} conversations={conversations} conversationId={conversationId}/>
             <MessageSection>
                 {
                     conversationId ? 
                     (<ChatContainer>
-                        <ChatHeader>
-                            <HLeft>
-                                <h2>{getCurrentConversation()?.heading?.title}</h2>
-                                {/* <p>Last seen: 3 hours ago </p> */}
-                            </HLeft>
-                            <ContextBtn>
-                                <Image src="/more-vertical.svg" height={24} width={24}/>
-                            </ContextBtn>
-                        </ChatHeader>
                         <MessagesCont ref={messagesRef}>
                             {
                                messages.map((val, i) => (
@@ -314,7 +305,6 @@ useEffect(() => {
                                                 {HTMLReactParser(val.text)}
                                             </div>
                                         </MessageContent>
-
                                     </MessageCard>
                                 ))
                             }
@@ -333,8 +323,10 @@ useEffect(() => {
                                     />
                                 </PickerContainer>
                             }
-                            <MessageInput data-placeholder="Write a message" contentEditable showPlaceholder={!!messageContent} onInput={handleInput} ref={messageBoxRef}>
-                            </MessageInput>
+                            <div style={{ padding: "0 15px", height: "70%", maxHeight: "70%", borderBottom: "1px solid #EAEAEB" }}>
+                                <MessageInput data-placeholder="Write a message" contentEditable showPlaceholder={!!messageContent} onInput={handleInput} ref={messageBoxRef}>
+                                </MessageInput>
+                            </div>
                             <ChatControls>
                                 <LeftControls>
                                     <EditorBtn onClick={handleBold}>
@@ -343,9 +335,9 @@ useEffect(() => {
                                     <EditorBtn onClick={handleItalic}>
                                         <ItalicIcon />
                                     </EditorBtn>
-                                    <EditorBtn onClick={handleLineThrough}>
+                                    {/* <EditorBtn onClick={handleLineThrough}>
                                         <UnderlineIcon />
-                                    </EditorBtn>
+                                    </EditorBtn> */}
                                     {/* <EditorBtn>
                                         <MarkupIcon />
                                     </EditorBtn> */}
@@ -359,6 +351,7 @@ useEffect(() => {
                                 <RightControls>
                                     <ActionBtn style={{ color: colors.primaryColor }} onClick={handleMessageSend}>
                                         <SendIcon />
+                                        <span>Send</span>
                                     </ActionBtn>
                                 </RightControls>
                             </ChatControls>
