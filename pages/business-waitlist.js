@@ -114,10 +114,8 @@ const BusinessWaitlist = () => {
         <AccessCardT>
                 <p>Join our waitlist today to be the first to know when we launch. As a thank you for your interest, you will receive 6 months of free use without paying any commission when you sign up. Don&apos;t miss out on this exclusive opportunity to take your business to the next level with Influenzit.</p>
                 <h4>Sign up now and be a part of the future of influencer marketing.</h4>
-                <form>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}placeholder="Email Address" />
-                    <button onClick={handleSubmit}>Sign up</button>
-                </form>
+                <iframe src='https://cdn.forms-content.sg-form.com/6cee0834-c26a-11ed-90af-f2e097933c84'>
+                </iframe>
         </AccessCardT>
         <WrapperSix>
             <h1>Frequently asked questions</h1>
