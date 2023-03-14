@@ -23,7 +23,6 @@ const nextConfig = {
       },
     ],
   },
-
   trailingSlash: true,
 }
 
