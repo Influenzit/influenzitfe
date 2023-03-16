@@ -124,6 +124,7 @@ export const ChatBottom = styled.div`
     }
     img {
         vertical-align: middle;
+        display: inline;
     }
 `;
 export const UserSect = styled.div`
