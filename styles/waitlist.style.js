@@ -191,7 +191,7 @@ export const AccessCard = styled.div`
             }
         }
         iframe {
-            height: 500px;
+            height: 480px;
             width: 100%;
             outline: none;
             border: none;
@@ -207,7 +207,6 @@ export const AccessCard = styled.div`
     ${breakpoints.md}{
         flex-direction: column;
         padding: 20px;
-        row-gap: 15px;
         div {
             width: 100%;
         }
@@ -222,15 +221,15 @@ export const AccessCard = styled.div`
             font-size: 14px !important;
         }
         iframe {
-            min-width: 555px;
+            min-width: 550px;
         }
     }
 `;
 export const IframeWrapper = styled.div`
     ${breakpoints.md} {
-        transform: scale(0.54);
+        transform: scale(0.6);
         position: relative;
-        left: -70px;
+        left: -78px;
     }
 `;
 export const FBanner = styled.div`
