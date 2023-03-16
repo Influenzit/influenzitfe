@@ -15,3 +15,6 @@ export const updateCampaignMilestone = (id, data, milestoneId) => {
 export const updateCampaign = (id, data) => {
     return axiosInstance().patch(`/campaigns/${id}`, data,)
 }
+export const handleCreateCampaign = (data) => {
+    return axiosInstance().post(`/campaigns/`, data,)
+}

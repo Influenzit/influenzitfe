@@ -120,7 +120,7 @@ const Campaigns = () => {
 
                 <div>
                   {" "}
-                  <Link href={`/dashboard/project/${index}`}>
+                  <Link href={`/dashboard/projects/${index}`}>
                     <h>PROJECT NAME</h>
                   </Link>
                   <p className="text-gray-400 text-sm">

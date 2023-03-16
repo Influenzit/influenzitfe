@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getCampaigns } from "../../../api/campaigns";
+import { getCampaigns, handleCreateCampaign } from "../../../api/campaigns";
 import { setLoading } from "../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../assets/svgIcons";
 import Stage1 from "../../../components/Campaign/Stage1";
@@ -128,7 +128,43 @@ const Campaigns = () => {
       },
     }
   );
+    const payload = {
+      title: "Create and run  Tiktok Campaign for 1 month",
+      amount: 1000,
+      currency: "NGN",
+      description: "Create and run  Tiktok Campaign for 1 month",
+      status: "Pending",
+      start_date: "2022-11-20",
+      end_date: "2023-01-20",
+      duration_type: "Month",
+      duration_count: "1",
+      client_business_id: "1102",
+      client_email: "businessowner@influenzit.com",
+      milestones: [
+        {
+          title: "Create Design ",
+          description: "produce social media standard designs and fliers",
+          status: "Pending",
+          amount: 2000,
+          currency: "NGN",
+          start_date: "2023-01-20",
+          end_date: "2023-02-20",
+        },
+        {
+          title: "Create Copy ",
+          description: "Write copy for ads",
+          status: "Pending",
+          amount: 2000,
+          currency: "NGN",
+          start_date: "2023-03-20",
+          end_date: "2023-04-20",
+        },
+      ],
+    };
+  
+
   useEffect(() => {
+    // handleCreateCampaign(payload);
     refetch();
   }, [getUrl]);
   return (
@@ -222,7 +258,9 @@ const Campaigns = () => {
               </button>
             </div>
             <div className="my-4 bg-[#D4D4D8] h-[2px] w-full rounded-lg mt-6">
-              <div className={`bg-primary-100 w-${step}/3 h-full rounded-lg`}></div>
+              <div
+                className={`bg-primary-100 w-${step}/3 h-full rounded-lg`}
+              ></div>
             </div>
 
             {step == 1 && <Stage1 />}
