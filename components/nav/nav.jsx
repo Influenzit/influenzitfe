@@ -267,11 +267,21 @@ const Nav = () => {
                             </ProfilePicWrapper>
                             {
                                 showDropdown && <UserDropdown>
-                                    <button onClick={() => router.push("/dashboard")}><DashboardIcon /><span>Dashboard</span></button>
-                                    <button onClick={() => router.push(currentAcctType === "Influencer" ? `/influencer/${userDetails.account.id}` : currentAcctType === "Creator" ? "/creators/profile" : "/business-owner/profile")}><UserIcon /><span>Profile</span></button>
+                                    <div id="user-d" onClick={() => router.push("/dashboard")}>
+                                        <h4>{user.name}</h4>
+                                        <p>{currentAcctType}</p>
+                                    </div>
+                                    <div id="switch">
+                                        <p>Switch Account</p>
+                                        {currentAcctType !== "Business Owner" && <button onClick={() => handleAccountChange("Business Owner")}><span>Business Owner</span></button>}
+                                        {currentAcctType !== "Creator" && <button onClick={() => handleAccountChange("Creator")}><span>Creator</span></button>}
+                                        {currentAcctType !== "Influencer" &&<button onClick={() => handleAccountChange("Influencer")}><span>Influencer</span></button>}
+                                    </div>
+                                    {/* <button onClick={() => router.push("/dashboard")}><DashboardIcon /><span>Dashboard</span></button>
+                                    <button onClick={() => router.push(currentAcctType === "Influencer" ? `/influencer/${userDetails.account.id}` : currentAcctType === "Creator" ? "/creators/profile" : "/business-owner/profile")}><UserIcon /><span>Profile</span></button> */}
                                     {/* <button onClick={() => router.push("/dashboard/profile/billing")}><WalletIcon /><span>Wallet</span></button>
                                     <button onClick={() => router.push("/dashboard/profile")}><SettingsIcon /><span>Settings</span></button> */}
-                                    <button onClick={logout}><LogoutIcon /><span>Logout</span></button>
+                                    <button onClick={logout} id="logout"><span>Logout</span></button>
                                 </UserDropdown>
                             }
                         </UserBtn>
