@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { getShowSidebar, getUserType } from '../../app/reducers/status';
 import { getUser } from '../../app/reducers/user';
-import { BagIcon, BoxIcon, DashboardIcon, HashTagIcon, LockIcon, MailIcon, SettingsIcon, SupportIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
+import { BagIcon, BoxIcon, DashboardIcon, HashTagIcon, LockIcon, MailIcon, ProjectIcon, SettingsIcon, SupportIcon, UserIcon, WalletIcon } from '../../assets/svgIcons'
 import { Container, InnerWrapper, NavButton, ProfileImageCont, Status } from './style'
 
 const Sidebar = () => {
@@ -27,7 +27,7 @@ const Sidebar = () => {
         {
             (currentUserType === "Business Owner" || currentUserType === "Creator") && (
                 <NavButton onClick={() => router.push("/dashboard/projects")} isActive={router.pathname === "/dashboard/projects"}>
-                    <BagIcon />
+                    <ProjectIcon />
                     <span>Projects</span>
                 </NavButton>
             )
@@ -64,7 +64,7 @@ const Sidebar = () => {
                 </NavButton>
             )
         }
-        <NavButton onClick={() => router.push("/dashboard/profile/wallet")} isActive={router.pathname.includes("/dashboard/profile/wallet")}>
+        <NavButton onClick={() => router.push("/dashboard/wallet")} isActive={router.pathname.includes("/dashboard/wallet")}>
             <WalletIcon />
             <span>Wallet</span>
         </NavButton>

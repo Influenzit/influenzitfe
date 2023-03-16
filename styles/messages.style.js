@@ -124,6 +124,34 @@ export const MessagesCont = styled.div`
         width: 3px;
     }
 `;
+export const MessagesContB = styled.div`
+    height: calc(100% - 110px);
+    min-height: calc(100% - 110px);
+    max-height: calc(100% - 110px);
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    :hover {
+        scrollbar-color: ${colors.primaryColor} ${colors.primaryColor}11;
+
+        ::-webkit-scrollbar-thumb {
+            background-color: ${colors.primaryColor};
+        }
+        ::-webkit-scrollbar {
+            background-color: ${colors.primaryColor}11;
+            width: 3px;
+        }
+    }
+    scrollbar-color: transparent transparent;
+
+    ::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+    ::-webkit-scrollbar {
+        background-color: transparent;
+        width: 3px;
+    }
+`;
 export const MessageCard = styled.div`
     display: flex;
     padding: 12px 10px;
@@ -149,6 +177,7 @@ export const MessageContent = styled.div`
     div {
         img {
             vertical-align: middle;
+            display: inline;
         }
         font-weight: 400;
         font-size: 14px;
@@ -209,6 +238,7 @@ export const MessageInput = styled.div`
     }
     img {
         vertical-align: middle;
+        display: inline;
     }
 `;
 export const ChatControls = styled.div`
