@@ -133,9 +133,8 @@ const InfluencerWaitlist = () => {
                     <p>Sign up now for early access to Influenzit and receive an exclusive early-bird incentive of 5% off your commission for your first collaboration.</p>
                 </div>
                 <div>
-                    <iframe src='https://cdn.forms-content.sg-form.com/6cee0834-c26a-11ed-90af-f2e097933c84'>
-
-                    </iframe>
+                   
+                    <iframe src="https://cdn.forms-content.sg-form.com/1185da92-c3d2-11ed-8b29-c25a42a5885a"/>
                     {/* <form>
                         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" />
                         <button onClick={handleSubmit}>Sign up</button>
