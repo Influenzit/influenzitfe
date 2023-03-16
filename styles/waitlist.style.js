@@ -151,8 +151,8 @@ export const AccessCard = styled.div`
     column-gap: 20px;
     align-items: center;
     div {
-        width: 50%;
-        min-width: 50%;
+        width: 40%;
+        min-width: 40%;
         h2 {
             font-weight: 600;
             font-size: 32px;
@@ -189,6 +189,19 @@ export const AccessCard = styled.div`
                 width: 105px;
                 cursor: pointer;
             }
+        }
+        iframe {
+            height: 500px;
+            width: 100%;
+            outline: none;
+            border: none;
+        }
+    }
+    div:last-of-type {
+        width: 60%;
+        min-width: 60%;
+        ${breakpoints.md}{
+            width: 100%;
         }
     }
     ${breakpoints.md}{
@@ -284,6 +297,12 @@ export const AccessCardT = styled.div`
             width: 105px;
             cursor: pointer;
         }
+    }
+    iframe {
+        width: 100%;
+        height: 500px;
+        outline: none;
+        border: none;
     }
     ${breakpoints.md} {
         background: none;
