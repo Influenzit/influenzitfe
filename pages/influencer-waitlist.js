@@ -9,7 +9,7 @@ import { isLoading, setError, setLoading } from '../app/reducers/status'
 import Loader from '../components/loading'
 import Footer from '../components/waitlist-footer'
 import { Answer, Faq, FaqWrapper, Question, WrapperSix } from '../styles/home.style'
-import { AccessCard, Banner, CardLayer, Container, Details, ImgContainer, Info, Wrapper } from '../styles/waitlist.style'
+import { AccessCard, Banner, CardLayer, Container, Details, ImgContainer, Info, Wrapper, IframeWrapper } from '../styles/waitlist.style'
 
 const InfluencerWaitlist = () => {
   const [faq, setFaq] = useState({});
@@ -132,14 +132,15 @@ const InfluencerWaitlist = () => {
                     <h2>Get Early Access</h2>
                     <p>Sign up now for early access to Influenzit and receive an exclusive early-bird incentive of 5% off your commission for your first collaboration.</p>
                 </div>
-                <div>
-                   
-                    <iframe src="https://cdn.forms-content.sg-form.com/1185da92-c3d2-11ed-8b29-c25a42a5885a"/>
+                <IframeWrapper>
+                    <iframe src='https://cdn.forms-content.sg-form.com/6cee0834-c26a-11ed-90af-f2e097933c84'>
+
+                    </iframe>
                     {/* <form>
                         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" />
                         <button onClick={handleSubmit}>Sign up</button>
                     </form> */}
-                </div>
+                </IframeWrapper>
             </AccessCard>
         </Wrapper>
         <WrapperSix>

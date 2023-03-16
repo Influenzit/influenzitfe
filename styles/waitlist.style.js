@@ -221,7 +221,15 @@ export const AccessCard = styled.div`
             font-weight: 500;
             font-size: 14px !important;
         }
+        iframe {
+            min-width: 555px;
+        }
     }
+`;
+export const IframeWrapper = styled.div`
+    transform: scale(0.54);
+    position: relative;
+    left: -70px;
 `;
 export const FBanner = styled.div`
     background: #FCF5EB;
