@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { AttachmentIcon, BoldIcon, EmojiIcon, ItalicIcon, MarkupIcon, SendIcon, UnderlineIcon } from '../../assets/svgIcons';
 import ChatSidebar from '../../components/chat-sidebar';
 import LandingLayout from '../../layouts/landing.layout';
-import { ActionBtn, ChatContainer, ChatControls, ChatHeader, Container, ContextBtn, Editor, EditorBtn, HLeft, ImageWrapper, LeftControls, MessageCard, MessageContent, MessageInput, MessagesCont, MessageSection, NonSelectedCont, PickerContainer, ProfilePicWrapper, RightControls, UserSect, Wrapper } from '../../styles/messages.style';
+import { ActionBtn, ChatContainer, ChatControls, ChatHeader, Container, ContextBtn, Editor, EditorBtn, HLeft, ImageWrapper, LeftControls, MessageCard, MessageContent, MessageInput, MessagesContB, MessageSection, NonSelectedCont, PickerContainer, ProfilePicWrapper, RightControls, UserSect, Wrapper } from '../../styles/messages.style';
 import { colors } from '../../styles/theme';
 import dynamic from 'next/dynamic';
 import { getConversationMessages, getConversations, sendConversationMessage } from '../../api/messaging';
@@ -147,8 +147,8 @@ const Messages = () => {
     let newEmoji = document.createElement("img");
     newEmoji.src = emojiData.getImageUrl("facebook");
     newEmoji.alt = emojiData.emoji;
-    newEmoji.height = "22";
-    newEmoji.width = "22";
+    newEmoji.height = "18";
+    newEmoji.width = "18";
     setShowEmoji(false);
 
     if (messageBoxRef.current.lastChild && messageBoxRef.current.lastChild.nodeName === "BR") {
@@ -290,13 +290,13 @@ useEffect(() => {
                 {
                     conversationId ? 
                     (<ChatContainer>
-                        <MessagesCont ref={messagesRef}>
+                        <MessagesContB ref={messagesRef}>
                             {
                                messages.map((val, i) => (
                                     <MessageCard key={i} isOwn={val.is_own}>
                                         <UserSect>
                                             <ProfilePicWrapper>
-                                                <Image src={val.from_user.profile_picture} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
+                                                <Image src={val.from_user.profile_pic} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
                                             </ProfilePicWrapper>
                                         </UserSect>
                                         <MessageContent>
@@ -308,7 +308,7 @@ useEffect(() => {
                                     </MessageCard>
                                 ))
                             }
-                        </MessagesCont>
+                        </MessagesContB>
                         <Editor>
                             {
                                 showEmoji && 
