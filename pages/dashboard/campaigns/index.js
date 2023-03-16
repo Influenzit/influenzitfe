@@ -101,14 +101,14 @@ const Campaigns = () => {
           </span>
         </div>
 
-        <button
+       {/*  <button
           onClick={() => {
             setNewCampaign(!newCamPaign);
           }}
           className="bg-primary-100 py-2 px-4 rounded-lg text-white"
         >
           New campaign
-        </button>
+        </button> */}
       </div>
 
       <div className="my-5 space-y-4">

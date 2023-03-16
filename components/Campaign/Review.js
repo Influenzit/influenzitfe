@@ -8,9 +8,9 @@ import Image from "next/image";
 import ReactStars from "react-rating-stars-component";
 
 function Review({ handleClose }) {
-  const [step, setstep] = useState(1);
-  const [file, setfile] = useState(true);
-
+  const ratingChanged = (newRating) => {
+    console.log(newRating);
+  };
   return (
     <div>
       <div className="fixed inset-0 bg-black/30 z-[999999] flex justify-center items-center">
