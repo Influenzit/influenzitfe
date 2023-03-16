@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getCampaigns } from "../../../api/campaigns";
+import { getCampaign, getCampaigns } from "../../../api/campaigns";
 import { setLoading } from "../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../assets/svgIcons";
 import avatar1 from "../../../assets/campaign/avatar1.svg";
@@ -22,6 +22,7 @@ import facebook from "./../../../assets/facebook.svg";
 import youtube from "./../../../assets/youtube.svg";
 import ReactStars from "react-rating-stars-component";
 import Link from "next/link";
+import { axiosInstance } from "../../../api/axios";
 
 const Campaigns = () => {
   const router = useRouter();
@@ -67,6 +68,56 @@ const Campaigns = () => {
     console.log(newRating);
   };
 
+  const handleGetCampaign = (campaign) => {
+    getCampaigns()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+  const handleCreateCampaign = () => {
+    console.log("dddv");
+    const payload = {
+      title: "Create and run  Tiktok Campaign for 1 month",
+      amount: 1000,
+      currency: "NGN",
+      description: "Create and run  Tiktok Campaign for 1 month",
+      status: "Pending",
+      start_date: "2022-11-20",
+      end_date: "2023-01-20",
+      duration_type: "Month",
+      duration_count: "1",
+      service_package_id: "10",
+      client_business_id: "1102",
+      client_email: "businessowner@influenzit.com",
+      milestones: [
+        {
+          title: "Create Design ",
+          description: "produce social media standard designs and fliers",
+          status: "Pending",
+          amount: 2000,
+          currency: "NGN",
+          start_date: "2023-01-20",
+          end_date: "2023-02-20",
+        },
+        {
+          title: "Create Copy ",
+          description: "Write copy for ads",
+        },
+      ],
+    };
+    axiosInstance()
+      .post(`/campaigns`, payload)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
   const { data, refetch } = useQuery(
     ["get-campaigns"],
     async () => {
@@ -89,7 +140,9 @@ const Campaigns = () => {
   const platform = ["instagram", "twitter", "tiktok", "facebook", "youtube"];
 
   useEffect(() => {
-    refetch();
+    // refetch();
+    // handleCreateCampaign();
+    handleGetCampaign();
   }, [getUrl]);
   return (
     <div className="py-28 px-12 b0">
@@ -101,7 +154,7 @@ const Campaigns = () => {
           </span>
         </div>
 
-       {/*  <button
+        {/*  <button
           onClick={() => {
             setNewCampaign(!newCamPaign);
           }}
