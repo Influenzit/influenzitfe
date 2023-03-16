@@ -17,8 +17,12 @@ import ContactImage from "./../assets/contact.png";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
+import { Country } from "country-state-city";
+
 const Contact = () => {
   const [phone, setPhone] = useState(null);
+  const [country] = useState(Country.getAllCountries());
+  console.log(country);
 
   return (
     <div>
@@ -67,14 +71,37 @@ const Contact = () => {
                     className="input mt-2 px-3 py-2"
                   />
                 </div>
-                <div className="flex flex-col mt-4">
-                  <label htmlFor="Phonenumber">Phone number</label>
-                  <PhoneInput
-                    country={"ng"}
-                    value={phone}
-                    onChange={(phone) => setPhone(phone)}
-                    className="w-full"
-                  />
+
+                <div className="mt-4">
+                  <label htmlFor="Email" className="">Phone Number</label>
+                  <div className=" mt-1 input flex space-x-2 pl-2 py-2">
+                    <select
+                      name=""
+                      id=""
+                      onChange={(e) => {
+                        setPhone(e.target.value);
+                      }}
+                      Selected="Nigeria"
+                      className="w-9 text-sm bg-transparent outline-none border-none"
+                    >
+                      {country.map((item, idx) => {
+                        return (
+                          <option
+                            key={idx}
+                            value={item.name}
+                            selected={item.name === "Nigeria"}
+                          >
+                            {item.flag} {item.phonecode}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    <input
+                      type="text"
+                      className="bg-transparent outline-none w-full flex-1"
+                      placeholder="8012345678 "
+                    />
+                  </div>
                 </div>
 
                 <div className="flex flex-col mt-4">
@@ -94,7 +121,7 @@ const Contact = () => {
               </div>
             </div>
             <div>
-              <Image src={ContactImage}  alt="contact_image"/>
+              <Image src={ContactImage} alt="contact_image" />
             </div>
           </div>
         </div>
@@ -108,4 +135,4 @@ Contact.getLayout = (page) => {
   return <LandingLayout>{page}</LandingLayout>;
 };
 
-export default Contact
+export default Contact;
