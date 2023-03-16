@@ -227,9 +227,11 @@ export const AccessCard = styled.div`
     }
 `;
 export const IframeWrapper = styled.div`
-    transform: scale(0.54);
-    position: relative;
-    left: -70px;
+    ${breakpoints.md} {
+        transform: scale(0.54);
+        position: relative;
+        left: -70px;
+    }
 `;
 export const FBanner = styled.div`
     background: #FCF5EB;
