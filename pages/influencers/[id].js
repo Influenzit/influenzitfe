@@ -137,6 +137,10 @@ const CreatorProfile = () => {
           })
         }
       }
+      const getCoverImages = (list) => {
+        const checker = ["cover_img_1", "cover_img_2", "cover_img_3", "cover_img_4"]
+        return list?.filter((val) => checker.includes(val.identifier))
+      }
     useEffect(() => {
         dispatch(setLoading(true));
         refetchInfluencersData();
@@ -223,59 +227,59 @@ const CreatorProfile = () => {
             
             <Wrapper>
                 {
-                    (inData?.media.length <= 1) && (
+                    (getCoverImages(inData?.media)?.length <= 1) && (
                         <ImageContainer>
                             <div id="img">
-                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                             </div>
                         </ImageContainer>
                     )
                 }
                 {
-                    (inData?.media.length === 2) && (
+                    (getCoverImages(inData?.media)?.length === 2) && (
                         <ImageContainerTwo>
                             <div className='wrap'>
-                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                             </div>
                             <div className='wrap'>
-                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                             </div>
                         </ImageContainerTwo>
                     )
                 }
                 {
-                    (inData?.media.length === 3) && (
+                    (getCoverImages(inData?.media)?.length === 3) && (
                         <ImageContainerTwo>
                             <div className='wrap'>
-                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                             </div>
                             <div className="wrap">
                                 <div className='wrap-top'>
-                                    <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                    <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                                 </div>
                                 <div className='wrap-bottom'>
-                                    <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                    <Image src={getCoverImages(inData?.media)[2].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                                 </div>
                             </div>
                         </ImageContainerTwo>
                     )
                 }
                 {
-                    (inData?.media.length === 4) && (
+                    (getCoverImages(inData?.media)?.length === 4) && (
                         <ImageContainerTwo>
                             <div className='wrap'>
-                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                             </div>
                             <div className='wrap'>
                                 <div className='wrap-top'>
-                                    <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                    <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                                 </div>
                                 <div className='wrap-bottom'>
                                     <div>
-                                        <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                        <Image src={getCoverImages(inData?.media)[2].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                                     </div>
                                     <div>
-                                        <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                        <Image src={getCoverImages(inData?.media)[3].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                                     </div>
                                 </div>
                             </div>
@@ -309,6 +313,7 @@ const CreatorProfile = () => {
                             </UserImage>
                         </UserCardSection>
                         <Info>
+                            <h3>{inData?.headline}</h3>
                             <p>{inData?.biography}</p>
                             <Tags>
                                 {
