@@ -5,7 +5,7 @@ import { getUserType, setError, setLoading } from '../../app/reducers/status'
 import { getUser } from '../../app/reducers/user'
 import { BagIcon, ChevronLeft, ChevronRight, HashTagIcon, SettingsIcon, WalletIcon } from '../../assets/svgIcons'
 import LandingLayout from '../../layouts/landing.layout'
-import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../styles/connect-pages.style'
+import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, WelcomeModal, Wrapper } from '../../styles/connect-pages.style'
 import { BizCard, CampaignCard, Card, CardsWrapper, ChartContainer, EmptyCard, List, ListingWrapper, ProjectCard, ProjectDetails, Status, UserMiniCard, WelcomeHeading } from '../../styles/dashboard'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useQuery } from '@tanstack/react-query'
@@ -14,15 +14,20 @@ import { getServices } from '../../api/influencer'
 import { getProjects } from '../../api/projects'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { UpdateModal } from '../../styles/view.style'
 
 const Dashboard = () => {
   const user = useSelector(getUser);
   const currentAcctType = useSelector(getUserType);
   const [userDetails, setUserDetails] = useState(null);
+  const [showPrompt, setShowPrompt] = useState(false);
   const dispatch = useDispatch();
     useEffect(() => {
       if (user) {
         setUserDetails(user);
+        if(currentAcctType === "Influencer" && !user?.account?.account_setup) {
+            setShowPrompt(true);
+        }
       }
     }, [user, currentAcctType]);
       const [campaignList, setCampaignList] = useState({
@@ -80,6 +85,23 @@ const Dashboard = () => {
     
   return (
     <Container>
+        {
+            showPrompt && (
+                <UpdateModal>
+                    <WelcomeModal>
+                        <div>
+                            <button onClick={() => setShowPrompt(false)}><Image src="/cancel.svg" alt="" height={14} width={14} /></button>
+                        </div>
+                        <Image src="/congrat.svg" alt="" height={110} width={110}/>
+                        <h2>Welcome to Influenzit</h2>
+                        <p>You need to complete your influencer profile in order to start using the platform.</p>
+                        <div>
+                            <button onClick={() => router.push("/dashboard/complete-profile")}>Complete Profile</button>
+                        </div>
+                    </WelcomeModal>
+                </UpdateModal>
+            )
+        }
         <Wrapper>
             <WelcomeHeading>
                 Hello {userDetails && userDetails.name}
@@ -139,8 +161,66 @@ const Dashboard = () => {
                 </TableWrapper>
               )  
             } */}
-             {
-              (currentAcctType === "Business Owner" || (currentAcctType === "Influencer")) && (
+            {
+              ((currentAcctType === "Influencer")) && (
+                <ListingWrapper>
+                    <h3 id="h3">Active Campaigns</h3>
+                    {
+                        campaignList.data.length ? (
+                            <List>
+                               { 
+                                campaignList.data.map((val, i) => (
+                                    <ProjectCard key={i}>
+                                        <UserMiniCard>
+                                            <div>
+                                                <h4>{val.provider.name}</h4>
+                                                <p>{val.provider.email}</p>
+                                                <div id="social">
+                                                    <Image src="/facebook-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/instagram-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/twitter-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/tiktok-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/youtube-icon.svg" alt="" height={12} width={12}/>
+                                                </div>
+                                                <div id="star">
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <span>5.0</span>
+                                                </div>
+                                            </div>
+                                        </UserMiniCard>
+                                        <ProjectDetails>
+                                            <div id="img">
+                                                <Image src="/dog.png" layout="fill" objectFit="cover" objectPosition="center"/>
+                                            </div>
+                                            <div>
+                                                <h4>{val.title}</h4>
+                                                <p>{val.description}</p>
+                                            </div>
+                                        </ProjectDetails>
+                                        <Status inProgress={val.status !== "Completed"}>
+                                            <h3>STATUS</h3>
+                                            <div><span></span> {val.status}</div>
+                                        </Status>
+                                    </ProjectCard>
+                                ))
+                               }
+                            </List>
+                        ) : (
+                            <EmptyCard>
+                                <Image src="/empty-list.svg" alt="" height={150} width={150}/>
+                                <h3>You currently have no active campaigns</h3>
+                            </EmptyCard>
+                        )
+                    }
+                </ListingWrapper>
+              )  
+            }
+            {
+              (currentAcctType === "Business Owner") && (
                 <ListingWrapper>
                     <h3 id="h3">Active Campaigns</h3>
                     {

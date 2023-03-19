@@ -351,9 +351,10 @@ export const InputContainer = styled.div`
     label {
         margin-bottom: 6px;
     }
-    input,select {
+    input, select {
         box-shadow: 0px 1px 2px 0px #1018280D;
         border-radius: 8px;
+        height: 45px;
         padding: 10px 14px;
         border: 1px solid #D0D5DD;
         outline: none;
