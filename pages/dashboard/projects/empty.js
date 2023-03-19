@@ -8,10 +8,11 @@ import { useDispatch } from "react-redux";
 import { getCampaigns } from "../../../api/campaigns";
 import { setLoading } from "../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../assets/svgIcons";
-import Stage1 from "../../../components/profile/stage1";
-import Stage2 from "../../../components/profile/stage2";
-import Stage3 from "../../../components/profile/stage3";
-import Stage4 from "../../../components/profile/stage4";
+import rightarrow from "../../../assets/project/rightarrow.svg";
+import emptyicon from "../../../assets/project/emptyicon.svg";
+import Stage1 from "../../../components/Campaign/Stage1";
+import Stage2 from "../../../components/Campaign/Stage2";
+import Stage3 from "../../../components/Campaign/Stage3";
 import LandingLayout from "../../../layouts/landing.layout";
 
 import cancel from "./../../../assets/close.svg";
@@ -86,8 +87,7 @@ const Campaigns = () => {
       },
     }
   );
-
-  const [activetab, setactivetab] = useState("profile_details");
+  const platform = ["instagram", "twitter", "tiktok", "facebook", "youtube"];
 
   useEffect(() => {
     refetch();
@@ -96,60 +96,34 @@ const Campaigns = () => {
     <div className="py-28 px-12 b0">
       <div className="flex justify-between mb-6">
         <div className="flex items-center">
-          <h1 className="text-xl">Account Settings </h1>
+          <h1 className="text-xl">My Projects </h1>
+          <span className="mx-2 rounded-full py-1 px-2  h-auto bg-primary-100 text-[10px] text-white">
+            Free User
+          </span>
         </div>
       </div>
-      <div className="flex space-x-4 w-full border-b mb-4">
-        <button
-          onClick={() => {
-            setactivetab("profile_details");
-          }}
-          className={`${
-            activetab == "profile_details" &&
-            "text-primary-100 border-b border-primary-100"
-          } pb-4`}
-        >
-          Profile details
-        </button>
-        <button
-          onClick={() => {
-            setactivetab("influencer_details");
-          }}
-          className={`${
-            activetab == "influencer_details" &&
-            "text-primary-100 border-b border-primary-100"
-          } pb-4`}
-        >
-          Influencer Details
-        </button>
-        <button
-          onClick={() => {
-            setactivetab("images");
-          }}
-          className={`${
-            activetab == "images" &&
-            "text-primary-100 border-b border-primary-100"
-          } pb-4`}
-        >
-          Images
-        </button>
-        <button
-          onClick={() => {
-            setactivetab("change_password");
-          }}
-          className={`${
-            activetab == "change_password" &&
-            "text-primary-100 border-b border-primary-100"
-          } pb-4`}
-        >
-          Change Password
-        </button>
-      </div>
 
-      {activetab === "profile_details" && <Stage1 />}
-      {activetab === "influencer_details" && <Stage2 />}
-      {activetab === "images" && <Stage3 />}
-      {activetab === "change_password" && <Stage4 />}
+      <div className="empty">
+        <div className="grid grid-cols-12">
+          <div className="p-6 col-span-8">
+            <h1 className="text-3xl font-semibold">
+              Start your first project{" "}
+            </h1>
+            <p className="text-[#555461] font-light mt-4">
+              Find the right influencers with correct metrics, keep track of
+              your campaign performance and complete payments seamlessly.
+            </p>
+
+            <button className="bg-primary-100 py-2 px-4 rounded-lg text-white mt-8 flex space-x-4 items-center">
+              <span className="mr-2">Find Creators</span>
+              <Image src={rightarrow} alt={"leftarrow"} />
+            </button>
+          </div>
+          <div className="col-span-4 -mb-2">
+            <Image src={emptyicon} alt={"emptyicon"} className="" />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

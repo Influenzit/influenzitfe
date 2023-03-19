@@ -545,10 +545,10 @@ const CreatorProfile = () => {
                     </Listing> : null
                 } */}
                 <Listing>
-                    <h3>Similar influencers</h3>
+                    {inData?.similar.length ? <h3>Similar influencers</h3> : null}
                     <Bottom>
                         {
-                            influencersData?.data?.data?.data.slice(0, 4).map((val, i) => {
+                            inData?.similar.map((val, i) => {
                                 let genSkills = "";
                                 val.skills.forEach((val, i) => {
                                     if(i < 5){
