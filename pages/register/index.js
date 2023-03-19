@@ -125,6 +125,7 @@ const Register = () => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(setLoading(true));
     mutation.mutate({
         firstname: formVal.firstname,
         lastname: formVal.lastname,
@@ -198,7 +199,7 @@ const Register = () => {
                       <Input
                       type="text"
                       value={formVal.business_name}
-                      placeholder="Enter your email"
+                      placeholder="Enter business name"
                       onChange={(e) => handleInputChange(e.target.value, "business_name")}
                       required
                       />
