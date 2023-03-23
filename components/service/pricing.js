@@ -13,6 +13,8 @@ function Pricing({
   handleRemove,
   currentPackagesIndex,
   setcurrentPackagesIndex,
+  handleFormInput,
+  handleFormFeatureInput,
 }) {
   return (
     <div>
@@ -74,6 +76,10 @@ function Pricing({
             type="text"
             placeholder="Krystal Beauty"
             className="p-2 border outline-none rounded-md w-full"
+            name="name"
+            onChange={(e) => {
+              handleFormInput(e);
+            }}
           />
         </div>
       </div>
@@ -86,6 +92,10 @@ function Pricing({
             type="number"
             placeholder="#20, 000.00"
             className="p-2 border outline-none rounded-md w-full"
+            name="amount"
+            onChange={(e) => {
+              handleFormInput(e);
+            }}
           />
         </div>
       </div>
@@ -95,10 +105,13 @@ function Pricing({
         </label>
         <div>
           <textarea
-            name=""
             id=""
             cols="30"
             rows="5"
+            name="description"
+            onChange={(e) => {
+              handleFormInput(e);
+            }}
             className="input mt-2 px-3 py-2 resize-none w-[400px]"
           ></textarea>
         </div>
@@ -111,12 +124,20 @@ function Pricing({
               type="text"
               placeholder="Title of feature"
               className="p-2 border outline-none rounded-md w-1/5"
+              name="name"
+              onChange={(e) => {
+                handleFormFeatureInput(e, idx);
+              }}
             />
             <div className="flex space-x-3 w-[300px]">
               <input
                 type="text"
                 placeholder="Krystal Beauty"
                 className="p-2 border outline-none rounded-md w-full"
+                name="quantity"
+                onChange={(e) => {
+                  handleFormFeatureInput(e, idx);
+                }}
               />
               {idx !== 0 && (
                 <button

@@ -4,12 +4,14 @@ import rightarrow from "../../assets/rightarrow.svg";
 import React from "react";
 import Image from "next/image";
 
-function Overview({
+function Faq({
   handleIncrement,
   handleDecrement,
   handleAddFaq,
   handleRemoveFaq,
   faqs,
+  handleFaqinput
+
 }) {
   console.log(faqs);
   return (
@@ -36,6 +38,10 @@ function Overview({
                   type="text"
                   placeholder="Who is Krystal Beauty"
                   className="p-2 border outline-none rounded-md w-full"
+                  name="question"
+                  onChange={(e) => {
+                    handleFaqinput(e, id);
+                  }}
                 />
               </div>
               <div className="mt-4">
@@ -48,6 +54,10 @@ function Overview({
                   type="text"
                   placeholder="Krystal Beauty"
                   className="p-2 border outline-none rounded-md w-full"
+                  name="answer"
+                  onChange={(e) => {
+                    handleFaqinput(e, id);
+                  }}
                 />
               </div>
               {id !== 0 && (
@@ -98,4 +108,4 @@ function Overview({
   );
 }
 
-export default Overview;
+export default Faq;

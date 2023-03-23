@@ -15,6 +15,7 @@ import Pricing from "../../../components/service/pricing";
 import Gallery from "../../../components/service/gallery";
 import Faq from "../../../components/service/faq";
 import Review from "../../../components/service/review";
+import { createServices, getServices, createFaqServices, createReviewServices } from "../../../api/influencer";
 
 const Services = () => {
   const router = useRouter();
@@ -23,7 +24,13 @@ const Services = () => {
   const [step, setstep] = useState(1);
   const platform = ["instagram", "twitter", "tiktok", "facebook", "youtube"];
 
+  const [allServices, setallServices] = useState([]);
+  const [title, settitle] = useState("");
+  const [description, setdescription] = useState("");
+  const [price, setprice] = useState("");
+  const [type, settype] = useState("");
   const [currentPackagesIndex, setcurrentPackagesIndex] = useState(0);
+  const [currentPackageId, setCurrentPackageId] = useState(null);
   const [faqs, setfaqs] = useState([{ question: "", answer: "" }]);
   const [review, setreview] = useState({ name: "", comment: "" });
   const [packages, setpackages] = useState([
@@ -69,11 +76,9 @@ const Services = () => {
     setfaqs((prevState) => {
       const newState = [...prevState, { question: "", answer: "" }];
 
-      console.log(newState);
       return newState;
     });
   };
-  
 
   const handleAddFeature = () => {
     setpackages((prevState) => {
@@ -109,10 +114,43 @@ const Services = () => {
         ...newState[currentPackagesIndex],
         features: newFeatures,
       };
-      console.log(newState);
       return newState;
     });
     console.log(id);
+  };
+
+  const handleFormInput = (e) => {
+    const { name, value } = e.target;
+    setpackages((prevState) => {
+      const newState = [...prevState];
+
+      newState[currentPackagesIndex][name] = value;
+      return newState;
+    });
+  };
+  const handleFormFeatureInput = (e, featureId) => {
+    const { name, value } = e.target;
+    setpackages((prevState) => {
+      const newState = [...prevState];
+      newState[currentPackagesIndex].features[featureId][name] = value;
+      return newState;
+    });
+  };
+  const handleFaqinput = (e, faqid) => {
+    const { name, value } = e.target;
+    setfaqs((prevState) => {
+      const newState = [...prevState];
+      newState[faqid][name] = value;
+      return newState;
+    });
+  };
+  const handleReviewinput = (e) => {
+    const { name, value } = e.target;
+    setreview((prevState) => {
+      prevState[name] = value;
+      console.log(prevState);
+      return prevState;
+    });
   };
 
   const handleGetCampaign = (campaign) => {
@@ -136,8 +174,59 @@ const Services = () => {
     }
   };
 
+  const handleServiceCreation = () => {
+    const payload = {
+      name,
+      description,
+      type,
+      price: +price,
+      currency: "NGN",
+      is_negotiable: true,
+      packages: packages,
+    };
+    createServices(payload)
+      .then((res) => {
+        console.log(res.data.data);
+        setCurrentPackageId(res.data.data[0].id);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+  const handleFaqCreation = () => {
+    const payload = faq;
+    createFaqServices(currentPackageId, payload)
+      .then((res) => {
+        console.log(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+  const handleReviewCreation = () => {
+    const payload = faq;
+    createReviewServices(currentPackageId, payload)
+      .then((res) => {
+        console.log(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+  const handleGetServices = () => {
+   
+    getServices()
+      .then((res) => {
+        console.log(res.data.data);
+        setallServices(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
   useEffect(() => {
-    // handleGetCampaign();
+    handleGetServices();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -247,6 +336,14 @@ const Services = () => {
                 <Overview
                   handleIncrement={handleIncrement}
                   handleDecrement={handleDecrement}
+                  type={type}
+                  price={price}
+                  description={description}
+                  title={title}
+                  settitle={settitle}
+                  setprice={setprice}
+                  setdescription={setdescription}
+                  settype={settype}
                 />
               )}
               {step === 2 && (
@@ -259,6 +356,9 @@ const Services = () => {
                   handleRemove={handleRemove}
                   currentPackagesIndex={currentPackagesIndex}
                   setcurrentPackagesIndex={setcurrentPackagesIndex}
+                  handleFormInput={handleFormInput}
+                  handleFormFeatureInput={handleFormFeatureInput}
+                  handleServiceCreation={handleServiceCreation}
                 />
               )}
               {step === 3 && (
@@ -275,6 +375,9 @@ const Services = () => {
                   handleAddFaq={handleAddFaq}
                   handleRemoveFaq={handleRemoveFaq}
                   faqs={faqs}
+                  handleFaqinput={handleFaqinput}
+                  handleFaqCreation={handleFaqCreation}
+
                 />
               )}
               {step === 5 && (
@@ -283,6 +386,9 @@ const Services = () => {
                   setreview={setreview}
                   handleIncrement={handleIncrement}
                   handleDecrement={handleDecrement}
+                  handleReviewinput={handleReviewinput}
+                  handleReviewCreation={handleReviewCreation}
+
                 />
               )}
             </section>

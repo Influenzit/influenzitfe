@@ -4,12 +4,13 @@ import rightarrow from "../../assets/rightarrow.svg";
 import React from "react";
 import Image from "next/image";
 
-function Overview({
+function Review({
   handleIncrement,
   handleDecrement,
   handleAddFaq,
   handleRemoveFaq,
   faqs,
+  handleReviewinput
 }) {
   console.log(faqs);
   return (
@@ -31,6 +32,10 @@ function Overview({
           type="text"
           placeholder="Who is Krystal Beauty"
           className="p-2 border outline-none rounded-md w-full"
+          name="name"
+          onChange={(e) => {
+            handleReviewinput(e);
+          }}
         />
       </div>
       <div className="mt-4">
@@ -43,6 +48,10 @@ function Overview({
           type="text"
           placeholder="Krystal Beauty"
           className="p-2 border outline-none rounded-md w-full"
+          name="comment"
+          onChange={(e) => {
+            handleReviewinput(e);
+          }}
         />
       </div>
 
@@ -70,4 +79,4 @@ function Overview({
   );
 }
 
-export default Overview;
+export default Review;
