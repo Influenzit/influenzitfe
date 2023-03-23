@@ -1,4 +1,4 @@
-//=========================== TAILWIND STYLES APPLIED HERE =========================
+ //=========================== TAILWIND STYLES APPLIED HERE =========================
 
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";

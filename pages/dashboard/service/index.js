@@ -4,13 +4,17 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import Overview from "../../components/service/overview";
-import LandingLayout from "../../layouts/landing.layout";
+import Overview from "../../../components/service/overview";
+import LandingLayout from "../../../layouts/landing.layout";
 
-import close from "../../assets/closeservice.svg";
-import serviceimage from "../../assets/serviceimage.svg";
-import addservice from "../../assets/addservice.svg";
+import close from "../../../assets/closeservice.svg";
+import serviceimage from "../../../assets/serviceimage.svg";
+import addservice from "../../../assets/addservice.svg";
 import moment from "moment";
+import Pricing from "../../../components/service/pricing";
+import Gallery from "../../../components/service/gallery";
+import Faq from "../../../components/service/faq";
+import Review from "../../../components/service/review";
 
 const Services = () => {
   const router = useRouter();
@@ -18,6 +22,98 @@ const Services = () => {
   const [isServiceModalOpen, setisServiceModalOpen] = useState(false);
   const [step, setstep] = useState(1);
   const platform = ["instagram", "twitter", "tiktok", "facebook", "youtube"];
+
+  const [currentPackagesIndex, setcurrentPackagesIndex] = useState(0);
+  const [faqs, setfaqs] = useState([{ question: "", answer: "" }]);
+  const [review, setreview] = useState({ name: "", comment: "" });
+  const [packages, setpackages] = useState([
+    {
+      description: "",
+      amount: 0,
+      currency: "NGN",
+      name: "",
+      features: [
+        {
+          name: "",
+          quantity: "",
+        },
+      ],
+    },
+    {
+      description: "",
+      amount: 0,
+      currency: "NGN",
+      name: "",
+      features: [
+        {
+          name: "",
+          quantity: "",
+        },
+      ],
+    },
+    {
+      description: "",
+      amount: 0,
+      currency: "NGN",
+      name: "",
+      features: [
+        {
+          name: "",
+          quantity: "",
+        },
+      ],
+    },
+  ]);
+
+  const handleAddFaq = () => {
+    setfaqs((prevState) => {
+      const newState = [...prevState, { question: "", answer: "" }];
+
+      console.log(newState);
+      return newState;
+    });
+  };
+  
+
+  const handleAddFeature = () => {
+    setpackages((prevState) => {
+      const newState = [...prevState];
+      const newFeatures = [
+        ...newState[currentPackagesIndex].features,
+        {
+          name: "",
+          quantity: "",
+        },
+      ];
+      newState[currentPackagesIndex] = {
+        ...newState[currentPackagesIndex],
+        features: newFeatures,
+      };
+      return newState;
+    });
+  };
+  const handleRemoveFaq = (id) => {
+    setfaqs((prevState) => {
+      const newState = [...prevState];
+      newState.splice(id, 1);
+
+      return newState;
+    });
+  };
+  const handleRemove = (id) => {
+    setpackages((prevState) => {
+      const newState = [...prevState];
+      const newFeatures = [...newState[currentPackagesIndex].features];
+      newFeatures.splice(id, 1);
+      newState[currentPackagesIndex] = {
+        ...newState[currentPackagesIndex],
+        features: newFeatures,
+      };
+      console.log(newState);
+      return newState;
+    });
+    console.log(id);
+  };
 
   const handleGetCampaign = (campaign) => {
     // getCampaigns()
@@ -30,12 +126,12 @@ const Services = () => {
     //   });
   };
   const handleIncrement = () => {
-    if (step >= 1 && step < 6) {
+    if (step >= 1 && step < 5) {
       setstep(step + 1);
     }
   };
   const handleDecrement = () => {
-    if (step > 1 && step <= 6) {
+    if (step > 1 && step <= 5) {
       setstep(step - 1);
     }
   };
@@ -68,7 +164,7 @@ const Services = () => {
                   {platform.map((img) => (
                     <div key={img}>
                       <Image
-                        src={require(`../../assets/${img}.svg`)}
+                        src={require(`../../../assets/${img}.svg`)}
                         alt={img}
                         className="h-5 w-5 rounded-lg mx-2"
                       />
@@ -110,15 +206,14 @@ const Services = () => {
             </button>
           </div>
           <div className="w-[80%] mx-auto">
-            <div className="grid grid-cols-6 gap-4 text-[#94949C] text-sm mb-2">
+            <div className="grid grid-cols-5 gap-4 text-[#94949C] text-sm mb-2">
               <div className="">Overview</div>
               <div className="">Pricing</div>
               <div className="">Gallery</div>
-              <div className="">Requirements</div>
               <div className="">FAQ</div>
               <div className="">Review</div>
             </div>
-            <div className="grid grid-cols-6 gap-4 mb-4">
+            <div className="grid grid-cols-5 gap-4 mb-4">
               <div
                 className={` ${
                   step > 0 ? "bg-primary-100" : "bg-[#EAEAEB]"
@@ -134,6 +229,7 @@ const Services = () => {
                   step > 2 ? "bg-primary-100" : "bg-[#EAEAEB]"
                 }   h-1 w-full rounded-full`}
               ></div>
+
               <div
                 className={` ${
                   step > 3 ? "bg-primary-100" : "bg-[#EAEAEB]"
@@ -144,20 +240,51 @@ const Services = () => {
                   step > 4 ? "bg-primary-100" : "bg-[#EAEAEB]"
                 }   h-1 w-full rounded-full`}
               ></div>
-              <div
-                className={` ${
-                  step > 5 ? "bg-primary-100" : "bg-[#EAEAEB]"
-                }   h-1 w-full rounded-full`}
-              ></div>
             </div>
 
             <section className="mt-4">
-              {step === 1 && <Overview setstep={setstep} step={step} />}
-              {step === 2 && <Overview setstep={setstep} step={step} />}
-              {step === 3 && <Overview setstep={setstep} step={step} />}
-              {step === 4 && <Overview setstep={setstep} step={step} />}
-              {step === 5 && <Overview setstep={setstep} step={step} />}
-              {step === 6 && <Overview setstep={setstep} step={step} />}
+              {step === 1 && (
+                <Overview
+                  handleIncrement={handleIncrement}
+                  handleDecrement={handleDecrement}
+                />
+              )}
+              {step === 2 && (
+                <Pricing
+                  handleIncrement={handleIncrement}
+                  handleDecrement={handleDecrement}
+                  packages={packages}
+                  setpackages={setpackages}
+                  handleAddFeature={handleAddFeature}
+                  handleRemove={handleRemove}
+                  currentPackagesIndex={currentPackagesIndex}
+                  setcurrentPackagesIndex={setcurrentPackagesIndex}
+                />
+              )}
+              {step === 3 && (
+                <Gallery
+                  handleIncrement={handleIncrement}
+                  handleDecrement={handleDecrement}
+                />
+              )}
+
+              {step === 4 && (
+                <Faq
+                  handleIncrement={handleIncrement}
+                  handleDecrement={handleDecrement}
+                  handleAddFaq={handleAddFaq}
+                  handleRemoveFaq={handleRemoveFaq}
+                  faqs={faqs}
+                />
+              )}
+              {step === 5 && (
+                <Review
+                  review={review}
+                  setreview={setreview}
+                  handleIncrement={handleIncrement}
+                  handleDecrement={handleDecrement}
+                />
+              )}
             </section>
           </div>
         </div>
