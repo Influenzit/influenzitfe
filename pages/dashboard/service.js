@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import Overview from "../../components/service/overview";
 import LandingLayout from "../../layouts/landing.layout";
 
-// import cancel from "./../../../../assets/close.svg";
+import close from "../../assets/closeservice.svg";
 import serviceimage from "../../assets/serviceimage.svg";
 import addservice from "../../assets/addservice.svg";
 import moment from "moment";
@@ -60,7 +60,7 @@ const Services = () => {
               <Image
                 src={serviceimage}
                 alt="title_image"
-                clasName="h-full w-full"
+                className="h-full w-full object-cover"
               />
 
               <div className="space-y-4 p-4">
@@ -90,7 +90,7 @@ const Services = () => {
               <Image
                 src={addservice}
                 alt="add_service"
-                clasName="h-full w-full"
+                className="h-full w-full"
               />
               <p>Add a service</p>
             </button>
@@ -99,55 +99,66 @@ const Services = () => {
       </div>
 
       {isServiceModalOpen && (
-        <div clasName="bg-white fixed inset-0 px-[100px] py-10 ">
+        <div className="bg-white fixed overflow-y-auto inset-0 px-[100px] py-10  z-[999999]">
           <div className="flex justify-end mb-5">
-            <button>
+            <button
+              onClick={() => {
+                setisServiceModalOpen(!isServiceModalOpen);
+              }}
+            >
               <Image src={close} alt="close" />
             </button>
           </div>
-          <div clasName="w-[80%] mx-auto">
-            <div className="flex space-x-2">
-              <div clasName="">Overview</div>
-              <div clasName="">Pricing</div>
-              <div clasName="">Gallery</div>
-              <div clasName="">Requirements</div>
-              <div clasName="">FAQ</div>
-              <div clasName="">Review</div>
+          <div className="w-[80%] mx-auto">
+            <div className="grid grid-cols-6 gap-4 text-[#94949C] text-sm mb-2">
+              <div className="">Overview</div>
+              <div className="">Pricing</div>
+              <div className="">Gallery</div>
+              <div className="">Requirements</div>
+              <div className="">FAQ</div>
+              <div className="">Review</div>
             </div>
-            <div className="flex space-x-2">
+            <div className="grid grid-cols-6 gap-4 mb-4">
               <div
-                clasName={` ${
+                className={` ${
                   step > 0 ? "bg-primary-100" : "bg-[#EAEAEB]"
-                }   h-2 rouned-full`}
+                }   h-1 w-full rounded-full`}
               ></div>
               <div
-                clasName={` ${
+                className={` ${
                   step > 1 ? "bg-primary-100" : "bg-[#EAEAEB]"
-                }   h-2 rouned-full`}
+                }   h-1 w-full rounded-full`}
               ></div>
               <div
-                clasName={` ${
+                className={` ${
                   step > 2 ? "bg-primary-100" : "bg-[#EAEAEB]"
-                }   h-2 rouned-full`}
+                }   h-1 w-full rounded-full`}
               ></div>
               <div
-                clasName={` ${
+                className={` ${
                   step > 3 ? "bg-primary-100" : "bg-[#EAEAEB]"
-                }   h-2 rouned-full`}
+                }   h-1 w-full rounded-full`}
               ></div>
               <div
-                clasName={` ${
+                className={` ${
                   step > 4 ? "bg-primary-100" : "bg-[#EAEAEB]"
-                }   h-2 rouned-full`}
+                }   h-1 w-full rounded-full`}
               ></div>
               <div
-                clasName={` ${
+                className={` ${
                   step > 5 ? "bg-primary-100" : "bg-[#EAEAEB]"
-                }   h-2 rouned-full`}
+                }   h-1 w-full rounded-full`}
               ></div>
             </div>
 
-            {step === 1 && <Overview />}
+            <section className="mt-4">
+              {step === 1 && <Overview setstep={setstep} step={step} />}
+              {step === 2 && <Overview setstep={setstep} step={step} />}
+              {step === 3 && <Overview setstep={setstep} step={step} />}
+              {step === 4 && <Overview setstep={setstep} step={step} />}
+              {step === 5 && <Overview setstep={setstep} step={step} />}
+              {step === 6 && <Overview setstep={setstep} step={step} />}
+            </section>
           </div>
         </div>
       )}
