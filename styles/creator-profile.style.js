@@ -373,11 +373,11 @@ export const ImageContainer = styled.div`
 `;
 export const ImageContainerTwo = styled.div`
     height: 450px;
-    border-radius: 16px;
     overflow: hidden;
     width: 100%;
     display: flex;
     column-gap: 5px;
+    border-radius: 16px;
     .wrap {
         width: 50%;
         max-width: 50%;
@@ -429,6 +429,11 @@ export const UserImage = styled.div`
     overflow: hidden;
 `;
 export const Info = styled.div`
+    padding: 15px 0;
+    h3 {
+        font-weight: 600;
+        font-size: 18px;
+    }
 `;
 export const Tags = styled.div`
     display: flex;

@@ -20,7 +20,9 @@ const Register = () => {
     lastname: "",
     email: "",
     password: "",
-    password_confirmation: ""
+    password_confirmation: "",
+    account_type: "Business",
+    business_name: ""
   })
   const dispatch = useDispatch();
   const mutation = useMutation(userData => {
@@ -123,12 +125,14 @@ const Register = () => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(setLoading(true));
     mutation.mutate({
         firstname: formVal.firstname,
         lastname: formVal.lastname,
         email: formVal.email,
         password: formVal.password,
         password_confirmation: formVal.password_confirmation,
+        account_type: formVal.account_type,
     })
   }
   if (mutation.isLoading) dispatch(setLoading(true));
@@ -168,16 +172,40 @@ const Register = () => {
                   />
                 </InputContainer>
               </FlexInput>
-              <InputContainer hasContent={formVal.email}>
-                <label>Email</label>
-                <Input
-                type="email"
-                value={formVal.email}
-                placeholder="Enter your email"
-                onChange={(e) => handleInputChange(e.target.value, "email")}
-                required
-                />
-              </InputContainer>
+              <FlexInput>
+                <InputContainer hasContent={formVal.email}>
+                  <label>Email</label>
+                  <Input
+                  type="email"
+                  value={formVal.email}
+                  placeholder="Enter your email"
+                  onChange={(e) => handleInputChange(e.target.value, "email")}
+                  required
+                  />
+                </InputContainer> 
+                <InputContainer>
+                  <label>Category</label>
+                  <select value={formVal.account_type} onChange={(e) => handleInputChange(e.target.value, "account_type")}>
+                    <option value="Business">Business Owner</option>
+                    <option value="Influencer">Influencer</option>
+                    <option value="Creator">Creator</option>
+                  </select>
+                </InputContainer>
+              </FlexInput>
+              {
+                formVal.account_type === "Business" && (
+                  <InputContainer hasContent={formVal.email}>
+                      <label>Business Name</label>
+                      <Input
+                      type="text"
+                      value={formVal.business_name}
+                      placeholder="Enter business name"
+                      onChange={(e) => handleInputChange(e.target.value, "business_name")}
+                      required
+                      />
+                  </InputContainer> 
+                )
+              }
               <InputContainer hasContent={formVal.password}>
                 <label>Password</label>
                 <Input

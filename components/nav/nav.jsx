@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Center, ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, GetStartedBtn, LoginBtn, Logo, NavLinks, ProfilePicWrapper, Qlinks, ResponsiveNav, Right, SearchBtn, SearchBtnC, SearchBtnResponsive, SearchByBtn, SearchByOption, SearchContainer, SidebarBtn, SwitchBtn, SwitchDropdownCont, UserBtn, UserDropdown, Wrapper } from './style'
+import { Center, ConnectDropdown, ConnectDropdownCont, Container, Controls, ControlsA, GetStartedBtn, LoginBtn, Logo, NavLinks, NotificationCont, ProfilePicWrapper, Qlinks, ResponsiveNav, Right, SearchBtn, SearchBtnC, SearchBtnResponsive, SearchByBtn, SearchByOption, SearchContainer, SidebarBtn, SwitchBtn, SwitchDropdownCont, UserBtn, UserDropdown, Wrapper } from './style'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -9,10 +9,11 @@ import { connect, useDispatch, useSelector } from 'react-redux'
 import { clearUser, getUser, updateUser } from '../../app/reducers/user'
 import { clearBusiness } from '../../app/reducers/business'
 import { getShowSidebar, getUserType, setError, setLoading, setShowSidebar, setUserType } from '../../app/reducers/status'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { accountTypeUpdate, getUserAccount } from '../../api/auth'
 import switchIcon from "../../assets/switch.svg"
 import { getSocketInstance } from '../../socket/instance'
+import { getNotifications, markAllAsRead } from '../../api/notification'
 
 const Nav = () => {
   const user = useSelector(getUser);
@@ -25,7 +26,8 @@ const Nav = () => {
   const switchRef = useRef(null);
   const connectRef = useRef(null);
   const profileRef = useRef(null);
-  const sidebarRef = useRef(null);
+  const notifyRef = useRef(null);
+  const notifyBtn = useRef(null);
   const sidebarBtn = useRef(null);
   const dispatch = useDispatch();
   const [showSearchOption, setShowSearchOption] = useState(false);
@@ -34,31 +36,68 @@ const Nav = () => {
   const [showSwitchAccount, setShowSwitchAccount] = useState(false);
   const [showSearchRes, setShowSearchRes] = useState(false);
   const [showBg, setShowBg] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 //   const [showSidebar, setShowSidebar] = useState(false);
   const router = useRouter();
   const [searchString, setSearchString] = useState("");
   const [notificationAvailable, setNotificationAvailable] = useState(false);
-  const handleSearchOption = (val) => {
-    setSearchBy(val)
-    setShowSearchOption(false)
-  }
-  const toggleSwitchAccount = () => {
-    setShowSwitchAccount(!showSwitchAccount);
-    setShowConnect(false);
-    setShowDropdown(false);
-    setShowSearchRes(false);
-    // setShowSidebar(false);
-  }
-  
+//   const handleSearchOption = (val) => {
+//     setSearchBy(val)
+//     setShowSearchOption(false)
+//   }
+//   const toggleSwitchAccount = () => {
+//     setShowSwitchAccount(!showSwitchAccount);
+//     setShowConnect(false);
+//     setShowDropdown(false);
+//     setShowSearchRes(false);
+//     // setShowSidebar(false);
+
+//   }
+    const { data, refetch } = useQuery(["get-notifications"], async () => {
+        return await getNotifications();
+    }, {
+        enabled: false,
+        staleTime: Infinity,
+        retry: false,
+    });
+    const readNotificationMutation = useMutation(() => {
+        return markAllAsRead();
+    }, {
+        onSuccess(successRes) {
+            const res = successRes.data;
+            setShowNotification(false);
+            dispatch(setLoading(false));
+        },
+        onError(error) {
+            const res = error.response.data;
+            if(res){
+            dispatch(setError({error: true, message: res.message}));
+            return;
+            }
+            dispatch(setError({error: true, message: "An error occured"}));
+        }
+    });
   const handleProfileOpen = () => {
     setShowConnect(false);
     setShowSwitchAccount(false);
     setShowSearchRes(false);
-    // setShowSidebar(false);
+    setShowNotification(false);
     setShowDropdown(!showDropdown);
+  }
+  const handleNotification = () => {
+    setShowConnect(false);
+    setShowSwitchAccount(false);
+    setShowSearchRes(false);
+    // setShowSidebar(false);
+    setShowDropdown(false);
+    setShowNotification(!showNotification);
+    if (!showNotification) {
+        refetch();
+    }
   }
   const handleConnectOpen = () => {
     setShowConnect(!showConnect);
+    setShowNotification(false);
     setShowDropdown(false);
     setShowSwitchAccount(false);
     setShowSearchRes(false);
@@ -160,6 +199,9 @@ const Nav = () => {
         // if(sidebarRef.current && sidebarBtn.current && !sidebarRef.current.innerHTML.includes(e.target.innerHTML) && !sidebarBtn.current.innerHTML.includes(e.target.innerHTML)) {
         //     setShowSidebar(false);
         // }
+        if(notifyRef.current && notifyBtn.current && !notifyRef.current.innerHTML.includes(e.target.innerHTML) && !notifyBtn.current.innerHTML.includes(e.target.innerHTML)) {
+            setShowNotification(false);
+        }
     }
     const toggleBG = (e) => {
        if(window.screenTop > 100 || document.documentElement.scrollTop > 100  || document.body.scrollTop > 100) {
@@ -168,6 +210,10 @@ const Nav = () => {
         setShowBg(false);
        }
     }
+  const handleMarkRead = () => {
+    dispatch(setLoading(true))
+    readNotificationMutation.mutate()
+}
   useEffect(() => {
     addEventListener("click", handleClosing);
     addEventListener("scroll", toggleBG);
@@ -255,15 +301,41 @@ const Nav = () => {
                                     <MailIcon />
                                 </a>
                             </Link>
-                            <Link href="/dashboard/notifications">
-                                <a id="bell-icon">
+                            <div ref={notifyBtn} id="notify-cont">
+                                <button id="bell-icon" onClick={handleNotification}>
                                     <BellIcon />
-                                </a>
-                            </Link>
+                                </button>
+                                 {
+                                    showNotification && (
+                                        <NotificationCont  ref={notifyRef}>
+                                            <div id="heading">
+                                                <h3>Notifications</h3>
+                                                <button onClick={handleMarkRead}>Mark all as read</button>
+                                            </div>
+                                            <div id="container">
+                                                {
+                                                    data?.data?.data?.map((val, i) => (
+                                                        <div id="notify" key={i}>
+                                                            <div id="notify-pic">
+                                                                <Image src={val.payload?.image ?? ""} alt="pic" layout='fill' objectPosition="center" objectFit="cover" />
+                                                            </div>
+                                                            <div>
+                                                                <p>{val.payload.text}</p>
+                                                                <span>{val.created_at}</span>
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </div>
+                                        </NotificationCont>
+                                    )
+                                 }
+                            </div>
+                           
                         </ControlsA>
                         <UserBtn onClick={() => handleProfileOpen()} ref={profileRef}>
                             <ProfilePicWrapper>
-                                <Image src={user?.account?.media?.[0]?.url ? user?.account?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${userDetails?.firstname}+${userDetails?.lastname}&color=FFFFFF&background=12544D`} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
+                                <Image src={user?.profile_pic}  alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
                             </ProfilePicWrapper>
                             {
                                 showDropdown && <UserDropdown>
