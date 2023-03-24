@@ -73,6 +73,13 @@ export const createFaqServices = (serviceId, data) => {
 export const updateServiceFaq = (serviceId, data) => {
     return axiosInstance().patch(`/services/${serviceId}/faqs`, data)
 }
+// Service Review API Request
+export const createReviewServices = (serviceId, data) => {
+    return axiosInstance().post(`/services/${serviceId}/reviews`, data)
+}
+export const updateServiceReview = (serviceId, data) => {
+    return axiosInstance().patch(`/services/${serviceId}/reviews`, data)
+}
 
 // Portfolios API Request
 export const createPortfolios = (data) => {
