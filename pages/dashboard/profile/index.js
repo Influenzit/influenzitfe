@@ -1,11 +1,10 @@
- //=========================== TAILWIND STYLES APPLIED HERE =========================
+//=========================== TAILWIND STYLES APPLIED HERE =========================
 
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { getCampaigns } from "../../../api/campaigns";
+import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../assets/svgIcons";
 import Stage1 from "../../../components/profile/stage1";
@@ -22,76 +21,23 @@ import facebook from "./../../../assets/facebook.svg";
 import youtube from "./../../../assets/youtube.svg";
 import ReactStars from "react-rating-stars-component";
 import Link from "next/link";
+import { getUser, updateUser } from "../../../app/reducers/user";
 
-const Campaigns = () => {
-  const router = useRouter();
+const Profile = () => {
   const dispatch = useDispatch();
-  const [getUrl, setGetUrl] = useState("");
-  const [newCamPaign, setNewCampaign] = useState(false);
+
+  const user = useSelector(getUser);
+
+  const router = useRouter();
   const [step, setstep] = useState(1);
   const [currentValue, setcurrentValue] = useState(4);
-  const [campaignList, setCampaignList] = useState({
-    data: [],
-  });
-  const dummyData = [
-    {
-      image: "avatar",
-      status: "Ongoing",
-    },
-    {
-      image: "avatar1",
-      status: "Not Started",
-    },
-    {
-      image: "avatar2",
-      status: "Ongoing",
-    },
-    {
-      image: "avatar3",
-      status: "Ongoing",
-    },
-    {
-      image: "avatar4",
-      status: "Completed",
-    },
-    {
-      image: "avatar3",
-      status: "Ongoing",
-    },
-    {
-      image: "avatar1",
-      status: "Completed",
-    },
-  ];
-  const ratingChanged = (newRating) => {
-    console.log(newRating);
-  };
+  // dispatch(updateUser(userRes.data.data));
+  //
 
-  const { data, refetch } = useQuery(
-    ["get-campaigns"],
-    async () => {
-      return await getCampaigns(getUrl);
-    },
-    {
-      enabled: false,
-      staleTime: Infinity,
-      retry: false,
-      onSuccess(res) {
-        dispatch(setLoading(false));
-        setCampaignList(res.data.data);
-      },
-      onError(res) {
-        dispatch(setLoading(false));
-        dispatch(setError({ error: true, message: "An error occured" }));
-      },
-    }
-  );
 
   const [activetab, setactivetab] = useState("profile_details");
 
-  useEffect(() => {
-    refetch();
-  }, [getUrl]);
+
   return (
     <div className="py-28 px-12 b0">
       <div className="flex justify-between mb-6">
@@ -146,14 +92,14 @@ const Campaigns = () => {
         </button>
       </div>
 
-      {activetab === "profile_details" && <Stage1 />}
-      {activetab === "influencer_details" && <Stage2 />}
-      {activetab === "images" && <Stage3 />}
-      {activetab === "change_password" && <Stage4 />}
+      {activetab === "profile_details" && <Stage1 user={user} />}
+      {activetab === "influencer_details" && <Stage2 user={user} />}
+      {activetab === "images" && <Stage3 user={user} />}
+      {activetab === "change_password" && <Stage4 user={user} />}
     </div>
   );
 };
 
-Campaigns.getLayout = (page) => <LandingLayout>{page}</LandingLayout>;
+Profile.getLayout = (page) => <LandingLayout>{page}</LandingLayout>;
 
-export default Campaigns;
+export default Profile;
