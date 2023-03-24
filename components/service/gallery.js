@@ -4,6 +4,7 @@ import email from "../../assets/profile/email.svg";
 import avatar from "../../assets/profile/avatar.svg";
 import upload from "../../assets/coverimage.svg";
 import rightarrow from "../../assets/rightarrow.svg";
+import Loader from '../UI/Loader';
 
 function Gallery({
   handleIncrement,
@@ -14,118 +15,44 @@ function Gallery({
   image3Viewer,
   image4Viewer,
   handleImage,
-  handleGalleryCreation
+  handleGalleryCreation,
+  loading
 }) {
 
-  const dropCover = React.useRef(null);
-  const dropImage1 = React.useRef(null);
-  const dropImage2 = React.useRef(null);
-  const dropImage3 = React.useRef(null);
-  const dropImage4 = React.useRef(null);
-  React.useEffect(() => {
-    dropCover.current.addEventListener('dragover', handleDragOverCover);
-    dropCover.current.addEventListener('drop', handleDropCover);
-  
-    dropImage1.current.addEventListener('dragover', handleDragOver1);
-    dropImage1.current.addEventListener('drop', handleDrop1);
-  
-    dropImage2.current.addEventListener('dragover', handleDragOver2);
-    dropImage2.current.addEventListener('drop', handleDrop2);
-  
-    dropImage3.current.addEventListener('dragover', handleDragOver3);
-    dropImage3.current.addEventListener('drop', handleDrop3);
-  
-    dropImage4.current.addEventListener('dragover', handleDragOver4);
-    dropImage4.current.addEventListener('drop', handleDrop4);
-  
-    return () => {
-      dropCover.current.addEventListener('dragover', handleDragOverCover);
-      dropCover.current.addEventListener('drop', handleDropCover);
-    
-      dropImage1.current.addEventListener('dragover', handleDragOver1);
-      dropImage1.current.addEventListener('drop', handleDrop1);
-    
-      dropImage2.current.addEventListener('dragover', handleDragOver2);
-      dropImage2.current.addEventListener('drop', handleDrop2);
-    
-      dropImage3.current.addEventListener('dragover', handleDragOver3);
-      dropImage3.current.addEventListener('drop', handleDrop3);
-    
-      dropImage4.current.addEventListener('dragover', handleDragOver4);
-      dropImage4.current.addEventListener('drop', handleDrop4);
-    };
-  }, []);
-  
-  const handleDragOverCover = (e) => {
+
+
+  const handleDrop = (store, e) => {
     e.preventDefault();
-    e.stopPropagation();
-  };
-  
-  const handleDropCover = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const {files} = e.dataTransfer;
+
+    const { files } = e.dataTransfer;
 
     if (files && files.length) {
-      handleImage('cover', files[0]);
+      handleImage(files[0]);
+      if (store === "cover") {
+        handleImage("cover", files[0]);
+      }
+      if (store === "image1") {
+        handleImage("image1", files[0]);
+      }
+      if (store === "image2") {
+        handleImage("image2", files[0]);
+      }
+      if (store === "image3") {
+        handleImage("image3", files[0]);
+      }
+      if (store === "image4") {
+        handleImage("image4", files[0]);
+      }
     }
   };
-  const handleDragOver1 = (e) => {
+  const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
-  
-  const handleDrop1 = (e) => {
+  const handleDragLeave = (e) => {
     e.preventDefault();
-    e.stopPropagation();
-    const {files} = e.dataTransfer;
+  };
 
-    if (files && files.length) {
-      handleImage('image1', files[0]);
-    }
-  };
-  const handleDragOver2 = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-  
-  const handleDrop2 = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const {files} = e.dataTransfer;
-
-    if (files && files.length) {
-      handleImage('image2', files[0]);
-    }
-  };
-  const handleDragOver3 = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-  
-  const handleDrop3 = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const {files} = e.dataTransfer;
-
-    if (files && files.length) {
-      handleImage('image3', files[0]);
-    }
-  };
-  const handleDragOver4 = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-  
-  const handleDrop4 = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const {files} = e.dataTransfer;
-
-    if (files && files.length) {
-      handleImage('image4', files[0]);
-    }
-  };
   return (
     <div>
       <h1 className="text-xl mb-6">Gallery</h1>
@@ -141,8 +68,14 @@ function Gallery({
           } text-[#667085] text-sm bg-transparent w-1/2 border border-dashed bg-white  rounded-lg flex-1  `}
         >
           {!coverImageViewer && (
-            <div     ref={dropCover}
-            className="flex justify-center items-center flex-col space-y-3">
+            <div
+              onDrop={(e) => {
+                handleDrop("cover", e);
+              }}
+              onDragLeave={handleDragLeave}
+              onDragOver={handleDragOver}
+              className="flex justify-center items-center flex-col space-y-3"
+            >
               <Image src={upload} alt="avatar" />
               <div className="">
                 <input
@@ -184,8 +117,12 @@ function Gallery({
         </p>
         <div className="grid grid-cols-4 gap-4">
           <div
-           ref={dropImage1}
-          className={` ${
+            onDrop={(e) => {
+              handleDrop("image1", e);
+            }}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            className={` ${
               !image1Viewer ? "p-5" : "p-0"
             } text-[#667085] text-sm text-center  item-center bg-transparent w-full border border-dashed bg-white  rounded-lg flex-1  `}
           >
@@ -222,8 +159,12 @@ function Gallery({
             )}
           </div>
           <div
-           ref={dropImage2}
-          className={` ${
+            onDrop={(e) => {
+              handleDrop("image2", e);
+            }}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            className={` ${
               !image2Viewer ? "p-5" : "p-0"
             } text-[#667085] text-sm text-center  item-center bg-transparent w-full border border-dashed bg-white  rounded-lg flex-1  `}
           >
@@ -260,8 +201,12 @@ function Gallery({
             )}
           </div>
           <div
-           ref={dropImage3}
-          className={` ${
+            onDrop={(e) => {
+              handleDrop("image3", e);
+            }}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            className={` ${
               !image3Viewer ? "p-5" : "p-0"
             } text-[#667085] text-sm text-center  item-center bg-transparent w-full border border-dashed bg-white  rounded-lg flex-1  `}
           >
@@ -286,21 +231,24 @@ function Gallery({
                 </label>
               </div>
             )}
-            {image3Viewer &&
-              (
-                <Image
-                  src={image3Viewer}
-                  width="100%"
-                  height="100%"
-                  layout="responsive"
-                  alt="avatar"
-                  className="object-cover rounded-lg"
-                />
-              )}
+            {image3Viewer && (
+              <Image
+                src={image3Viewer}
+                width="100%"
+                height="100%"
+                layout="responsive"
+                alt="avatar"
+                className="object-cover rounded-lg"
+              />
+            )}
           </div>
           <div
-           ref={dropImage4}
-          className={` ${
+            onDrop={(e) => {
+              handleDrop("image4", e);
+            }}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            className={` ${
               !image4Viewer ? "p-5" : "p-0"
             } text-[#667085] text-sm text-center  item-center bg-transparent w-full border border-dashed bg-white  rounded-lg flex-1  `}
           >
@@ -354,8 +302,8 @@ function Gallery({
           onClick={handleGalleryCreation}
           className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
         >
-          <span className="mr-2">Continue</span>
-          <Image src={rightarrow} alt="rightarrow" className="ml-2 w-4 h-4" />
+        {loading ? <Loader /> : "Continue"}
+        <Image src={rightarrow} alt="rightarrow" className="ml-2 w-4 h-4" />
         </button>
       </div>
     </div>

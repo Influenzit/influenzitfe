@@ -15,6 +15,7 @@ import Pricing from "../../../components/service/pricing";
 import Gallery from "../../../components/service/gallery";
 import Faq from "../../../components/service/faq";
 import Review from "../../../components/service/review";
+import { toast } from "react-toastify";
 import {
   createServices,
   getServices,
@@ -27,7 +28,8 @@ const Services = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [isServiceModalOpen, setisServiceModalOpen] = useState(false);
-  const [step, setstep] = useState(3);
+  const [loading, setloading] = useState(false);
+  const [step, setstep] = useState(1);
   const platform = ["instagram", "twitter", "tiktok", "facebook", "youtube"];
 
   const [allServices, setallServices] = useState(null);
@@ -52,7 +54,7 @@ const Services = () => {
   const [packages, setpackages] = useState([
     {
       description: "",
-      amount: 0,
+      amount: "",
       currency: "NGN",
       name: "",
       features: [
@@ -64,7 +66,7 @@ const Services = () => {
     },
     {
       description: "",
-      amount: 0,
+      amount: "",
       currency: "NGN",
       name: "",
       features: [
@@ -76,7 +78,7 @@ const Services = () => {
     },
     {
       description: "",
-      amount: 0,
+      amount: "",
       currency: "NGN",
       name: "",
       features: [
@@ -223,6 +225,7 @@ const Services = () => {
   };
 
   const handleServiceCreation = () => {
+    setloading(true);
     const payload = {
       name: title,
       description,
@@ -237,24 +240,44 @@ const Services = () => {
       .then((res) => {
         console.log(res.data.data);
         setCurrentPackageId(res.data.data.id);
+        setloading(false);
+
         handleIncrement();
       })
       .catch((err) => {
+        setloading(false);
+        toast.error(err.response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
         console.log(err.response);
       });
   };
   const handleFaqCreation = () => {
+    setloading(true);
+
     const payload = faqs;
     createFaqServices(currentPackageId, payload)
       .then((res) => {
         console.log(res.data.data);
+        setloading(false);
+
         handleIncrement();
       })
       .catch((err) => {
+        setloading(false);
+        toast.error(err.response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
         console.log(err.response);
       });
   };
   const handleGalleryCreation = () => {
+    if (!coverImage || !image1 || !image2 || !image3 || !image4) {
+      toast.error("All fields are required", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
     let formData = new FormData();
 
     formData.append("coverImage", coverImage);
@@ -262,26 +285,33 @@ const Services = () => {
     formData.append("image2", image2);
     formData.append("image3", image3);
     formData.append("image4", image4);
+    setloading(true);
 
     uploadServiceMedia(currentPackageId, formData)
       .then((res) => {
         console.log(res.data.data);
+        setloading(false);
+
         handleIncrement();
       })
       .catch((err) => {
+        setloading(false);
+        toast.error(err.response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
         console.log(err.response);
       });
   };
   const handleReviewCreation = () => {
-    const payload = review;
-    createReviewServices(currentPackageId, payload)
-      .then((res) => {
-        console.log(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err.response);
-        handleIncrement();
-      });
+    // const payload = review;
+    // createReviewServices(currentPackageId, payload)
+    //   .then((res) => {
+    //     console.log(res.data.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.response);
+    //     handleIncrement();
+    //   });
   };
   const handleGetServices = () => {
     getServices()
@@ -312,16 +342,16 @@ const Services = () => {
                 key={idx}
                 className="service-card hover:shadow-xl duration-300"
               >
-              <Link href={`/dashboard/services/${x.id}`}>
-              <Image
-              src={x.media[0].url}
-              alt="title_image"
-              className="h-full w-full object-cover rounded-t-lg"
-              width="100%"
-              height="100%"
-              layout="responsive"
-              />
-              </Link>
+                <Link href={`/dashboard/services/${x.id}`}>
+                  <Image
+                    src={x.media[0]?.url || ""}
+                    alt="title_image"
+                    className="h-full w-full object-cover rounded-t-lg"
+                    width="100%"
+                    height="100%"
+                    layout="responsive"
+                  />
+                </Link>
 
                 <div className="space-y-4 p-4">
                   <div className=" flex space-x-2 items-center">
@@ -434,6 +464,7 @@ const Services = () => {
                   handleFormInput={handleFormInput}
                   handleFormFeatureInput={handleFormFeatureInput}
                   handleServiceCreation={handleServiceCreation}
+                  loading={loading}
                 />
               )}
               {step === 3 && (
@@ -447,6 +478,7 @@ const Services = () => {
                   image3Viewer={image3Viewer}
                   image4Viewer={image4Viewer}
                   handleGalleryCreation={handleGalleryCreation}
+                  loading={loading}
                 />
               )}
 
@@ -459,6 +491,7 @@ const Services = () => {
                   faqs={faqs}
                   handleFaqinput={handleFaqinput}
                   handleFaqCreation={handleFaqCreation}
+                  loading={loading}
                 />
               )}
               {step === 5 && (

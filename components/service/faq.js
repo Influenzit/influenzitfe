@@ -3,6 +3,8 @@ import rightarrow from "../../assets/rightarrow.svg";
 
 import React from "react";
 import Image from "next/image";
+import Loader from "../UI/Loader";
+import { toast } from 'react-toastify';
 
 function Faq({
   handleIncrement,
@@ -11,10 +13,29 @@ function Faq({
   handleRemoveFaq,
   faqs,
   handleFaqinput,
-  handleFaqCreation
-
+  handleFaqCreation,
+  loading,
 }) {
-  console.log(faqs);
+  function validateArray(array) {
+    for (let i = 0; i < array.length; i++) {
+      const item = array[i];
+      if (item.answer === "" || item.question === "") {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  const isValid = validateArray(faqs);
+  const handleContinue = () => {
+    if (!isValid) {
+      toast.error("All fields are required", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+    handleFaqCreation();
+  };
   return (
     <div>
       <h1 className="text-xl font-medium mb-8">Frequently Asked Questions</h1>
@@ -40,6 +61,7 @@ function Faq({
                   placeholder="Who is Krystal Beauty"
                   className="p-2 border outline-none rounded-md w-full"
                   name="question"
+                  value={faqs[id].question}
                   onChange={(e) => {
                     handleFaqinput(e, id);
                   }}
@@ -56,6 +78,7 @@ function Faq({
                   placeholder="Krystal Beauty"
                   className="p-2 border outline-none rounded-md w-full"
                   name="answer"
+                  value={faqs[id].answer}
                   onChange={(e) => {
                     handleFaqinput(e, id);
                   }}
@@ -98,10 +121,10 @@ function Faq({
           <span className="mr-2">Back</span>
         </button>
         <button
-          onClick={handleFaqCreation}
+          onClick={handleContinue}
           className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
         >
-          <span className="mr-2">Continue</span>
+          {loading ? <Loader /> : "Continue"}
           <Image src={rightarrow} alt="rightarrow" className="ml-2 w-4 h-4" />
         </button>
       </div>

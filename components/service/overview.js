@@ -3,6 +3,7 @@ import rightarrow from "../../assets/rightarrow.svg";
 
 import React from "react";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 function Overview({
   handleIncrement,
@@ -16,6 +17,16 @@ function Overview({
   type,
   settype,
 }) {
+  const handleContinue = () => {
+    if (!title || !description || !price) {
+      toast.error("All fields are required", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+    handleIncrement()
+  };
+
   return (
     <div>
       <h1 className="text-xl font-medium mb-8">Service Overview</h1>
@@ -116,7 +127,7 @@ function Overview({
       {
         <div className="flex justify-end">
           <button
-            onClick={handleIncrement}
+            onClick={handleContinue}
             className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
           >
             <span className="mr-2">Continue</span>

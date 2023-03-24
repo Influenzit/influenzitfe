@@ -3,6 +3,8 @@ import { useState } from "react";
 import Image from "next/image";
 import remove from "../../assets/remove.svg";
 import rightarrow from "../../assets/rightarrow.svg";
+import Loader from '../UI/Loader';
+import { toast } from 'react-toastify';
 
 function Pricing({
   handleDecrement,
@@ -14,8 +16,35 @@ function Pricing({
   setcurrentPackagesIndex,
   handleFormInput,
   handleFormFeatureInput,
-  handleServiceCreation
+  handleServiceCreation,
+  loading
 }) {
+  function validateArray(array) {
+    for (let i = 0; i < array.length; i++) {
+      const item = array[i];
+      if (
+        item.description === "" ||
+        item.amount === "" ||
+        item.name === "" ||
+        item.features.some((f) => f.name === "" || f.quantity === "")
+      ) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  const isValid = validateArray(packages);
+  const handleContinue = () => {
+    if (!isValid) {
+      toast.error("All fields are required", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+    handleServiceCreation();
+  };
+
   return (
     <div>
       <h1 className="text-xl font-medium mb-8">Pricing</h1>
@@ -77,6 +106,7 @@ function Pricing({
             placeholder="Krystal Beauty"
             className="p-2 border outline-none rounded-md w-full"
             name="name"
+            value={packages[currentPackagesIndex].name}
             onChange={(e) => {
               handleFormInput(e);
             }}
@@ -93,6 +123,7 @@ function Pricing({
             placeholder="#20, 000.00"
             className="p-2 border outline-none rounded-md w-full"
             name="amount"
+            value={packages[currentPackagesIndex].amount}
             onChange={(e) => {
               handleFormInput(e);
             }}
@@ -109,6 +140,7 @@ function Pricing({
             cols="30"
             rows="5"
             name="description"
+            value={packages[currentPackagesIndex].description}
             onChange={(e) => {
               handleFormInput(e);
             }}
@@ -125,6 +157,7 @@ function Pricing({
               placeholder="Title of feature"
               className="p-2 border outline-none rounded-md w-1/5"
               name="name"
+              value={packages[currentPackagesIndex].features[idx].name}
               onChange={(e) => {
                 handleFormFeatureInput(e, idx);
               }}
@@ -135,6 +168,7 @@ function Pricing({
                 placeholder="Krystal Beauty"
                 className="p-2 border outline-none rounded-md w-full"
                 name="quantity"
+                value={packages[currentPackagesIndex].features[idx].quantity}
                 onChange={(e) => {
                   handleFormFeatureInput(e, idx);
                 }}
@@ -177,12 +211,13 @@ function Pricing({
           <span className="mr-2">Back</span>
         </button>
         <button
-          onClick={()=> {
-            handleServiceCreation()
+          onClick={() => {
+            handleContinue();
           }}
           className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
         >
-          <span className="mr-2">Continue</span>
+          {loading ? <Loader /> : "Continue"}
+
           <Image src={rightarrow} alt="rightarrow" className="ml-2 w-4 h-4" />
         </button>
       </div>

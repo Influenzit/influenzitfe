@@ -9,20 +9,11 @@ function Stage3({ user }) {
 
   const [imgSrc, setImgSrc] = useState("");
   const [image, setImage] = useState("");
-  // React.useEffect(() => {
-  //   drop.current.addEventListener("dragover", handleDragOver);
-  //   drop.current.addEventListener("drop", handleDrop);
 
-  //   return () => {
-  //     drop.current.addEventListener("dragover", handleDragOver);
-  //     drop.current.addEventListener("drop", handleDrop);
-  //   };
-  // }, []);
-
-  // const handleDragOver = (e) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  // };
+  const handleImage = (file) => {
+    setImage(file);
+    setImgSrc(URL.createObjectURL(file));
+  };
 
   // const handleDrop = (e) => {
   //   e.preventDefault();
@@ -34,9 +25,21 @@ function Stage3({ user }) {
   //   }
   // };
 
-  const handleImage = (file) => {
-    setImage(file);
-    setImgSrc(URL.createObjectURL(file));
+  const handleDrop = (e) => {
+    e.preventDefault();
+
+    const { files } = e.dataTransfer;
+
+    if (files && files.length) {
+      handleImage(files[0]);
+    }
+  };
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  const handleDragLeave = (e) => {
+    e.preventDefault();
   };
 
   console.log(user);
@@ -70,7 +73,7 @@ function Stage3({ user }) {
           </div>
           <div className="col-span-9 flex space-x-3">
             <div className="grid grid-cols-12 gap-4">
-              <div classNames="col-span-6">
+              <div className="col-span-3">
                 <Image
                   src={user.profile_pic}
                   alt="avatar"
@@ -82,15 +85,15 @@ function Stage3({ user }) {
               </div>
 
               <div
-
+                onDrop={handleDrop}
+                onDragLeave={handleDragLeave}
+                onDragOver={handleDragOver}
                 className={` ${
                   !imgSrc ? "p-12" : "p-0"
-                } text-[#667085] text-sm bg-transparent w-full col-span-6 border border-dashed bg-white  rounded-lg flex-1  `}
+                } text-[#667085] text-sm bg-transparent w-full col-span-9 border border-dashed bg-white  rounded-lg flex-1  `}
               >
                 {!imgSrc && (
-                  <div
-                    className="flex justify-center items-center flex-col space-y-3"
-                  >
+                  <div className="flex justify-center items-center flex-col space-y-3">
                     <Image src={upload} alt="avatar" />
                     <div className="">
                       <input

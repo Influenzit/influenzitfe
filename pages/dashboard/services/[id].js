@@ -42,7 +42,7 @@ function Preview() {
           <div className="grid grid-cols-12 gap-4">
             <div className="col-span-8">
               <Image
-                src={singleService.media[0].url}
+                src={singleService.media[0]?.url || ""}
                 alt="title_image"
                 className="h-full w-full object-cover rounded-lg"
                 width="100%"
