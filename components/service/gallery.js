@@ -5,7 +5,127 @@ import avatar from "../../assets/profile/avatar.svg";
 import upload from "../../assets/coverimage.svg";
 import rightarrow from "../../assets/rightarrow.svg";
 
-function Gallery({ handleIncrement, handleDecrement }) {
+function Gallery({
+  handleIncrement,
+  handleDecrement,
+  coverImageViewer,
+  image1Viewer,
+  image2Viewer,
+  image3Viewer,
+  image4Viewer,
+  handleImage,
+  handleGalleryCreation
+}) {
+
+  const dropCover = React.useRef(null);
+  const dropImage1 = React.useRef(null);
+  const dropImage2 = React.useRef(null);
+  const dropImage3 = React.useRef(null);
+  const dropImage4 = React.useRef(null);
+  React.useEffect(() => {
+    dropCover.current.addEventListener('dragover', handleDragOverCover);
+    dropCover.current.addEventListener('drop', handleDropCover);
+  
+    dropImage1.current.addEventListener('dragover', handleDragOver1);
+    dropImage1.current.addEventListener('drop', handleDrop1);
+  
+    dropImage2.current.addEventListener('dragover', handleDragOver2);
+    dropImage2.current.addEventListener('drop', handleDrop2);
+  
+    dropImage3.current.addEventListener('dragover', handleDragOver3);
+    dropImage3.current.addEventListener('drop', handleDrop3);
+  
+    dropImage4.current.addEventListener('dragover', handleDragOver4);
+    dropImage4.current.addEventListener('drop', handleDrop4);
+  
+    return () => {
+      dropCover.current.addEventListener('dragover', handleDragOverCover);
+      dropCover.current.addEventListener('drop', handleDropCover);
+    
+      dropImage1.current.addEventListener('dragover', handleDragOver1);
+      dropImage1.current.addEventListener('drop', handleDrop1);
+    
+      dropImage2.current.addEventListener('dragover', handleDragOver2);
+      dropImage2.current.addEventListener('drop', handleDrop2);
+    
+      dropImage3.current.addEventListener('dragover', handleDragOver3);
+      dropImage3.current.addEventListener('drop', handleDrop3);
+    
+      dropImage4.current.addEventListener('dragover', handleDragOver4);
+      dropImage4.current.addEventListener('drop', handleDrop4);
+    };
+  }, []);
+  
+  const handleDragOverCover = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  
+  const handleDropCover = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const {files} = e.dataTransfer;
+
+    if (files && files.length) {
+      handleImage('cover', files[0]);
+    }
+  };
+  const handleDragOver1 = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  
+  const handleDrop1 = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const {files} = e.dataTransfer;
+
+    if (files && files.length) {
+      handleImage('image1', files[0]);
+    }
+  };
+  const handleDragOver2 = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  
+  const handleDrop2 = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const {files} = e.dataTransfer;
+
+    if (files && files.length) {
+      handleImage('image2', files[0]);
+    }
+  };
+  const handleDragOver3 = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  
+  const handleDrop3 = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const {files} = e.dataTransfer;
+
+    if (files && files.length) {
+      handleImage('image3', files[0]);
+    }
+  };
+  const handleDragOver4 = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  
+  const handleDrop4 = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const {files} = e.dataTransfer;
+
+    if (files && files.length) {
+      handleImage('image4', files[0]);
+    }
+  };
   return (
     <div>
       <h1 className="text-xl mb-6">Gallery</h1>
@@ -15,34 +135,25 @@ function Gallery({ handleIncrement, handleDecrement }) {
         <p className="text-tert-100 my-1">
           Add a stunning cover image to showcase your work
         </p>
-        <div className="text-[#667085] text-sm bg-transparent w-1/2 border border-dashed bg-white py-4 px-12 rounded-lg flex-1 flex justify-center items-center flex-col space-y-3">
-          <Image src={upload} alt="avatar" />
-          <div className="">
-            <input type="file" hidden id="upload" />
-            <span>Drop your image or </span>
-            <label
-              htmlFor="upload"
-              className="cursor-pointer text-primary-100 font-bold text-base mr-1"
-            >
-              Upload
-            </label>
-          </div>
-          <p>JPG or PNG, no larger than 10MB</p>
-        </div>
-      </div>
-      <div className="content my-6 border-t py-6 ">
-        <h1 className=" font-medium"> Project Gallery</h1>
-        <p className="text-tert-100 my-1">
-          Add up to 4 images to showcase your work{" "}
-        </p>
-        <div className="grid grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map((x, id) => (
-            <div
-              key={id}
-              className="text-[#667085] bg-transparent w-full border border-dashed bg-white py-12 px-12 rounded-lg flex-1 flex justify-center items-center flex-col space-y-3 text-center text-xs"
-            >
+        <div
+          className={` ${
+            !coverImageViewer ? "p-12" : "p-0"
+          } text-[#667085] text-sm bg-transparent w-1/2 border border-dashed bg-white  rounded-lg flex-1  `}
+        >
+          {!coverImageViewer && (
+            <div     ref={dropCover}
+            className="flex justify-center items-center flex-col space-y-3">
+              <Image src={upload} alt="avatar" />
               <div className="">
-                <input type="file" hidden id="upload" />
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={(e) => {
+                    handleImage("cover", e.target.files[0]);
+                  }}
+                  id="upload"
+                />
                 <span>Drop your image or </span>
                 <label
                   htmlFor="upload"
@@ -51,30 +162,202 @@ function Gallery({ handleIncrement, handleDecrement }) {
                   Upload
                 </label>
               </div>
+              <p>JPG or PNG, no larger than 10MB</p>
             </div>
-          ))}
+          )}
+          {coverImageViewer && (
+            <Image
+              src={coverImageViewer}
+              width="100%"
+              height="100%"
+              layout="responsive"
+              alt="avatar"
+              className="object-cover rounded-lg"
+            />
+          )}
+        </div>
+      </div>
+      <div className="content my-6 border-t py-6 ">
+        <h1 className=" font-medium"> Project Gallery</h1>
+        <p className="text-tert-100 my-1">
+          Add up to 4 images to showcase your work{" "}
+        </p>
+        <div className="grid grid-cols-4 gap-4">
+          <div
+           ref={dropImage1}
+          className={` ${
+              !image1Viewer ? "p-5" : "p-0"
+            } text-[#667085] text-sm text-center  item-center bg-transparent w-full border border-dashed bg-white  rounded-lg flex-1  `}
+          >
+            {" "}
+            {!image1Viewer && (
+              <div className="">
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={(e) => {
+                    handleImage("image1", e.target.files[0]);
+                  }}
+                  id="upload"
+                />
+                <span>Drop your image or </span>
+                <label
+                  htmlFor="upload"
+                  className="cursor-pointer text-primary-100 font-bold text-base mr-1"
+                >
+                  Upload
+                </label>
+              </div>
+            )}
+            {image1Viewer && (
+              <Image
+                src={image1Viewer}
+                width="100%"
+                height="100%"
+                layout="responsive"
+                alt="avatar"
+                className="object-cover rounded-lg"
+              />
+            )}
+          </div>
+          <div
+           ref={dropImage2}
+          className={` ${
+              !image2Viewer ? "p-5" : "p-0"
+            } text-[#667085] text-sm text-center  item-center bg-transparent w-full border border-dashed bg-white  rounded-lg flex-1  `}
+          >
+            {" "}
+            {!image2Viewer && (
+              <div className="">
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={(e) => {
+                    handleImage("image2", e.target.files[0]);
+                  }}
+                  id="upload"
+                />
+                <span>Drop your image or </span>
+                <label
+                  htmlFor="upload"
+                  className="cursor-pointer text-primary-100 font-bold text-base mr-1"
+                >
+                  Upload
+                </label>
+              </div>
+            )}
+            {image2Viewer && (
+              <Image
+                src={image2Viewer}
+                width="100%"
+                height="100%"
+                layout="responsive"
+                alt="avatar"
+                className="object-cover rounded-lg"
+              />
+            )}
+          </div>
+          <div
+           ref={dropImage3}
+          className={` ${
+              !image3Viewer ? "p-5" : "p-0"
+            } text-[#667085] text-sm text-center  item-center bg-transparent w-full border border-dashed bg-white  rounded-lg flex-1  `}
+          >
+            {" "}
+            {!image3Viewer && (
+              <div className="">
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={(e) => {
+                    handleImage("image3", e.target.files[0]);
+                  }}
+                  id="upload"
+                />
+                <span>Drop your image or </span>
+                <label
+                  htmlFor="upload"
+                  className="cursor-pointer text-primary-100 font-bold text-base mr-1"
+                >
+                  Upload
+                </label>
+              </div>
+            )}
+            {image3Viewer &&
+              (
+                <Image
+                  src={image3Viewer}
+                  width="100%"
+                  height="100%"
+                  layout="responsive"
+                  alt="avatar"
+                  className="object-cover rounded-lg"
+                />
+              )}
+          </div>
+          <div
+           ref={dropImage4}
+          className={` ${
+              !image4Viewer ? "p-5" : "p-0"
+            } text-[#667085] text-sm text-center  item-center bg-transparent w-full border border-dashed bg-white  rounded-lg flex-1  `}
+          >
+            {" "}
+            {!image4Viewer && (
+              <div className="">
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    handleImage("image4", e.target.files[0]);
+                  }}
+                  hidden
+                  accept="image/*"
+                  id="upload"
+                />
+                <span>Drop your image or </span>
+                <label
+                  htmlFor="upload"
+                  className="cursor-pointer text-primary-100 font-bold text-base mr-1"
+                >
+                  Upload
+                </label>
+              </div>
+            )}
+            {image4Viewer && (
+              <Image
+                src={image4Viewer}
+                width="100%"
+                height="100%"
+                layout="responsive"
+                alt="avatar"
+                className="object-cover rounded-lg"
+              />
+            )}
+          </div>
         </div>
       </div>
       <div className="flex justify-between items-center mt-6 ">
-      <button
-        onClick={handleDecrement}
-        className="bg-tert-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
-      >
-        <Image
-          src={rightarrow}
-          alt="rightarrow"
-          className="transform rotate-180 ml-2 w-4 h-4"
-        />
-        <span className="mr-2">Back</span>
-      </button>
-      <button
-        onClick={handleIncrement}
-        className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
-      >
-        <span className="mr-2">Continue</span>
-        <Image src={rightarrow} alt="rightarrow" className="ml-2 w-4 h-4" />
-      </button>
-    </div>
+        <button
+          onClick={handleDecrement}
+          className="bg-tert-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
+        >
+          <Image
+            src={rightarrow}
+            alt="rightarrow"
+            className="transform rotate-180 ml-2 w-4 h-4"
+          />
+          <span className="mr-2">Back</span>
+        </button>
+        <button
+          onClick={handleGalleryCreation}
+          className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
+        >
+          <span className="mr-2">Continue</span>
+          <Image src={rightarrow} alt="rightarrow" className="ml-2 w-4 h-4" />
+        </button>
+      </div>
     </div>
   );
 }

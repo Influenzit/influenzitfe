@@ -82,8 +82,14 @@ function Overview({
             className="w-full text-sm bg-transparent outline-none border-none"
           >
             <option value="">--Select--</option>
-            <option value="influencer">Influencer</option>
-            <option value="creator">Creator</option>
+            <option value="influencer">Travel</option>
+            <option value="creator">Technology</option>
+            <option value="creator">Power</option>
+            <option value="creator">Media</option>
+            <option value="creator">Lifestyle</option>
+            <option value="creator">Animal</option>
+            <option value="creator">Nature</option>
+            <option value="creator">News</option>
           </select>
         </div>
       </div>
@@ -107,36 +113,17 @@ function Overview({
         </div>
       </div> */}
 
-      {/*  <div className="flex justify-end">
-        <button
-          onClick={handleIncrement}
-          className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
-        >
-          <span className="mr-2">Continue</span>
-          <Image src={rightarrow} alt="rightarrow" className="ml-2 w-4 h-4" />
-        </button>
-      </div> */}
-
-      <div className="flex justify-between items-center mt-6 ">
-        <button
-          onClick={handleDecrement}
-          className="bg-tert-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
-        >
-          <Image
-            src={rightarrow}
-            alt="rightarrow"
-            className="transform rotate-180 ml-2 w-4 h-4"
-          />
-          <span className="mr-2">Back</span>
-        </button>
-        <button
-          onClick={handleIncrement}
-          className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
-        >
-          <span className="mr-2">Continue</span>
-          <Image src={rightarrow} alt="rightarrow" className="ml-2 w-4 h-4" />
-        </button>
-      </div>
+      {
+        <div className="flex justify-end">
+          <button
+            onClick={handleIncrement}
+            className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
+          >
+            <span className="mr-2">Continue</span>
+            <Image src={rightarrow} alt="rightarrow" className="ml-2 w-4 h-4" />
+          </button>
+        </div>
+      }
     </div>
   );
 }

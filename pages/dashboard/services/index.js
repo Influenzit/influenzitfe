@@ -15,16 +15,32 @@ import Pricing from "../../../components/service/pricing";
 import Gallery from "../../../components/service/gallery";
 import Faq from "../../../components/service/faq";
 import Review from "../../../components/service/review";
-import { createServices, getServices, createFaqServices, createReviewServices } from "../../../api/influencer";
+import {
+  createServices,
+  getServices,
+  createFaqServices,
+  createReviewServices,
+  uploadServiceMedia,
+} from "../../../api/influencer";
 
 const Services = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [isServiceModalOpen, setisServiceModalOpen] = useState(false);
-  const [step, setstep] = useState(1);
+  const [step, setstep] = useState(3);
   const platform = ["instagram", "twitter", "tiktok", "facebook", "youtube"];
 
-  const [allServices, setallServices] = useState([]);
+  const [allServices, setallServices] = useState(null);
+  const [coverImageViewer, setcoverImageViewer] = useState(null);
+  const [image1Viewer, setimage1Viewer] = useState(null);
+  const [image2Viewer, setimage2Viewer] = useState(null);
+  const [image3Viewer, setimage3Viewer] = useState(null);
+  const [image4Viewer, setimage4Viewer] = useState(null);
+  const [coverImage, setcoverImage] = useState(null);
+  const [image1, setimage1] = useState(null);
+  const [image2, setimage2] = useState(null);
+  const [image3, setimage3] = useState(null);
+  const [image4, setimage4] = useState(null);
   const [title, settitle] = useState("");
   const [description, setdescription] = useState("");
   const [price, setprice] = useState("");
@@ -72,6 +88,34 @@ const Services = () => {
     },
   ]);
 
+  const handleImage = (imageStore, file) => {
+    console.log(imageStore);
+    if (imageStore === "cover") {
+      setcoverImage(file);
+      setcoverImageViewer(URL.createObjectURL(file));
+      return;
+    }
+    if (imageStore === "image1") {
+      setimage1(file);
+      setimage1Viewer(URL.createObjectURL(file));
+      return;
+    }
+    if (imageStore === "image2") {
+      setimage2(file);
+      setimage2Viewer(URL.createObjectURL(file));
+      return;
+    }
+    if (imageStore === "image3") {
+      setimage3(file);
+      setimage3Viewer(URL.createObjectURL(file));
+      return;
+    }
+    if (imageStore === "image4") {
+      setimage4(file);
+      setimage4Viewer(URL.createObjectURL(file));
+      return;
+    }
+  };
   const handleAddFaq = () => {
     setfaqs((prevState) => {
       const newState = [...prevState, { question: "", answer: "" }];
@@ -123,8 +167,11 @@ const Services = () => {
     const { name, value } = e.target;
     setpackages((prevState) => {
       const newState = [...prevState];
-
-      newState[currentPackagesIndex][name] = value;
+      if (name == "amount") {
+        newState[currentPackagesIndex][name] = +value; //convert amount input to intergers
+      } else {
+        newState[currentPackagesIndex][name] = value;
+      }
       return newState;
     });
   };
@@ -133,6 +180,7 @@ const Services = () => {
     setpackages((prevState) => {
       const newState = [...prevState];
       newState[currentPackagesIndex].features[featureId][name] = value;
+
       return newState;
     });
   };
@@ -176,45 +224,66 @@ const Services = () => {
 
   const handleServiceCreation = () => {
     const payload = {
-      name,
+      name: title,
       description,
-      type,
+      type: "campaign",
       price: +price,
       currency: "NGN",
       is_negotiable: true,
+      link: "http://johndoe.myname.com/services/social-media",
       packages: packages,
     };
     createServices(payload)
       .then((res) => {
         console.log(res.data.data);
-        setCurrentPackageId(res.data.data[0].id);
+        setCurrentPackageId(res.data.data.id);
+        handleIncrement();
       })
       .catch((err) => {
         console.log(err.response);
       });
   };
   const handleFaqCreation = () => {
-    const payload = faq;
+    const payload = faqs;
     createFaqServices(currentPackageId, payload)
       .then((res) => {
         console.log(res.data.data);
+        handleIncrement();
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+  const handleGalleryCreation = () => {
+    let formData = new FormData();
+
+    formData.append("coverImage", coverImage);
+    formData.append("image1", image1);
+    formData.append("image2", image2);
+    formData.append("image3", image3);
+    formData.append("image4", image4);
+
+    uploadServiceMedia(currentPackageId, formData)
+      .then((res) => {
+        console.log(res.data.data);
+        handleIncrement();
       })
       .catch((err) => {
         console.log(err.response);
       });
   };
   const handleReviewCreation = () => {
-    const payload = faq;
+    const payload = review;
     createReviewServices(currentPackageId, payload)
       .then((res) => {
         console.log(res.data.data);
       })
       .catch((err) => {
         console.log(err.response);
+        handleIncrement();
       });
   };
   const handleGetServices = () => {
-   
     getServices()
       .then((res) => {
         console.log(res.data.data);
@@ -236,36 +305,42 @@ const Services = () => {
       </div>
 
       <div className="mt-7">
-        <div className="grid grid-cols-4 gap-6 items-stretch">
-          {[1, 2, 3].map((x, idx) => (
-            <div
-              key={idx}
-              className="service-card hover:shadow-xl duration-300"
-            >
+        <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-6 items-stretch">
+          {allServices !== null &&
+            allServices.map((x, idx) => (
+              <div
+                key={idx}
+                className="service-card hover:shadow-xl duration-300"
+              >
+              <Link href={`/dashboard/services/${x.id}`}>
               <Image
-                src={serviceimage}
-                alt="title_image"
-                className="h-full w-full object-cover"
+              src={x.media[0].url}
+              alt="title_image"
+              className="h-full w-full object-cover rounded-t-lg"
+              width="100%"
+              height="100%"
+              layout="responsive"
               />
+              </Link>
 
-              <div className="space-y-4 p-4">
-                <div className=" flex space-x-2 items-center">
-                  {platform.map((img) => (
-                    <div key={img}>
-                      <Image
-                        src={require(`../../../assets/${img}.svg`)}
-                        alt={img}
-                        className="h-5 w-5 rounded-lg mx-2"
-                      />
-                    </div>
-                  ))}
+                <div className="space-y-4 p-4">
+                  <div className=" flex space-x-2 items-center">
+                    {platform.map((img) => (
+                      <div key={img}>
+                        <Image
+                          src={require(`../../../assets/${img}.svg`)}
+                          alt={img}
+                          className="h-5 w-5 rounded-lg mx-2"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <p>{x.name}</p>
+
+                  <p>{x.price}</p>
                 </div>
-                <p>Instagram campaign to boost brand/product visibility</p>
-
-                <p>From ₦50,000</p>
               </div>
-            </div>
-          ))}
+            ))}
           <div className="service-card-add grid place-content-center">
             <button
               onClick={() => {
@@ -365,6 +440,13 @@ const Services = () => {
                 <Gallery
                   handleIncrement={handleIncrement}
                   handleDecrement={handleDecrement}
+                  handleImage={handleImage}
+                  coverImageViewer={coverImageViewer}
+                  image1Viewer={image1Viewer}
+                  image2Viewer={image2Viewer}
+                  image3Viewer={image3Viewer}
+                  image4Viewer={image4Viewer}
+                  handleGalleryCreation={handleGalleryCreation}
                 />
               )}
 
@@ -377,7 +459,6 @@ const Services = () => {
                   faqs={faqs}
                   handleFaqinput={handleFaqinput}
                   handleFaqCreation={handleFaqCreation}
-
                 />
               )}
               {step === 5 && (
@@ -388,7 +469,6 @@ const Services = () => {
                   handleDecrement={handleDecrement}
                   handleReviewinput={handleReviewinput}
                   handleReviewCreation={handleReviewCreation}
-
                 />
               )}
             </section>

@@ -5,7 +5,6 @@ import remove from "../../assets/remove.svg";
 import rightarrow from "../../assets/rightarrow.svg";
 
 function Pricing({
-  handleIncrement,
   handleDecrement,
   packages,
   setpackages,
@@ -15,6 +14,7 @@ function Pricing({
   setcurrentPackagesIndex,
   handleFormInput,
   handleFormFeatureInput,
+  handleServiceCreation
 }) {
   return (
     <div>
@@ -131,7 +131,7 @@ function Pricing({
             />
             <div className="flex space-x-3 w-[300px]">
               <input
-                type="text"
+                type="number"
                 placeholder="Krystal Beauty"
                 className="p-2 border outline-none rounded-md w-full"
                 name="quantity"
@@ -177,7 +177,9 @@ function Pricing({
           <span className="mr-2">Back</span>
         </button>
         <button
-          onClick={handleIncrement}
+          onClick={()=> {
+            handleServiceCreation()
+          }}
           className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
         >
           <span className="mr-2">Continue</span>

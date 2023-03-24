@@ -10,7 +10,8 @@ function Faq({
   handleAddFaq,
   handleRemoveFaq,
   faqs,
-  handleFaqinput
+  handleFaqinput,
+  handleFaqCreation
 
 }) {
   console.log(faqs);
@@ -97,7 +98,7 @@ function Faq({
           <span className="mr-2">Back</span>
         </button>
         <button
-          onClick={handleIncrement}
+          onClick={handleFaqCreation}
           className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
         >
           <span className="mr-2">Continue</span>

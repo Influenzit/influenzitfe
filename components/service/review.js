@@ -3,6 +3,7 @@ import rightarrow from "../../assets/rightarrow.svg";
 
 import React from "react";
 import Image from "next/image";
+import { toast } from 'react-toastify';
 
 function Review({
   handleIncrement,
@@ -10,49 +11,45 @@ function Review({
   handleAddFaq,
   handleRemoveFaq,
   faqs,
-  handleReviewinput
+  handleReviewinput,
+  handleReviewCreation,
 }) {
+  const handleSubmit = () => {
+    toast.success("Service created successfully", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+    window.location.reload()
+  };
   console.log(faqs);
   return (
     <div>
-      <h1 className="text-xl font-medium mb-8">Frequently Asked Questions</h1>
-      <div className="content mb-6">
-        <h1 className=" font-medium"> Collect information to get started</h1>
+      <h1 className="text-xl font-medium mb-8">Review and Publish</h1>
+
+      <div className="content my-6">
+        <h1 className=" font-medium"> Copyright Notice</h1>
         <p className="text-tert-100 my-1">
-          Add questions to help buyers provide you with exactly what you need to
-          start working on their order.
+          By submitting your project, you declare that you either own or have
+          rights to the material posted and that posting these materials does
+          not infringe on any third rights. You also acknowledge that you
+          understand your project will be reviewed and evaluated by Upwork to
+          ensure it meets requirements.
         </p>
       </div>
-
-      <label htmlFor="title" className="text-[#344054] mb-1">
-        Name
-      </label>
-      <div>
-        <input
-          type="text"
-          placeholder="Who is Krystal Beauty"
-          className="p-2 border outline-none rounded-md w-full"
-          name="name"
-          onChange={(e) => {
-            handleReviewinput(e);
-          }}
-        />
+      <div className="content mb-6">
+        <h1 className=" font-medium"> Terms of Service</h1>
+        <p className="text-tert-100 my-1">
+          I understand and agree to the Upwork Terms of Service, including the
+          User Agreement and Privacy Policy.
+        </p>
       </div>
-      <div className="mt-4">
-        <label htmlFor="title" className="text-[#344054] mb-1">
-          Comment
-        </label>
-      </div>
-      <div>
-        <input
-          type="text"
-          placeholder="Krystal Beauty"
-          className="p-2 border outline-none rounded-md w-full"
-          name="comment"
-          onChange={(e) => {
-            handleReviewinput(e);
-          }}
-        />
+      <div className="content mb-6">
+        <h1 className=" font-medium">Terms of Service</h1>
+        <p className="text-tert-100 my-1">
+          By submitting this project and activating it, I understand that it
+          will appear in Upwork search results visible to the general public and
+          will show up in search engine results, even if my profile visibility
+          is set to Private or Upwork Users Only
+        </p>
       </div>
 
       <div className="flex justify-between items-center mt-6 ">
@@ -68,7 +65,7 @@ function Review({
           <span className="mr-2">Back</span>
         </button>
         <button
-          onClick={handleIncrement}
+          onClick={handleSubmit}
           className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
         >
           <span className="mr-2">Continue</span>

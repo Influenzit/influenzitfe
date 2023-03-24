@@ -16,13 +16,58 @@ import {
 import ContactImage from "./../assets/contact.png";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { toast } from "react-toastify";
+import { axiosInstance } from "./../api/axios";
 
 import { Country } from "country-state-city";
+import Loader from "../components/UI/Loader";
 
 const Contact = () => {
-  const [phone, setPhone] = useState(null);
+  const [phoneCode, setPhoneCode] = useState("+234");
+  const [phone, setPhone] = useState("");
+  const [email, setemail] = useState("");
+  const [message, setmessage] = useState("");
+  const [firstname, setfirstname] = useState("");
+  const [lastname, setlastname] = useState("");
+  const [loading, setloading] = useState(false);
   const [country] = useState(Country.getAllCountries());
-  console.log(country);
+
+  const handleSendMessage = () => {
+    if (!firstname || !email || !lastname || !message || !phone) {
+      toast.error("All fields are required", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+    setloading(true);
+    const payload = {
+      firstname: `${firstname}  ${lastname}`,
+      email,
+      message,
+      phone: `${phoneCode}${phone}`,
+    };
+    axiosInstance()
+      .post("/contact-us", payload)
+      .then((res) => {
+        toast.success(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        console.log(res.data.data);
+        setloading(false);
+        setfirstname("");
+        setlastname("");
+        setmessage("");
+        setemail("");
+        setPhone("");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setloading(false);
+      });
+  };
 
   return (
     <div>
@@ -51,6 +96,10 @@ const Contact = () => {
                       type="text"
                       id="firstname"
                       className="input mt-2 px-3 py-2"
+                      value={firstname}
+                      onChange={(e) => {
+                        setfirstname(e.target.value);
+                      }}
                     />
                   </div>
                   <div className="flex flex-col">
@@ -59,6 +108,10 @@ const Contact = () => {
                       type="text"
                       id="lastname"
                       className="input mt-2 px-3 py-2"
+                      value={lastname}
+                      onChange={(e) => {
+                        setlastname(e.target.value);
+                      }}
                     />
                   </div>
                 </div>
@@ -69,17 +122,23 @@ const Contact = () => {
                     type="email"
                     id="lastname"
                     className="input mt-2 px-3 py-2"
+                    value={email}
+                    onChange={(e) => {
+                      setemail(e.target.value);
+                    }}
                   />
                 </div>
 
                 <div className="mt-4">
-                  <label htmlFor="Email" className="">Phone Number</label>
+                  <label htmlFor="Email" className="">
+                    Phone Number
+                  </label>
                   <div className=" mt-1 input flex space-x-2 pl-2 py-2">
                     <select
                       name=""
                       id=""
                       onChange={(e) => {
-                        setPhone(e.target.value);
+                        setPhoneCode(e.target.value);
                       }}
                       Selected="Nigeria"
                       className="w-9 text-sm bg-transparent outline-none border-none"
@@ -88,7 +147,7 @@ const Contact = () => {
                         return (
                           <option
                             key={idx}
-                            value={item.name}
+                            value={item.phonecode}
                             selected={item.name === "Nigeria"}
                           >
                             {item.flag} {item.phonecode}
@@ -100,6 +159,10 @@ const Contact = () => {
                       type="text"
                       className="bg-transparent outline-none w-full flex-1"
                       placeholder="8012345678 "
+                      onChange={(e) => {
+                        setPhone(e.target.value);
+                      }}
+                      value={phone}
                     />
                   </div>
                 </div>
@@ -112,11 +175,18 @@ const Contact = () => {
                     cols="30"
                     rows="10"
                     className="w-full input mt-2 px-3 py-2 resize-none"
+                    onChange={(e) => {
+                      setmessage(e.target.value);
+                    }}
+                    value={message}
                   ></textarea>
                 </div>
 
-                <button className="shadow-lg bg-primary-100 p-3 text-lg font-medium text-white mt-4 rounded-lg w-full">
-                  Send message
+                <button
+                  onClick={handleSendMessage}
+                  className="shadow-lg bg-primary-100 p-3 text-lg font-medium text-white mt-4 rounded-lg w-full"
+                >
+                  {loading ? <Loader /> : "Send message"}
                 </button>
               </div>
             </div>
