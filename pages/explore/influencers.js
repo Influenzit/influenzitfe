@@ -57,7 +57,7 @@ const Search = () => {
                         <button onClick={(e) => {
                         e.preventDefault();
                         router.push(`/explore?search=${searchString}&niche=${nicheVal.toLocaleLowerCase()}`);
-                        }}><Image src="/search.svg" height={20} width={20}/></button>
+                        }}><Image src="/search.svg" height={15} width={15}/></button>
                     </form>
                     <CategoryWrapper>
                         {category.map((val, i) => (

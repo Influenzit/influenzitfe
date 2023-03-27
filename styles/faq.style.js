@@ -9,6 +9,9 @@ export const Container = styled.div`
 `;
 export const Section = styled.div`
     background: linear-gradient(179.76deg, #FDF8F1 3.31%, #F0C3C9 237.13%);
+    ${breakpoints.sm}{
+        padding: 0 20px;
+    }
 `;
 export const TopBanner = styled.div`
     width: 98%;
@@ -34,6 +37,11 @@ export const TopBanner = styled.div`
         font-size: 35px;
         padding-bottom: 15px;
     }
+    ${breakpoints.sm}{
+        p{
+            width: 100%;
+        }
+    }
 `;
 export const Wrapper = styled.div`
     width: 98%;
@@ -45,13 +53,59 @@ export const Wrapper = styled.div`
         color: ${colors.textColor};
         margin: 30px 0;
     }
+    ${breakpoints.lg}{
+        padding: 20px;
+    }
+    ${breakpoints.sm}{
+        padding: 20px;
+        h2{
+            text-align: left;
+        }
+    }
+`;
+export const MinWrap = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: ${sizes.wrapperWidth};
+    margin: 0 auto;
+    h2 {
+        font-size: 30px;
+        color: ${colors.textColor};
+        margin: 30px 0;
+    }
+    hr{
+        width: 70%;
+    }
+    ${breakpoints.lg}{
+    }
+    ${breakpoints.sm}{
+        h2{
+            text-align: left;
+        }
+    }
+`;
+export const LineWrap = styled.div`
+    // width: 70%;
+    // border: 1px solid #2A293933;
+    // margin-top: 5%;
+    // margin-bottom: 5%;
+    ${breakpoints.lg}{
+
+    ${breakpoints.sm}{
+    }
 `;
 export const Faqs = styled.div`
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
-    column-gap: 55px;
+    // column-gap: 55px;
     row-gap: 20px;
     margin-bottom: 60px;
+    ${breakpoints.sm}{
+        flex-direction: column;
+    }
 `;
 export const Faq = styled.div`
     width: 30%;
@@ -65,6 +119,12 @@ export const Faq = styled.div`
     p {
         font-size: 15px;
         color: #667085;
+    }
+    ${breakpoints.lg}{
+        width: 45%;
+    }
+    ${breakpoints.sm}{
+        width: 100%;
     }
 `;
 export const Banner = styled.div`
@@ -95,5 +155,9 @@ export const Banner = styled.div`
         background: ${colors.primaryColor};
         color: #fff;
         font-weight: 600;
+    }
+    ${breakpoints.sm}{
+        text-align: center;
+        padding: 10px;
     }
 `;

@@ -11,6 +11,12 @@ export const Container = styled.nav`
     display: flex;
     z-index: 999999;
     ${({showBg}) => showBg && "border-bottom: 1px solid #EAEAEB"};
+    ${breakpoints.md} {
+        padding: 1rem 15px;
+    }
+    ${breakpoints.lg} {
+        padding: 1rem 15px;
+    }
 `;
 export const Wrapper = styled.div`
     width:  ${({fullWidth}) => fullWidth ? "100%" : "98%"};

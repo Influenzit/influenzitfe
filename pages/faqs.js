@@ -2,7 +2,7 @@ import React from 'react';
 import LandingLayout from '../layouts/landing.layout';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Banner, Container, Faq, Faqs, Section, TopBanner, Wrapper } from '../styles/faq.style';
+import { Banner, Container, Faq, Faqs, Section, TopBanner, Wrapper, MinWrap, LineWrap } from '../styles/faq.style';
 
 const FAQs = () => {
     const faqs = [
@@ -41,7 +41,12 @@ const FAQs = () => {
                 </TopBanner>
             </Section>
             <Wrapper>
-                <h2>Business Owners</h2>
+                <MinWrap>
+                    <h2>Business Owners</h2>
+                    <hr width="65%"
+                    size="2"
+                    color="#2A293933"></hr>
+                </MinWrap>
                 <Faqs>
                     {faqs.map((val, i) => (
                         <Faq key={i}>
@@ -50,7 +55,12 @@ const FAQs = () => {
                         </Faq>
                     ))}
                 </Faqs>
-                <h2>Inflencers / Creators</h2>
+                <MinWrap>
+                    <h2>Inflencers / Creators</h2>
+                    <hr width="65%"
+                    size="2"
+                    color="#2A293933"></hr>
+                </MinWrap>
                 <Faqs>
                     {faqs.map((val, i) => (
                         <Faq key={i}>

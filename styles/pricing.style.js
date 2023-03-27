@@ -3,17 +3,30 @@ import { breakpoints, colors, sizes } from "./theme";
 
 export const Outlilnes = styled.div`
     display: flex;
+    text-align: center;
     column-gap: 50px;
-    margin: 20px 0;
+    margin: 40px auto 20px auto;
+    ${breakpoints.md}{
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        max-width: 100%;
+        gap: 10px;
+        padding: 0 15px;
+    }
 `;
 export const Outline = styled.div`
     display: flex;
     align-items: center;
-    column-gap: 10px;
+    gap: 10px;
     span {
         font-weight: 600;
         font-size: 17px;
         color: ${colors.textColor};
+    }
+    ${breakpoints.md}{
+        gap: 5px;
+        padding: 0 15px;
     }
 `;
 export const BillRate = styled.div`
@@ -21,7 +34,7 @@ export const BillRate = styled.div`
     justify-content: center;
     align-items: center;
     column-gap: 10px;
-    width: 300px;
+    width: 400px;
     margin: 20px 0;
     p {
         font-weight: 500;
@@ -50,6 +63,9 @@ export const BillRate = styled.div`
             background: rgba(42, 41, 57, 0.2);
         }
     }
+    ${breakpoints.md}{
+        width: 100%;
+    }
 `;
 export const HeroSectionTwo = styled.section`
     background: #F9FAFB;
@@ -62,30 +78,83 @@ export const BillContainer = styled.div`
     width: 100%;
     max-width: ${sizes.wrapperWidth};
     margin: 0 auto;
-    min-width: 1000px;
+    min-width: 98%;
     border-radius: 32px;
-    position: relative;
+    // position: relative;
     margin-top: 90px;
+    // overflow: hidden;
+    ${breakpoints.lg}{
+        width: 100%;
+        padding: 15px;
+    }
+    ${breakpoints.md}{
+        padding: 15px;
+        flex-direction: column;
+        background: none;
+    }
+`;
+export const TopBillCard = styled.span`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p {
+        color: ${({isOdd}) => isOdd ? "rgba(255, 255, 255, 0.7)" : "rgba(42, 41, 57, 0.7)"};
+        font-weight: 700;
+        font-size: 18px;
+        text-transform: uppercase;
+        text-align: center !important;
+        margin-top: 0;
+        width: 100%;
+    }
+    h1 {
+        width: 100%;
+        min-width: unset;
+        color: ${({isOdd}) => isOdd ? "#fff" : colors.textColor};
+        font-size: 45px;
+        font-weight: 700;
+        padding: 12px 0 !important;
+        text-align: center;
+        line-height: 40px;
+    }
+    h1 + span {
+        font-weight: 500;
+        font-size: 16px;
+        padding: 4px 0 !important;
+        text-align: center;
+        line-height: 40px;
+        color: ${({isOdd}) => isOdd ? "#fff" : "#000"};
+    }
+    a{
+        margin-bottom: 25px;
+        display: inline-block;
+        padding: 10px 30px;
+        border-radius: 8px;
+        background: ${colors.primaryColor};
+        color: #fff;
+        font-weight: 600;
+    }
 `;
 export const BillCard = styled.div`
     background: ${({isOdd}) => isOdd ? colors.textColor : "#fff"};
     color: ${({isOdd}) => isOdd ? "#fff" : colors.textColor};
     border-radius: 32px;
-    ${({isOdd}) => isOdd && "position: absolute;"}
-    top: -70px;
-    left:  calc(100% / 3);
-    width: calc(100% / 3);
+    ${({isOdd}) => isOdd && "margin-top: -70px"};
+    ${({isOdd}) => isOdd && "margin-bottom: 70px"};
+    // top: -70px;
+    // left:  calc(100% / 3);
+    // width: calc(100% / 3);
     min-width: calc(1000px / 3);
     padding: 30px;
-    text-align: center;
+    text-align: center !important;
     box-sizing: border-box;
     p {
         color: ${({isOdd}) => isOdd ? "rgba(255, 255, 255, 0.7)" : "rgba(42, 41, 57, 0.7)"};
         font-weight: 700;
         font-size: 18px;
         text-transform: uppercase;
-        text-align: center;
+        text-align: center !important;
         margin-top: 0;
+        color: red;
         width: 100%;
     }
     h3 {
@@ -105,6 +174,8 @@ export const BillCard = styled.div`
         color: ${({isOdd}) => isOdd ? "#fff" : colors.textColor};
         font-size: 45px;
         font-weight: 700;
+        padding: 8px 0;
+        text-align: center;
     }
     h1 + span {
         font-weight: 500;
@@ -121,6 +192,17 @@ export const BillCard = styled.div`
         }
         margin-top: 15px;
         border-top: 1px solid ${({isOdd}) => isOdd ? "#ffffff33" : "#2A293933"};
+    }
+    ${breakpoints.lg}{
+        min-width: 30%;
+        padding: 30 10px;
+    }
+    ${breakpoints.md}{
+        min-width: 98%;
+        padding: 30px 15px;
+        ${({isOdd}) => isOdd && "margin-top: 30px"};
+        ${({isOdd}) => isOdd && "margin-bottom: 30px"};
+        ${({isOdd}) => isOdd && "padding-top: 50px"};
     }
 `;
 export const Wrapper = styled.div`
