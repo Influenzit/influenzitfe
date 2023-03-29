@@ -1,20 +1,28 @@
 import React, { useState } from "react";
+import Image from "next/image";
+import rightarrow from "../../assets/rightarrow.svg";
 
-function Stage2() {
-  const [mileStone, setmileStone] = useState([5]);
-
+function Stage2({
+  handleIncrement,
+  handleDecrement,
+  handleMilestoneinput,
+  setmilestone,
+  milestone,
+  handleRemoveMilestone,
+  handleAddMilestone,
+}) {
   const mileStoneCopy = [5];
-  const handleIncrement = () => {
+  const handleIncrements = () => {
     mileStoneCopy.push(5);
     setmileStone(mileStoneCopy);
   };
-  const handlederement = () => {
+  const handlederements = () => {
     mileStoneCopy.pop;
     setmileStone(mileStoneCopy);
   };
   return (
     <div className="let swipeIn">
-      <div className="flex gap-4 items-center">
+      <div className="grid grid-cols-3 gap-4 mb-4">
         <div>
           <p className="text-xs  text-primary-100">Step 1</p>
           <p className="text-xs ">Describe your Campaign</p>
@@ -25,41 +33,53 @@ function Stage2() {
         </div>
       </div>
       <div className="w-full">
-        {mileStone.map((item, idx) => (
+        {milestone.map((item, id) => (
           <div
             className="grid grid-cols-12 gap-4 w-full items-center"
-            key={idx}
+            key={id}
           >
             <div className="col-span-5">
               <div className="my-6 flex flex-col space-y-2 ">
-                <label htmlFor="b_id">Milestone name</label>
+                <label htmlFor="title">Milestone name</label>
                 <input
                   type="text"
-                  id="b_id"
+                  name="title"
                   className="input p-3"
                   placeholder="Account Settings"
+                  defaultValue={milestone[id].title}
+                  onChange={(e) => {
+                    handleMilestoneinput(e, id);
+                  }}
                 />
               </div>
             </div>
             <div className="col-span-3">
               <div className="my-6 flex flex-col space-y-2 ">
-                <label htmlFor="b_id">Delivery Date</label>
+                <label htmlFor="end_date">Delivery Date</label>
                 <input
-                  type="text"
-                  id="b_id"
+                  type="date"
+                  name="end_date"
                   className="input p-3"
                   placeholder="Rhye"
+                  defaultValue={milestone[id].end_date}
+                  onChange={(e) => {
+                    handleMilestoneinput(e, id);
+                  }}
                 />
               </div>
             </div>
             <div className="col-span-3">
               <div className="my-6 flex flex-col space-y-2 ">
-                <label htmlFor="b_id">Price</label>
+                <label htmlFor="amount">Price</label>
                 <input
                   type="text"
-                  id="b_id"
+                  name="amount"
                   className="input p-3"
-                  placeholder="Rhye"
+                  placeholder="#20, 000"
+                  defaultValue={milestone[id].amount}
+                  onChange={(e) => {
+                    handleMilestoneinput(e, id);
+                  }}
                 />
               </div>
             </div>
@@ -67,7 +87,7 @@ function Stage2() {
               {" "}
               <button
                 onClick={() => {
-                  handlederement();
+                  handleRemoveMilestone(id);
                 }}
                 className="outline-none text-[10px] text-red-500 mt-5"
               >
@@ -79,12 +99,33 @@ function Stage2() {
       </div>
       <button
         onClick={() => {
-          handleIncrement();
+          handleAddMilestone();
         }}
         className="bg-[#F9DADE] py-2 px-4 rounded-lg text-white hover:bg-primary-100"
       >
         Add milestone
       </button>
+
+      <div className="flex justify-between items-center mt-6 ">
+        <button
+          onClick={handleDecrement}
+          className="bg-tert-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
+        >
+          <Image
+            src={rightarrow}
+            alt="rightarrow"
+            className="transform rotate-180 ml-2 w-4 h-4"
+          />
+          <span className="mr-2">Back</span>
+        </button>
+        <button
+          onClick={handleIncrement}
+          className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
+        >
+          Next
+          <Image src={rightarrow} alt="rightarrow" className="ml-2 w-4 h-4" />
+        </button>
+      </div>
     </div>
   );
 }

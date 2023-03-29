@@ -13,6 +13,8 @@ import LandingLayout from "../../../../layouts/landing.layout";
 
 import cancel from "./../../../../assets/close.svg";
 import moment from "moment";
+import { Milestone } from "../../../../styles/view.style";
+import { toast } from 'react-toastify';
 
 const Campaigns = () => {
   const router = useRouter();
@@ -21,48 +23,93 @@ const Campaigns = () => {
   const [newCamPaign, setNewCampaign] = useState(false);
   const [step, setstep] = useState(1);
   const [campaignList, setCampaignList] = useState(null);
+
+  const [campaignName, setCampaignName] = useState("");
+  const [bId, setbId] = useState("");
+  const [description, setdescription] = useState("");
+  const [clientEmail, setclientEmail] = useState("");
+  const [serviceid, setserviceId] = useState("");
+  const [endDate, setendDate] = useState("");
+  const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [milestone, setmilestone] = useState([
+    {
+      title: "",
+      description: "No description",
+      status: "Pending",
+      amount: 0,
+      currency: "NGN",
+      start_date: "2022/11/20",
+      end_date: "",
+    },
+  ]);
+
   const platform = ["instagram", "twitter", "tiktok", "facebook", "youtube"];
-// Ongoing
-// Pending
-// Completed
-// Defaulted
-// Disputed
+  // Ongoing
+  // Pending
+  // Completed
+  // Defaulted
+  // Disputed
+  const handleAddMilestone = () => {
+    setmilestone((prevState) => {
+      const newState = [
+        ...prevState,
+        {
+          title: "",
+          description: "",
+          status: "",
+          amount: 0,
+          currency: "NGN",
+          start_date: "",
+          end_date: "",
+        },
+      ];
 
+      return newState;
+    });
+  };
+  const handleRemoveMilestone = (id) => {
+    setmilestone((prevState) => {
+      const newState = [...prevState];
+      newState.splice(id, 1);
 
+      return newState;
+    });
+  };
+  const handleIncrement = () => {
+    if (step >= 1 && step < 3) {
+      setstep(step + 1);
+    }
+  };
+  const handleDecrement = () => {
+    if (step > 1 && step <= 3) {
+      setstep(step - 1);
+    }
+  };
+
+  const handleMilestoneinput = (e, mid) => {
+    const { name, value } = e.target;
+    setmilestone((prevState) => {
+      const newState = [...prevState];
+      newState[mid][name] = value;
+      return newState;
+    });
+  };
 
   const payload = {
-    title: "Create and run  Tiktok Campaign for 1 month",
-    amount: 1000,
+    title: campaignName,
+    amount: +amount,
     currency: "NGN",
-    description: "Create and run  Tiktok Campaign for 1 month",
+    description: description,
     status: "Pending",
     start_date: "2022-11-20",
-    end_date: "2023-01-20",
+    end_date: endDate,
     duration_type: "Month",
     duration_count: "1",
-    client_business_id: "1102",
-    service_package_id: "10",
-    client_email: "businessowner@influenzit.com",
-    milestones: [
-      {
-        title: "Create Design ",
-        description: "produce social media standard designs and fliers",
-        status: "Pending",
-        amount: 2000,
-        currency: "NGN",
-        start_date: "2023-01-20",
-        end_date: "2023-02-20",
-      },
-      {
-        title: "Create Copy ",
-        description: "Write copy for ads",
-        status: "Pending",
-        amount: 2000,
-        currency: "NGN",
-        start_date: "2023-03-20",
-        end_date: "2023-04-20",
-      },
-    ],
+    client_business_id: +bId,
+    service_package_id: serviceid,
+    client_email: clientEmail,
+    milestones: milestone,
   };
 
   const handleGetCampaign = (campaign) => {
@@ -76,8 +123,26 @@ const Campaigns = () => {
       });
   };
 
+  const CreateCampaign = () => {
+    console.log(payload);
+    setLoading(true);
+    handleCreateCampaign(payload)
+      .then((res) => {
+        console.log(res);
+        setLoading(false);
+        toast.success("Campaign created Succesfully", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        handleGetCampaign();
+        setNewCampaign(false);
+      })
+      .catch((err) => {
+        console.log(err.response);
+        setLoading(false);
+      });
+  };
+
   useEffect(() => {
-    // handleCreateCampaign(payload);
     handleGetCampaign();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -123,7 +188,9 @@ const Campaigns = () => {
                   </div>
                 ))}
               </div>
-              <div className="col-span-2 text-sm">{ moment(item.end_date).format('LL') }</div>
+              <div className="col-span-2 text-sm">
+                {moment(item.end_date).format("LL")}
+              </div>
               <div className="col-span-2">
                 {item.status.toLowerCase() === "ongoing" && (
                   <div className="rounded-2xl py-1 pl-2 pr-4 bg-[#F2F4F7] text-xs w-max flex space-x-2 items-center text-[#344054]">
@@ -186,27 +253,63 @@ const Campaigns = () => {
                 <Image src={cancel} alt="cancel" className="h-2 w-2" />
               </button>
             </div>
-            <div className="my-4 bg-[#D4D4D8] h-[2px] w-full rounded-lg mt-6">
+            <div className="grid grid-cols-3 gap-4 mb-4">
               <div
-                className={`bg-primary-100 w-${step}/3 h-full rounded-lg`}
+                className={` ${
+                  step > 0 ? "bg-primary-100" : "bg-[#EAEAEB]"
+                }   h-1 w-full rounded-full`}
+              ></div>
+              <div
+                className={` ${
+                  step > 1 ? "bg-primary-100" : "bg-[#EAEAEB]"
+                }   h-1 w-full rounded-full`}
+              ></div>
+              <div
+                className={` ${
+                  step > 2 ? "bg-primary-100" : "bg-[#EAEAEB]"
+                }   h-1 w-full rounded-full`}
               ></div>
             </div>
 
-            {step == 1 && <Stage1 />}
-            {step == 2 && <Stage2 />}
-            {step == 3 && <Stage3 />}
-            <div className="flex justify-end">
-              <button
-                onClick={() => {
-                  if (step <= 3) {
-                    setstep(step + 1);
-                  }
-                }}
-                className="bg-primary-100 py-2 px-4 rounded-lg text-white"
-              >
-                Next{" "}
-              </button>
-            </div>
+            {step == 1 && (
+              <Stage1
+                handleIncrement={handleIncrement}
+                handleDecrement={handleDecrement}
+                campaignName={campaignName}
+                setCampaignName={setCampaignName}
+                bId={bId}
+                setbId={setbId}
+                description={description}
+                setdescription={setdescription}
+              />
+            )}
+            {step == 2 && (
+              <Stage2
+                handleIncrement={handleIncrement}
+                handleDecrement={handleDecrement}
+                setmilestone={setmilestone}
+                milestone={milestone}
+                handleMilestoneinput={handleMilestoneinput}
+                handleAddMilestone={handleAddMilestone}
+                handleRemoveMilestone={handleRemoveMilestone}
+              />
+            )}
+            {step == 3 && (
+              <Stage3
+                handleIncrement={handleIncrement}
+                handleDecrement={handleDecrement}
+                serviceid={serviceid}
+                setserviceId={setserviceId}
+                clientEmail={clientEmail}
+                setclientEmail={setclientEmail}
+                endDate={endDate}
+                setendDate={setendDate}
+                amount={amount}
+                setAmount={setAmount}
+                handleCreateCampaign={CreateCampaign}
+                loading={loading}
+              />
+            )}
           </div>
         </div>
       )}
