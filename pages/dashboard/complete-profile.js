@@ -19,7 +19,7 @@ import { colors } from '../../styles/theme';
 import { toast } from 'react-toastify';
 
 const CompleteProfile = () => {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState("");
   const [country, setCountry] = useState("");

@@ -1,8 +1,65 @@
-import React from "react";
+import { useState } from "react";
 import Image from "next/image";
 import email from "../../assets/profile/email.svg";
+import { changePassword } from "../../api/auth";
+import { toast } from "react-toastify";
+import Loader from "../../components/UI/Loader";
 
-function stage1() {
+function Stage4({ user }) {
+  const [loading, setloading] = useState(false);
+
+  const [old_password, setold_password] = useState("");
+  const [new_password, setnew_password] = useState("");
+  const [new_password_confirmation, setnew_password_confirmation] =
+    useState("");
+
+  const handlePasswordChange = () => {
+    if (!old_password || !new_password || !new_password_confirmation) {
+      toast.error("All fields are required", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+    if (new_password.length <= 7) {
+      toast.error("Password must be 8 character or above", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+    if (new_password_confirmation !== new_password) {
+      toast.error("Passwords not match", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+
+    setloading(true);
+    const payload = {
+      new_password,
+      new_password_confirmation,
+      old_password,
+    };
+    changePassword(payload)
+      .then((res) => {
+        toast.success("Password changed succesfully", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        console.log(res);
+        setloading(false);
+        setold_password("")
+        setnew_password("")
+        setnew_password_confirmation("")
+
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setloading(false);
+
+      });
+  };
   return (
     <div>
       <div className="let swipeIn">
@@ -25,6 +82,10 @@ function stage1() {
               type="password"
               className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
               placeholder="Enter your current password"
+              onChange={(e) => {
+                setold_password(e.target.value);
+              }}
+              value={old_password}
             />
           </div>
         </div>
@@ -37,6 +98,10 @@ function stage1() {
               type="password"
               className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
               placeholder="Enter your current password"
+              onChange={(e) => {
+                setnew_password(e.target.value);
+              }}
+              value={new_password}
             />
           </div>
         </div>
@@ -49,16 +114,23 @@ function stage1() {
               type="password"
               className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
               placeholder="Confirm new password"
+              onChange={(e) => {
+                setnew_password_confirmation(e.target.value);
+              }}
+              value={new_password_confirmation}
             />
           </div>
         </div>
 
-        <button className="px-3 mt-4  py-2 rounded-lg bg-primary-100 text-white text-sm">
-          Change password
+        <button
+          onClick={handlePasswordChange}
+          className="px-3 mt-4  py-2 rounded-lg bg-primary-100 text-white text-sm"
+        >
+          {loading ? <Loader /> : " Change password"}
         </button>
       </div>
     </div>
   );
 }
 
-export default stage1;
+export default Stage4;
