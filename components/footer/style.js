@@ -12,6 +12,14 @@ export const Wrapper = styled.div`
     padding-top: 25px;
     background: #fff;
     color: ${colors.textColor};
+    ${breakpoints.lg}{
+        width: 100%;
+        padding: 25px;
+    }
+    ${breakpoints.sm}{
+        width: 100%;
+        padding: 25px 20px;
+    }
     ${breakpoints.sm}{
         font-size: 14px !important;
     }

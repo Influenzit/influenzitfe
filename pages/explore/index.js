@@ -51,7 +51,7 @@ const Search = () => {
     }, [router.asPath])
 
     return (
-        <Container>
+        <Container style={{paddingTop: "120px"}}>
             <Wrapper>
                 <Content>
                     <Top>
