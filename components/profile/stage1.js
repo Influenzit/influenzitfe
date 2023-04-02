@@ -1,14 +1,71 @@
-import React, { useState } from 'react'
-import Image from "next/image";
-import email from "../../assets/profile/email.svg";
-import { Country } from "country-state-city";
+import React, { useEffect, useState } from "react";
 
-function Stage1() {
-    const [phone, setPhoneCode] = useState(null);
-    const [country] = useState(Country.getAllCountries());
-    return (
-        <div>
-        <div className="let swipeIn">
+import Image from "next/image";
+import emailIcon from "../../assets/profile/email.svg";
+import { Country } from "country-state-city";
+import { accountMedia, getUserAccount, updateAccount } from "../../api/auth";
+import { getUser, updateUser } from "../../app/reducers/user";
+import { useDispatch } from "react-redux";
+import { toast } from 'react-toastify';
+
+function Stage1({ user }) {
+  const dispatch = useDispatch();
+
+  console.log(user);
+  const [country] = useState(Country.getAllCountries());
+  const [firstname, setfirstname] = useState(null);
+  const [lastname, setlastname] = useState(null);
+  const [email, setemail] = useState(null);
+  const [phone, setphone] = useState(null);
+  const [phoneCode, setPhoneCode] = useState(+234);
+  const [loading, setloading] = useState(null);
+
+  const handleAccountUpdate = () => {
+    if (!firstname || !email || !lastname || !phone) {
+      toast.error("All fields are required", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+    setloading(true);
+    const payload = {
+      firstname,
+      lastname,
+      phone1: phone,
+      email,
+    };
+
+    updateAccount(user.id, payload)
+      .then((res) => {
+        dispatch(updateUser(res.data.data));
+        dispatch(setLoading(false));
+        toast.success("Account updated successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+
+        setloading(false);
+      })
+      .catch((err) => {
+        toast.error("An error occured", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+
+        console.log(err);
+        setloading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (user) {
+      setphone(user.account.phone1 ?? "");
+      setemail(user.email ?? "");
+      setfirstname(user.firstname ?? "");
+      setlastname(user.lastname ?? "");
+    }
+  }, [user]);
+  return (
+    <div>
+      <div className="let swipeIn">
         <div className="flex items-center justify-between py-5 border-b">
           <div>
             {" "}
@@ -22,7 +79,7 @@ function Stage1() {
             <button className="px-3 py-2 rounded-lg border text-gray-800 bg-white text-sm">
               Cancel
             </button>
-            <button className="px-3 py-2 rounded-lg bg-primary-100 text-white text-sm">
+            <button onClick={handleAccountUpdate} className="px-3 py-2 rounded-lg bg-primary-100 text-white text-sm">
               Save
             </button>
           </div>
@@ -38,11 +95,19 @@ function Stage1() {
                 type="text"
                 className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
                 placeholder="Oliva"
+                value={firstname}
+                onChange={(e) => {
+                  setfirstname(e.target.value);
+                }}
               />
               <input
                 type="text"
                 className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
                 placeholder="Rhye"
+                value={lastname}
+                onChange={(e) => {
+                  setlastname(e.target.value);
+                }}
               />
             </div>
           </div>
@@ -55,11 +120,15 @@ function Stage1() {
           <div className="col-span-6">
             <div className="col-span-6">
               <div className=" flex space-x-3 px-3 py-2 rounded-lg border  bg-transparent outline-none w-full">
-                <Image src={email} alt="email" />
+                <Image src={emailIcon} alt="email" />
                 <input
                   type="text"
                   className="bg-transparent outline-none w-full flex-1"
                   placeholder="olivia@untitledui.com"
+                  value={email}
+                  onChange={(e) => {
+                    setemail(e.target.value);
+                  }}
                 />
               </div>
             </div>
@@ -73,39 +142,43 @@ function Stage1() {
           <div className="col-span-6">
             <div className=" flex space-x-3 rounded-lg border  bg-transparent outline-none w-full">
               <div className="border-r py-2 px-2">
-              <select
-              name=""
-              id=""
-              onChange={(e) => {
-                setPhoneCode(e.target.value);
-              }}
-              Selected="Nigeria"
-              className="w-12 text-sm bg-transparent outline-none border-none"
-            >
-              {country.map((item, idx) => {
-                return (
-                  <option
-                    key={idx}
-                    value={item.name}
-                    selected={item.name === "Nigeria"}
-                  >
-                    {item.phonecode}
-                  </option>
-                );
-              })}
-            </select>
+                <select
+                  name=""
+                  id=""
+                  onChange={(e) => {
+                    setPhoneCode(e.target.value);
+                  }}
+                  Selected="Nigeria"
+                  className="w-12 text-sm bg-transparent outline-none border-none"
+                >
+                  {country.map((item, idx) => {
+                    return (
+                      <option
+                        key={idx}
+                        value={item.phonecode}
+                        selected={item.name === "Nigeria"}
+                      >
+                        {item.phonecode}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
               <input
                 type="text"
                 className="bg-transparent outline-none w-full flex-1"
                 placeholder="8012345678 "
+                value={phone}
+                onChange={(e) => {
+                  setphone(`${phoneCode}${e.target.value}`);
+                }}
               />
             </div>
           </div>
         </div>
       </div>
-        </div>
-    )
+    </div>
+  );
 }
 
-export default Stage1
+export default Stage1;

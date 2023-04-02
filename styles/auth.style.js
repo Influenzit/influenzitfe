@@ -129,9 +129,11 @@ export const FlexInput = styled.div`
 export const InputContainer = styled.div`
     position: relative;
     margin-bottom: 15px;
+    min-width: calc(50% - 12px);
     label {
         display: inline-block;
         margin-bottom: 8px;
+        font-size: 14px;
         color: #344054;
         font-weight: 500;
     }
@@ -139,12 +141,38 @@ export const InputContainer = styled.div`
         height: 45px;
         width: 100%;
         outline: none;
-        color: #667085;
+        color: #101828;
         padding-left: 17px;
         z-index: 1;
         background: transparent;
         border: 1px solid #D0D5DD;
         border-radius: 8px;
+    }
+    input {
+        color: #101828;
+    }
+    input::placeholder, textarea::placeholder {
+        color: #667085;
+    }
+    textarea {
+        box-shadow: 0px 1px 2px 0px #1018280D;
+        border-radius: 8px;
+        padding: 10px 14px;
+        border: 1px solid #D0D5DD;
+        resize: none;
+        height: 180px;
+        width: 100%;
+        outline: none;
+        font-size: 14px;
+        color: #101828;
+    }
+    #country {
+        font-size: 14px;
+    }
+    #error {
+        font-weight: 500;
+        font-size: 12px;
+        color: ${colors.primaryColor};
     }
 `;
 export const SubmitButton = styled.button`
@@ -160,6 +188,18 @@ export const SubmitButton = styled.button`
     font-weight: 500;
 `;
 export const Input = styled.input`
+    height: 45px;
+    width: 100%;
+    outline: none;
+    color: #667085;
+    padding-left: 17px;
+    z-index: 1;
+    background: transparent;
+    border: 1px solid #D0D5DD;
+    font-size: 16px;
+    border-radius: 8px;
+`;
+export const Select = styled.select`
     height: 45px;
     width: 100%;
     outline: none;

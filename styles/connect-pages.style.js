@@ -4,7 +4,7 @@ import { breakpoints, colors, sizes } from "./theme";
 export const Container = styled.div`
     background: #F7FAFC;
     padding: 110px 20px 30px 20px;
-    min-height: calc(100vh - 140px);
+    min-height: 100vh;
 `;
 export const Wrapper = styled.div`
     width: 98%;
@@ -226,4 +226,44 @@ export const ActionBtn = styled.button`
     color: #333;
     font-weight: 500;
     cursor: pointer;
+`;
+export const WelcomeModal = styled.div`
+    background: #fff;
+    width: 95%;
+    max-width: 500px;
+    border-radius: 16px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    h2 {
+        font-size: 24px;
+        color: ${colors.textColor};
+        font-weight: 600;
+        padding: 15px 0 10px 0;
+    }
+    p {
+        color: #555461;
+    }
+    div {
+        display: flex;
+        justify-content: right;
+        width: 100%;
+        :first-of-type {
+            padding-bottom: 20px;
+        }
+        :last-of-type {
+            margin-top: 20px;
+            button {
+                padding: 12px 20px;
+                font-weight: 500;
+                font-size: 14px;
+                color: #fff;
+                background: ${colors.primaryColor};
+                border-radius: 8px;
+            }
+        }
+    }
+    
 `;
