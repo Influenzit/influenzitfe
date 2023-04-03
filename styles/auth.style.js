@@ -45,9 +45,9 @@ export const Center = styled.div`
         margin-bottom: 20px;
         font-weight: 500;
     }
-    ${breakpoints.md} {
-        padding: 15px;
-    }
+    // ${breakpoints.md} {
+    //     padding: 15px;
+    // }
 `;
 export const Wrapper = styled.div`
     width: 98%;
@@ -68,19 +68,38 @@ export const FormWrapper = styled.div`
     min-width: 320px;
     padding-bottom: 30px;
     ${breakpoints.lg}{
-        width: 80%;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+        padding: 10%;
+        opacity: 0.95;
+    }
+    ${breakpoints.sm}{
+        padding: 10% 15px;
     }
 `;
+export const BanReg = styled.div`
+    display: flex;
+    width: 40%;
+`;
 export const BannerReg = styled.div`
-    width: 50%;
-    min-width: 50%;
-    max-width: 50%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 40%;
+    min-width: 40%;
+    max-width: 40%;
     background: url("/banner-3.png");
     background-size: cover;
     background-position: right;
     background-repeat: no-repeat;
     display: flex;
     height: 800px;
+    z-index: -10;
+    ${breakpoints.lg}{
+        min-width: 90%;
+    }
 `;
 export const FormHeader = styled.div`
     display: flex;
@@ -315,6 +334,19 @@ export const Bottom = styled.div`
         color: ${colors.primaryColor};
     }
 `;
+export const BottomP = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 80px 0 10px 0;
+    height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #667085;
+    ${breakpoints.md} {
+        justify-content: center;
+    }
+`;
 export const UploadContainer = styled.div`
     display: flex;
     padding: 10px 0;
@@ -339,6 +371,13 @@ export const ImagePreview = styled.div`
     padding: 10px;
     width: 100%;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+// Femi's Version
+export const AuthFlex = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;

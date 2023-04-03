@@ -5,13 +5,13 @@ import { useState } from 'react'
 import { CancelIcon, CheckIcon } from '../assets/svgIcons'
 import LandingLayout from '../layouts/landing.layout'
 import { ReviewCard, ReviewWrapper, UserCard, UserDetails, UserImage, WrapperFive } from '../styles/home.style'
-import { BillCard, BillContainer, BillRate, Bottom, HeroSectionOne, HeroSectionTwo, Outlilnes, Outline, PricingContainer, PricingContent, PricingItem, PricingListCont, PricingType, PricingWrapper, SocialLinks, Top, Wrapper } from '../styles/pricing.style'
+import { BillCard, TopBillCard, BillContainer, BillRate, Bottom, HeroSectionOne, HeroSectionTwo, Outlilnes, Outline, PricingContainer, PricingContent, PricingItem, PricingListCont, PricingType, PricingWrapper, SocialLinks, Top, Wrapper } from '../styles/pricing.style'
 import { Section, TopBanner } from '../styles/search.style'
 
 const Pricing = () => {
   const [isYearly, setIsYearly] = useState(true);
   return (
-    <div>
+    <>
         <Section>
             <TopBanner>
                 <h1>Drive sales from your most influential customers with Influenzit</h1>
@@ -38,9 +38,12 @@ const Pricing = () => {
                 </BillRate>
                 <BillContainer>
                     <BillCard>
-                        <p>Starter</p>
-                        <h1>Free</h1>
-                        <span>{isYearly ? "per year" : "per month"}</span>
+                        <TopBillCard>
+                            <p>Starter</p>
+                            <h1>Free</h1>
+                            <span>{isYearly ? "per year" : "per month"}</span>
+                            <a>Get Started</a>
+                        </TopBillCard>
                         <div>
                             <span>Access to 100 influencers</span>
                             <span>Influencer Statistics Summary</span>
@@ -54,9 +57,12 @@ const Pricing = () => {
                     </BillCard>
                     <BillCard isOdd>
                         <h3>MOST POPULAR</h3>
-                        <p>Business</p>
-                        <h1>{isYearly ? "₦20,000" : "₦2,000"}</h1>
-                        <span>{isYearly ? "per year" : "per month"}</span>
+                        <TopBillCard>
+                            <p style={{color: "#FFF"}}>Business</p>
+                            <h1 style={{color: "#FFF"}}>{isYearly ? "₦20,000" : "₦2,000"}</h1>
+                            <span>{isYearly ? "per year" : "per month"}</span>
+                            <a>Get Started</a>
+                        </TopBillCard>
                         <div>
                             <span>Access to 100 influencers</span>
                             <span>Influencer Statistics Summary</span>
@@ -69,9 +75,12 @@ const Pricing = () => {
                         </div>
                     </BillCard>
                     <BillCard>
-                        <p>GOLD</p>
-                        <h1>{isYearly ? "₦50,000" : "₦5,000"}</h1>
-                        <span>{isYearly ? "per year" : "per month"}</span>
+                        <TopBillCard>
+                            <p>GOLD</p>
+                            <h1>{isYearly ? "₦50,000" : "₦5,000"}</h1>
+                            <span>{isYearly ? "per year" : "per month"}</span>
+                            <a>Get Started</a>
+                        </TopBillCard>
                         <div>
                             <span>Access to 100 influencers</span>
                             <span>Influencer Statistics Summary</span>
@@ -133,7 +142,7 @@ const Pricing = () => {
                 </ReviewWrapper>
             </WrapperFive>
         </HeroSectionTwo>
-    </div>
+    </>
   )
 }
 Pricing.getLayout = (page) => (
