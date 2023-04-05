@@ -115,6 +115,7 @@ export const ProjectCard = styled.div`
     border: 1px solid #EAEAEB;
     border-radius: 16px;
     display: flex;
+    margin-bottom: 10px;
 `;
 export const  ProjectDetails = styled.div`
     display: flex;

@@ -167,7 +167,7 @@ const Campaigns = () => {
                 {
                   //============================= Tracker==========================
                 }
-                <div className="absolute h-[180px] z-[-1] w-[2px] bg-gray-300 left-8"></div>
+                <div className="absolute h-[70%] z-[-1]  w-[2px] bg-gray-300 left-8"></div>
                 {singlecampaign.milestones.length > 0 &&
                   singlecampaign.milestones.map((item, idx) => (
                     <div
@@ -192,6 +192,7 @@ const Campaigns = () => {
                           <button className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white">
                             Submit
                           </button>
+                        
                         </div>
                       </div>
                     </div>
