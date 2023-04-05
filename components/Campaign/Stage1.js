@@ -3,7 +3,16 @@ import Image from "next/image";
 import rightarrow from "../../assets/rightarrow.svg";
 import { toast } from "react-toastify";
 
-function Stage1({handleIncrement, handleDecrement, setCampaignName, campaignName, bId, setbId, description, setdescription}) {
+function Stage1({
+  handleIncrement,
+  handleDecrement,
+  setCampaignName,
+  campaignName,
+  bId,
+  setbId,
+  description,
+  setdescription,
+}) {
   return (
     <div>
       <p className="text-xs  text-primary-100">Step 1</p>
@@ -46,8 +55,7 @@ function Stage1({handleIncrement, handleDecrement, setCampaignName, campaignName
             setdescription(e.target.value);
           }}
           className="p-2 border outline-none rounded-md w-full resize-none"
-          placeholder="I'm a Product Designer based in Melbourne, Australia. I specialise in UX/UI design, brand strategy, and Webflow development.
-      "
+          placeholder=""
         ></textarea>
       </div>
       <div className="flex justify-end items-center mt-6 ">

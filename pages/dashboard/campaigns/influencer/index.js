@@ -56,11 +56,11 @@ const Campaigns = () => {
         ...prevState,
         {
           title: "",
-          description: "",
-          status: "",
+          description: "No description",
+          status: "Pending",
           amount: 0,
           currency: "NGN",
-          start_date: "",
+          start_date: "2022/11/20",
           end_date: "",
         },
       ];
@@ -138,6 +138,9 @@ const Campaigns = () => {
       })
       .catch((err) => {
         console.log(err.response);
+        toast.error(err.response.data.errors.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
         setLoading(false);
       });
   };
