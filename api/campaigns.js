@@ -15,6 +15,12 @@ export const getCampaignMilestones = (id) => {
 export const updateCampaignMilestone = (id, data, milestoneId) => {
     return axiosInstance().patch(`/campaigns/${id}/milestones/${milestoneId}`, data)
 }
+export const acceptCampaignMilestone = (id, milestoneId) => {
+    return axiosInstance().patch(`/campaigns/${id}/milestones/${milestoneId}/accept`)
+}
+export const rejectCampaignMilestone = (id, milestoneId) => {
+    return axiosInstance().patch(`/campaigns/${id}/milestones/${milestoneId}/dispute`)
+}
 export const updateCampaign = (id, data) => {
     return axiosInstance().patch(`/campaigns/${id}`, data,)
 }

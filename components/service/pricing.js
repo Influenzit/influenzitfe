@@ -154,7 +154,7 @@ function Pricing({
           <div key={idx} className="flex justify-between">
             <input
               type="text"
-              placeholder="Title of feature"
+              placeholder="Delivery Days"
               className="p-2 border outline-none rounded-md w-1/5"
               name="name"
               value={packages[currentPackagesIndex].features[idx].name}
@@ -165,7 +165,7 @@ function Pricing({
             <div className="flex space-x-3 w-[300px]">
               <input
                 type="number"
-                placeholder="Krystal Beauty"
+                placeholder="3"
                 className="p-2 border outline-none rounded-md w-full"
                 name="quantity"
                 value={packages[currentPackagesIndex].features[idx].quantity}

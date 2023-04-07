@@ -9,6 +9,7 @@ import {
   getCampaign,
   getCampaignMilestones,
   handleCreateCampaign,
+  updateCampaignMilestone,
 } from "../../../../api/campaigns";
 import { setLoading } from "../../../../app/reducers/status";
 import bold from "../../../../assets/campaign/bold.svg";
@@ -43,7 +44,6 @@ const Campaigns = () => {
   const [singlecampaignMilestones, setSingleCampaignMilestones] =
     useState(null);
   const { id } = router.query;
-
 
   const ratingChanged = (newRating) => {
     console.log(newRating);
@@ -85,6 +85,23 @@ const Campaigns = () => {
       .then((res) => {
         console.log(res);
         setSingleCampaignMilestones(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
+  const updateCampaignMilsestone = (status, campaignId) => {
+    const payload = {
+      status: status,
+    };
+    updateCampaignMilestone(id, payload, campaignId)
+      .then((res) => {
+        console.log(res);
+        toast.success("Milestone updated succesfully", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        handleGetSingleCampaign();
       })
       .catch((err) => {
         console.log(err.response);
@@ -189,10 +206,20 @@ const Campaigns = () => {
                           </div>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <button className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white">
-                            Submit
-                          </button>
-                        
+                         {item.status === "Reviewing" ?  <button
+                           
+                            className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#FEF0C7] text-[10px] text-white"
+                            disable
+                          >
+                            Pending review
+                          </button> : <button
+                          onClick={() => {
+                            updateCampaignMilsestone("Reviewing", item.id);
+                          }}
+                          className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white"
+                        >
+                          Submit
+                        </button>}
                         </div>
                       </div>
                     </div>
