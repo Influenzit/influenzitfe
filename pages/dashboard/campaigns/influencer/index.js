@@ -36,7 +36,7 @@ const Campaigns = () => {
     {
       title: "",
       description: "No description",
-      status: "Pending",
+      status: "Ongoing",
       amount: 0,
       currency: "NGN",
       start_date: "2022/11/20",
@@ -57,7 +57,7 @@ const Campaigns = () => {
         {
           title: "",
           description: "No description",
-          status: "Pending",
+          status: "Ongoing",
           amount: 0,
           currency: "NGN",
           start_date: "2022/11/20",

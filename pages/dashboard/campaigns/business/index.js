@@ -5,24 +5,25 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getCampaign, getCampaigns } from "../../../api/campaigns";
-import { setLoading } from "../../../app/reducers/status";
-import { ChevronLeft, ChevronRight } from "../../../assets/svgIcons";
-import avatar1 from "../../../assets/campaign/avatar1.svg";
-import Stage1 from "../../../components/Campaign/Stage1";
-import Stage2 from "../../../components/Campaign/Stage2";
-import Stage3 from "../../../components/Campaign/Stage3";
-import LandingLayout from "../../../layouts/landing.layout";
+import { getCampaign, getCampaigns } from "../../../../api/campaigns";
+import { setLoading } from "../../../../app/reducers/status";
+import { ChevronLeft, ChevronRight } from "../../../../assets/svgIcons";
+import avatar1 from "../../../../assets/campaign/avatar1.svg";
+import Stage1 from "../../../../components/Campaign/Stage1";
+import Stage2 from "../../../../components/Campaign/Stage2";
+import Stage3 from "../../../../components/Campaign/Stage3";
+import LandingLayout from "../../../../layouts/landing.layout";
 
-import cancel from "./../../../assets/close.svg";
-import instagram from "./../../../assets/instagram.svg";
-import twitter from "./../../../assets/twitter.svg";
-import tiktok from "./../../../assets/tiktok.svg";
-import facebook from "./../../../assets/facebook.svg";
-import youtube from "./../../../assets/youtube.svg";
+import cancel from "./../../../../assets/close.svg";
+import instagram from "./../../../../assets/instagram.svg";
+import twitter from "./../../../../assets/twitter.svg";
+import tiktok from "./../../../../assets/tiktok.svg";
+import facebook from "./../../../../assets/facebook.svg";
+import youtube from "./../../../../assets/youtube.svg";
 import ReactStars from "react-rating-stars-component";
 import Link from "next/link";
-import { axiosInstance } from "../../../api/axios";
+import { axiosInstance } from "../../../../api/axios";
+import Loader from '../../../../components/UI/Loader';
 
 const Campaigns = () => {
   const router = useRouter();
@@ -32,7 +33,6 @@ const Campaigns = () => {
   const [step, setstep] = useState(1);
   const [currentValue, setcurrentValue] = useState(4);
   const [campaignList, setCampaignList] = useState(null);
-
 
   const ratingChanged = (newRating) => {
     console.log(newRating);
@@ -100,7 +100,7 @@ const Campaigns = () => {
                       {platform.map((img) => (
                         <div key={img}>
                           <Image
-                            src={require(`./../../../assets/${img}.svg`)}
+                            src={require(`./../../../../assets/${img}.svg`)}
                             alt={img}
                             className="h-5 w-5 rounded-lg"
                           />
@@ -121,12 +121,10 @@ const Campaigns = () => {
                   </div>
                 </div>
                 <div className="col-span-7 py-5 border-x px-10 flex flex-col space-y-2 h-auto">
-                  <Link href={`/dashboard/campaigns/${item.id}`}>
+                  <Link href={`/dashboard/campaigns/business/${item.id}`}>
                     <h1> {item.title} </h1>
                   </Link>
-                  <p className="text-gray-400 text-sm">
-                    {item.description}
-                  </p>
+                  <p className="text-gray-400 text-sm">{item.description}</p>
                 </div>
                 <div className="col-span-2 py-5 flex flex-col space-y-2 px-6">
                   <p className="text-xs font-medium">STATUS</p>
@@ -153,7 +151,7 @@ const Campaigns = () => {
             ))}
           </div>
         ) : (
-          <div>Loading...</div>
+          <Loader />
         )}
       </div>
     </div>

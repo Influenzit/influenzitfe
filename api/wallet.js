@@ -1,7 +1,7 @@
 import { axiosInstance } from "./axios";
 
 export const getWallet = (url) => {
-    return axiosInstance().get(url ? url : "/wallets");
+    return axiosInstance().get("/wallets/summary");
 }
 export const getWalletTransactions = () => {
     return axiosInstance().get("/wallets/transactions");

@@ -73,16 +73,19 @@ function Faq({
                 </label>
               </div>
               <div>
-                <input
-                  type="text"
-                  placeholder="Krystal Beauty"
-                  className="p-2 border outline-none rounded-md w-full"
-                  name="answer"
-                  value={faqs[id].answer}
-                  onChange={(e) => {
-                    handleFaqinput(e, id);
-                  }}
-                />
+              <textarea
+              id=""
+              cols="30"
+              rows="10"
+              placeholder="Krystal Beauty is ......."
+              className="p-2 border outline-none rounded-md w-full"
+              name="answer"
+              value={faqs[id].answer}
+              onChange={(e) => {
+                handleFaqinput(e, id);
+              }}
+            ></textarea>
+              
               </div>
               {id !== 0 && (
                 <div className="flex justify-end">

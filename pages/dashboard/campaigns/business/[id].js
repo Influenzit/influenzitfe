@@ -5,27 +5,27 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getCampaign, updateCampaignMilestone } from "../../../api/campaigns";
-import { setLoading } from "../../../app/reducers/status";
-import { ChevronLeft, ChevronRight } from "../../../assets/svgIcons";
-import bold from "../../../assets/campaign/bold.svg";
-import italics from "../../../assets/campaign/italics.svg";
-import link from "../../../assets/campaign/link.svg";
-import listdot from "../../../assets/campaign/listdot.svg";
-import listnumeral from "../../../assets/campaign/listnumeral.svg";
-import send from "../../../assets/campaign/send.svg";
-import lock from "../../../assets/campaign/lock.svg";
-import checkmark from "../../../assets/campaign/checkmark.svg";
-import reject from "../../../assets/campaign/cancel.svg";
+import { acceptCampaignMilestone, rejectCampaignMilestone, getCampaign } from "../../../../api/campaigns";
+import { setLoading } from "../../../../app/reducers/status";
+import { ChevronLeft, ChevronRight } from "../../../../assets/svgIcons";
+import bold from "../../../../assets/campaign/bold.svg";
+import italics from "../../../../assets/campaign/italics.svg";
+import link from "../../../../assets/campaign/link.svg";
+import listdot from "../../../../assets/campaign/listdot.svg";
+import listnumeral from "../../../../assets/campaign/listnumeral.svg";
+import send from "../../../../assets/campaign/send.svg";
+import lock from "../../../../assets/campaign/lock.svg";
+import checkmark from "../../../../assets/campaign/checkmark.svg";
+import reject from "../../../../assets/campaign/cancel.svg";
 
-import RejectModal from "../../../components/Campaign/rejectModal";
-import LandingLayout from "../../../layouts/landing.layout";
+import RejectModal from "../../../../components/Campaign/rejectModal";
+import LandingLayout from "../../../../layouts/landing.layout";
 
-import cancel from "./../../../assets/close.svg";
-import chatlady from "./../../../assets/campaign/chatlady.svg";
+import cancel from "./../../../../assets/close.svg";
+import chatlady from "./../../../../assets/campaign/chatlady.svg";
 
 import ReactStars from "react-rating-stars-component";
-import Review from "../../../components/Campaign/Review";
+import Review from "../../../../components/Campaign/Review";
 import moment from "moment";
 
 const Campaigns = () => {
@@ -67,8 +67,8 @@ const Campaigns = () => {
     const payload = {
       status: status,
     };
-    console.log(id, payload, campaignId);
-    updateCampaignMilestone(id, payload, campaignId)
+    if(status === "accept"){
+      acceptCampaignMilestone(id, campaignId)
       .then((res) => {
         console.log(res);
         toast.success("Milestone updated succesfully", {
@@ -79,6 +79,20 @@ const Campaigns = () => {
       .catch((err) => {
         console.log(err.response);
       });
+    }else{
+      rejectCampaignMilestone(id, campaignId)
+      .then((res) => {
+        console.log(res);
+        toast.success("Milestone updated succesfully", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        handleGetSingleCampaign();
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+    }
+ 
   };
   const ratingChanged = (newRating) => {
     console.log(newRating);
@@ -188,11 +202,11 @@ const Campaigns = () => {
                             </p>
                           </div>
                         </div>
-                        {item.status === "Pending" && (
+                        {item.status === "Reviewing" && (
                           <div className="flex items-center space-x-2">
                             <button
                               onClick={() => {
-                                updateCampaignMilsestone("Completed", item.id);
+                                updateCampaignMilsestone("accept", item.id);
                               }}
                               className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white"
                             >
@@ -200,7 +214,7 @@ const Campaigns = () => {
                             </button>
                             <button
                               onClick={() => {
-                                updateCampaignMilsestone("Disputed", item.id);
+                                updateCampaignMilsestone("dispute", item.id);
                               }}
                               className="mx-2 rounded-lg py-1 px-2  h-auto bg-primary-100 text-[10px] text-white"
                             >

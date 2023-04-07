@@ -371,7 +371,7 @@ const Services = () => {
                 </div>
               </div>
             ))}
-          <div className="service-card-add grid place-content-center">
+          <div className="service-card-add grid place-content-center h-[4star00px]">
             <button
               onClick={() => {
                 setisServiceModalOpen(!isServiceModalOpen);
