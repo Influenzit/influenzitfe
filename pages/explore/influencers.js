@@ -39,7 +39,7 @@ const Search = () => {
         <Container>
             <Section>
                 <TopBanner>
-                    <h1>Find Inflencers</h1>
+                    <h1>Find Influencers</h1>
                     <form>
                         <CustomSelect borderLeft>
                             <label>Platform</label>

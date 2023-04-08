@@ -90,7 +90,7 @@ const BusinessWaitlist = () => {
   return (
     <Container style={{ paddingTop: "0" }}>
         <FBanner>
-          <Image src="/influenzit.svg" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
+          <Image src="/influenzit_logo.png" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
           <h1>Be the First to Know When Influenzit Launches and Get 6 Months of Free Access to the Ultimate Influencer Marketing Solution!</h1>
         </FBanner>
         <ImageBanner>

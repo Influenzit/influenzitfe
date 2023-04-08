@@ -41,9 +41,7 @@ const Home = () => {
     },
     {
       question: "How do I measure the success of my campaigns on Influenzit?",
-      answer: `Influenzit offers data reporting that allows you to measure the success of your campaigns and make informed decisions about future collaborations. You can track metrics such as engagement, reach, and conversions.  
-          Don't miss out on the opportunity to monetize your influence and connect with the right brands and campaigns. Sign up for early access to Influenzit today and be among the first to experience our unique platform.
-          `,
+      answer: `Influenzit offers data reporting that allows you to measure the success of your campaigns and make informed decisions about future collaborations. You can track metrics such as engagement, reach, and conversions.  Don't miss out on the opportunity to monetize your influence and connect with the right brands and campaigns. Sign up for early access to Influenzit today and be among the first to experience our unique platform.`,
     },
   ];
   const { data, refetch } = useQuery(["get-niche"], async () => {
@@ -61,8 +59,8 @@ const Home = () => {
     <div>
       <HeroSectionOne>
         <WrapperOne>
-          <h1>Find the Perfect <span>Influencer</span> for your Business with just a Few Clicks</h1>
-          <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+          <h1>We Connect <span>Influencers</span>, <span>Business Owners</span> and <span>Creators</span></h1>
+          <p>The number one Influencer marketing Platform For Business Owners, Influencers and Creators</p>
           <form>
             <FormDivide>
             <CustomSelect borderLeft>
@@ -107,8 +105,8 @@ const Home = () => {
           <InfoCardM>
               <Info>
                 <span>SEARCH INFLUENCERS</span>
-                <h1>Find the right influencer for your business needs</h1>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <h1>Find the right influencer for your marketing campaign</h1>
+                <p>Unlock the power of influencer marketing, and take your brand to new heights. We have result-driven and perfect influencers to promote your products and services to drive actual results.</p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>

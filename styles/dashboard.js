@@ -107,6 +107,39 @@ export const EmptyCard = styled.div`
         column-gap: 5px;
     }
 `;
+export const AEmptyCard = styled.div`
+    display: flex;
+    align-items: center;
+    background:linear-gradient(125.93deg, #F0C3C9 0%, #FDF8F1 90.11%);
+    padding: 24px;
+    border: 1px solid #EAEAEB;
+    justify-content: space-between;
+    border-radius: 16px;
+    row-gap: 15px;
+    h2 {
+        font-weight: 600;
+        font-size: 30px;
+        color: ${colors.textColor};
+    }
+    p {
+        color: #555461;
+        line-height: 24px;
+        margin-bottom: 30px;
+        max-width: 500px;
+    }
+    a {
+        border-radius: 8px;
+        background: ${colors.primaryColor};
+        color: #fff;
+        font-weight: 500;
+        font-size: 14px;
+        padding: 12px 20px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        column-gap: 5px;
+    }
+`;
 export const List = styled.div`
 `;
 export const ProjectCard = styled.div`

@@ -6,7 +6,7 @@ import { getUser } from '../../app/reducers/user'
 import { BagIcon, ChevronLeft, ChevronRight, HashTagIcon, SettingsIcon, WalletIcon } from '../../assets/svgIcons'
 import LandingLayout from '../../layouts/landing.layout'
 import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, WelcomeModal, Wrapper } from '../../styles/connect-pages.style'
-import { BizCard, CampaignCard, Card, CardsWrapper, ChartContainer, EmptyCard, List, ListingWrapper, ProjectCard, ProjectDetails, Status, UserMiniCard, WelcomeHeading } from '../../styles/dashboard'
+import { AEmptyCard, BizCard, CampaignCard, Card, CardsWrapper, ChartContainer, EmptyCard, List, ListingWrapper, ProjectCard, ProjectDetails, Status, UserMiniCard, WelcomeHeading } from '../../styles/dashboard'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useQuery } from '@tanstack/react-query'
 import { getCampaigns } from '../../api/campaigns'
@@ -210,10 +210,18 @@ const Dashboard = () => {
                                }
                             </List>
                         ) : (
-                            <EmptyCard>
-                                <Image src="/empty-list.svg" alt="" height={150} width={150}/>
-                                <h3>You currently have no active campaigns</h3>
-                            </EmptyCard>
+                            <AEmptyCard>
+                                <div>
+                                    <h2>Launch your first campaign</h2>
+                                    <p>Find the right influencers with correct metrics, keep track of your campaign performance and complete payments seamlessly.</p>
+                                    <Link href="/" passHref>
+                                        <a>
+                                            <span>Create Campaign</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
+                                        </a>
+                                    </Link>
+                                </div>
+                                <Image src="/empty-p.png" alt="" height={150} width={250}/>
+                            </AEmptyCard>
                         )
                     }
                 </ListingWrapper>
@@ -268,14 +276,18 @@ const Dashboard = () => {
                                }
                             </List>
                         ) : (
-                            <EmptyCard>
-                                <h3>You currently have no active campaigns</h3>
-                                <Link href="/" passHref>
-                                    <a>
-                                        <span>Find Influencers</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
-                                    </a>
-                                </Link>
-                            </EmptyCard>
+                            <AEmptyCard>
+                                <div>
+                                    <h2>Launch your first Campaign</h2>
+                                    <p>Find the right influencers with correct metrics, keep track of your campaign performance and complete payments seamlessly.</p>
+                                    <Link href="/" passHref>
+                                        <a>
+                                            <span>Find Campaign</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
+                                        </a>
+                                    </Link>
+                                </div>
+                                <Image src="/empty-p.png" alt="" height={190} width={290}/>
+                            </AEmptyCard>
                         )
                     }
                 </ListingWrapper>
@@ -378,14 +390,18 @@ const Dashboard = () => {
                                 }
                             </List>
                         ) : (
-                            <EmptyCard>
-                                <h3>You currently have no active campaigns</h3>
-                                <Link href="/" passHref>
-                                    <a>
-                                        <span>Find Influencers</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
-                                    </a>
-                                </Link>
-                            </EmptyCard>
+                            <AEmptyCard>
+                                <div>
+                                    <h2>Launch your first project</h2>
+                                    <p>Find the right influencers with correct metrics, keep track of your campaign performance and complete payments seamlessly.</p>
+                                    <Link href="/" passHref>
+                                        <a>
+                                            <span>Find Creators</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
+                                        </a>
+                                    </Link>
+                                </div>
+                                <Image src="/empty-p.png" alt="" height={190} width={290}/>
+                            </AEmptyCard>
                         )
                     }
                 </ListingWrapper>
