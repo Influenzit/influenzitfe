@@ -3,8 +3,8 @@ import { useState } from "react";
 import Image from "next/image";
 import remove from "../../assets/remove.svg";
 import rightarrow from "../../assets/rightarrow.svg";
-import Loader from '../UI/Loader';
-import { toast } from 'react-toastify';
+import Loader from "../UI/Loader";
+import { toast } from "react-toastify";
 
 function Pricing({
   handleDecrement,
@@ -17,18 +17,20 @@ function Pricing({
   handleFormInput,
   handleFormFeatureInput,
   handleServiceCreation,
-  loading
+  loading,
 }) {
   function validateArray(array) {
     for (let i = 0; i < array.length; i++) {
       const item = array[i];
-      if (
-        item.description === "" ||
-        item.amount === "" ||
-        item.name === "" ||
-        item.features.some((f) => f.name === "" || f.quantity === "")
-      ) {
-        return false;
+      if (item.name) {
+        if (
+          item.description === "" ||
+          item.amount === "" ||
+          item.name === "" ||
+          item.features.some((f) => f.name === "" || f.quantity === "")
+        ) {
+          return false;
+        }
       }
     }
     return true;

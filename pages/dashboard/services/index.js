@@ -225,21 +225,44 @@ const Services = () => {
   };
 
   const handleServiceCreation = () => {
+    let activePackages = [];
+    for (let i = 0; i < packages.length; i++) {
+      // push complete packages into activePackages
+      const item = packages[i];
+      if (item.name) {
+        if (
+          item.description !== "" ||
+          item.amount !== "" ||
+          item.name !== "" ||
+          item.features.some((f) => f.name !== "" || f.quantity !== "")
+        ) {
+          activePackages.push(item);
+        }
+      }
+    }
+    if (activePackages.length === 0) {
+      // if no active packages
+      toast.error("Atleast one package is required", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
     setloading(true);
+
     const payload = {
       name: title,
       description,
-      type: "campaign",
+      type: "project",
       price: +price,
       currency: "NGN",
       is_negotiable: true,
       link: "http://johndoe.myname.com/services/social-media",
-      packages: packages,
+      packages: activePackages,
     };
     createServices(payload)
       .then((res) => {
         console.log(res.data.data);
-        setCurrentPackageId(res.data.data.id);
+        setCurrentPackageId(res.data.data.id); // save current ServiceId upon creation , so as to update the service with other features to fill
         setloading(false);
 
         handleIncrement();
@@ -371,7 +394,7 @@ const Services = () => {
                 </div>
               </div>
             ))}
-          <div className="service-card-add grid place-content-center h-[4star00px]">
+          <div className="service-card-add grid place-content-center h-[400px]">
             <button
               onClick={() => {
                 setisServiceModalOpen(!isServiceModalOpen);
