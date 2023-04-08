@@ -382,3 +382,7 @@ export const AuthFlex = styled.div`
     align-items: center;
     justify-content: center;
 `;
+export const ErrorMessageCont = styled.p`
+    font-size: 14px;
+    color: red !important;
+`;
