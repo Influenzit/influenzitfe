@@ -317,6 +317,7 @@ export const AccessCardT = styled.div`
     iframe {
         width: 100%;
         height: 500px;
+        min-width: 550px;
         outline: none;
         border: none;
     }
