@@ -192,9 +192,15 @@ export const TabBtn = styled.button`
     }
 `;
 export const Content = styled.div`
-    margin-top: 15px;
+    margin-top: 5px;
     height: calc(100% - 65px);
     padding: 15px 0;
+    h3 {
+        font-weight: 600;
+        font-size: 20px;
+        color: ${colors.textColor};
+        margin: 10px 0 16px 0;
+    }
 `;
 export const PostWrapper = styled.div`
     display: flex;
@@ -279,3 +285,114 @@ export const EmptyWrapper = styled.div`
         font-weight: 600;
     }
 `;
+export const AnalyticChart = styled.div`
+`;
+export const AnalyticStats = styled.div`
+    background: #FFFFFF;
+    border: 1px solid rgba(42, 41, 57, 0.1);
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+`;
+export const Stat = styled.div`
+    width: calc(100%/3);
+    text-align: center;
+    ${({isCenter}) => isCenter && "border-right: 1px solid rgba(42, 41, 57, 0.1);"}
+    ${({isCenter}) => isCenter && "border-left: 1px solid rgba(42, 41, 57, 0.1);"}
+    h1 {
+        color: ${colors.textColor};
+        font-weight: 700;
+        line-height: 120%;
+        font-size: 40px;
+    }
+    p {
+        color: #2A293980;
+        font-size: 14px;
+    }
+`;
+export const PerformanceCont = styled.div`
+    display: flex;
+    flex-direction: column;
+    row-gap: 18px;
+`;
+export const Flex = styled.div`
+    display: flex;
+    column-gap: 24px;
+`;
+export const EngagementCard = styled.div`
+    background: #FFFFFF;
+    border: 1px solid rgba(42, 41, 57, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    width: calc(50% - 12px);
+    max-width: calc(50% - 12px);
+    h3 {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+        margin: 0;
+    }
+    h1 {
+        font-weight: 700;
+        font-size: 50px;
+        line-height: 100%;
+        color: ${colors.textColor};
+    }
+    #wrapper {
+        display: flex;
+        align-items: end;
+        column-gap: 10px;
+        margin-top: 20px;
+        p {
+            color: #2151EC;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        span {
+            font-size: 12px;
+        }
+        div{
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: baseline;
+        }
+    }
+`;
+export const StatsCard = styled.div`
+    background: #FFFFFF;
+    border: 1px solid rgba(42, 41, 57, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    width: calc(50% - 12px);
+    max-width: calc(50% - 12px);
+    h3 {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+        margin: 0;
+    }
+    h1 {
+        font-weight: 700;
+        font-size: 50px;
+        line-height: 100%;
+        color: ${colors.textColor};
+    }
+    div {
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+        margin-top: 20px;
+        span {
+            height: 56px;
+            width: 56px;
+            background: #EAEAEB;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+`;
+
