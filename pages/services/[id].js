@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
 import LandingLayout from '../../layouts/landing.layout'
-import { Container, DetailTab, LeftControl, RightControl, TopTabContainer, Wrapper, ContainerB, Left, Section, CurrentPosition, ImageSlides, CtrlBtn, Images, Header, Desc, SectionM, ProfileCard, ImageWrapper, ProfileDetails, Stars, FaqWrapper, FaqCont, FaqQuest, FaqAns, ReviewWrapper, Review, ReviewL, ReviewImg, ReviewR, ReviewMsg, Right, PackageCard, PackageTabs, PackageTab, Package, PHead, PDetails, PFeatures, Feature, ContinueBtn, WrapperT, AboutWrapper, Bio, RCountry } from '../../styles/service.style'
+import { Container, DetailTab, LeftControl, RightControl, TopTabContainer, Wrapper, ContainerB, Left, Section, CurrentPosition, ImageSlides, CtrlBtn, Images, Header, Desc, SectionM, ProfileCard, ImageWrapper, ProfileDetails, Stars, FaqWrapper, FaqCont, FaqQuest, FaqAns, ReviewWrapper, Review, ReviewL, ReviewImg, ReviewR, ReviewMsg, Right, PackageCard, PackageTabs, PackageTab, Package, PHead, PDetails, PFeatures, Feature, ContinueBtn, WrapperT, AboutWrapper, Bio, RCountry, PDescription, MessageBtn, QAction, WAction } from '../../styles/service.style'
 import heartIcon from '../../assets/heart.svg';
 import shareIcon from '../../assets/share.svg';
 import chevLeftIcon from '../../assets/chev-left.svg';
@@ -229,40 +229,40 @@ const ServiceView = () => {
   return (
     <Container>
         <Wrapper>
-            <ImageSlides>
-                {
-                    inData?.media && (
-                        <Slider 
-                            dots={false}
-                            infinite={true}
-                            speed={500}
-                            slidesToShow={1}
-                            slidesToScroll={1}
-                            prevArrow={<PrevArrow />}
-                            nextArrow={<NextArrow />}
-                        > 
-                            {
-                                inData?.media.map((val, i) => {
-                                    return (
-                                        <Images key={i}>
-                                            <Image src={val.url} layout='fill' objectFit='cover' objectPosition='center' quality={100} />
-                                        </Images>
-                                    )
-                                })
-                            }
-                            {
-                                (inData?.media.length === 0) && (
-                                    <Images>
-                                        <Image src={"/web-services.jpg"} layout='fill' objectFit='cover' objectPosition='center' quality={100} />
-                                    </Images>
-                                ) 
-                            }
-                        </Slider>
-                    )
-                }
-            </ImageSlides>
             <ContainerB>
                 <Left>
+                    <ImageSlides>
+                        {
+                            inData?.media && (
+                                <Slider 
+                                    dots={false}
+                                    infinite={true}
+                                    speed={500}
+                                    slidesToShow={1}
+                                    slidesToScroll={1}
+                                    prevArrow={<PrevArrow />}
+                                    nextArrow={<NextArrow />}
+                                > 
+                                    {
+                                        inData?.media.map((val, i) => {
+                                            return (
+                                                <Images key={i}>
+                                                    <Image src={val.url} layout='fill' objectFit='cover' objectPosition='center' quality={100} />
+                                                </Images>
+                                            )
+                                        })
+                                    }
+                                    {
+                                        (inData?.media.length === 0) && (
+                                            <Images>
+                                                <Image src={"/web-services.jpg"} layout='fill' objectFit='cover' objectPosition='center' quality={100} />
+                                            </Images>
+                                        ) 
+                                    }
+                                </Slider>
+                            )
+                        }
+                    </ImageSlides>
                     <Section>
                         <h2>{inData?.name}</h2>
                         <Desc>
@@ -291,7 +291,13 @@ const ServiceView = () => {
                                         </div>
                                     </ProfileDetails>
                                 </div>
-                                <Link href={`/influencers/${inData?.user?.account?.id}`}>View profile</Link>
+                                <WAction>
+                                    <Link href={`/influencers/${inData?.user?.account?.id}`}>View profile</Link>
+                                    <QAction>
+                                        <button><Image src="/share.svg" alt="" width={18} height={15}/> <span>Share</span></button>
+                                        <button><Image src="/bookmarkn.svg" alt="" width={18} height={15}/> <span>Save</span></button>
+                                    </QAction>
+                                </WAction>
                             </ProfileCard>
                             <Bio>
                                 {inData?.user?.biography}
@@ -332,19 +338,23 @@ const ServiceView = () => {
                         </PackageTabs>
                         <Package>
                             <PHead>
+                                <span>{packageType}</span>
                                 <p>{getCurrentPackage()?.currency} {moneyStandard(getCurrentPackage()?.amount ?? 0)}</p>
                             </PHead>
+                            <PDescription>
+                                {getCurrentPackage()?.description}
+                            </PDescription>
                             <PFeatures>
                                 {
                                     getCurrentPackage()?.features.map((feature, i) => (
                                         <Feature key={i}>
-                                            <Image src="/dot.svg" alt="" width={5} height={5}/>
                                             <p>{feature.name}</p>
                                         </Feature>
                                     ))
                                 }
                             </PFeatures>
                             <ContinueBtn onClick={handleCreatePaymentLog}><span>Continue</span> <Image src="/arrow-w.svg" alt="" width={12} height={11}/></ContinueBtn>
+                            <MessageBtn onClick={handleCreatePaymentLog}><Image src="/envelope-p.svg" alt="" width={18} height={15}/> <span>Message</span></MessageBtn>
                         </Package>
                     </PackageCard>
                 </Right>

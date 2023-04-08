@@ -232,6 +232,12 @@ export const IframeWrapper = styled.div`
         left: -78px;
     }
 `;
+export const IframeWrapperT = styled.div`
+    ${breakpoints.md} {
+        transform: scale(0.6);
+        position: relative;
+    }
+`;
 export const FBanner = styled.div`
     background: #FCF5EB;
     display: flex;
@@ -265,6 +271,7 @@ export const AccessCardT = styled.div`
     align-items: center;
     color: #fff;
     flex-direction: column;
+    align-items: center;
     text-align: center;
     p {
         width: 70%;
@@ -321,6 +328,10 @@ export const AccessCardT = styled.div`
         }
         form {
             border: 1px solid rgba(42, 41, 57, 0.1);
+        }
+
+        iframe {
+            min-width: 550px;
         }
     }
 `;

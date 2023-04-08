@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import { createWaitlist } from '../api/waitlist'
 import { isLoading, setLoading } from '../app/reducers/status'
 import { Answer, Faq, FaqWrapper, Question, WrapperSix } from '../styles/home.style'
-import { AccessCard, AccessCardT, Banner, CardLayer, Container, Details, FBanner, ImageBanner, ImgContainer, Info, Wrapper } from '../styles/waitlist.style'
+import { AccessCard, AccessCardT, Banner, CardLayer, Container, Details, FBanner, IframeWrapper, IframeWrapperT, ImageBanner, ImgContainer, Info, Wrapper } from '../styles/waitlist.style'
 import { useMutation } from '@tanstack/react-query'
 import Loader from '../components/loading'
 
@@ -114,8 +114,10 @@ const BusinessWaitlist = () => {
         <AccessCardT>
                 <p>Join our waitlist today to be the first to know when we launch. As a thank you for your interest, you will receive 6 months of free use without paying any commission when you sign up. Don&apos;t miss out on this exclusive opportunity to take your business to the next level with Influenzit.</p>
                 <h4>Sign up now and be a part of the future of influencer marketing.</h4>
-                <iframe src='https://cdn.forms-content.sg-form.com/6cee0834-c26a-11ed-90af-f2e097933c84'>
-                </iframe>
+                <IframeWrapperT>
+                  <iframe src='https://cdn.forms-content.sg-form.com/0843c3b7-d63d-11ed-b682-ca7e906127bd'>
+                  </iframe>
+                </IframeWrapperT>
         </AccessCardT>
         <WrapperSix>
             <h1>Frequently asked questions</h1>
