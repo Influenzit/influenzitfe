@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useMutation } from "@tanstack/react-query"
-import { BannerReg, BanReg, Bottom, BottomP, Center, Container, FacebookBtn, FlexInput, FormFields, FormHeader, FormWrapper, GoogleBtn, Input, InputContainer, SocialIcon, SocialLogin, SubmitButton, Wrapper, AuthFlex } from '../../styles/auth.style'
+import { BannerReg, BanReg, Bottom, BottomP, Center, Container, FacebookBtn, FlexInput, FormFields, FormHeader, FormWrapper, GoogleBtn, Input, InputContainer, SocialIcon, SocialLogin, SubmitButton, Wrapper, AuthFlex, ErrorMessageCont } from '../../styles/auth.style'
 import { createAccount, socialLogin } from '../../api/auth';
 import { setError, setLoading, setUserType } from '../../app/reducers/status';
 import { useDispatch } from 'react-redux';
@@ -23,7 +23,9 @@ const Register = () => {
     password_confirmation: "",
     account_type: "Business",
     business_name: ""
-  })
+  });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
   const dispatch = useDispatch();
   const mutation = useMutation(userData => {
     return createAccount(userData);
@@ -125,15 +127,26 @@ const Register = () => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(setLoading(true));
-    mutation.mutate({
-        firstname: formVal.firstname,
-        lastname: formVal.lastname,
-        email: formVal.email,
-        password: formVal.password,
-        password_confirmation: formVal.password_confirmation,
-        account_type: formVal.account_type,
-    })
+    setIsError(false);
+    if (formVal.password.length < 8) {
+      setIsError(true);
+      setErrorMessage("Password must be greater than 8");
+      return
+    } else if (formVal.password !== formVal.password_confirmation) {
+      setIsError(true);
+      setErrorMessage("Password must be equal");
+      return
+    } else {
+      dispatch(setLoading(true));
+      mutation.mutate({
+          firstname: formVal.firstname,
+          lastname: formVal.lastname,
+          email: formVal.email,
+          password: formVal.password,
+          password_confirmation: formVal.password_confirmation,
+          account_type: formVal.account_type,
+      })
+    }
   }
   if (mutation.isLoading) dispatch(setLoading(true));
   return (
@@ -327,6 +340,9 @@ const Register = () => {
                 required
                 />
               </InputContainer>
+              {
+                isError && <ErrorMessageCont>{errorMessage}</ErrorMessageCont>
+              }
               <SubmitButton type="submit">Register</SubmitButton>
               <SocialLogin>
                 <GoogleBtn onClick={googleLogin}>
