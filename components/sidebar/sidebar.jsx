@@ -65,7 +65,7 @@ const Sidebar = () => {
                 : "/dashboard/campaigns/influencer"
             )
           }
-          isActive={router.pathname === "/dashboard/campaigns"}
+          isActive={router.pathname.includes("campaigns")}
         >
           <HashTagIcon />
           <span>Campaigns</span>
@@ -90,7 +90,7 @@ const Sidebar = () => {
       {(currentUserType === "Influencer" || currentUserType === "Creator") && (
         <NavButton
           onClick={() => router.push("/dashboard/services")}
-          isActive={router.pathname.includes("/dashboard/profile/services")}
+          isActive={router.pathname.includes("services")}
         >
           <BagIcon />
           <span>Services</span>

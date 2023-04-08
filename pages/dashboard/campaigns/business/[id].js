@@ -5,7 +5,11 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { acceptCampaignMilestone, rejectCampaignMilestone, getCampaign } from "../../../../api/campaigns";
+import {
+  acceptCampaignMilestone,
+  rejectCampaignMilestone,
+  getCampaign,
+} from "../../../../api/campaigns";
 import { setLoading } from "../../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../../assets/svgIcons";
 import bold from "../../../../assets/campaign/bold.svg";
@@ -23,6 +27,7 @@ import LandingLayout from "../../../../layouts/landing.layout";
 
 import cancel from "./../../../../assets/close.svg";
 import chatlady from "./../../../../assets/campaign/chatlady.svg";
+import { toast } from "react-toastify";
 
 import ReactStars from "react-rating-stars-component";
 import Review from "../../../../components/Campaign/Review";
@@ -67,32 +72,31 @@ const Campaigns = () => {
     const payload = {
       status: status,
     };
-    if(status === "accept"){
+    if (status === "accept") {
       acceptCampaignMilestone(id, campaignId)
-      .then((res) => {
-        console.log(res);
-        toast.success("Milestone updated succesfully", {
-          position: toast.POSITION.TOP_RIGHT,
+        .then((res) => {
+          console.log(res);
+          toast.success("Milestone updated succesfully", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          handleGetSingleCampaign();
+        })
+        .catch((err) => {
+          console.log(err.response);
         });
-        handleGetSingleCampaign();
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-    }else{
+    } else {
       rejectCampaignMilestone(id, campaignId)
-      .then((res) => {
-        console.log(res);
-        toast.success("Milestone updated succesfully", {
-          position: toast.POSITION.TOP_RIGHT,
+        .then((res) => {
+          console.log(res);
+          toast.success("Milestone updated succesfully", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          handleGetSingleCampaign();
+        })
+        .catch((err) => {
+          console.log(err.response);
         });
-        handleGetSingleCampaign();
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
     }
- 
   };
   const ratingChanged = (newRating) => {
     console.log(newRating);

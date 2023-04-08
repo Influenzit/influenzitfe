@@ -16,15 +16,14 @@ function Preview() {
     singleService !== null ? singleService.packages[0] : null
   );
   const [state, setstate] = useState(0);
-
   const { id } = router.query;
 
   const handleGetSingleService = () => {
-    getService(id)
+    getService(parseInt(id)) //
       .then((res) => {
         console.log(res);
         setSingleService(res.data.data);
-        setpackageBody(res.data.data.packages[0])
+        setpackageBody(res.data.data.packages[0]);
       })
       .catch((err) => {
         console.log(err.response);
@@ -32,6 +31,7 @@ function Preview() {
   };
 
   useEffect(() => {
+    console.log(id);
     handleGetSingleService();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -108,7 +108,7 @@ function Preview() {
                   <button
                     onClick={() => {
                       setstate(1);
-                      setpackageBody(singleService.packages[1]);
+                      setpackageBody(singleService?.packages[1]);
                     }}
                     className={`${
                       state === 1
@@ -116,12 +116,12 @@ function Preview() {
                         : "bg-[#EAEAEB] text-[#2A2939]"
                     } p-3 w-full`}
                   >
-                    {singleService.packages[1].name}{" "}
+                    {singleService?.packages[1]?.name}{" "}
                   </button>
                   <button
                     onClick={() => {
                       setstate(2);
-                      setpackageBody(singleService.packages[2]);
+                      setpackageBody(singleService?.packages[2]);
                     }}
                     className={`${
                       state === 2
@@ -129,7 +129,7 @@ function Preview() {
                         : "bg-[#EAEAEB] text-[#2A2939]"
                     } p-3 w-full rounded-tr-lg`}
                   >
-                    {singleService.packages[2].name}{" "}
+                    {singleService?.packages[2]?.name}{" "}
                   </button>
                 </div>
 
@@ -166,11 +166,11 @@ function Preview() {
             <div className="grid grid-cols-3 gap-4">
               {singleService.media.length > 0 &&
                 singleService.media.map((item, id) => (
-                  <div key={id}>
+                  <div key={id} className="h-[]">
                     <Image
                       src={item.url}
                       alt="preview_image"
-                      className="w-[340px] h-[240px] rounded-xl"
+                      className="h-[140px] rounded-xl"
                       width="100%"
                       height="100%"
                       layout="responsive"
@@ -180,7 +180,7 @@ function Preview() {
             </div>
           </div>
           <h1 className="text-xl my-5 font-medium">Reviews </h1>
-          <div className="my-5">
+          {/*  <div className="my-5">
             <div className="grid grid-cols-3 gap-6">
               <div className="review-card p-6">
                 <div>
@@ -206,7 +206,7 @@ function Preview() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       ) : (
         <div>Loading...</div>
