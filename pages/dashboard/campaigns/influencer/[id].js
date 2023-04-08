@@ -31,6 +31,7 @@ import chatlady from "./../../../../assets/campaign/chatlady.svg";
 import ReactStars from "react-rating-stars-component";
 import Review from "../../../../components/Campaign/Review";
 import moment from "moment";
+import { toast } from "react-toastify";
 const Campaigns = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const Campaigns = () => {
   const [activetab, setactivetab] = useState("milestone");
   const [isRejected, setisRejected] = useState(false);
   const [isAccepted, setisAccepted] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [currentValue, setcurrentValue] = useState(4);
   const [singlecampaign, setSingleCampaign] = useState(null);
   const [singlecampaignMilestones, setSingleCampaignMilestones] =
@@ -58,9 +60,6 @@ const Campaigns = () => {
 
   const platform = ["instagram", "twitter", "tiktok", "facebook", "youtube"];
   const handleMilestoneStatus = (status) => {
-    if (status.toLowerCase() === "ongoing") {
-      return lock;
-    }
     if (status.toLowerCase() === "completed") {
       return checkmark;
     }
@@ -80,37 +79,29 @@ const Campaigns = () => {
         console.log(err.response);
       });
   };
-  const handleGetSingleCampaignMilestones = () => {
-    getCampaignMilestones(id)
-      .then((res) => {
-        console.log(res);
-        setSingleCampaignMilestones(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  };
 
   const updateCampaignMilsestone = (status, campaignId) => {
     const payload = {
       status: status,
     };
+    setIsUpdating(true);
     updateCampaignMilestone(id, payload, campaignId)
       .then((res) => {
         console.log(res);
         toast.success("Milestone updated succesfully", {
           position: toast.POSITION.TOP_RIGHT,
         });
+        setIsUpdating(false);
         handleGetSingleCampaign();
       })
       .catch((err) => {
+        setIsUpdating(false);
         console.log(err.response);
       });
   };
 
   useEffect(() => {
     handleGetSingleCampaign();
-    // handleGetSingleCampaignMilestones();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -206,20 +197,24 @@ const Campaigns = () => {
                           </div>
                         </div>
                         <div className="flex items-center space-x-2">
-                         {item.status === "Reviewing" ?  <button
-                           
-                            className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#FEF0C7] text-[10px] text-white"
-                            disable
-                          >
-                            Pending review
-                          </button> : <button
-                          onClick={() => {
-                            updateCampaignMilsestone("Reviewing", item.id);
-                          }}
-                          className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white"
-                        >
-                          Submit
-                        </button>}
+                          {item.status === "Reviewing" && (
+                            <button
+                              className="mx-2 rounded-lg py-1 px-2  h-auto bg-yellow-600 text-[10px] text-white"
+                              disable
+                            >
+                              Pending review
+                            </button>
+                          )}{" "}
+                          {item.status === "Pending" && (
+                            <button
+                              onClick={() => {
+                                updateCampaignMilsestone("Reviewing", item.id);
+                              }}
+                              className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white"
+                            >
+                              {isUpdating ? "Updating" : "Submit"}
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>

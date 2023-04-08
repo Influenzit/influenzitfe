@@ -24,7 +24,7 @@ function Overview({
       });
       return;
     }
-    handleIncrement()
+    handleIncrement();
   };
 
   return (
