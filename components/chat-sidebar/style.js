@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { breakpoints } from "../../styles/theme";
+import { breakpoints, colors } from "../../styles/theme";
 
 export const Container = styled.div`
     width: 350px;
@@ -14,19 +14,15 @@ export const Container = styled.div`
 `;
 export const Top = styled.div`
     padding: 20px;
-    border-bottom: 1px solid #D2D2D2;
     min-height: 128px;
     h2 {
-        color: #111;
-        font-size: 17px;
-        display: flex;
-        justify-content: space-between;
-        padding: 10px 0;
-        font-weight: 400;
+        color: #000;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 32px;
     }
 `;
 export const Bottom = styled.div`
-    padding: 0 20px;
     display: flex;
     flex-direction: column;
     min-height: calc(100% - 128px);
@@ -36,25 +32,23 @@ export const Bottom = styled.div`
 export const UserCard = styled.button`
     display: flex;
     border: none;
-    background: transparent;
+    background: ${({isActive}) => isActive ? "#FDF6F7" : "transparent"};
     width: 100%;
     height: 80px;
     min-height: 80px;
-    padding: 2px 0;
+    padding: 2px 20px;
     align-items: center;
     border-bottom: 1px solid #D2D2D2;
     cursor: pointer;
-    :last-of-type {
-        border-bottom: none;
-    }
 `;
 export const SearchContainer = styled.div`
     height: 40px;
     width: 100%;
-    border-radius: 5px;
-    background: #F5F8FA;
+    border-radius: 8px;
+    background: #F9FAFB;
     display: flex;
     align-items: center;
+    margin-top: 15px;
     input {
         border: none;
         background: transparent;
@@ -62,7 +56,8 @@ export const SearchContainer = styled.div`
         width: 100%;
         padding: 0 10px;
         outline: none;
-        font-size: 15px;
+        font-size: 14px;
+        color: #6A6974;
     }
     button {
         cursor: pointer;
@@ -89,16 +84,19 @@ export const ChatTop = styled.div`
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        font-size: 16px;
-        color: #111;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 120%;
+        color: #2E384D;
         text-align: left;
     }
     span {
         width: 100px;
         min-width: 100px;
-        color: rgba(0,0,0,0.5);
-        font-size: 12px;
+        font-size: 10px;
         text-align: right;
+        line-height: 120%;
+        color: #94949C;
     }
 `;
 export const ChatBottom = styled.div`
@@ -107,9 +105,10 @@ export const ChatBottom = styled.div`
     height: 50%;
     align-items: center;
     p {
-        font-size: 14px;
-        ${(props) => props.isUnread && "font-weight: 600;"}
-        color: #111;
+        /* */
+        font-size: 12px;
+        line-height: 120%;
+        color: #8798AD;
         width: 100%;
         max-width: 170px;
         overflow: hidden;
@@ -125,6 +124,7 @@ export const ChatBottom = styled.div`
     }
     img {
         vertical-align: middle;
+        display: inline;
     }
 `;
 export const UserSect = styled.div`
@@ -132,16 +132,15 @@ export const UserSect = styled.div`
     height: 40px;
     width: 40px;
     ::after {
-        height: 11px;
-        width: 11px;
+        height: 8px;
+        width: 8px;
         display: block;
         content: "";
         position: absolute;
-        bottom: 0;
-        right: 0;
+        top: -4px;
+        right: 5px;
         border-radius: 50%;
-        border: 2px solid #fff;
-        background: #14A800;
+        background: ${colors.primaryColor};
     }
 `;
 export const ProfilePicWrapper = styled.div`

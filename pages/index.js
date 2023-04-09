@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { getExploreNiches } from "../api/influencer"
 import LandingLayout from "../layouts/landing.layout"
-import { Answer, Banner, BannerImg, CustomSelect, Faq, FaqWrapper, HeroSectionFive, HeroSectionFour, HeroSectionOne, HeroSectionSix, HeroSectionThree, HeroSectionTwo, ImageWrapper, ImgSlider, ImgW1, ImgWrapper, Info, InfoCard, InfoCardM, InfoDetails, InfoList, InfoSectOne, ListItem, NicheCard, NicheWrapper, Question, ReviewCard, ReviewWrapper, SlideBtn, SlideControl, UserCard, UserDetails, UserImage, WrapperFive, WrapperFour, WrapperOne, WrapperSix, WrapperThree, WrapperTwo } from "../styles/home.style"
+import { Answer, Banner, BannerImg, CustomSelect, Faq, FaqWrapper, HeroSectionFive, HeroSectionFour, HeroSectionOne, HeroSectionSix, HeroSectionThree, HeroSectionTwo, ImageWrapper, ImgSlider, ImgW1, ImgWrapper, Info, Infos, InfoCard, InfoCardM, InfoCardMob, InfoDetails, InfoList, InfoSectOne, ListItem, NicheCard, NicheWrapper, Question, ReviewCard, ReviewWrapper, SlideBtn, SlideControl, UserCard, UserDetails, UserImage, WrapperFive, WrapperFour, WrapperOne, WrapperSix, WrapperThree, WrapperTwo, FormDivide } from "../styles/home.style"
 
 const Home = () => {
   const [faq, setFaq] = useState({});
@@ -25,22 +25,25 @@ const Home = () => {
   }
   const faqs = [
     {
-      question: "Is there a free trial available?",
-      answer: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible.",
+      question: "How do I sign up for early access to Influenzit?",
+      answer:
+        "You can sign up for early access by providing your email address on our pre-launch landing page.",
     },
     {
-      question: "Can I change my plan later?",
-      answer: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible.",
+      question: "What kind of collaborations are available on Influenzit?",
+      answer:
+        "Influenzit offers collaborations with a diverse range of business owners across a variety of industries. You can easily find and collaborate with brands that align with your interests and audience. Brands can also find and reach out to you from your profile",
     },
     {
-      question: "Is there a free trial available?",
-      answer: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible.",
+      question: "How does Influenzit help me grow my following?",
+      answer:
+        "Influenzit offers a range of resources and support for new influencers to help them grow their following and succeed in the industry. Our platform also connects you with complementary businesses and creatives to cross-pollinate your audiences.",
     },
     {
-      question: "Can I change my plan later?",
-      answer: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible.",
-    }
-  ]
+      question: "How do I measure the success of my campaigns on Influenzit?",
+      answer: `Influenzit offers data reporting that allows you to measure the success of your campaigns and make informed decisions about future collaborations. You can track metrics such as engagement, reach, and conversions.  Don't miss out on the opportunity to monetize your influence and connect with the right brands and campaigns. Sign up for early access to Influenzit today and be among the first to experience our unique platform.`,
+    },
+  ];
   const { data, refetch } = useQuery(["get-niche"], async () => {
       return await getExploreNiches();
   }, {
@@ -56,9 +59,10 @@ const Home = () => {
     <div>
       <HeroSectionOne>
         <WrapperOne>
-          <h1>Find the Perfect <span>Influencer</span> for your Business with just a Few Clicks</h1>
-          <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+          <h1>We Connect <span>Influencers</span>, <span>Business Owners</span> and <span>Creators</span></h1>
+          <p>The number one Influencer marketing Platform For Business Owners, Influencers and Creators</p>
           <form>
+            <FormDivide>
             <CustomSelect borderLeft>
               <label>Category</label>
               <select val={nicheVal} onChange={(e) => setNicheVal(e.target.value)}>
@@ -78,6 +82,7 @@ const Home = () => {
                 }
               </select>
             </CustomSelect>
+            </FormDivide>
             <CustomSelect>
               <label>Search</label>
               <input type="text" value={searchString} onChange={(e) => setSearchString(e.target.value)} placeholder="Enter keyword, niche or category" />
@@ -85,7 +90,7 @@ const Home = () => {
             <button onClick={(e) => {
               e.preventDefault();
               router.push(`/explore?search=${searchString}&niche=${nicheVal.toLocaleLowerCase()}`);
-            }}><Image src="/search.svg" height={20} width={20}/></button>
+            }}><span>Search</span> <Image src="/search.svg" height={15} width={15}/></button>
           </form>
           <BannerImg>
           </BannerImg>
@@ -100,8 +105,8 @@ const Home = () => {
           <InfoCardM>
               <Info>
                 <span>SEARCH INFLUENCERS</span>
-                <h1>Find the right influencer for your business needs</h1>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <h1>Find the right influencer for your marketing campaign</h1>
+                <p>Unlock the power of influencer marketing, and take your brand to new heights. We have result-driven and perfect influencers to promote your products and services to drive actual results.</p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -149,6 +154,63 @@ const Home = () => {
                 </Link>
               </Info>
             </InfoCardM>
+
+            {/* Mobile Version */}
+
+            <InfoCardMob>
+              <ImageWrapper>
+                <Image src="/hero1.png" alt='' layout='fill' objectFit='contain' objectPosition="center" />
+              </ImageWrapper>
+              <Infos>
+                <span>SEARCH INFLUENCERS</span>
+                <h1>Find the right influencer for your business needs</h1>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <Link href="/explore" passHref>
+                  <a>Find Influencers</a>
+                </Link>
+              </Infos>
+            </InfoCardMob>
+            <InfoCardMob>
+              <ImageWrapper>
+                <Image src="/hero2.png" alt='' layout='fill' objectFit='contain' objectPosition="center" />
+              </ImageWrapper>
+              <Infos>
+                <span>INFLUENCER INSIGHTS</span>
+                <h1>Make better decisions with detailed analytics</h1>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <Link href="/explore" passHref>
+                  <a>Find Influencers</a>
+                </Link>
+              </Infos>
+            </InfoCardMob>
+            <InfoCardMob>
+              <ImageWrapper>
+                <Image src="/hero4.png" alt='' layout='fill' objectFit='contain' objectPosition="center" />
+              </ImageWrapper>
+              <Infos>
+                <span>PROJECT MANAGEMENT</span>
+                <h1>Manage campaigns and projects seamlessly</h1>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <Link href="/explore" passHref>
+                  <a>Find Influencers</a>
+                </Link>
+              </Infos>
+            </InfoCardMob>
+            <InfoCardMob>
+              <ImageWrapper>
+                <Image src="/hero3.png" alt='' layout='fill' objectFit='contain' objectPosition="center" />
+              </ImageWrapper>
+              <Infos>
+                <span>SECURE PAYMENTS</span>
+                <h1>Handle influencer payments easily</h1>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <Link href="/explore" passHref>
+                  <a>Find Influencers</a>
+                </Link>
+              </Infos>
+            </InfoCardMob>
+
+
         </WrapperThree>
       </HeroSectionThree>
       <HeroSectionFour>

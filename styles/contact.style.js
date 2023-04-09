@@ -2,7 +2,24 @@ import styled from "styled-components";
 import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.section`
+    background: #FDFAF5;
 `;
+
+export const ContactFlex = styled.div`
+    display: flex;
+    justify-content: space-between;
+    gap: 4rem;
+    padding: 50px;
+    padding-top: 150px;
+    ${breakpoints.md}{
+        padding: 40px 20px;
+        padding-top: 120px;
+        flex-direction: column;
+    }
+`;
+
+// 
+
 export const Wrapper = styled.div`
     width: 98%;
     max-width: ${sizes.wrapperWidth};
@@ -56,17 +73,19 @@ export const SocialLinks = styled.div`
     }
 `;
 export const FormContainer = styled.form`
-    padding: 40px;
-    width: 100%;
+    padding: 40px 0;
+    width: 50%;
     max-width: 600px;
-    border: 1px solid #444;
+    // border: 1px solid #444;
     button {
+        text-align: center !important;
         padding: 12px 30px;
         color: #fff;
         background: ${colors.primaryColor};
-        display: inline-flex;
+        display: flex;
+        justify-content: center;
         margin: 20px 0;
-        width: fit-content;
+        width: 100%;
         border-radius: 5px;
         transition: .5s ease;
         border: 2px solid ${colors.primaryColor};
@@ -76,8 +95,31 @@ export const FormContainer = styled.form`
         }
         cursor: pointer;
     }
+    ${breakpoints.lg}{
+        width: 80%;
+        padding: 0px;
+    }
     ${breakpoints.md}{
-        padding: 20px;
+        width: 100%;
+        padding: 0px;
+    }
+`;
+export const FormTop = styled.div`
+    h1{
+        font-weight: 700;
+        font-size: 40px;
+    }
+    p{
+        line-height: 30px;
+    }
+    ${breakpoints.md}{
+        text-align: center;
+    }
+`;
+export const BanImage = styled.div`
+    display: block;
+    ${breakpoints.md}{
+        display: none;
     }
 `;
 export const InputSection = styled.div`

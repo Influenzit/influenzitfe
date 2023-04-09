@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { AttachmentIcon, BoldIcon, EmojiIcon, ItalicIcon, MarkupIcon, SendIcon, UnderlineIcon } from '../../assets/svgIcons';
 import ChatSidebar from '../../components/chat-sidebar';
 import LandingLayout from '../../layouts/landing.layout';
-import { ActionBtn, ChatContainer, ChatControls, ChatHeader, Container, ContextBtn, Editor, EditorBtn, HLeft, ImageWrapper, LeftControls, MessageCard, MessageContent, MessageInput, MessagesCont, MessageSection, NonSelectedCont, PickerContainer, ProfilePicWrapper, RightControls, UserSect, Wrapper } from '../../styles/messages.style';
+import { ActionBtn, ChatContainer, ChatControls, ChatHeader, Container, ContextBtn, Editor, EditorBtn, HLeft, ImageWrapper, LeftControls, MessageCard, MessageContent, MessageInput, MessagesContB, MessageSection, NonSelectedCont, PickerContainer, ProfilePicWrapper, RightControls, UserSect, Wrapper } from '../../styles/messages.style';
 import { colors } from '../../styles/theme';
 import dynamic from 'next/dynamic';
 import { getConversationMessages, getConversations, sendConversationMessage } from '../../api/messaging';
@@ -147,8 +147,8 @@ const Messages = () => {
     let newEmoji = document.createElement("img");
     newEmoji.src = emojiData.getImageUrl("facebook");
     newEmoji.alt = emojiData.emoji;
-    newEmoji.height = "22";
-    newEmoji.width = "22";
+    newEmoji.height = "18";
+    newEmoji.width = "18";
     setShowEmoji(false);
 
     if (messageBoxRef.current.lastChild && messageBoxRef.current.lastChild.nodeName === "BR") {
@@ -285,27 +285,18 @@ useEffect(() => {
 
         <MobileChatbar setConversationId={handleSetConversationId} conversations={conversations}/>
         <Wrapper>
-            <ChatSidebar setConversationId={handleSetConversationId} conversations={conversations}/>
+            <ChatSidebar setConversationId={handleSetConversationId} conversations={conversations} conversationId={conversationId}/>
             <MessageSection>
                 {
                     conversationId ? 
                     (<ChatContainer>
-                        <ChatHeader>
-                            <HLeft>
-                                <h2>{getCurrentConversation()?.heading?.title}</h2>
-                                {/* <p>Last seen: 3 hours ago </p> */}
-                            </HLeft>
-                            <ContextBtn>
-                                <Image src="/more-vertical.svg" height={24} width={24}/>
-                            </ContextBtn>
-                        </ChatHeader>
-                        <MessagesCont ref={messagesRef}>
+                        <MessagesContB ref={messagesRef}>
                             {
                                messages.map((val, i) => (
                                     <MessageCard key={i} isOwn={val.is_own}>
                                         <UserSect>
                                             <ProfilePicWrapper>
-                                                <Image src={val.from_user.profile_picture} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
+                                                <Image src={val.from_user.profile_pic} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
                                             </ProfilePicWrapper>
                                         </UserSect>
                                         <MessageContent>
@@ -314,11 +305,10 @@ useEffect(() => {
                                                 {HTMLReactParser(val.text)}
                                             </div>
                                         </MessageContent>
-
                                     </MessageCard>
                                 ))
                             }
-                        </MessagesCont>
+                        </MessagesContB>
                         <Editor>
                             {
                                 showEmoji && 
@@ -333,8 +323,10 @@ useEffect(() => {
                                     />
                                 </PickerContainer>
                             }
-                            <MessageInput data-placeholder="Write a message" contentEditable showPlaceholder={!!messageContent} onInput={handleInput} ref={messageBoxRef}>
-                            </MessageInput>
+                            <div style={{ padding: "0 15px", height: "70%", maxHeight: "70%", borderBottom: "1px solid #EAEAEB" }}>
+                                <MessageInput data-placeholder="Write a message" contentEditable showPlaceholder={!!messageContent} onInput={handleInput} ref={messageBoxRef}>
+                                </MessageInput>
+                            </div>
                             <ChatControls>
                                 <LeftControls>
                                     <EditorBtn onClick={handleBold}>
@@ -343,9 +335,9 @@ useEffect(() => {
                                     <EditorBtn onClick={handleItalic}>
                                         <ItalicIcon />
                                     </EditorBtn>
-                                    <EditorBtn onClick={handleLineThrough}>
+                                    {/* <EditorBtn onClick={handleLineThrough}>
                                         <UnderlineIcon />
-                                    </EditorBtn>
+                                    </EditorBtn> */}
                                     {/* <EditorBtn>
                                         <MarkupIcon />
                                     </EditorBtn> */}
@@ -359,6 +351,7 @@ useEffect(() => {
                                 <RightControls>
                                     <ActionBtn style={{ color: colors.primaryColor }} onClick={handleMessageSend}>
                                         <SendIcon />
+                                        <span>Send</span>
                                     </ActionBtn>
                                 </RightControls>
                             </ChatControls>

@@ -9,8 +9,14 @@ export const Container = styled.nav`
     position: fixed;
     top: 0;
     display: flex;
-    z-index: 999999;
+    z-index: 99999;
     ${({showBg}) => showBg && "border-bottom: 1px solid #EAEAEB"};
+    ${breakpoints.md} {
+        padding: 1rem 15px;
+    }
+    ${breakpoints.lg} {
+        padding: 1rem 15px;
+    }
 `;
 export const Wrapper = styled.div`
     width:  ${({fullWidth}) => fullWidth ? "100%" : "98%"};
@@ -392,15 +398,91 @@ export const ControlsA = styled.div`
             }
         }
     }
+    #notify-cont {
+        position: relative;
+    }
     #bell-icon {
+        outline: none;
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+        background: transparent;
+        cursor: pointer;
         ::after {
+            content: "";
             display: ${(props) => props.showNotify ? "block" : "none"};
+            height: 6px;
+            width: 6px;
+            background: red;
+            border-radius: 50%;
+            position: absolute;
+            top: -4px;
+            right: 3px;
         }
     }
     #mail-icon {
         ::after {
             display: ${(props) => props.showMessage ? "block" : "none"};
         }
+    }
+`;
+export const NotificationCont = styled.div`
+    padding: 16px 24px;
+    background: #FFF;
+    position: absolute;
+    box-shadow: 0px 16px 24px rgba(42, 41, 57, 0.1);
+    border-radius: 16px;
+    top: 50px;
+    z-index: 10;
+    right: -4px;
+    width: 400px;
+    height: 80vh;
+    min-height: 400px;
+    #container {
+        min-height: calc(100% - 35px);
+        max-height: calc(100% - 35px);
+        overflow-y: scroll;
+        padding: 10px 0;
+    }
+    #notify-pic {
+        width: 45px;
+        min-width: 45px;
+        min-height: 45px;
+        height: 45px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    #notify {
+        display: flex;
+        column-gap: 8px;
+        align-items: center;
+        padding: 12px 0;
+        p {
+            font-weight: 600;
+            font-size: 14px;
+            color: ${colors.textColor};
+        }
+        span {
+            color: #555461;
+            font-size: 12px;
+        }
+    }
+    #heading {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 9px;
+        border-bottom: 1px solid #EAEAEB;
+        h3 {
+            font-weight: 600;
+            font-size: 20px;
+        }
+        button {
+            color: ${colors.primaryColor};
+            font-size: 14px;
+        }
+    }
+    #notify-pic {
+        position: relative;
     }
 `;
 export const Qlinks = styled.div`
@@ -461,17 +543,58 @@ export const ProfilePicWrapper = styled.div`
 export const UserDropdown = styled.div`
     position: absolute;
     right: 0px;
-    width: 100%;
-    top: 50px;
-    width: 150px;
+    top: 55px;
+    width: 200px;
     background: #fff;
     display: flex;
     flex-direction: column;
     color: #111;
-    box-shadow: 0px 4px 12px 0px #0000001A;
-    border: 1px solid #D2D2D2;
-    border-radius: 2px;
+    box-shadow: 0px 3px 8px 0px #2A29391A;
+    border-radius: 8px;
+    overflow: hidden;
     button {
+        cursor: pointer;
+        text-align: left;
+        font-weight: 500;
+        font-size: 14px;
+    }
+    #user-d {
+        padding: 14px 16px;
+        border-bottom: 1px solid #EAEAEB;
+        cursor: pointer;
+        h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #000;
+        }
+        p {
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 10px;
+            color: #94949C;
+        }
+    }
+    #switch {
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid #EAEAEB;
+        button {
+            padding: 6px 0;
+        }
+        p {
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 120%;
+            color: #94949C;
+            padding-bottom: 6px;
+        }
+    }
+    #logout {
+        padding: 12px 16px;
+    }
+    /* button {
         border: none;
         background: #fff;
         height: 40px;
@@ -496,20 +619,7 @@ export const UserDropdown = styled.div`
         ${breakpoints.sm} {
             font-size: 12px;
         }
-    }
-    ::after {
-        content: "";
-        display: block;
-        height: 10px;
-        width: 10px;
-        transform: rotate(-45deg);
-        position: absolute;
-        top: -6px;
-        right: 10px;
-        background: #fff;
-        border-top: 1px solid #D2D2D2;
-        border-right: 1px solid #D2D2D2;
-    }
+    } */
     ${breakpoints.md}{
         right: 0;
     }

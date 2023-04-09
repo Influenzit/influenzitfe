@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useMutation } from "@tanstack/react-query"
-import { BannerReg, Bottom, Center, Container, FacebookBtn, FlexInput, FormFields, FormHeader, FormWrapper, GoogleBtn, Input, InputContainer, SocialIcon, SocialLogin, SubmitButton, Wrapper } from '../../styles/auth.style'
+import { BannerReg, BanReg, Bottom, BottomP, Center, Container, FacebookBtn, FlexInput, FormFields, FormHeader, FormWrapper, GoogleBtn, Input, InputContainer, SocialIcon, SocialLogin, SubmitButton, Wrapper, AuthFlex, ErrorMessageCont } from '../../styles/auth.style'
 import { createAccount, socialLogin } from '../../api/auth';
 import { setError, setLoading, setUserType } from '../../app/reducers/status';
 import { useDispatch } from 'react-redux';
@@ -20,8 +20,12 @@ const Register = () => {
     lastname: "",
     email: "",
     password: "",
-    password_confirmation: ""
-  })
+    password_confirmation: "",
+    account_type: "Business",
+    business_name: ""
+  });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
   const dispatch = useDispatch();
   const mutation = useMutation(userData => {
     return createAccount(userData);
@@ -123,19 +127,133 @@ const Register = () => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutation.mutate({
-        firstname: formVal.firstname,
-        lastname: formVal.lastname,
-        email: formVal.email,
-        password: formVal.password,
-        password_confirmation: formVal.password_confirmation,
-    })
+    setIsError(false);
+    if (formVal.password.length < 8) {
+      setIsError(true);
+      setErrorMessage("Password must be greater than 8");
+      return
+    } else if (formVal.password !== formVal.password_confirmation) {
+      setIsError(true);
+      setErrorMessage("Password must be equal");
+      return
+    } else {
+      dispatch(setLoading(true));
+      mutation.mutate({
+          firstname: formVal.firstname,
+          lastname: formVal.lastname,
+          email: formVal.email,
+          password: formVal.password,
+          password_confirmation: formVal.password_confirmation,
+          account_type: formVal.account_type,
+      })
+    }
   }
   if (mutation.isLoading) dispatch(setLoading(true));
   return (
-    <Container style={{ paddingTop: "0"}}>
-      <Wrapper style={{ flexDirection: "row", justifyContent: "space-between", padding: "0" }}>
-        <FormWrapper>
+    // <Container style={{ paddingTop: "0"}}>
+    //   <Wrapper style={{ flexDirection: "row", justifyContent: "space-between", padding: "0" }}>
+    //     <FormWrapper>
+    //       <div style={{ margin: "20px 0 40px 0"}}>
+    //         <Logo href="/">
+    //             <Image src="/influenzit.svg" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
+    //         </Logo>
+    //       </div>
+    //       <FormHeader style={{ alignItems: "flex-start" }}>
+    //         <h2>Sign up</h2>
+    //       </FormHeader>
+    //       <Center>
+    //         <FormFields onSubmit={handleSubmit}>
+    //           <FlexInput>
+    //             <InputContainer hasContent={formVal.firstname}>
+    //               <label>First Name</label>
+    //               <Input
+    //               type="text"
+    //               value={formVal.firstname}
+    //               onChange={(e) => handleInputChange(e.target.value, "firstname")}
+    //               placeholder="Enter your firstname"
+    //               required
+    //               />
+    //             </InputContainer>
+    //             <InputContainer hasContent={formVal.lastname}>
+    //               <label>Last Name</label>
+    //               <Input
+    //               type="text"
+    //               value={formVal.lastname}
+    //               placeholder="Enter your lastname"
+    //               onChange={(e) => handleInputChange(e.target.value, "lastname")}
+    //               required
+    //               />
+    //             </InputContainer>
+    //           </FlexInput>
+    //           <InputContainer hasContent={formVal.email}>
+    //             <label>Email</label>
+    //             <Input
+    //             type="email"
+    //             value={formVal.email}
+    //             placeholder="Enter your email"
+    //             onChange={(e) => handleInputChange(e.target.value, "email")}
+    //             required
+    //             />
+    //           </InputContainer>
+    //           <InputContainer hasContent={formVal.password}>
+    //             <label>Password</label>
+    //             <Input
+    //             type="password"
+    //             value={formVal.password}
+    //             placeholder="Enter your password"
+    //             onChange={(e) => handleInputChange(e.target.value, "password")}
+    //             required
+    //             />
+    //           </InputContainer>
+    //           <InputContainer hasContent={formVal.password_confirmation}>
+    //             <label>Confirm Password</label>
+    //             <Input
+    //             type="password"
+    //             value={formVal.password_confirmation}
+    //             placeholder="Confirm your password"
+    //             onChange={(e) => handleInputChange(e.target.value, "password_confirmation")}
+    //             required
+    //             />
+    //           </InputContainer>
+    //           <SubmitButton type="submit">Register</SubmitButton>
+    //           <SocialLogin>
+    //             <GoogleBtn onClick={googleLogin}>
+    //               <SocialIcon>
+    //                 <Image src="/google-r.svg" alt="" height={22} width={22} />
+    //               </SocialIcon>
+    //               <span>Sign up with Google</span>
+    //             </GoogleBtn>
+    //             <FacebookLogin
+    //               appId="3349779741932998"
+    //               callback={handleFacebookLogin}
+    //               onFailure={handleFailure}
+    //               render={(renderProps) => (
+    //                 <FacebookBtn  onClick={renderProps.onClick}>
+    //                   <SocialIcon>
+    //                     <Image src="/facebook-r.svg" alt="" height={22} width={22} />
+    //                   </SocialIcon>
+    //                   <span>Sign up with Facebook</span>
+    //                 </FacebookBtn>
+    //               )}
+    //             />
+    //           </SocialLogin>
+    //         </FormFields>
+    //       </Center>
+    //       <Bottom>
+    //         <p>Already have an account? <Link href="/login"><a>Login Here</a></Link></p>
+    //       </Bottom>
+    //     </FormWrapper>
+    //     <BannerReg>
+
+    //     </BannerReg>
+    //   </Wrapper>
+    // </Container>
+
+    // Femi's Version
+
+    <>
+    <AuthFlex>
+    <FormWrapper>
           <div style={{ margin: "20px 0 40px 0"}}>
             <Logo href="/">
                 <Image src="/influenzit.svg" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
@@ -168,16 +286,40 @@ const Register = () => {
                   />
                 </InputContainer>
               </FlexInput>
-              <InputContainer hasContent={formVal.email}>
-                <label>Email</label>
-                <Input
-                type="email"
-                value={formVal.email}
-                placeholder="Enter your email"
-                onChange={(e) => handleInputChange(e.target.value, "email")}
-                required
-                />
-              </InputContainer>
+              <FlexInput>
+                <InputContainer hasContent={formVal.email}>
+                  <label>Email</label>
+                  <Input
+                  type="email"
+                  value={formVal.email}
+                  placeholder="Enter your email"
+                  onChange={(e) => handleInputChange(e.target.value, "email")}
+                  required
+                  />
+                </InputContainer> 
+                <InputContainer>
+                  <label>Category</label>
+                  <select value={formVal.account_type} onChange={(e) => handleInputChange(e.target.value, "account_type")}>
+                    <option value="Business">Business Owner</option>
+                    <option value="Influencer">Influencer</option>
+                    <option value="Creator">Creator</option>
+                  </select>
+                </InputContainer>
+              </FlexInput>
+              {
+                formVal.account_type === "Business" && (
+                  <InputContainer hasContent={formVal.email}>
+                      <label>Business Name</label>
+                      <Input
+                      type="text"
+                      value={formVal.business_name}
+                      placeholder="Enter business name"
+                      onChange={(e) => handleInputChange(e.target.value, "business_name")}
+                      required
+                      />
+                  </InputContainer> 
+                )
+              }
               <InputContainer hasContent={formVal.password}>
                 <label>Password</label>
                 <Input
@@ -198,6 +340,9 @@ const Register = () => {
                 required
                 />
               </InputContainer>
+              {
+                isError && <ErrorMessageCont>{errorMessage}</ErrorMessageCont>
+              }
               <SubmitButton type="submit">Register</SubmitButton>
               <SocialLogin>
                 <GoogleBtn onClick={googleLogin}>
@@ -225,12 +370,18 @@ const Register = () => {
           <Bottom>
             <p>Already have an account? <Link href="/login"><a>Login Here</a></Link></p>
           </Bottom>
+          <BottomP>
+            <p>© 2023. Influenzit. All rights reserved.</p>
+          </BottomP>
         </FormWrapper>
+        <BanReg>
+
+        </BanReg>
         <BannerReg>
 
         </BannerReg>
-      </Wrapper>
-    </Container>
+    </AuthFlex>
+    </>
   )
 }
 

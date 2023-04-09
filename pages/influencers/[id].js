@@ -12,12 +12,13 @@ import { getUser } from '../../app/reducers/user'
 import LandingLayout from '../../layouts/landing.layout'
 import { Controls, CreatorsCard, CreatorDetails, SocialHandle } from '../../styles/business-owner.style'
 import { BackImage, Bottom, BottomSection, Campaign, CollaborateBtn, Container, HeroSectionOne, ImageContainer, ImageContainerTwo, Info, LeftSection, Listing, RightSection, SkillCard, Social, SocialWrapper, Tag, Tags, Top, UserCardSection, WorkCard, Wrapper, UserDetails, UserImage } from '../../styles/creator-profile.style'
-import { AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, TabBtn, Tabs, TopImg } from '../../styles/influencer-profile';
+import { AnalyticChart, AnalyticStats, AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, Stat, TabBtn, Tabs, TopImg, PerformanceCont, EngagementCard, StatsCard, Flex } from '../../styles/influencer-profile';
 import { Details, FormContainer, UpdateModal } from '../../styles/view.style'
 import { InputContainer } from '../../styles/profile.style'
 import { createDispute } from '../../api/support'
 import ServiceCard from '../../components/service-card'
 import ProfileCard from '../../components/profile-card'
+import { numberFormatter } from '../../helpers/helper'
 
 const CreatorProfile = () => {
   const router = useRouter();
@@ -137,6 +138,10 @@ const CreatorProfile = () => {
           })
         }
       }
+      const getCoverImages = (list) => {
+        const checker = ["cover_img_1", "cover_img_2", "cover_img_3", "cover_img_4"]
+        return list?.filter((val) => checker.includes(val.identifier))
+      }
     useEffect(() => {
         dispatch(setLoading(true));
         refetchInfluencersData();
@@ -223,59 +228,59 @@ const CreatorProfile = () => {
             
             <Wrapper>
                 {
-                    (inData?.media.length <= 1) && (
+                    (getCoverImages(inData?.media)?.length <= 1) && (
                         <ImageContainer>
                             <div id="img">
-                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                             </div>
                         </ImageContainer>
                     )
                 }
                 {
-                    (inData?.media.length === 2) && (
+                    (getCoverImages(inData?.media)?.length === 2) && (
                         <ImageContainerTwo>
                             <div className='wrap'>
-                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                             </div>
                             <div className='wrap'>
-                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                             </div>
                         </ImageContainerTwo>
                     )
                 }
                 {
-                    (inData?.media.length === 3) && (
+                    (getCoverImages(inData?.media)?.length === 3) && (
                         <ImageContainerTwo>
                             <div className='wrap'>
-                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                             </div>
                             <div className="wrap">
                                 <div className='wrap-top'>
-                                    <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                    <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                                 </div>
                                 <div className='wrap-bottom'>
-                                    <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                    <Image src={getCoverImages(inData?.media)[2].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                                 </div>
                             </div>
                         </ImageContainerTwo>
                     )
                 }
                 {
-                    (inData?.media.length === 4) && (
+                    (getCoverImages(inData?.media)?.length === 4) && (
                         <ImageContainerTwo>
                             <div className='wrap'>
-                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                             </div>
                             <div className='wrap'>
                                 <div className='wrap-top'>
-                                    <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                    <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                                 </div>
                                 <div className='wrap-bottom'>
                                     <div>
-                                        <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                        <Image src={getCoverImages(inData?.media)[2].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                                     </div>
                                     <div>
-                                        <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                        <Image src={getCoverImages(inData?.media)[3].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
                                     </div>
                                 </div>
                             </div>
@@ -309,6 +314,7 @@ const CreatorProfile = () => {
                             </UserImage>
                         </UserCardSection>
                         <Info>
+                            <h3>{inData?.headline}</h3>
                             <p>{inData?.biography}</p>
                             <Tags>
                                 {
@@ -327,9 +333,71 @@ const CreatorProfile = () => {
                                 <TabBtn isActive={currentTab === "youtube"} onClick={() => setCurrentTab("youtube")}>Youtube</TabBtn>
                             </Tabs>
                             {
-                                currentTab === "instagram" && inData?.instagram_verified ? (
+                                currentTab === "instagram" && !inData?.instagram_verified ? (
                                     <Content>
-                                       
+                                       <h3>Influencer Summary</h3>
+                                       <AnalyticStats>
+                                        <Stat>
+                                            <h1>{numberFormatter(1500000)}</h1>
+                                            <p>Followers</p>
+                                        </Stat>
+                                        <Stat isCenter>
+                                            <h1>{numberFormatter(1000)}</h1>
+                                            <p>Following</p>
+                                        </Stat>
+                                        <Stat>
+                                            <h1>20%</h1>
+                                            <p>Engagement</p>
+                                        </Stat>
+                                       </AnalyticStats>
+                                       <h3>Audience Insights</h3>
+                                       <AnalyticChart>
+
+                                       </AnalyticChart>
+                                       <h3>Publications</h3>
+                                       <PerformanceCont>
+                                            <Flex>
+                                                <EngagementCard>
+                                                    <h3>Engagement Rate</h3>
+                                                    <div id="wrapper">
+                                                        <h1>1.8%</h1>
+                                                        <div>
+                                                            <p>Average</p>
+                                                            <span>Higher than 60% of influencers</span>
+                                                        </div>
+                                                    </div>
+                                                </EngagementCard>
+                                                <StatsCard>
+                                                    <h3>Avg. likes per post</h3>
+                                                    <div>
+                                                        <span>
+                                                            <Image src="/heart-p.svg" alt="heart" height={25} width={25}/>
+                                                        </span>
+                                                        <h1>{numberFormatter(1200)}</h1>
+                                                    </div>
+                                                </StatsCard>
+                                            </Flex>
+                                            <Flex>
+                                                <StatsCard>
+                                                    <h3>Avg. comments per post</h3>
+                                                    <div>
+                                                        <span>
+                                                            <Image src="/comment.svg" alt="heart" height={25} width={25}/>
+                                                        </span>
+                                                        <h1>{numberFormatter(1200)}</h1>
+                                                    </div>
+                                                </StatsCard>
+                                                <StatsCard>
+                                                    <h3>Avg. reel views</h3>
+                                                    <div>
+                                                        <span>
+                                                            <Image src="/eye.svg" alt="heart" height={25} width={25}/>
+                                                        </span>
+                                                        <h1>{numberFormatter(1200)}</h1>
+                                                    </div>
+                                                </StatsCard>
+                                            </Flex>
+                                       </PerformanceCont>
                                     </Content>
                                 ) : (currentTab === "instagram") && (
                                     <Content>
@@ -540,12 +608,12 @@ const CreatorProfile = () => {
                     </Listing> : null
                 } */}
                 <Listing>
-                    <h3>Similar influencers</h3>
+                    {inData?.similar.length ? <h3>Similar influencers</h3> : null}
                     <Bottom>
                         {
-                            influencersData?.data?.data?.data.slice(0, 4).map((val, i) => {
+                            inData?.similar.map((val, i) => {
                                 let genSkills = "";
-                                val.skills.forEach((val, i) => {
+                                val?.skills?.forEach((val, i) => {
                                     if(i < 5){
                                         if (i !== 0) {
                                             genSkills += `| ${val.name} `

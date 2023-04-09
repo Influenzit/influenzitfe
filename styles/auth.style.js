@@ -45,9 +45,9 @@ export const Center = styled.div`
         margin-bottom: 20px;
         font-weight: 500;
     }
-    ${breakpoints.md} {
-        padding: 15px;
-    }
+    // ${breakpoints.md} {
+    //     padding: 15px;
+    // }
 `;
 export const Wrapper = styled.div`
     width: 98%;
@@ -68,19 +68,38 @@ export const FormWrapper = styled.div`
     min-width: 320px;
     padding-bottom: 30px;
     ${breakpoints.lg}{
-        width: 80%;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+        padding: 10%;
+        opacity: 0.95;
+    }
+    ${breakpoints.sm}{
+        padding: 10% 15px;
     }
 `;
+export const BanReg = styled.div`
+    display: flex;
+    width: 40%;
+`;
 export const BannerReg = styled.div`
-    width: 50%;
-    min-width: 50%;
-    max-width: 50%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 40%;
+    min-width: 40%;
+    max-width: 40%;
     background: url("/banner-3.png");
     background-size: cover;
     background-position: right;
     background-repeat: no-repeat;
     display: flex;
     height: 800px;
+    z-index: -10;
+    ${breakpoints.lg}{
+        min-width: 90%;
+    }
 `;
 export const FormHeader = styled.div`
     display: flex;
@@ -110,9 +129,11 @@ export const FlexInput = styled.div`
 export const InputContainer = styled.div`
     position: relative;
     margin-bottom: 15px;
+    min-width: calc(50% - 12px);
     label {
         display: inline-block;
         margin-bottom: 8px;
+        font-size: 14px;
         color: #344054;
         font-weight: 500;
     }
@@ -120,12 +141,38 @@ export const InputContainer = styled.div`
         height: 45px;
         width: 100%;
         outline: none;
-        color: #667085;
+        color: #101828;
         padding-left: 17px;
         z-index: 1;
         background: transparent;
         border: 1px solid #D0D5DD;
         border-radius: 8px;
+    }
+    input {
+        color: #101828;
+    }
+    input::placeholder, textarea::placeholder {
+        color: #667085;
+    }
+    textarea {
+        box-shadow: 0px 1px 2px 0px #1018280D;
+        border-radius: 8px;
+        padding: 10px 14px;
+        border: 1px solid #D0D5DD;
+        resize: none;
+        height: 180px;
+        width: 100%;
+        outline: none;
+        font-size: 14px;
+        color: #101828;
+    }
+    #country {
+        font-size: 14px;
+    }
+    #error {
+        font-weight: 500;
+        font-size: 12px;
+        color: ${colors.primaryColor};
     }
 `;
 export const SubmitButton = styled.button`
@@ -141,6 +188,18 @@ export const SubmitButton = styled.button`
     font-weight: 500;
 `;
 export const Input = styled.input`
+    height: 45px;
+    width: 100%;
+    outline: none;
+    color: #667085;
+    padding-left: 17px;
+    z-index: 1;
+    background: transparent;
+    border: 1px solid #D0D5DD;
+    font-size: 16px;
+    border-radius: 8px;
+`;
+export const Select = styled.select`
     height: 45px;
     width: 100%;
     outline: none;
@@ -275,6 +334,19 @@ export const Bottom = styled.div`
         color: ${colors.primaryColor};
     }
 `;
+export const BottomP = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 80px 0 10px 0;
+    height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #667085;
+    ${breakpoints.md} {
+        justify-content: center;
+    }
+`;
 export const UploadContainer = styled.div`
     display: flex;
     padding: 10px 0;
@@ -302,4 +374,15 @@ export const ImagePreview = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+`;
+
+// Femi's Version
+export const AuthFlex = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+export const ErrorMessageCont = styled.p`
+    font-size: 14px;
+    color: red !important;
 `;

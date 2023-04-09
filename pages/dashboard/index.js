@@ -5,69 +5,31 @@ import { getUserType, setError, setLoading } from '../../app/reducers/status'
 import { getUser } from '../../app/reducers/user'
 import { BagIcon, ChevronLeft, ChevronRight, HashTagIcon, SettingsIcon, WalletIcon } from '../../assets/svgIcons'
 import LandingLayout from '../../layouts/landing.layout'
-import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../styles/connect-pages.style'
-import { Card, CardsWrapper, ChartContainer, WelcomeHeading } from '../../styles/dashboard'
+import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, WelcomeModal, Wrapper } from '../../styles/connect-pages.style'
+import { AEmptyCard, BizCard, CampaignCard, Card, CardsWrapper, ChartContainer, EmptyCard, List, ListingWrapper, ProjectCard, ProjectDetails, Status, UserMiniCard, WelcomeHeading } from '../../styles/dashboard'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useQuery } from '@tanstack/react-query'
 import { getCampaigns } from '../../api/campaigns'
 import { getServices } from '../../api/influencer'
 import { getProjects } from '../../api/projects'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
+import { UpdateModal } from '../../styles/view.style'
 
 const Dashboard = () => {
   const user = useSelector(getUser);
   const currentAcctType = useSelector(getUserType);
   const [userDetails, setUserDetails] = useState(null);
+  const [showPrompt, setShowPrompt] = useState(false);
   const dispatch = useDispatch();
     useEffect(() => {
       if (user) {
         setUserDetails(user);
+        if(currentAcctType === "Influencer" && !user?.account?.account_setup) {
+            setShowPrompt(true);
+        }
       }
     }, [user, currentAcctType]);
-    const data = [
-        {
-          name: 'Work A',
-          uv: 4000,
-          pv: 2400,
-          amt: 2400,
-        },
-        {
-          name: 'Work B',
-          uv: 3000,
-          pv: 1398,
-          amt: 2210,
-        },
-        {
-          name: 'Work C',
-          uv: 2000,
-          pv: 9800,
-          amt: 2290,
-        },
-        {
-          name: 'Work D',
-          uv: 2780,
-          pv: 3908,
-          amt: 2000,
-        },
-        {
-          name: 'Work E',
-          uv: 1890,
-          pv: 4800,
-          amt: 2181,
-        },
-        {
-          name: 'Work F',
-          uv: 2390,
-          pv: 3800,
-          amt: 2500,
-        },
-        {
-          name: 'Work G',
-          uv: 3490,
-          pv: 4300,
-          amt: 2100,
-        },
-      ];
       const [campaignList, setCampaignList] = useState({
         data: [],
       });
@@ -123,67 +85,39 @@ const Dashboard = () => {
     
   return (
     <Container>
+        {
+            showPrompt && (
+                <UpdateModal>
+                    <WelcomeModal>
+                        <div>
+                            <button onClick={() => setShowPrompt(false)}><Image src="/cancel.svg" alt="" height={14} width={14} /></button>
+                        </div>
+                        <Image src="/congrat.svg" alt="" height={110} width={110}/>
+                        <h2>Welcome to Influenzit</h2>
+                        <p>You need to complete your influencer profile in order to start using the platform.</p>
+                        <div>
+                            <button onClick={() => router.push("/dashboard/complete-profile")}>Complete Profile</button>
+                        </div>
+                    </WelcomeModal>
+                </UpdateModal>
+            )
+        }
         <Wrapper>
             <WelcomeHeading>
-                Welcome <span>{userDetails && userDetails.firstname}</span>,
+                Hello {userDetails && userDetails.name}
             </WelcomeHeading>
-            <CardsWrapper>
-                <Card>
-                    <h3>Wallet Balance</h3>
-                    <h1>₦ 0.00</h1>
-                    <WalletIcon />
-                </Card>
-                {
-                    (currentAcctType === "Business Owner" || (currentAcctType === "Influencer"))&& (
-                        <Card>
-                            <h3>No of Campaigns</h3>
-                            <h1>{campaignData?.data?.data.total}</h1>
-                            <HashTagIcon />
-                        </Card>
-                    )
-                }
-                {
-                    ((currentAcctType === "Business Owner") || (currentAcctType === "Creator"))  && (
-                        <Card>
-                            <h3>No of Projects</h3>
-                            <h1>{projectData?.data?.data?.total}</h1>
-                            <BagIcon />
-                        </Card>
-                    )
-                }
-                {
-                   ((currentAcctType === "Creator") ||  (currentAcctType === "Influencer")) && (
-                        <Card>
-                            <h3>No of Services</h3>
-                            <h1>{serviceData?.data?.data.length}</h1>
-                            <SettingsIcon />
-                        </Card>
-                    )
-                }
-                
-            </CardsWrapper>
-            <ChartContainer>
-                <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart
-                    width={500}
-                    height={400}
-                    data={data}
-                    margin={{
-                        top: 10,
-                        right: 30,
-                        left: 0,
-                        bottom: 0,
-                    }}
-                    >
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Area type="monotone" dataKey="uv" stroke="#12544D" fill="#12544D" />
-                    </AreaChart>
-                </ResponsiveContainer>
-            </ChartContainer>
             {
+                (currentAcctType === "Business Owner") && (
+                    <BizCard>
+                        <h3>Complete your Business Profile</h3>
+                        <p>Before you create your first campaign or project, you&apos;ll need to complete your business information.</p>
+                        <Link href="/">Complete profile</Link>
+                    </BizCard>
+                )
+            }
+            {/* {
               (currentAcctType === "Business Owner" || (currentAcctType === "Creator")) && (
+
                 <TableWrapper>
                     <TableHeader>
                         <h2>Projects</h2>
@@ -226,9 +160,141 @@ const Dashboard = () => {
                     </TableContent>
                 </TableWrapper>
               )  
+            } */}
+            {
+              ((currentAcctType === "Influencer")) && (
+                <ListingWrapper>
+                    <h3 id="h3">Active Campaigns</h3>
+                    {
+                        campaignList.data.length ? (
+                            <List>
+                               { 
+                                campaignList.data.map((val, i) => (
+                                    <ProjectCard key={i}>
+                                        <UserMiniCard>
+                                            <div>
+                                                <h4>{val.provider.name}</h4>
+                                                <p>{val.provider.email}</p>
+                                                <div id="social">
+                                                    <Image src="/facebook-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/instagram-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/twitter-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/tiktok-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/youtube-icon.svg" alt="" height={12} width={12}/>
+                                                </div>
+                                                <div id="star">
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <span>5.0</span>
+                                                </div>
+                                            </div>
+                                        </UserMiniCard>
+                                        <ProjectDetails>
+                                            <div id="img">
+                                                <Image src="/dog.png" layout="fill" objectFit="cover" objectPosition="center"/>
+                                            </div>
+                                            <div>
+                                                <h4>{val.title}</h4>
+                                                <p>{val.description}</p>
+                                            </div>
+                                        </ProjectDetails>
+                                        <Status inProgress={val.status !== "Completed"}>
+                                            <h3>STATUS</h3>
+                                            <div><span></span> {val.status}</div>
+                                        </Status>
+                                    </ProjectCard>
+                                ))
+                               }
+                            </List>
+                        ) : (
+                            <AEmptyCard>
+                                <div>
+                                    <h2>Launch your first campaign</h2>
+                                    <p>Find the right influencers with correct metrics, keep track of your campaign performance and complete payments seamlessly.</p>
+                                    <Link href="/" passHref>
+                                        <a>
+                                            <span>Create Campaign</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
+                                        </a>
+                                    </Link>
+                                </div>
+                                <Image src="/empty-p.png" alt="" height={150} width={250}/>
+                            </AEmptyCard>
+                        )
+                    }
+                </ListingWrapper>
+              )  
             }
             {
-                (currentAcctType === "Influencer") && (
+              (currentAcctType === "Business Owner") && (
+                <ListingWrapper>
+                    <h3 id="h3">Active Campaigns</h3>
+                    {
+                        campaignList.data.length ? (
+                            <List>
+                               { 
+                                campaignList.data.map((val, i) => (
+                                    <ProjectCard key={i}>
+                                        <UserMiniCard>
+                                            <div>
+                                                <h4>{val.provider.name}</h4>
+                                                <p>{val.provider.email}</p>
+                                                <div id="social">
+                                                    <Image src="/facebook-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/instagram-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/twitter-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/tiktok-icon.svg" alt="" height={12} width={12}/>
+                                                    <Image src="/youtube-icon.svg" alt="" height={12} width={12}/>
+                                                </div>
+                                                <div id="star">
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                    <span>5.0</span>
+                                                </div>
+                                            </div>
+                                        </UserMiniCard>
+                                        <ProjectDetails>
+                                            <div id="img">
+                                                <Image src="/dog.png" layout="fill" objectFit="cover" objectPosition="center"/>
+                                            </div>
+                                            <div>
+                                                <h4>{val.title}</h4>
+                                                <p>{val.description}</p>
+                                            </div>
+                                        </ProjectDetails>
+                                        <Status inProgress={val.status !== "Completed"}>
+                                            <h3>STATUS</h3>
+                                            <div><span></span> {val.status}</div>
+                                        </Status>
+                                    </ProjectCard>
+                                ))
+                               }
+                            </List>
+                        ) : (
+                            <AEmptyCard>
+                                <div>
+                                    <h2>Launch your first Campaign</h2>
+                                    <p>Find the right influencers with correct metrics, keep track of your campaign performance and complete payments seamlessly.</p>
+                                    <Link href="/" passHref>
+                                        <a>
+                                            <span>Find Campaign</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
+                                        </a>
+                                    </Link>
+                                </div>
+                                <Image src="/empty-p.png" alt="" height={190} width={290}/>
+                            </AEmptyCard>
+                        )
+                    }
+                </ListingWrapper>
+              )  
+            }
+            {/* {
+                (currentAcctType === "Business Owner" || currentAcctType === "Influencer") && (
                     <TableWrapper>
                         <TableHeader>
                             <h2>My Campaigns</h2>
@@ -271,6 +337,75 @@ const Dashboard = () => {
                         </TableContent>
                     </TableWrapper>
                 )
+            } */}
+             {
+              (currentAcctType === "Business Owner" || (currentAcctType === "Creator")) && (
+                <ListingWrapper>
+                    <h3 id="h3">Active Projects</h3>
+                    {
+                        projectList.data.length ? (
+                            <List>
+                                {
+                                    projectList.data.map((val, i) => (
+                                        <ProjectCard key={i}>
+                                            <ProjectDetails>
+                                                <div id="img">
+                                                    <Image src="/dog.png" layout="fill" objectFit="cover" objectPosition="center"/>
+                                                </div>
+                                                <div>
+                                                    <h4>{val.title}</h4>
+                                                    <p>{val.description}</p>
+                                                </div>
+                                            </ProjectDetails>
+                                            <UserMiniCard>
+                                                <div id="pic">
+                                                    <Image src={val.provider.profile_pic} layout="fill" objectFit="cover" objectPosition="center"/>
+                                                </div>
+                                                <div>
+                                                    <h4>{val.provider.name}</h4>
+                                                    <p>{val.provider.email}</p>
+                                                    <div id="social">
+                                                        <Image src="/facebook-icon.svg" alt="" height={12} width={12}/>
+                                                        <Image src="/instagram-icon.svg" alt="" height={12} width={12}/>
+                                                        <Image src="/twitter-icon.svg" alt="" height={12} width={12}/>
+                                                        <Image src="/tiktok-icon.svg" alt="" height={12} width={12}/>
+                                                        <Image src="/youtube-icon.svg" alt="" height={12} width={12}/>
+                                                    </div>
+                                                    <div id="star">
+                                                        <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                        <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                        <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                        <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                        <Image src="/star-p.svg" alt="" height={8} width={8}/>
+                                                        <span>5.0</span>
+                                                    </div>
+                                                </div>
+                                            </UserMiniCard>
+                                            <Status inProgress={val.status !== "Completed"}>
+                                                <h3>STATUS</h3>
+                                                <div><span></span> {val.status}</div>
+                                            </Status>
+                                        </ProjectCard>
+                                    ))
+                                }
+                            </List>
+                        ) : (
+                            <AEmptyCard>
+                                <div>
+                                    <h2>Launch your first project</h2>
+                                    <p>Find the right influencers with correct metrics, keep track of your campaign performance and complete payments seamlessly.</p>
+                                    <Link href="/" passHref>
+                                        <a>
+                                            <span>Find Creators</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
+                                        </a>
+                                    </Link>
+                                </div>
+                                <Image src="/empty-p.png" alt="" height={190} width={290}/>
+                            </AEmptyCard>
+                        )
+                    }
+                </ListingWrapper>
+              )  
             }
         </Wrapper>
     </Container>

@@ -9,8 +9,8 @@ const Footer = () => {
         <Wrapper>
             <Top>
                 <MainSection>
-                    <Image src="/influenzit.svg" alt="" height={25} width={120} />
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+                <Image src="/influenzit_logo.png" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
                     <ul>
                         <li><Link href="mailto:help@influenzit.com">help@influenzit.com</Link></li>
                         <li><Link href="tel:+2349098765432">+2349098765432</Link></li>

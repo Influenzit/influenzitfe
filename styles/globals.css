@@ -30,6 +30,66 @@ button {
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
   border-radius: 8px;
 }
+.campaign_table {
+  background: #ffffff;
+  /* Gray/200 */
+  border: 1px solid #eaecf0;
+  /* Shadow/sm */
+  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1),
+    0px 1px 2px rgba(16, 24, 40, 0.06);
+  border-radius: 8px;
+}
+.service-card {
+  background: #ffffff;
+  border: 1px solid rgba(42, 41, 57, 0.1);
+  border-radius: 16px;
+}
+.service-card-add {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px dashed rgba(42, 41, 57, 0.1);
+  border-radius: 16px;
+}
+.review-card {
+  background: #ffffff;
+  border: 0.721525px solid #eff0f7;
+  box-shadow: 0px 3.60762px 10.1013px rgba(8, 15, 52, 0.04);
+  border-radius: 14.4305px;
+}
+.empty {
+  background: linear-gradient(125.93deg, #f0c3c9 0%, #fdf8f1 90.11%);
+  border-radius: 16px;
+}
+.let {
+  -webkit-animation-duration: 0.8s;
+  animation-duration: 0.8s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.swipeIn {
+  animation-name: swipeIn;
+  -webkit-animation-name: swipeIn;
+}
+
+@keyframes swipeIn {
+  0% {
+    transform: translateX(200%);
+  }
+
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+@-webkit-keyframes swipeIn {
+  0% {
+    -webkit-transform: translateX(200%);
+  }
+
+  100% {
+    -webkit-transform: translateX(0px);
+  }
+}
 
 @tailwind base;
 @tailwind components;

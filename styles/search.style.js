@@ -6,6 +6,7 @@ export const Container = styled.div`
     min-height: calc(100vh - 150px);
     background: #faf9fb;
     padding: 25px 0;
+    // padding-top: 100px;
 `;
 export const Section = styled.div`
     background: linear-gradient(179.76deg, #FDF8F1 3.31%, #F0C3C9 237.13%);
@@ -25,6 +26,8 @@ export const TopBanner = styled.div`
         min-width:350px;
         text-align: center;
         font-weight: 800;
+        margin-bottom: -20px;
+        line-height: 58px;
         color: ${colors.textColor};
         span {
             color: ${colors.primaryColor};
@@ -38,7 +41,7 @@ export const TopBanner = styled.div`
         text-align: center;
     }
     form {
-        height: 60px;
+        // height: 60px;
         width: 80%;
         display: flex;
         align-items: center;
@@ -47,7 +50,7 @@ export const TopBanner = styled.div`
         border-radius: 40px;
         overflow: hidden;
         font-size: 16px;
-        padding-left: 15px;
+        padding: 10px;
         label {
             font-weight: 500;
         }
@@ -56,7 +59,7 @@ export const TopBanner = styled.div`
             outline: none;
             width: auto;
             height: 100%;
-            padding: 0 25px 0 15px;
+            padding: 0 15px;
             font-size: 14px;
             color: ${colors.textColor}B2;
         }
@@ -71,23 +74,35 @@ export const TopBanner = styled.div`
             color: ${colors.textColor}B2;
         }
         button {
-            width: 48px;
-            height: 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            // font-weight: 700;
+            gap: 1rem;
+            width: 50px;
+            height: 50px;
             min-height: 50px;
             min-width: 50px;
             border-radius: 50%;
-            margin: 0 10px 0 15px;
+            margin: 0;
             border: none;
             background: ${colors.primaryColor};
             cursor: pointer;
         }
+        button > span{
+            display: none;
+            color: #FFF;
+        }
+    }
+    ${breakpoints.lg} {
+        max-width: 98%;
     }
     ${breakpoints.md} {
         height: auto;
         h1 {
-            font-size: 28px;
-            width: 90%;
-            min-width:350px;
+            font-size: 38px;
+            min-width: 100%;
+            line-height: 42px;
         }
         p {
             margin-top: 15px;
@@ -96,22 +111,53 @@ export const TopBanner = styled.div`
             width: 90%;
         }
         form {
-            height: 50px;
+            padding: 1rem;
+            gap: .2rem;
+            flex-direction: column;
             width: 90%;
-            margin-top: 20px;
+            margin-top: 30px;
             font-size: 14px;
+            // box-shadow: 0px 5px 10px 5px #FFF;
+            label{
+                padding-bottom: 5px;
+            }
             input {
-                width: calc((100% - 50px)/2);
-                padding: 0 5px 0 5px;
+                width: 100%;
+                height: 40px;
+                border-radius: 4px;
+                padding: 5px !important;
+                border: 1px solid grey;
                 font-size: 12px;
+                background: #FFF;
             }
             select {
-                padding: 0 5px 0 0;
+                width: 100%;
+                height: 40px;
+                border-radius: 4px;
+                padding: 5px;
+                border: 1px solid grey !important;
                 font-size: 12px;
+                background: #FFF;
+            }
+            button > span{
+                display: inline-block;
             }
             button {
-                width: 60px;
+                width: 98%;
+                border-radius: 5px;
+                margin: 10px 5px;
+                box-sizing: border-box;
+                border: none;
+                background: ${colors.primaryColor};
+                cursor: pointer;
             }
+        }
+    }
+    ${breakpoints.sm}{
+        h1 {
+            font-size: 28px;
+            min-width: 95%;
+            line-height: 38px;
         }
     }
 `;
@@ -239,9 +285,15 @@ export const ViewMoreBtn = styled.button`
 export const CategoryWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
     column-gap: 15px;
     row-gap: 10px;
-    margin-top: 20px;
+    margin-top: 30px;
+    ${breakpoints.lg}{
+        align-items: center;
+        justify-content: center;
+    }
 `;
 export const Category = styled.button`
     border-radius: 999px;
@@ -254,6 +306,9 @@ export const Category = styled.button`
     :hover {
         background: ${colors.textColor};
         color: #fff;
+    }
+    ${breakpoints.md}{
+        padding: 5px 10px;
     }
 `;
 export const ViewMore = styled.div`
@@ -272,6 +327,7 @@ export const ViewMore = styled.div`
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        padding: 20px;
         background: linear-gradient(180deg, #F9FAFB 0%, rgba(249, 250, 251, 0.795955) 23.74%, #F9FAFB 49.4%);
         height: 100%;
         width: 100%;
@@ -293,5 +349,15 @@ export const ViewMore = styled.div`
         background: ${colors.primaryColor};
         color: #fff;
         font-weight: 600;
+    }
+    ${breakpoints.md}{
+        div{
+            text-align: center;
+            padding: 20px 20px;
+            h1{
+                font-size: 28px;
+                line-height: 38px;
+            }
+        }
     }
 `;

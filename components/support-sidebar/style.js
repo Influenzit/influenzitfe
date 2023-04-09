@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { breakpoints } from "../../styles/theme";
+import { breakpoints, colors } from "../../styles/theme";
 
 export const Container = styled.div`
     width: 350px;
@@ -14,39 +14,43 @@ export const Container = styled.div`
 `;
 export const Top = styled.div`
     padding: 20px;
-    border-bottom: 1px solid #D2D2D2;
-    min-height: 128px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
     h2 {
-        color: #111;
-        font-size: 17px;
-        display: flex;
-        justify-content: space-between;
-        padding: 10px 0;
-        font-weight: 400;
+        color: #000;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 32px;
     }
 `;
 export const Bottom = styled.div`
-    padding: 0 20px;
     display: flex;
     flex-direction: column;
     min-height: calc(100% - 128px);
     max-height: calc(100% - 128px);
     overflow-y: scroll;
+    scrollbar-color: ${colors.primaryColor} ${colors.primaryColor}11;
+
+    ::-webkit-scrollbar-thumb {
+        background-color: ${colors.primaryColor};
+    }
+    ::-webkit-scrollbar {
+        background-color: ${colors.primaryColor}11;
+        width: 3px;
+    }
 `;
 export const UserCard = styled.button`
-    display: flex;
+   display: flex;
     border: none;
-    background: transparent;
+    background: ${({isActive}) => isActive ? "#FDF6F7" : "transparent"};
     width: 100%;
     height: 80px;
     min-height: 80px;
-    padding: 2px 0;
+    padding: 2px 20px;
     align-items: center;
     border-bottom: 1px solid #D2D2D2;
     cursor: pointer;
-    :last-of-type {
-        border-bottom: none;
-    }
 `;
 export const SearchContainer = styled.div`
     height: 40px;
@@ -74,7 +78,6 @@ export const SearchContainer = styled.div`
 `;
 export const ChatDetails = styled.div`
     width: 100%;
-    padding-left: 14px;
 `;
 export const ChatTop = styled.div`
     display: flex;
@@ -84,32 +87,40 @@ export const ChatTop = styled.div`
     width: 100%;
     padding: 5px 0;
     p {
-        width: 100%;
         max-width: 190px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        font-size: 16px;
-        color: #111;
+        font-weight: 600;
+        line-height: 120%;
+        color: #94949C;
         text-align: left;
+    }
+    p:first-of-type {
+        font-size: 12px;
+    }
+    p:last-of-type {
+        font-size: 10px;
     }
     span {
         width: 100px;
         min-width: 100px;
-        color: rgba(0,0,0,0.5);
-        font-size: 12px;
+        font-size: 10px;
         text-align: right;
+        line-height: 120%;
+        color: #94949C;
     }
 `;
 export const ChatBottom = styled.div`
-    display: flex;
+     display: flex;
     justify-content: space-between;
     height: 50%;
     align-items: center;
     p {
-        font-size: 14px;
-        ${(props) => props.isUnread && "font-weight: 600;"}
-        color: #111;
+        /* */
+        font-size: 12px;
+        line-height: 120%;
+        color: #8798AD;
         width: 100%;
         max-width: 170px;
         overflow: hidden;
@@ -122,6 +133,10 @@ export const ChatBottom = styled.div`
         color: white;
         background: #14A800;
         border-radius: 5px;
+    }
+    span {
+        color: #94949C;
+        font-size: 10px;
     }
     img {
         vertical-align: middle;
@@ -150,4 +165,15 @@ export const ProfilePicWrapper = styled.div`
     width: 40px;
     border-radius: 50%;
     overflow: hidden;
+`;
+export const OpenBtn = styled.button`
+    outline: none;
+    border: none;
+    background: ${colors.primaryColor};
+    color: #fff;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 20px;
+    cursor: pointer;
 `;

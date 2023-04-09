@@ -39,7 +39,7 @@ const Search = () => {
         <Container>
             <Section>
                 <TopBanner>
-                    <h1>Find Inflencers</h1>
+                    <h1>Find Influencers</h1>
                     <form>
                         <CustomSelect borderLeft>
                             <label>Platform</label>
@@ -57,7 +57,7 @@ const Search = () => {
                         <button onClick={(e) => {
                         e.preventDefault();
                         router.push(`/explore?search=${searchString}&niche=${nicheVal.toLocaleLowerCase()}`);
-                        }}><Image src="/search.svg" height={20} width={20}/></button>
+                        }}><Image src="/search.svg" height={15} width={15}/></button>
                     </form>
                     <CategoryWrapper>
                         {category.map((val, i) => (
@@ -91,8 +91,8 @@ const Search = () => {
                                     })
                                     return <ProfileCard
                                         key={i}
-                                        profileLink={`/influencers/${val.id}`}
-                                        imgSrc={val?.media.filter(med => med.identifier === 'profile_pic')?.[0]?.url ?? '/niche8.png'  }
+                                        profileLink={`/influencers/${val.slug}`}
+                                        imgSrc={val?.user.profile_pic ?? '/niche8.png'  }
                                         handle={val.twitter}
                                         name={`${val.user.firstname} ${val.user.lastname}`}
                                         sex={val.gender}

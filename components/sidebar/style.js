@@ -63,11 +63,10 @@ export const NavButton = styled.button`
         color: ${(props) => props.isActive ? "#fff" : colors.textColor};
         height: 15px;
         width: 15px;
-        margin-bottom: 5px;
     }
     span {
         color: ${(props) => props.isActive ? "#fff" : colors.textColor};
-        font-size: 12px;
+        font-size: 14px;
     }
     :hover {
         background: ${(props) => !props.isActive && `${colors.textColor}11`};

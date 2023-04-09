@@ -13,6 +13,7 @@ module.exports = {
       colors: { 
         "primary-100": "#DF475C",
         "sec-100": "#101828",
+        "tert-100": "#94949C",
      },
     },
   },

@@ -7,6 +7,12 @@ export const HeroSectionOne = styled.section`
     width: 100%;
     padding-top: 120px;
 `;
+export const FormDivide = styled.div`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    
+`;
 export const WrapperOne = styled.div`
     width: 98%;
     max-width: ${sizes.wrapperWidth};
@@ -20,6 +26,7 @@ export const WrapperOne = styled.div`
         width: 80%;
         min-width:350px;
         text-align: center;
+        line-height: 64px;
         font-weight: 800;
         color: ${colors.textColor};
         span {
@@ -34,7 +41,7 @@ export const WrapperOne = styled.div`
         text-align: center;
     }
     form {
-        height: 60px;
+        // height: 60px;
         width: 80%;
         display: flex;
         align-items: center;
@@ -43,7 +50,7 @@ export const WrapperOne = styled.div`
         border-radius: 40px;
         overflow: hidden;
         font-size: 16px;
-        padding-left: 15px;
+        padding: 10px;
         label {
             font-weight: 500;
         }
@@ -52,7 +59,7 @@ export const WrapperOne = styled.div`
             outline: none;
             width: auto;
             height: 100%;
-            padding: 0 25px 0 15px;
+            padding: 0 15px;
             font-size: 14px;
             color: ${colors.textColor}B2;
         }
@@ -67,23 +74,33 @@ export const WrapperOne = styled.div`
             color: ${colors.textColor}B2;
         }
         button {
-            width: 48px;
-            height: 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            // font-weight: 700;
+            gap: 1rem;
+            width: 50px;
+            height: 50px;
             min-height: 50px;
             min-width: 50px;
             border-radius: 50%;
-            margin: 0 10px 0 15px;
+            margin: 0;
             border: none;
             background: ${colors.primaryColor};
             cursor: pointer;
+        }
+        button > span{
+            display: none;
+            color: #FFF;
         }
     }
     ${breakpoints.md} {
         height: auto;
         h1 {
-            font-size: 28px;
+            font-size: 38px;
+            line-height: 52px;
             width: 90%;
-            min-width:350px;
+            min-width:100%;
         }
         p {
             margin-top: 15px;
@@ -92,22 +109,51 @@ export const WrapperOne = styled.div`
             width: 90%;
         }
         form {
-            height: 50px;
+            padding: 1rem;
+            gap: .2rem;
+            flex-direction: column;
             width: 90%;
             margin-top: 20px;
             font-size: 14px;
+            box-shadow: 5px 5px 5px 5px #EFEFEFAB;
+            label{
+                padding-bottom: 5px;
+            }
             input {
-                width: calc((100% - 50px)/2);
-                padding: 0 5px 0 5px;
+                width: 100%;
+                height: 40px;
+                border-radius: 4px;
+                padding: 5px !important;
+                border: 1px solid grey;
                 font-size: 12px;
+                background: #FFF;
             }
             select {
-                padding: 0 5px 0 0;
+                width: 100%;
+                height: 40px;
+                border-radius: 4px;
+                padding: 5px;
+                border: 1px solid grey !important;
                 font-size: 12px;
+                background: #FFF;
+            }
+            button > span{
+                display: inline-block;
             }
             button {
-                width: 60px;
+                width: 98%;
+                border-radius: 5px;
+                margin: 10px 5px;
+                box-sizing: border-box;
+                border: none;
+                background: ${colors.primaryColor};
+                cursor: pointer;
             }
+        }
+    }
+    ${breakpoints.sm}{
+        h1{
+            line-height: 48px;
         }
     }
 `;
@@ -131,14 +177,23 @@ export const CustomSelect = styled.div`
         padding: 0 !important;
         cursor: pointer;
         width: 100% !important;
+        border: 1px solid #FFF !important;
+        margin-left: -5px;
+        outline: none !important;
     }
     input {
         padding: 0 !important;
     }
     ${breakpoints.md} {
+        ${(props) => props.borderLeft ? "width: 100%;" : "width: 100%;" }
+        ${(props) => props.borderLeft ? "border-right: 0px solid #2A293933;" : "" }
+        padding-left: 5px;
         span {
             padding-left: 5px;
             color: #848484;
+        }
+        select{
+            margin-left: 0px;
         }
     }
 `;
@@ -151,11 +206,16 @@ export const BannerImg = styled.div`
     background-size: contain;
     background-position: bottom;
     background-repeat: no-repeat;
+    ${breakpoints.md} {
+        margin-top: 1rem;
+        height: 200px;
+        opacity: 0.8;
+    }
 `;
 export const HeroSectionTwo = styled.section`
     background: white;
     text-align: center;
-    padding: 100px 0;
+    padding: 80px 0 30px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -163,6 +223,7 @@ export const HeroSectionTwo = styled.section`
         font-weight: 700;
         color: ${colors.textColor};
         font-size: 40px;
+        line-height: 48px;
         span {
             color: ${colors.primaryColor};
         }
@@ -170,11 +231,20 @@ export const HeroSectionTwo = styled.section`
     p {
         width: 40%;
         max-width: 500px;
-        min-width: 400px;
-        line-height: 24px;
+        line-height: 25px;
         font-size: 17px;
         color: ${colors.textColor};
         margin-top: 20px;
+    }
+    ${breakpoints.md} {
+        padding: 40px 15px 15px 15px;
+        h1{
+            font-size: 28px;
+            line-height: 38px;
+        }
+        p{
+            width: 98%;
+        }
     }
 `
 export const WrapperTwo = styled.div`
@@ -231,6 +301,10 @@ export const InfoCard = styled.div`
 export const HeroSectionThree = styled.div`
     background: #fff;
     padding: 45px 0;
+    overflow: hidden;
+    ${breakpoints.md} {
+        padding: 0;
+    }
 `;
 export const WrapperThree = styled.div`
     width: 98%;
@@ -251,6 +325,29 @@ export const InfoCardM = styled.div`
     display: flex;
     align-items: center;
     padding: 60px 0;
+    overflow: hidden;
+    ${breakpoints.lg}{
+        padding: 30px 15px; 
+    }
+    ${breakpoints.md} {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px 0;
+    }
+`;
+export const InfoCardMob = styled.div`
+    display: none;
+    align-items: center;
+    padding: 60px 0;
+    overflow: hidden;
+    ${breakpoints.md} {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 15px;
+        padding-top: 0;
+    }
 `;
 export const Info = styled.div`
     width: 50%;
@@ -263,6 +360,8 @@ export const Info = styled.div`
     }
     h1 {
         font-size: 40px;
+        font-weight: 700;
+        line-height: 48px;
         margin-top: 15px;
         color: ${colors.textColor};
     }
@@ -279,11 +378,67 @@ export const Info = styled.div`
         color: #fff;
         font-weight: 600;
     }
+    ${breakpoints.md} {
+        display: none;
+        text-align: left;
+        width: 100%;
+        max-width: 98%;
+        padding: 10px;
+        ${props => props.leftP ? "text-align: center;" : ""}
+        h1 {
+            font-size: 32px;
+            margin-top: 15px;
+        }
+    }
+`;
+export const Infos = styled.div`
+    width: 100%;
+    max-width: 100%;
+    span {
+        color: ${colors.primaryColor};
+        font-size: 14px;
+        font-weight: 700;
+    }
+    h1 {
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 48px;
+        margin-top: 15px;
+        color: ${colors.textColor};
+    }
+    p {
+        margin-top: 15px;
+        color: ${colors.textColor};
+    }
+    a {
+        margin-top: 25px;
+        display: inline-block;
+        padding: 14px 30px;
+        border-radius: 8px;
+        background: ${colors.primaryColor};
+        color: #fff;
+        font-weight: 600;
+    }
+    ${breakpoints.md} {
+        text-align: left;
+        width: 100%;
+        max-width: 98%;
+        padding: 10px 0;
+        ${props => props.leftP ? "text-align: center;" : ""}
+        h1 {
+            font-size: 28px;
+            margin-top: 15px;
+            line-height: 38px;
+        }
+    }
 `;
 export const ImageWrapper = styled.div`
     width: 50%;
     position: relative;
     height: 400px;
+    ${breakpoints.md} {
+        width: 100%;
+    }
 `;
 export const NicheCard = styled.div`
     background: white;
@@ -310,6 +465,11 @@ export const NicheCard = styled.div`
             transform: scale(1.04);
         }
     }
+    ${breakpoints.sm}{
+        min-width: 145px;
+        max-width: 155px;
+        height: 200px;
+    }
 `;
 export const ImgW1 = styled.div`
     position: absolute;
@@ -334,6 +494,9 @@ export const NicheWrapper = styled.div`
 export const HeroSectionFour = styled.section`
     background: white;
     padding: 40px 0;
+    ${breakpoints.lg}{
+        padding: 40px 15px;
+    }
 `;
 export const WrapperFour = styled.div`
     width: 98%;
@@ -351,7 +514,7 @@ export const WrapperFour = styled.div`
         font-size: 16px;
         color: ${colors.textColor};
         width: 50%;
-        min-width: 350px;
+        // min-width: 100%;
         margin: 15px auto;
     }
     a {
@@ -362,6 +525,15 @@ export const WrapperFour = styled.div`
         background: ${colors.primaryColor};
         color: #fff;
         font-weight: 600;
+    }
+    ${breakpoints.md}{
+        h1{
+            font-size: 28px;
+            line-height: 42px;
+        }
+        p{
+            width: 98%;
+        }
     }
 `;
 export const InfoSectOne = styled.div`
@@ -471,6 +643,9 @@ export const ListItem = styled.div`
 `;
 export const HeroSectionFive = styled.section`
     background: #FDFAF5;
+    ${breakpoints.md}{
+        padding: 20px 0 30px 0;
+    }
 `;
 export const WrapperFive = styled.div`
     width: 98%;
@@ -488,14 +663,22 @@ export const WrapperFive = styled.div`
         font-size: 40px;
         font-weight: 700;
         width: 60%;
-        min-width: 350px;
+        min-width: 100%;
         color: ${colors.textColor};
     }
-    ${breakpoints.md} {
-        padding: 20px 0;
+    ${breakpoints.lg} {
+        padding: 30px 15px 20px 15px;
         h1 {
             font-size: 28px;
-            width: 90%;
+            min-width: 100%;
+        }
+    }
+    ${breakpoints.md} {
+        text-align: center;
+        padding: 30px 15px 20px 15px;
+        h1 {
+            font-size: 28px;
+            min-width: 100%;
         }
     }
     
@@ -527,7 +710,8 @@ export const ReviewCard = styled.div`
     border-radius: 20px;
     background: #fff;
     h3 {
-       font-size: 18px;
+       font-size: 20px;
+       font-weight: 600;
        color: ${colors.textColor};
     }
     p {
@@ -541,6 +725,9 @@ export const ReviewCard = styled.div`
     }
 `;export const HeroSectionSix = styled.section`
     background: white;
+    ${breakpoints.md}{
+        padding: 20px 0 0px 0;
+    }
 `;
 export const WrapperSix = styled.div`
     width: 98%;
@@ -566,11 +753,25 @@ export const WrapperSix = styled.div`
         color: #667085;
         text-align: center;
     }
+    ${breakpoints.lg}{
+        padding: 50px 15px; 
+        h1{
+            line-height: 48px;
+        }
+    }
     ${breakpoints.md} {
-        padding: 20px 0;
+        padding: 20px 15px;
         h1 {
             font-size: 28px;
-            width: 90%;
+            width: 100%;
+            line-height: 32px;
+        }
+         p {
+            font-size: 16px;
+            width: 80%;
+            min-width: 100%;
+            color: #667085;
+            text-align: center;
         }
     }
     
@@ -644,6 +845,10 @@ export const Question = styled.div`
     height: 40px;
     font-size: 18px;
     font-weight: 600;
+    margin-bottom: 6px;
+    span:first-of-type {
+        max-width: calc(100% - 25px);
+    }
 `;
 export const Answer = styled.div`
     color: #667085;
@@ -685,7 +890,7 @@ export const Banner = styled.div`
             color: #fff;
             font-size: 38px;
             width: 40%;
-            min-width: 350px;
+            min-width: 100%;
         }
          a {
             margin-top: 25px;
@@ -699,4 +904,20 @@ export const Banner = styled.div`
             font-weight: 600;
         }
     }
+    ${breakpoints.sm}{
+        div{
+            padding: 0;
+            text-align: center;
+            align-items: center;
+            h2{
+                text-align: center;
+                font-size: 28px;
+                width: 100%;
+            }
+            a{
+
+            }
+        }
+    }
+        
 `;
