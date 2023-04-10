@@ -253,7 +253,7 @@ export const FBanner = styled.div`
         text-align: center;
     }
     ${breakpoints.md} {
-        background: transparent;
+        padding: 10px;
         h1 {
             font-size: 25px;
             width: 100%;
@@ -322,8 +322,6 @@ export const AccessCardT = styled.div`
         border: none;
     }
     ${breakpoints.md} {
-        background: none;
-        color: ${colors.textColor};
         p {
             width: 100%;
         }
