@@ -232,6 +232,12 @@ export const IframeWrapper = styled.div`
         left: -78px;
     }
 `;
+export const IframeWrapperT = styled.div`
+    ${breakpoints.md} {
+        transform: scale(0.6);
+        position: relative;
+    }
+`;
 export const FBanner = styled.div`
     background: #FCF5EB;
     display: flex;
@@ -247,7 +253,7 @@ export const FBanner = styled.div`
         text-align: center;
     }
     ${breakpoints.md} {
-        background: transparent;
+        padding: 10px;
         h1 {
             font-size: 25px;
             width: 100%;
@@ -265,6 +271,7 @@ export const AccessCardT = styled.div`
     align-items: center;
     color: #fff;
     flex-direction: column;
+    align-items: center;
     text-align: center;
     p {
         width: 70%;
@@ -310,17 +317,20 @@ export const AccessCardT = styled.div`
     iframe {
         width: 100%;
         height: 500px;
+        min-width: 550px;
         outline: none;
         border: none;
     }
     ${breakpoints.md} {
-        background: none;
-        color: ${colors.textColor};
         p {
             width: 100%;
         }
         form {
             border: 1px solid rgba(42, 41, 57, 0.1);
+        }
+
+        iframe {
+            min-width: 550px;
         }
     }
 `;

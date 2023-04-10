@@ -98,8 +98,6 @@ export const ImageSlides = styled.div`
     width: 100%;
     margin: 20px 0;
     position: relative;
-    border-radius: 16px;
-    overflow: hidden;
 `;
 export const CtrlBtn = styled.button`
     border: none;
@@ -119,6 +117,8 @@ export const CtrlBtn = styled.button`
 export const Images = styled.div`
     position: relative;
     height: 430px;
+    border-radius: 16px;
+    overflow: hidden;
 `;
 export const Header = styled.div`
     color: #333;
@@ -198,6 +198,11 @@ export const ProfileDetails = styled.div`
         }
     }
 `;
+export const WAction = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+`;
 export const FaqWrapper = styled.div`
      padding: 15px 0px;
 `;
@@ -253,19 +258,17 @@ export const Right = styled.div`
 `;
 export const PackageCard = styled.div`
     position: sticky;
-    top: 150px;
+    top: 100px;
     background: #fff;
-    padding: 20px;
     border: 1px solid #EAEAEB;
     border-radius: 16px;
+    overflow: hidden;
 `;
 export const PackageTabs = styled.div`
     display: flex;
     column-gap: 5px;
     background: #F9FAFB;
-    padding: 4px;
-    border: 1px solid #EAEAEB;
-    border-radius: 8px;
+    border-bottom: 1px solid #EAEAEB;
 `;
 export const PackageTab = styled.button`
     background: ${(props) => props.isActive ? colors.textColor : "transparent"};
@@ -280,19 +283,31 @@ export const PackageTab = styled.button`
     cursor: pointer;
     font-weight: 500;
     font-size: 14px;
-    border-radius: 4px;
 `;
 export const Package = styled.div`
     background: #fff;
+    padding: 16px;
 `;
 export const PHead = styled.div`
-    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    span {
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
     p {
         color: ${colors.primaryColor};
         font-weight: 600;
-        font-size: 32px;
+        font-size: 18px;
     }
 
+`;
+export const PDescription = styled.p`
+    color: #555461;
+    font-size: 14px;
+    margin: 5px 0;
 `;
 export const PDetails = styled.p`
     padding-bottom: 15px;
@@ -331,4 +346,38 @@ export const ContinueBtn = styled.button`
     justify-content: center;
     column-gap: 7px;
     cursor: pointer;
+    border: 2px solid #DF475C;
 `;
+export const MessageBtn = styled.button`
+    background: #fff;
+    border: none;
+    color: ${colors.primaryColor};;
+    padding: 16px 0;
+    width: 100%;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 7px;
+    cursor: pointer;
+    border: 2px solid #DF475C;
+    margin-top: 10px;
+`;
+export const QAction = styled.div`
+    display: flex;
+    column-gap: 15px;
+    margin-top: 8px;
+    justify-content: space-between;
+    button {
+        color: #555461;
+        font-weight: 500;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        column-gap: 4px;
+        cursor: pointer;
+    }
+`;
+

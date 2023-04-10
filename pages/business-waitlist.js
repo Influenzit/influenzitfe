@@ -21,6 +21,8 @@ import {
   Container,
   Details,
   FBanner,
+  IframeWrapper,
+  IframeWrapperT,
   ImageBanner,
   ImgContainer,
   Info,
@@ -181,7 +183,9 @@ const BusinessWaitlist = () => {
         <h4>
           Sign up now and be a part of the future of influencer marketing.
         </h4>
-        <iframe src="https://cdn.forms-content.sg-form.com/6cee0834-c26a-11ed-90af-f2e097933c84"></iframe>
+        <IframeWrapperT>
+          <iframe src="https://cdn.forms-content.sg-form.com/0843c3b7-d63d-11ed-b682-ca7e906127bd"></iframe>
+        </IframeWrapperT>
       </AccessCardT>
       <WrapperSix>
         <h1>Frequently asked questions</h1>
