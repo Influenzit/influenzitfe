@@ -94,7 +94,7 @@ const BusinessWaitlist = () => {
     {
       question: "How do I know if Influenzit is right for my business?",
       answer:
-        "nfluenzit is a great fit for small and medium-sized businesses looking to improve their online presence and increase sales through influencer marketing. Our platform provides access to a diverse range of industry-specific influencers, offers data reporting for measuring campaign success, and simplifies the process of finding and collaborating with the right partners",
+        "influenzit is a great fit for small and medium-sized businesses looking to improve their online presence and increase sales through influencer marketing. Our platform provides access to a diverse range of industry-specific influencers, offers data reporting for measuring campaign success, and simplifies the process of finding and collaborating with the right partners",
     },
     {
       question: "How do I sign up for the Influenzit waitlist?",
