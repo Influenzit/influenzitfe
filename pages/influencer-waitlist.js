@@ -68,11 +68,9 @@ const InfluencerWaitlist = () => {
         answer: "Influenzit offers collaborations with a diverse range of business owners across a variety of industries. You can easily find and collaborate with brands that align with your interests and audience. Brands can also find and reach out to you from your profile."},
     {
         question: "How does Influenzit help me grow my following?",
-        answer: "Influenzit offers a range of resources and support for new influencers to help them grow their following and succeed in the industry. Our platform also connects you with complementary businesses and creatives to cross-pollinate your audiences. "}
+        answer: "Influenzit offers a range of resources and support for new influencers to help them grow their following and succeed in the industry. Our platform also connects you with complementary businesses and creatives to cross-pollinate your audiences. "},
 
-
-
-    {
+ {
         question: "How do I measure the success of my campaigns on Influenzit?",
         answer: "Influenzit offers data reporting that allows you to measure the success of your campaigns and make informed decisions about future collaborations. You can track metrics such as engagement, reach, and conversions.",
 }
