@@ -763,7 +763,7 @@ export const WrapperSix = styled.div`
         padding: 20px 15px;
         h1 {
             font-size: 28px;
-            width: 100%;
+            width: 100% !important;
             line-height: 32px;
         }
          p {
@@ -845,7 +845,8 @@ export const Question = styled.div`
     height: 40px;
     font-size: 18px;
     font-weight: 600;
-    margin-bottom: 6px;
+    margin-bottom: 22px;
+    margin-top: 15px;
     span:first-of-type {
         max-width: calc(100% - 25px);
     }
