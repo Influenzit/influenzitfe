@@ -29,6 +29,7 @@ import Link from 'next/link';
 import { Answer, Faq, Question } from '../../styles/home.style';
 import { Listing, Bottom } from '../../styles/creator-profile.style';
 import ServiceCard from '../../components/service-card';
+import { ShareContainer, UpdateModal } from 'styles/view.style';
 
 function NextArrow(props) {
     const { className, style, onClick } = props;
@@ -68,6 +69,8 @@ const ServiceView = () => {
   const currentBusiness = useSelector(getCurrentBusiness);
   const dispatch = useDispatch();
   const { id } = router.query;
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [showShare, setShowShare] = useState(false);
   const { data: serviceData, refetch: refetchServiceData } = useQuery(["get-service"], async () => {
         return await getExploreService(id);
     }, {
@@ -218,6 +221,10 @@ const ServiceView = () => {
               });
         }
     }
+    const handleLinkCopy = () => {
+        navigator.clipboard.writeText(location.href);
+        setLinkCopied(true);
+    }
     useEffect(() => {
       if (makePayment) {
         initializePayment(onPaymentSuccess, onPaymentClose);
@@ -294,7 +301,7 @@ const ServiceView = () => {
                                 <WAction>
                                     <Link href={`/influencers/${inData?.user?.account?.id}`}>View profile</Link>
                                     <QAction>
-                                        <button><Image src="/share.svg" alt="" width={18} height={15}/> <span>Share</span></button>
+                                        <button onClick={() => setShowShare(true)}><Image src="/share.svg" alt="" width={18} height={15}/> <span>Share</span></button>
                                         <button><Image src="/bookmarkn.svg" alt="" width={18} height={15}/> <span>Save</span></button>
                                     </QAction>
                                 </WAction>
@@ -380,6 +387,20 @@ const ServiceView = () => {
                 </Bottom>
             </Listing>
         </Wrapper>
+        {
+            showShare && (
+                <UpdateModal>
+                    <ShareContainer lCopied={linkCopied}>
+                        <div><h1>Share this service</h1> <button onClick={() => {setShowShare(false); setLinkCopied(false);}}><Image src="/cancel.svg" alt="" height={14} width={14} /></button></div>
+                        <p>Copy the link below to share this service on any platform.</p>
+                        <div id="link-container">
+                            <p>{location.href}</p>
+                            <button onClick={handleLinkCopy}>{linkCopied ? "Link copied" : "Copy link"}</button>
+                        </div>
+                    </ShareContainer>
+                </UpdateModal>
+            )
+        }
     </Container>
   )
 }

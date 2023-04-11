@@ -4,8 +4,33 @@ import { breakpoints, colors } from "./theme";
 export const WelcomeHeading = styled.h2`
     font-weight: 600;
     font-size: 24px;
-    padding-bottom: 10px;
+    padding-bottom: 3px;
     color: ${colors.textColor};
+`;
+export const ReferralCode = styled.div`
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+    font-size: 15px;
+    color: ${colors.textColor};
+    span {
+        font-weight: 600;
+        color: ${colors.primaryColor};
+    }
+    button {
+        outline: none;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        background: #FCEDEF;
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 600;
+        color: ${colors.textColor};
+    }
 `;
 export const BizCard = styled.div`
     background: #FFFFFF;

@@ -41,8 +41,11 @@ const LandingLayout = ({children, title, description}) => {
       },
       onError(res) {
           dispatch(setLoading(false));
+          if(localStorage.getItem("user-id")) {
+            localStorage.clear();
+            router.replace("/login");
+          }
           localStorage.clear();
-          router.replace("/login");
       } 
   });
   useEffect(() => {
