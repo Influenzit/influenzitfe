@@ -22,7 +22,8 @@ const Register = () => {
     password: "",
     password_confirmation: "",
     account_type: "Business",
-    business_name: ""
+    business_name: "",
+    referral_code: ""
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
@@ -145,6 +146,7 @@ const Register = () => {
           password: formVal.password,
           password_confirmation: formVal.password_confirmation,
           account_type: formVal.account_type,
+          referral_code: formVal.referral_code
       })
     }
   }
@@ -256,7 +258,7 @@ const Register = () => {
     <FormWrapper>
           <div style={{ margin: "20px 0 40px 0"}}>
             <Logo href="/">
-                <Image src="/influenzit.svg" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
+                <Image src="/influenzit_logo.png" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
             </Logo>
           </div>
           <FormHeader style={{ alignItems: "flex-start" }}>
@@ -340,6 +342,16 @@ const Register = () => {
                 required
                 />
               </InputContainer>
+              <InputContainer hasContent={formVal.email}>
+                  <label>Referral Code</label>
+                  <Input
+                  type="text"
+                  value={formVal.referral_code}
+                  placeholder="Enter referral code"
+                  onChange={(e) => handleInputChange(e.target.value, "referral_code")}
+                  required
+                  />
+              </InputContainer> 
               {
                 isError && <ErrorMessageCont>{errorMessage}</ErrorMessageCont>
               }

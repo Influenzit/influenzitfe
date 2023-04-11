@@ -345,6 +345,7 @@ export const ImageBanner = styled.div`
     border-radius: 24px;
     overflow: hidden;
     ${breakpoints.sm} {
-        display: none;
+        /* display: none; */
+        height: 150px;
     }
 `;
