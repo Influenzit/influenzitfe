@@ -44,8 +44,12 @@ const LandingLayout = ({children, title, description}) => {
           if(localStorage.getItem("user-id")) {
             localStorage.clear();
             router.replace("/login");
+          } else {
+            localStorage.clear();
+            if(router.pathname.includes("/dashboard")) {
+              router.replace("/login");
+            }
           }
-          localStorage.clear();
       } 
   });
   useEffect(() => {
