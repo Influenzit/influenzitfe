@@ -6,7 +6,7 @@ import { getUser } from '../../app/reducers/user'
 import { BagIcon, ChevronLeft, ChevronRight, HashTagIcon, SettingsIcon, WalletIcon } from '../../assets/svgIcons'
 import LandingLayout from '../../layouts/landing.layout'
 import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, WelcomeModal, Wrapper } from '../../styles/connect-pages.style'
-import { AEmptyCard, BizCard, CampaignCard, Card, CardsWrapper, ChartContainer, EmptyCard, List, ListingWrapper, ProjectCard, ProjectDetails, Status, UserMiniCard, WelcomeHeading } from '../../styles/dashboard'
+import { AEmptyCard, BizCard, CampaignCard, Card, CardsWrapper, ChartContainer, EmptyCard, List, ListingWrapper, ProjectCard, ProjectDetails, ReferralCode, Status, UserMiniCard, WelcomeHeading } from '../../styles/dashboard'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useQuery } from '@tanstack/react-query'
 import { getCampaigns } from '../../api/campaigns'
@@ -15,6 +15,7 @@ import { getProjects } from '../../api/projects'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { UpdateModal } from '../../styles/view.style'
+import { toast } from 'react-toastify'
 
 const Dashboard = () => {
   const user = useSelector(getUser);
@@ -71,6 +72,12 @@ const Dashboard = () => {
                 // }
             } 
         });
+        const handleReferralCopy = () => {
+            navigator.clipboard.writeText(user?.referral_code ?? "");
+            toast.success("Referral code copied to clipboard", {
+                position: toast.POSITION.TOP_RIGHT
+              });
+        }
         const { data: serviceData, refetch: refetchServiceData } = useQuery(["get-services"], async () => {
             return await getServices();
         }, {
@@ -106,6 +113,10 @@ const Dashboard = () => {
             <WelcomeHeading>
                 Hello {userDetails && userDetails.name}
             </WelcomeHeading>
+            <ReferralCode>
+                <p>Referral Code: <span>{user?.referral_code ?? ""}</span> </p>
+                <button onClick={handleReferralCopy}>Copy</button>
+            </ReferralCode>
             {
                 (currentAcctType === "Business Owner") && (
                     <BizCard>

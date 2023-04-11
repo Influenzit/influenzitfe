@@ -212,3 +212,48 @@ export const FormContainer = styled.div`
         }
     }
 `;
+export const ShareContainer = styled.div`
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 32px;
+    width: 90%;
+    max-width: 600px;
+    div:first-of-type {
+        display: flex;
+        justify-content: space-between;
+        column-gap: 10px;
+        h1 {
+            color: #2A2939;
+            font-weight: 600;
+            font-size: 24px;
+        }
+    }
+    p {
+        font-size: 14px;
+        color: #555461;
+    }
+    #link-container {
+        border: 1px solid #D0D5DD;
+        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+        border-radius: 8px;
+        display: flex;
+        padding: 10px 14px;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 20px;
+        button {
+            outline: none;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            background: ${({lCopied}) => lCopied ? "rgba(39, 194, 129, 0.1)" : "#FCEDEF"};
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 400;
+            color: ${colors.textColor};
+        }
+    }
+`;
