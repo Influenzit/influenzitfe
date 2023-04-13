@@ -162,7 +162,7 @@ const Login = () => {
     })
   }
   const googleLogin = useGoogleLogin({
-    onSuccess: tokenResponse => handleGoogleLogin(tokenResponse.access_token),
+    onSuccess: tokenResponse => console.log(tokenResponse),
   });
   const handleFailure = () => {
     dispatch(setLoading(false));
