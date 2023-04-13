@@ -242,7 +242,7 @@ const CompleteProfile = () => {
     }
     const handleImageRemove = (i) => {
         setCoverImages((prev) => {
-            let newList = prev;
+            let newList = [...prev];
             newList.splice(i,1);
             return newList;
         })
@@ -447,6 +447,7 @@ const CompleteProfile = () => {
                                 {
                                     coverImages.map((val, i) => (
                                         <div key={i}>
+                                            <button onClick={() => handleImageRemove(i)}>Remove</button>
                                             <Image src={val.url} alt="" layout='fill' objectFit='cover' objectPosition="center" />
                                         </div>
                                     ))
