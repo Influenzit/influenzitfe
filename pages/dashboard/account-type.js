@@ -86,7 +86,7 @@ const ChooseProfile = () => {
               </SecondIcon>
             </IconContainer>
             <h2>Influencers</h2>
-            <p>Social media personalities with huge adience</p>
+            <p>Social media personalities with huge audience</p>
             <button onClick={() => registerAs("influencer")}>
               Get Started
             </button>

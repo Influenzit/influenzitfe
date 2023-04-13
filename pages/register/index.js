@@ -366,7 +366,6 @@ const Register = () => {
                   value={formVal.referral_code}
                   placeholder="Enter referral code"
                   onChange={(e) => handleInputChange(e.target.value, "referral_code")}
-                  required
                   />
               </InputContainer> 
               {
