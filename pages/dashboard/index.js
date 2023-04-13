@@ -73,8 +73,8 @@ const Dashboard = () => {
             } 
         });
         const handleReferralCopy = () => {
-            navigator.clipboard.writeText(user?.referral_code ?? "");
-            toast.success("Referral code copied to clipboard", {
+            navigator.clipboard.writeText(`${location.host}/register?referral_code=${user?.referral_code?? ""}`);
+            toast.success("Referral link copied to clipboard", {
                 position: toast.POSITION.TOP_RIGHT
               });
         }
@@ -115,7 +115,7 @@ const Dashboard = () => {
             </WelcomeHeading>
             <ReferralCode>
                 <p>Referral Code: <span>{user?.referral_code ?? ""}</span> </p>
-                <button onClick={handleReferralCopy}>Copy</button>
+                <button onClick={handleReferralCopy}>Copy Link</button>
             </ReferralCode>
             {
                 (currentAcctType === "Business Owner") && (
