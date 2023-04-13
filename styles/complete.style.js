@@ -220,4 +220,17 @@ export const ImagePreview = styled.div`
         border-radius: 8px;
         overflow: hidden;
     }
+    button {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        padding: 5px 10px;
+        cursor: pointer;
+        background: red;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        z-index: 9;
+        border-radius: 8px;
+    }
 `;
