@@ -12,6 +12,7 @@ import { updateUser } from '../../app/reducers/user';
 import { useGoogleLogin } from '@react-oauth/google';
 import { Logo } from '../../components/nav/style';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 const Register = () => {
   const router = useRouter();
@@ -28,6 +29,7 @@ const Register = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const dispatch = useDispatch();
+  const {referral_code} = router.query;
   const mutation = useMutation(userData => {
     return createAccount(userData);
   }, {
@@ -151,6 +153,21 @@ const Register = () => {
     }
   }
   if (mutation.isLoading) dispatch(setLoading(true));
+  useEffect(() => {
+    if(referral_code) {
+      handleInputChange(referral_code, "referral_code");
+    }
+  }, [referral_code])
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const id = localStorage.getItem("user-id");
+    console.log(token, id)
+    if(token && id) {
+      router.push("/dashboard")
+    }
+  }, [router.pathname])
+  
+  
   return (
     // <Container style={{ paddingTop: "0"}}>
     //   <Wrapper style={{ flexDirection: "row", justifyContent: "space-between", padding: "0" }}>
@@ -343,7 +360,7 @@ const Register = () => {
                 />
               </InputContainer>
               <InputContainer hasContent={formVal.email}>
-                  <label>Referral Code</label>
+                  <label>Referral Code (optional)</label>
                   <Input
                   type="text"
                   value={formVal.referral_code}
