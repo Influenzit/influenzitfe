@@ -27,7 +27,7 @@ export const ReferralCode = styled.div`
         background: #FCEDEF;
         border-radius: 8px;
         padding: 6px 12px;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 600;
         color: ${colors.textColor};
     }
