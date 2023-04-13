@@ -467,9 +467,14 @@ export const Social = styled.div`
     border-radius: 8px;
     display: flex;
     column-gap: 10px;
+    align-items: center;
     padding: 15px;
     width: 50%;
     min-width: calc(50% - 5px);
+    div:first-of-type {
+        display: flex;
+        align-items: center;
+    }
     div {
         h4 {
             text-transform: uppercase;
@@ -479,7 +484,13 @@ export const Social = styled.div`
         }
         p {
             font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
+    }
+    div:last-of-type {
+        max-width: calc(100% - 40px);
     }
 `;
 export const CollaborateBtn = styled.button`
