@@ -231,7 +231,7 @@ const CreatorProfile = () => {
                     (getCoverImages(inData?.media)?.length <= 1) && (
                         <ImageContainer>
                             <div id="img">
-                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
                             </div>
                         </ImageContainer>
                     )
@@ -240,10 +240,10 @@ const CreatorProfile = () => {
                     (getCoverImages(inData?.media)?.length === 2) && (
                         <ImageContainerTwo>
                             <div className='wrap'>
-                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
                             </div>
                             <div className='wrap'>
-                                <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
                             </div>
                         </ImageContainerTwo>
                     )
@@ -252,14 +252,14 @@ const CreatorProfile = () => {
                     (getCoverImages(inData?.media)?.length === 3) && (
                         <ImageContainerTwo>
                             <div className='wrap'>
-                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
                             </div>
                             <div className="wrap">
                                 <div className='wrap-top'>
-                                    <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                    <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
                                 </div>
                                 <div className='wrap-bottom'>
-                                    <Image src={getCoverImages(inData?.media)[2].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                    <Image src={getCoverImages(inData?.media)[2].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
                                 </div>
                             </div>
                         </ImageContainerTwo>
@@ -269,18 +269,18 @@ const CreatorProfile = () => {
                     (getCoverImages(inData?.media)?.length === 4) && (
                         <ImageContainerTwo>
                             <div className='wrap'>
-                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
                             </div>
                             <div className='wrap'>
                                 <div className='wrap-top'>
-                                    <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                    <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
                                 </div>
                                 <div className='wrap-bottom'>
                                     <div>
-                                        <Image src={getCoverImages(inData?.media)[2].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                        <Image src={getCoverImages(inData?.media)[2].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
                                     </div>
                                     <div>
-                                        <Image src={getCoverImages(inData?.media)[3].url}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
+                                        <Image src={getCoverImages(inData?.media)[3].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
                                     </div>
                                 </div>
                             </div>
@@ -475,7 +475,7 @@ const CreatorProfile = () => {
                                 </div>
                                 <div>
                                     <h4>INSTAGRAM</h4>
-                                    <p>@{inData?.instagram}</p>
+                                    <p title={inData?.instagram}>@{inData?.instagram}</p>
                                 </div>
                             </Social>
                             <Social>
@@ -484,7 +484,7 @@ const CreatorProfile = () => {
                                 </div>
                                 <div>
                                     <h4>YOUTUBE</h4>
-                                    <p>@{inData?.youtube}</p>
+                                    <p title={inData?.youtube}>@{inData?.youtube}</p>
                                 </div>
                             </Social>
                         </SocialWrapper>
@@ -495,7 +495,7 @@ const CreatorProfile = () => {
                                 </div>
                                 <div>
                                     <h4>TIKTOK</h4>
-                                    <p>@{inData?.tiktok}</p>
+                                    <p title={inData?.tiktok}>@{inData?.tiktok}</p>
                                 </div>
                             </Social>
                             <Social>
@@ -504,7 +504,7 @@ const CreatorProfile = () => {
                                 </div>
                                 <div>
                                     <h4>TWITTER</h4>
-                                    <p>@{inData?.twitter}</p>
+                                    <p title={inData?.twitter}>@{inData?.twitter}</p>
                                 </div>
                             </Social>
                         </SocialWrapper>
@@ -515,7 +515,7 @@ const CreatorProfile = () => {
                                 </div>
                                 <div>
                                     <h4>FACEBOOK</h4>
-                                    <p>@{inData?.facebook}</p>
+                                    <p title={inData?.facebook}>@{inData?.facebook}</p>
                                 </div>
                             </Social>
                         </SocialWrapper>

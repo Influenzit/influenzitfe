@@ -320,7 +320,7 @@ const CompleteProfile = () => {
                                     buttonStyle={{ background: "#fff",  fontSize: "14px", borderColor: phoneError ? colors.primaryColor : "#D0D5DD"}}
                                 />
                                 {
-                                    phoneError && <span id='error'>Enter your phone number</span>
+                                    phoneError && <span id='error'>Enter a valid phone number</span>
                                 }
                             </InputContainer>
                         </InputWrap>
