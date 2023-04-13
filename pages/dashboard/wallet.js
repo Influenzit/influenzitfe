@@ -1,12 +1,14 @@
 //=========================== TAILWIND STYLES APPLIED HERE =========================
 
+import { usePaystackPayment } from "react-paystack";
+import { calculateTotalPrice } from "paystack-transaction-charges-to-cus";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getCampaigns } from "../../api/campaigns";
-import { setLoading } from "../../app/reducers/status";
+// import { setLoading } from "../../app/reducers/status";
 import info from "../../assets/info.svg";
 import Stage1 from "../../components/Campaign/Stage1";
 import Stage2 from "../../components/Campaign/Stage2";
@@ -36,13 +38,22 @@ import {
   TrH,
   Wrapper,
 } from "../../styles/connect-pages.style";
+import { useSelector } from "react-redux";
 
 import cancel from "./../../assets/close.svg";
 import at from "../../assets/profile/at.svg";
 import search from "../../assets/search.svg";
 import action from "../../assets/action.svg";
-import { getWallet, getWalletTransactions } from "../../api/wallet";
+import {
+  createDepositTransaction,
+  getWallet,
+  getWalletTransactions,
+  processDepositTransaction,
+} from "../../api/wallet";
 import Loader from "../../components/UI/Loader";
+import { getUser } from "../../app/reducers/user";
+import { toast } from "react-toastify";
+import moment from "moment";
 
 const Campaigns = () => {
   const router = useRouter();
@@ -52,92 +63,37 @@ const Campaigns = () => {
   const [step, setstep] = useState(1);
   const [walledData, setwalledData] = useState(null);
   const [trxn, settrxn] = useState(null);
-  const dummyData = [
-    {
-      date: "Jan 13, 2022",
-      amount: "+₦30,020",
-      Activity: "Deposit",
-      Description: "Deposit to Wallet",
-      status: "Processing",
-    },
-    {
-      date: "Jan 13, 2022",
-      amount: "+₦30,020",
-      Activity: "Deposit",
-      Description: "Deposit to Wallet",
-      status: "Processing",
-    },
-    {
-      date: "Jan 13, 2022",
-      amount: "+₦30,020",
-      Activity: "Deposit",
-      Description: "Deposit to Wallet",
-      status: "Processing",
-    },
-    {
-      date: "Jan 13, 2022",
-      amount: "+₦30,020",
-      Activity: "Deposit",
-      Description: "Deposit to Wallet",
-      status: "Processing",
-    },
-    {
-      date: "Jan 13, 2022",
-      amount: "+₦30,020",
-      Activity: "Deposit",
-      Description: "Deposit to Wallet",
-      status: "Processing",
-    },
-    {
-      date: "Jan 13, 2022",
-      amount: "+₦30,020",
-      Activity: "Deposit",
-      Description: "Deposit to Wallet",
-      status: "Processing",
-    },
-    {
-      date: "Jan 13, 2022",
-      amount: "+₦30,020",
-      Activity: "Deposit",
-      Description: "Deposit to Wallet",
-      status: "Processing",
-    },
-    {
-      date: "Jan 13, 2022",
-      amount: "+₦30,020",
-      Activity: "Deposit",
-      Description: "Deposit to Wallet",
-      status: "Processing",
-    },
-    {
-      date: "Jan 13, 2022",
-      amount: "+₦30,020",
-      Activity: "Deposit",
-      Description: "Deposit to Wallet",
-      status: "Processing",
-    },
-    {
-      date: "Jan 13, 2022",
-      amount: "+₦30,020",
-      Activity: "Deposit",
-      Description: "Deposit to Wallet",
-      status: "Processing",
-    },
-    {
-      date: "Jan 13, 2022",
-      amount: "+₦30,020",
-      Activity: "Deposit",
-      Description: "Deposit to Wallet",
-      status: "Processing",
-    },
-    ,
-  ];
+  const [trxnData, settrxnData] = useState(null);
+  const [isOpen, setisOpen] = useState(false);
+  const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [paystackConfig, setPaystackConfig] = useState({});
+  const [triggerPayment, settriggerPayment] = useState(false);
+  const [makePayment, setmakePayment] = useState(false);
 
-  const handleGetCampaign = (campaign) => {
+  const user = useSelector(getUser);
+
+  let paymentReference = "";
+  // you can call this function anything
+  const onSuccess = (reference) => {
+    // Implementation for whatever you want to do with reference and after success call.
+    console.log(reference);
+    handleProcessTransaction(reference);
+  };
+
+  // you can call this function anything
+  const onClose = () => {
+    // implementation for  whatever you want to do when the Paystack dialog closed.
+    console.log("closed");
+  };
+
+  const initializePayment = usePaystackPayment(paystackConfig);
+
+  const handleGetWalletData = (campaign) => {
     getWallet()
       .then((res) => {
-        console.log(res);
-        setwalledData(res.data.data.data);
+        console.log(res.data.data);
+        setwalledData(res.data.data);
       })
       .catch((err) => {
         console.log(err.response);
@@ -146,15 +102,92 @@ const Campaigns = () => {
   const handleGetTransaction = (campaign) => {
     getWalletTransactions()
       .then((res) => {
-        console.log(res);
-        settrxn(res.data.data.data);
+        console.log(res.data.data);
+        settrxn(res.data.data.reverse());
       })
       .catch((err) => {
         console.log(err.response);
       });
   };
+  const handleCreateTransaction = async () => {
+    if (!amount) {
+      toast.error("Amount field cant be empty");
+      return;
+    }
+
+    const getWalletDepositAddress = user.wallets.find(
+      (wallet) => wallet.type.toLowerCase() === "deposit"
+    );
+    setLoading(true);
+    const payload = {
+      channel: "paystack",
+      amount: +amount,
+      currency: "NGN",
+      remark: "",
+      meta: {},
+      flags: "",
+      wallet_address: getWalletDepositAddress.address,
+      payment_type: "deposit_payment",
+      deposit_payment: "wallet_address",
+    };
+    await createDepositTransaction(payload)
+      .then((res) => {
+        console.log(res);
+        settrxnData(res.data.data);
+        console.log(res.data.data.payment_reference);
+        paymentReference = res.data.data.payment_reference.toString();
+        setPaystackConfig({
+          currency: "NGN",
+          reference: paymentReference,
+          email: user.email,
+          amount: calculateTotalPrice(Number(amount * 100)), //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+          publicKey: "pk_test_9d97cf0be86b0758ece444694d57a8db41a4be59",
+        });
+        setLoading(false);
+
+        settriggerPayment(true);
+        setmakePayment(true);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err.response);
+      });
+  };
+  const handleProcessTransaction = async (data) => {
+    if (!amount) {
+      toast.error("Amount field cant be empty");
+      return;
+    }
+    const getWalletDepositAddress = user.wallets.find(
+      (wallet) => wallet.type.toLowerCase() === "deposit"
+    );
+    const payload = {
+      channel: "paystack",
+      payment_reference: data.reference,
+    };
+    await processDepositTransaction(payload)
+      .then((res) => {
+        console.log(res);
+        setisOpen(!isOpen);
+        handleGetTransaction();
+        handleGetWalletData();
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
+  const handleContinue = async () => {
+    await handleCreateTransaction();
+  };
+
   useEffect(() => {
-    handleGetCampaign();
+    if (makePayment) {
+      initializePayment(onSuccess, onClose);
+    }
+  }, [triggerPayment]);
+  useEffect(() => {
+    handleGetWalletData();
     handleGetTransaction();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -163,7 +196,12 @@ const Campaigns = () => {
       <div className="flex justify-between mb-6">
         <h1 className="text-xl">Wallet</h1>
 
-        <button className="bg-primary-100 py-2 px-4 rounded-lg text-white">
+        <button
+          onClick={() => {
+            setisOpen(true);
+          }}
+          className="bg-primary-100 py-2 px-4 rounded-lg text-white"
+        >
           Fund wallet
         </button>
       </div>
@@ -178,7 +216,7 @@ const Campaigns = () => {
                   <Image src={info} alt="info" />
                 </div>
                 <h1 className="text-2xl font-medium">
-                  ₦ {walledData?.total_earnings.NGN || "0"}{" "}
+                  ₦ {walledData?.total_earnings.NGN || "0"}
                 </h1>
               </div>
               <div className="mt-2">
@@ -218,7 +256,7 @@ const Campaigns = () => {
                   <Image src={info} alt="info" />
                 </div>
                 <h1 className="text-2xl font-medium">
-                  ₦ {walledData?.available_balance.NGN || "0"}{" "}
+                  ₦ {walledData?.available_balance.NGN || "0"}
                 </h1>
               </div>
               <div className="mt-2">
@@ -260,7 +298,6 @@ const Campaigns = () => {
             <div className="flex justify-between mt-5  p-4 bg-white border rounded-t-lg">
               <h1>All Transactions</h1>
               <h1>
-                {" "}
                 <Image src={action} alt="search" />
               </h1>
             </div>
@@ -278,7 +315,9 @@ const Campaigns = () => {
                     className="grid grid-cols-12 gap-4 p-4 border-b"
                     key={idx}
                   >
-                    <div className="col-span-2 text-sm"> {item.date} </div>
+                    <div className="col-span-2 text-sm">
+                      {moment(item.createdAt).format("L")}
+                    </div>
                     <div className="col-span-2 text-sm text-green-500">
                       {item.amount}
                     </div>
@@ -286,19 +325,16 @@ const Campaigns = () => {
                       <p className="text-gray-400">Influencer</p>
                       {item.Activity}
                     </div>
-                    <div className="col-span-4 text-sm">
-                      {" "}
-                      {item.Description}{" "}
-                    </div>
+                    <div className="col-span-4 text-sm">{item.remark}</div>
 
                     <div className="col-span-2">
-                      {item.status.toLowerCase() === "processing" && (
+                      {item.status.toLowerCase() === "pending" && (
                         <div className="rounded-2xl py-1 pl-2 pr-4 bg-[#F2F4F7] text-xs w-max flex space-x-2 items-center text-[#344054]">
                           <div className="bg-[#667085] rounded-full w-[6px] h-[6px]"></div>
                           <p>{item.status}</p>
                         </div>
                       )}
-                      {item.status.toLowerCase() === "success" && (
+                      {item.status.toLowerCase() === "completed" && (
                         <div className="rounded-2xl py-1 pl-2 pr-4 bg-[#ECFDF3] text-xs w-max flex space-x-2 items-center text-[#027A48]">
                           <div className="bg-[#12B76A] rounded-full w-[6px] h-[6px]"></div>
                           <p>{item.status}</p>
@@ -337,6 +373,44 @@ const Campaigns = () => {
         </div>
       ) : (
         <Loader />
+      )}
+
+      {isOpen && (
+        <div className="fixed inset-0 bg-black/30 z-[999999] flex justify-center items-center">
+          <div className="bg-white w-[500px]  p-6 rounded-lg overflow-hidden">
+            <div className="flex justify-between mb-6">
+              <h1 className="text-xl">Fund your wallet</h1>
+
+              <button
+                onClick={() => {
+                  setisOpen(!isOpen);
+                }}
+                className="outline-none"
+              >
+                <Image src={cancel} alt="cancel" className="h-2 w-2" />
+              </button>
+            </div>
+            <input
+              type="number"
+              placeholder="NGN 20,000"
+              className="p-2 mt-4 border outline-none rounded-md w-full"
+              value={amount}
+              onChange={(e) => {
+                setAmount(e.target.value);
+              }}
+            />
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => {
+                  handleContinue();
+                }}
+                className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
+              >
+                {loading ? <Loader /> : "Continue"}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
