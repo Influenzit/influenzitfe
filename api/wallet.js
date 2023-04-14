@@ -6,6 +6,9 @@ export const getWallet = (url) => {
 export const getWalletTransactions = () => {
   return axiosInstance().get("/wallets/transactions");
 };
+export const createWithdrawalTransactions = (data) => {
+  return axiosInstance().post("/wallets/transactions", data);
+};
 export const getWalletTransaction = (id) => {
   return axiosInstance().get("/transactions/" + id);
 };

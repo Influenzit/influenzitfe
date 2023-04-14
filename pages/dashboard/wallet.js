@@ -10,9 +10,9 @@ import { useDispatch } from "react-redux";
 import { getCampaigns } from "../../api/campaigns";
 // import { setLoading } from "../../app/reducers/status";
 import info from "../../assets/info.svg";
-import Stage1 from "../../components/Campaign/Stage1";
-import Stage2 from "../../components/Campaign/Stage2";
-import Stage3 from "../../components/Campaign/Stage3";
+
+import Deposit from "components/Wallet/Deposit";
+import Withdrawal from "components/Wallet/Withdrawal";
 import LandingLayout from "../../layouts/landing.layout";
 import {
   ActionBtn,
@@ -46,6 +46,7 @@ import search from "../../assets/search.svg";
 import action from "../../assets/action.svg";
 import {
   createDepositTransaction,
+  createWithdrawalTransactions,
   getWallet,
   getWalletTransactions,
   processDepositTransaction,
@@ -58,13 +59,13 @@ import moment from "moment";
 const Campaigns = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [getUrl, setGetUrl] = useState("");
-  const [newCamPaign, setNewCampaign] = useState(false);
+  const [walletAddress, setWalletAddress] = useState("");
   const [step, setstep] = useState(1);
   const [walledData, setwalledData] = useState(null);
   const [trxn, settrxn] = useState(null);
   const [trxnData, settrxnData] = useState(null);
   const [isOpen, setisOpen] = useState(false);
+  const [isWithdrawalOpen, setisWithdrawalOpen] = useState(false);
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [paystackConfig, setPaystackConfig] = useState({});
@@ -158,9 +159,7 @@ const Campaigns = () => {
       toast.error("Amount field cant be empty");
       return;
     }
-    const getWalletDepositAddress = user.wallets.find(
-      (wallet) => wallet.type.toLowerCase() === "deposit"
-    );
+
     const payload = {
       channel: "paystack",
       payment_reference: data.reference,
@@ -176,9 +175,49 @@ const Campaigns = () => {
         console.log(err.response);
       });
   };
+  const handleCreateWithdrawal = async () => {
+    if (!amount || !walletAddress) {
+      toast.error("All field are required");
+      return;
+    }
+    const getWalletDepositAddress = user.wallets.find(
+      (wallet) => wallet.type === walletAddress
+    );
+    const payload = {
+      amount: amount,
+      currency: "NGN",
+      remark: "",
+      meta: "",
+      flags: "",
+      wallet_address: getWalletDepositAddress.address,
+      type: "Withdrawal",
+    };
+    setLoading(true);
+    await createWithdrawalTransactions(payload)
+      .then((res) => {
+        if (res.data.status === "error") {
+          toast.error(res.data.message);
+        } else {
+          toast.error(res.data.message);
+        }
+        setisWithdrawalOpen(false);
+        setLoading(false);
+        setWalletAddress("");
+        setAmount("");
+        handleGetTransaction();
+      })
+      .catch((err) => {
+        setLoading(false);
+        setWalletAddress("");
+        setAmount("");
+      });
+  };
 
   const handleContinue = async () => {
     await handleCreateTransaction();
+  };
+  const handleContinueWithdrawal = async () => {
+    await handleCreateWithdrawal();
   };
 
   useEffect(() => {
@@ -268,7 +307,7 @@ const Campaigns = () => {
                 </div>
                 <button
                   onClick={() => {
-                    setNewCampaign(!newCamPaign);
+                    setisWithdrawalOpen(true);
                   }}
                   className="bg-primary-100 py-2 px-4 rounded-lg text-white"
                 >
@@ -325,7 +364,9 @@ const Campaigns = () => {
                       <p className="text-gray-400">Influencer</p>
                       {item.Activity}
                     </div>
-                    <div className="col-span-4 text-sm">{item.remark}</div>
+                    <div className="col-span-4 text-sm">
+                      {item.remark || item.type}
+                    </div>
 
                     <div className="col-span-2">
                       {item.status.toLowerCase() === "pending" && (
@@ -376,41 +417,25 @@ const Campaigns = () => {
       )}
 
       {isOpen && (
-        <div className="fixed inset-0 bg-black/30 z-[999999] flex justify-center items-center">
-          <div className="bg-white w-[500px]  p-6 rounded-lg overflow-hidden">
-            <div className="flex justify-between mb-6">
-              <h1 className="text-xl">Fund your wallet</h1>
-
-              <button
-                onClick={() => {
-                  setisOpen(!isOpen);
-                }}
-                className="outline-none"
-              >
-                <Image src={cancel} alt="cancel" className="h-2 w-2" />
-              </button>
-            </div>
-            <input
-              type="number"
-              placeholder="NGN 20,000"
-              className="p-2 mt-4 border outline-none rounded-md w-full"
-              value={amount}
-              onChange={(e) => {
-                setAmount(e.target.value);
-              }}
-            />
-            <div className="mt-4 flex justify-end">
-              <button
-                onClick={() => {
-                  handleContinue();
-                }}
-                className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
-              >
-                {loading ? <Loader /> : "Continue"}
-              </button>
-            </div>
-          </div>
-        </div>
+        <Deposit
+          setAmount={setAmount}
+          amount={amount}
+          setisOpen={setisOpen}
+          loading={loading}
+          isOpen={isOpen}
+          handleContinue={handleContinue}
+        />
+      )}
+      {isWithdrawalOpen && (
+        <Withdrawal
+          handleContinueWithdrawal={handleContinueWithdrawal}
+          setWalletAddress={setWalletAddress}
+          setisWithdrawalOpen={setisWithdrawalOpen}
+          loading={loading}
+          user={user}
+          amount={amount}
+          setAmount={setAmount}
+        />
       )}
     </div>
   );

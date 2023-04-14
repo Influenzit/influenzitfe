@@ -7,10 +7,11 @@ import email from "../../assets/profile/email.svg";
 import at from "../../assets/profile/at.svg";
 import { Country } from "country-state-city";
 
-import {  getUserAccount, updateAccount } from "../../api/auth";
+import { getUserAccount, updateAccount } from "../../api/auth";
 import { getUser, updateUser } from "../../app/reducers/user";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import Loader from "../UI/Loader";
 
 function Stage1({ user }) {
   const dispatch = useDispatch();
@@ -27,10 +28,11 @@ function Stage1({ user }) {
   const [facebook, setFacebook] = useState("");
   const [twitter, setTwitter] = useState("");
   const [youtube, setYoutube] = useState("");
+  const [loading, setLoading] = useState(false);
   console.log(user);
 
   const handleAccountUpdate = () => {
-    setloading(true);
+    setLoading(true);
     const payload = {
       gender,
       country,
@@ -44,23 +46,27 @@ function Stage1({ user }) {
       youtube,
     };
 
+    for (let i in payload) {
+      if (payload[i] === "") {
+        delete payload[i];
+      }
+    }
+    console.log(payload);
+
     updateAccount(user.id, payload)
       .then((res) => {
-        dispatch(updateUser(res.data.data));
-        dispatch(setLoading(false));
         toast.success("Account updated successfully", {
           position: toast.POSITION.TOP_RIGHT,
         });
 
-        setloading(false);
+        setLoading(false);
       })
       .catch((err) => {
         toast.error("An error occured", {
           position: toast.POSITION.TOP_RIGHT,
         });
-
         console.log(err);
-        setloading(false);
+        setLoading(false);
       });
   };
 
@@ -357,8 +363,11 @@ function Stage1({ user }) {
             <button className="px-3 py-2 rounded-lg border text-gray-800 bg-white text-sm">
               Cancel
             </button>
-            <button className="px-3 py-2 rounded-lg bg-primary-100 text-white text-sm">
-              Save
+            <button
+              onClick={() => handleAccountUpdate()}
+              className="px-3 py-2 rounded-lg bg-primary-100 text-white text-sm"
+            >
+              {loading ? <Loader /> : "Save"}
             </button>
           </div>
         </div>
