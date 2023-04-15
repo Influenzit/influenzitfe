@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { breakpoints, colors, sizes } from "./theme";
+import Link from "next/link";
 
 export const Container = styled.div`
     background: #F7FAFC;
@@ -571,26 +572,41 @@ export const TopFlex = styled.div`
     flex-direction: column;
     width: 100%;
 `;
-export const ConnectButton = styled.div`
-    display: flex;
-    column-gap: 10px;
-    justify-content: center;
-    padding: 7px 0 30px 0;
-    a {
-        font-size: 14px;
-        display: inline-flex;
-        align-items: center;
-        column-gap: 10px;
-        padding: 7px 15px;
-        border-radius: 5px;
-        background: ${colors.primaryColor}11;
-    }
-`;
+// export const ConnectButton = styled.div`
+//     display: flex;
+//     column-gap: 10px;
+//     justify-content: center;
+//     padding: 7px 0 30px 0;
+//     a {
+//         font-size: 14px;
+//         display: inline-flex;
+//         align-items: center;
+//         column-gap: 10px;
+//         padding: 7px 15px;
+//         border-radius: 5px;
+//         background: ${colors.primaryColor}11;
+//     }
+// `;
 export const EditLinks = styled.div`
     display: flex;
     column-gap: 15px;
     justify-content: center;
     a {
         color: ${colors.primaryColor};
+    }
+`;
+export const ConnectFlex = styled.div`
+    display: flex;
+    column-gap: 20px;
+    row-gap: 20px;
+    margin-top: 30px;
+     a {
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        column-gap: 10px;
+        padding: 7px 15px;
+        border-radius: 5px;
+        background: #FCEDEF;
     }
 `;

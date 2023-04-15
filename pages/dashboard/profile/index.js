@@ -11,6 +11,7 @@ import Stage1 from "../../../components/profile/stage1";
 import Stage2 from "../../../components/profile/stage2";
 import Stage3 from "../../../components/profile/stage3";
 import Stage4 from "../../../components/profile/stage4";
+import Stage5 from "../../../components/profile/stage5";
 import LandingLayout from "../../../layouts/landing.layout";
 
 import cancel from "./../../../assets/close.svg";
@@ -90,12 +91,24 @@ const Profile = () => {
         >
           Change Password
         </button>
+        <button
+          onClick={() => {
+            setactivetab("social");
+          }}
+          className={`${
+            activetab === "social" &&
+            "text-primary-100 border-b border-primary-100"
+          } pb-4`}
+        >
+          Connect Social Media
+        </button>
       </div>
 
       {activetab === "profile_details" && <Stage1 user={user} />}
       {activetab === "influencer_details" && <Stage2 user={user} />}
       {activetab === "images" && <Stage3 user={user} />}
       {activetab === "change_password" && <Stage4 user={user} />}
+      {activetab === "social" && <Stage5 user={user}/>}
     </div>
   );
 };
