@@ -228,10 +228,10 @@ const CreatorProfile = () => {
             
             <Wrapper>
                 {
-                    (getCoverImages(inData?.media)?.length <= 1) && (
+                    (getCoverImages(inData?.media)?.length === 1) && (
                         <ImageContainer>
                             <div id="img">
-                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
+                                <Image src={getCoverImages(inData?.media)[0]?.url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
                             </div>
                         </ImageContainer>
                     )
@@ -333,12 +333,12 @@ const CreatorProfile = () => {
                                 <TabBtn isActive={currentTab === "youtube"} onClick={() => setCurrentTab("youtube")}>Youtube</TabBtn>
                             </Tabs>
                             {
-                                currentTab === "instagram" && !inData?.instagram_verified ? (
+                                currentTab === "instagram" && inData?.instagram_verified ? (
                                     <Content>
                                        <h3>Influencer Summary</h3>
                                        <AnalyticStats>
                                         <Stat>
-                                            <h1>{numberFormatter(1500000)}</h1>
+                                            <h1>{numberFormatter(Number(inData?.analytics?.instagram_insights?.follower_count))}</h1>
                                             <p>Followers</p>
                                         </Stat>
                                         <Stat isCenter>
@@ -346,7 +346,7 @@ const CreatorProfile = () => {
                                             <p>Following</p>
                                         </Stat>
                                         <Stat>
-                                            <h1>20%</h1>
+                                            <h1>{inData?.analytics?.instagram_insights?.engagement_rate}%</h1>
                                             <p>Engagement</p>
                                         </Stat>
                                        </AnalyticStats>
@@ -360,7 +360,7 @@ const CreatorProfile = () => {
                                                 <EngagementCard>
                                                     <h3>Engagement Rate</h3>
                                                     <div id="wrapper">
-                                                        <h1>1.8%</h1>
+                                                        <h1>{inData?.analytics?.instagram_insights?.engagement_rate}%</h1>
                                                         <div>
                                                             <p>Average</p>
                                                             <span>Higher than 60% of influencers</span>
@@ -373,7 +373,7 @@ const CreatorProfile = () => {
                                                         <span>
                                                             <Image src="/heart-p.svg" alt="heart" height={25} width={25}/>
                                                         </span>
-                                                        <h1>{numberFormatter(1200)}</h1>
+                                                        <h1>{numberFormatter(Number(inData?.analytics?.instagram_insights?.likes))}</h1>
                                                     </div>
                                                 </StatsCard>
                                             </Flex>
@@ -384,7 +384,7 @@ const CreatorProfile = () => {
                                                         <span>
                                                             <Image src="/comment.svg" alt="heart" height={25} width={25}/>
                                                         </span>
-                                                        <h1>{numberFormatter(1200)}</h1>
+                                                        <h1>{numberFormatter(Number(inData?.analytics?.instagram_insights?.comments))}</h1>
                                                     </div>
                                                 </StatsCard>
                                                 <StatsCard>

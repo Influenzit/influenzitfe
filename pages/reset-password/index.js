@@ -47,7 +47,7 @@ const Login = () => {
             <h2>Reset Password</h2>
           </FormHeader>
           <Center>
-            <p>Enter your username or email address and select Send Email.</p>
+            <p>Enter your username or email address and click the Send Email button.</p>
             <FormFields onSubmit={handleSubmit}>
               <InputContainer hasContent={formVal.email}>
                 <label>Email</label>

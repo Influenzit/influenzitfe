@@ -11,10 +11,13 @@ import { getQueryString } from '../../helpers/helper';
 import { CustomSelect } from '../../styles/home.style';
 import ServiceCard from '../../components/service-card';
 import Link from 'next/link';
+import { getUser } from '../../app/reducers/user';
+import { useSelector } from 'react-redux';
 
 const Search = () => {
     const [getUrl, setGetUrl] = useState("");
     const router = useRouter();
+    const user = useSelector(getUser);
     const category = ["Food", "Fashion", "Travel", "Lifestyle", "Health & Fitness", "Gadgets & Technology", "Family & Children", "Sports"];
     const [nicheVal, setNicheVal] = useState("");
     const [searchString, setSearchString] = useState("");
@@ -91,15 +94,17 @@ const Search = () => {
                                 })
                             }
                         </ListWrapper>
-                        <ViewMore>
-                            <div>
-                                <h1>Sign up to view more services</h1>
-                                <p>Your customers and fans look to creators to discover new products and make</p>
-                                <Link href="/register" passHref>
-                                    <a>Get Started</a>
-                                </Link>
-                            </div>
-                        </ViewMore>
+                        {!user && (
+                            <ViewMore>
+                                <div>
+                                    <h1>Sign up to view more services</h1>
+                                    <p>Your customers and fans look to creators to discover new products and make</p>
+                                    <Link href="/register" passHref>
+                                        <a>Get Started</a>
+                                    </Link>
+                                </div>
+                            </ViewMore>
+                        )}
                         {/* <Pages>
                             <PageBtn onClick={() => servicesData?.data?.data?.current_page.prev_page_url && setGetUrl(servicesData?.data?.data?.current_page.prev_page_url.replace(process.env.NEXT_PUBLIC_API_URI + "/api/v1", ""))}>&lt;&lt;</PageBtn>
                             <PageBtn>{servicesData?.data?.data?.current_page}</PageBtn>
