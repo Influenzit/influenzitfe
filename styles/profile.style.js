@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { breakpoints, colors, sizes } from "./theme";
+import Link from "next/link";
 
 export const Container = styled.div`
     background: #F7FAFC;
@@ -571,21 +572,21 @@ export const TopFlex = styled.div`
     flex-direction: column;
     width: 100%;
 `;
-export const ConnectButton = styled.div`
-    display: flex;
-    column-gap: 10px;
-    justify-content: center;
-    padding: 7px 0 30px 0;
-    a {
-        font-size: 14px;
-        display: inline-flex;
-        align-items: center;
-        column-gap: 10px;
-        padding: 7px 15px;
-        border-radius: 5px;
-        background: ${colors.primaryColor}11;
-    }
-`;
+// export const ConnectButton = styled.div`
+//     display: flex;
+//     column-gap: 10px;
+//     justify-content: center;
+//     padding: 7px 0 30px 0;
+//     a {
+//         font-size: 14px;
+//         display: inline-flex;
+//         align-items: center;
+//         column-gap: 10px;
+//         padding: 7px 15px;
+//         border-radius: 5px;
+//         background: ${colors.primaryColor}11;
+//     }
+// `;
 export const EditLinks = styled.div`
     display: flex;
     column-gap: 15px;
@@ -593,4 +594,75 @@ export const EditLinks = styled.div`
     a {
         color: ${colors.primaryColor};
     }
+`;
+export const ConnectFlex = styled.div`
+    display: flex;
+    column-gap: 20px;
+    row-gap: 20px;
+    margin-top: 30px;
+     a , div {
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        column-gap: 10px;
+        padding: 7px 15px;
+        border-radius: 5px;
+        background: #FCEDEF;
+    }
+    div {
+        background: rgba(39, 194, 129, 0.1);
+    }
+`;
+export const SocialMediaContainer = styled.div`
+    margin: 30px 0;
+    h1 {
+        font-size: 22px;
+        font-weight: 600;
+    }
+     a {
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        column-gap: 10px;
+        padding: 7px 15px;
+        border-radius: 5px;
+        background: #FCEDEF;
+    }
+`;
+export const SocialCard = styled.div`
+    background: #FFFFFF;
+    padding: 20px;
+    border: 1px solid #EAEAEB;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    div {
+        button {
+            outline: none;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        button:first-of-type {
+            color: ${colors.textColor};
+            background: #FCEDEF;
+        }
+        button:last-of-type {
+            color: #fff;
+            background: ${colors.textColor};
+            margin-left: 10px;
+        }
+    }
+`;
+export const SocialCardList = styled.div`
+    margin: 20px 0;
+    display: flex;
+    row-gap: 10px;
+    flex-direction: column;
 `;

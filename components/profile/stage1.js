@@ -6,7 +6,8 @@ import { Country } from "country-state-city";
 import { accountMedia, getUserAccount, updateAccount } from "../../api/auth";
 import { getUser, updateUser } from "../../app/reducers/user";
 import { useDispatch } from "react-redux";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import Loader from "../UI/Loader";
 
 function Stage1({ user }) {
   const dispatch = useDispatch();
@@ -37,8 +38,6 @@ function Stage1({ user }) {
 
     updateAccount(user.id, payload)
       .then((res) => {
-        dispatch(updateUser(res.data.data));
-        dispatch(setLoading(false));
         toast.success("Account updated successfully", {
           position: toast.POSITION.TOP_RIGHT,
         });
@@ -57,10 +56,10 @@ function Stage1({ user }) {
 
   useEffect(() => {
     if (user) {
-      setphone(user.account.phone1 ?? "");
-      setemail(user.email ?? "");
-      setfirstname(user.firstname ?? "");
-      setlastname(user.lastname ?? "");
+      setphone(user?.account?.phone1 ?? "");
+      setemail(user?.email ?? "");
+      setfirstname(user?.firstname ?? "");
+      setlastname(user?.lastname ?? "");
     }
   }, [user]);
   return (
@@ -79,8 +78,11 @@ function Stage1({ user }) {
             <button className="px-3 py-2 rounded-lg border text-gray-800 bg-white text-sm">
               Cancel
             </button>
-            <button onClick={handleAccountUpdate} className="px-3 py-2 rounded-lg bg-primary-100 text-white text-sm">
-              Save
+            <button
+              onClick={handleAccountUpdate}
+              className="px-3 py-2 rounded-lg bg-primary-100 text-white text-sm"
+            >
+              {loading ? <Loader /> : "Save"}
             </button>
           </div>
         </div>
@@ -170,7 +172,7 @@ function Stage1({ user }) {
                 placeholder="8012345678 "
                 value={phone}
                 onChange={(e) => {
-                  setphone(`${phoneCode}${e.target.value}`);
+                  setphone(`${e.target.value}`);
                 }}
               />
             </div>

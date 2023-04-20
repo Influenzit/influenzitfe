@@ -9,10 +9,13 @@ import { getQueryString } from '../../helpers/helper';
 import { CustomSelect } from '../../styles/home.style';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getUser } from 'app/reducers/user';
+import { useSelector } from 'react-redux';
 
 const Search = () => {
     const [getUrl, setGetUrl] = useState("");
     const router = useRouter();
+    const user = useSelector(getUser);
     const { data: creatorsData, refetch: refetchCreatorData } = useQuery(["get-service"], async () => {
         return await getCreators(getQueryString(getUrl ? getUrl : router.asPath));
     }, {
@@ -103,15 +106,19 @@ const Search = () => {
                                 })
                             }
                         </ListWrapper>
-                        <ViewMore>
-                            <div>
-                                <h1>Sign up to view more creator profiles</h1>
-                                <p>Your customers and fans look to creators to discover new products and make</p>
-                                <Link href="/register" passHref>
-                                    <a>Get Started</a>
-                                </Link>
-                            </div>
-                        </ViewMore>
+                        {
+                            !user && (
+                                <ViewMore>
+                                    <div>
+                                        <h1>Sign up to view more creator profiles</h1>
+                                        <p>Your customers and fans look to creators to discover new products and make</p>
+                                        <Link href="/register" passHref>
+                                            <a>Get Started</a>
+                                        </Link>
+                                    </div>
+                                </ViewMore>
+                            )
+                        }
                         {/* <Pages>
                             <PageBtn onClick={() => creatorsData?.data?.data?.current_page.prev_page_url && setGetUrl(creatorsData?.data?.data?.current_page.prev_page_url.replace(process.env.NEXT_PUBLIC_API_URI + "/api/v1", ""))}>&lt;&lt;</PageBtn>
                             <PageBtn>{creatorsData?.data?.data?.current_page}</PageBtn>

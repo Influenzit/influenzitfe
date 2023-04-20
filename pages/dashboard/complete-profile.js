@@ -19,7 +19,7 @@ import { colors } from '../../styles/theme';
 import { toast } from 'react-toastify';
 
 const CompleteProfile = () => {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState("");
   const [country, setCountry] = useState("");
@@ -242,7 +242,7 @@ const CompleteProfile = () => {
     }
     const handleImageRemove = (i) => {
         setCoverImages((prev) => {
-            let newList = prev;
+            let newList = [...prev];
             newList.splice(i,1);
             return newList;
         })
@@ -320,7 +320,7 @@ const CompleteProfile = () => {
                                     buttonStyle={{ background: "#fff",  fontSize: "14px", borderColor: phoneError ? colors.primaryColor : "#D0D5DD"}}
                                 />
                                 {
-                                    phoneError && <span id='error'>Enter your phone number</span>
+                                    phoneError && <span id='error'>Enter a valid phone number</span>
                                 }
                             </InputContainer>
                         </InputWrap>
@@ -447,6 +447,7 @@ const CompleteProfile = () => {
                                 {
                                     coverImages.map((val, i) => (
                                         <div key={i}>
+                                            <button onClick={() => handleImageRemove(i)}>Remove</button>
                                             <Image src={val.url} alt="" layout='fill' objectFit='cover' objectPosition="center" />
                                         </div>
                                     ))

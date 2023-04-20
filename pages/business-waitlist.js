@@ -124,6 +124,7 @@ const BusinessWaitlist = () => {
           Be the First to Know When Influenzit Launches and Get 6 Months of Free
           Access to the Ultimate Influencer Marketing Solution!
         </h1>
+        <Link href="/influencer-waitlist">Influencer Waitlist</Link>
       </FBanner>
       <ImageBanner>
         <Image

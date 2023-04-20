@@ -6,7 +6,7 @@ import { getUser } from '../../app/reducers/user'
 import { BagIcon, ChevronLeft, ChevronRight, HashTagIcon, SettingsIcon, WalletIcon } from '../../assets/svgIcons'
 import LandingLayout from '../../layouts/landing.layout'
 import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, WelcomeModal, Wrapper } from '../../styles/connect-pages.style'
-import { AEmptyCard, BizCard, CampaignCard, Card, CardsWrapper, ChartContainer, EmptyCard, List, ListingWrapper, ProjectCard, ProjectDetails, Status, UserMiniCard, WelcomeHeading } from '../../styles/dashboard'
+import { AEmptyCard, BizCard, CampaignCard, Card, CardsWrapper, ChartContainer, EmptyCard, List, ListingWrapper, ProjectCard, ProjectDetails, ReferralCode, Status, UserMiniCard, WelcomeHeading } from '../../styles/dashboard'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useQuery } from '@tanstack/react-query'
 import { getCampaigns } from '../../api/campaigns'
@@ -15,6 +15,7 @@ import { getProjects } from '../../api/projects'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { UpdateModal } from '../../styles/view.style'
+import { toast } from 'react-toastify'
 
 const Dashboard = () => {
   const user = useSelector(getUser);
@@ -71,6 +72,12 @@ const Dashboard = () => {
                 // }
             } 
         });
+        const handleReferralCopy = () => {
+            navigator.clipboard.writeText(`${location.host}/register?referral_code=${user?.referral_code?? ""}`);
+            toast.success("Referral link copied to clipboard", {
+                position: toast.POSITION.TOP_RIGHT
+              });
+        }
         const { data: serviceData, refetch: refetchServiceData } = useQuery(["get-services"], async () => {
             return await getServices();
         }, {
@@ -106,12 +113,16 @@ const Dashboard = () => {
             <WelcomeHeading>
                 Hello {userDetails && userDetails.name}
             </WelcomeHeading>
+            <ReferralCode>
+                <p>Referral Code: <span>{user?.referral_code ?? ""}</span> </p>
+                <button onClick={handleReferralCopy}>Copy Link</button>
+            </ReferralCode>
             {
                 (currentAcctType === "Business Owner") && (
                     <BizCard>
                         <h3>Complete your Business Profile</h3>
                         <p>Before you create your first campaign or project, you&apos;ll need to complete your business information.</p>
-                        <Link href="/">Complete profile</Link>
+                        <Link href="/dashboard/profile/">Complete profile</Link>
                     </BizCard>
                 )
             }
@@ -214,7 +225,7 @@ const Dashboard = () => {
                                 <div>
                                     <h2>Launch your first campaign</h2>
                                     <p>Find the right influencers with correct metrics, keep track of your campaign performance and complete payments seamlessly.</p>
-                                    <Link href="/" passHref>
+                                    <Link href="/dashboard/campaigns/influencer" passHref>
                                         <a>
                                             <span>Create Campaign</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
                                         </a>
