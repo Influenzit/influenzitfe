@@ -113,7 +113,7 @@ useEffect(() => {
                                         <Td cellWidth="250px">{val.email}</Td>
                                         <Td cellWidth="120px">{val.account.influenzit_verified ? "Verified" : "Not Verified"}</Td>
                                         <Td cellWidth="120px">
-                                            <ActionBtn onClick={() => verifyAcc(val.id)}>{val.account.influenzit_verified ? "Disable User" : "Verify User"}</ActionBtn>
+                                            <ActionBtn onClick={() => verifyAcc(val.account.id)}>{val.account.influenzit_verified ? "Disable User" : "Verify User"}</ActionBtn>
                                         </Td>
                                     </Tr>
                                 ))
