@@ -18,8 +18,11 @@ export const updateAdminCampaignMilestone = (id, data, milestoneId) => {
 export const updateAdminCampaign = (id, data) => {
     return axiosInstance().patch(`/admin/campaigns/${id}`, data);
 }
-export const getAllUsers = () => {
-    return axiosInstance().get("/admin/users");
+export const getAllUsers = (query) => {
+    return axiosInstance().get(`/admin/users${query}`);
+}
+export const verifyUserAccount = (userId) => {
+    return axiosInstance().patch(`admin/accounts/${userId}/verify-account`)
 }
 export const getAllNiches = () => {
     return axiosInstance().get("/admin/niches");
