@@ -90,7 +90,11 @@ const InfluencerWaitlist = () => {
             <Image src="/influenzit_logo.png" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
             <h1>Monetize your<br /> influence with Influenzit</h1>
             <p>Find the right brands and collaborations to grow your<br /> following and increase your earnings</p>
-            <Link href="#register">Sign Up</Link>
+            <div>
+                <Link href="#register">Sign Up</Link>
+                <Link href="/business-waitlist">Business Owner Waitlist</Link>
+            </div>
+            
         </Banner>
         <Wrapper>
             <h1 id="h1">Welcome to Influenzit</h1>

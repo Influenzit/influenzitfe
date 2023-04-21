@@ -122,7 +122,7 @@ const Dashboard = () => {
                     <BizCard>
                         <h3>Complete your Business Profile</h3>
                         <p>Before you create your first campaign or project, you&apos;ll need to complete your business information.</p>
-                        <Link href="/">Complete profile</Link>
+                        <Link href="/dashboard/profile/">Complete profile</Link>
                     </BizCard>
                 )
             }
@@ -225,7 +225,7 @@ const Dashboard = () => {
                                 <div>
                                     <h2>Launch your first campaign</h2>
                                     <p>Find the right influencers with correct metrics, keep track of your campaign performance and complete payments seamlessly.</p>
-                                    <Link href="/" passHref>
+                                    <Link href="/dashboard/campaigns/influencer" passHref>
                                         <a>
                                             <span>Create Campaign</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
                                         </a>

@@ -115,3 +115,9 @@ export const getInfluencer = (id) => {
 export const getExploreNiches = () => {
     return axiosInstance().get(`/explore/niches`)
 }
+export const getAnalytics = () => {
+    return axiosInstance().get(`/analytics`)
+}
+export const getIndustries = () => {
+    return axiosInstance().get(`/explore/industries`)
+}

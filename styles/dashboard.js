@@ -13,6 +13,7 @@ export const ReferralCode = styled.div`
     align-items: center;
     font-size: 15px;
     color: ${colors.textColor};
+    margin-bottom: 20px;
     span {
         font-weight: 600;
         color: ${colors.primaryColor};

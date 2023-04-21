@@ -35,3 +35,6 @@ export const accountTypeUpdate = (data) => {
 export const accountMedia = (data) => {
     return axiosInstance().post(`/accounts/media`, data);
 }
+export const getUserSocialMedia = () => {
+    return axiosInstance().get(`/accounts/social-profiles`)
+}

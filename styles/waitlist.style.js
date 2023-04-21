@@ -39,6 +39,9 @@ export const Banner = styled.div`
         padding: 14px 32px;
         margin-top: 25px;
     }
+    a:last-of-type {
+        margin-left: 15px;
+    }
     ${breakpoints.md} {
         padding: 20px;
         height: 50vh;
@@ -244,6 +247,7 @@ export const FBanner = styled.div`
     flex-direction: column;
     align-items: center;
     padding: 30px 0;
+    justify-content: center;
     h1 {
         margin-top: 20px;
         font-size: 45px;
@@ -259,6 +263,16 @@ export const FBanner = styled.div`
             width: 100%;
             margin: 50px auto 10px auto;
         }
+    }
+     a {
+        display: inline-block;
+        font-weight: 600;
+        font-size: 18px;
+        background: #DF475C;
+        border-radius: 8px;
+        padding: 14px 32px;
+        margin-top: 25px;
+        color: #fff;
     }
 `;
 export const AccessCardT = styled.div`
