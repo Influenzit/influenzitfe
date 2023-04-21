@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import LandingLayout from '../../layouts/landing.layout';
 import { Bottom, Category, CategoryWrapper, Container, Content, Filter, ListWrapper, PageBtn, Pages, Section, Tab, Tabs, Top, TopBanner, ViewMore, Wrapper } from '../../styles/search.style';
 import ProfileCard from '../../components/profile-card';
-import { getExploreNiches, getInfluencers } from '../../api/influencer';
+import { getExploreNiches, getIndustries, getInfluencers } from '../../api/influencer';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { getQueryString } from '../../helpers/helper';
@@ -17,14 +17,26 @@ const Search = () => {
     const router = useRouter();
     const { id } = router.query;
     const user = useSelector(getUser);
-    const { data: influencersData, refetch: refetchInfluencerData } = useQuery(["get-service"], async () => {
-        return await getInfluencers(getQueryString(getUrl ? getUrl : router.asPath));
+    const [currentIndustry, setCurrentIndustry] = useState("");
+    const { data: influencersData, refetch: refetchInfluencerData } = useQuery(["get-influencers"], async () => {
+        return await getInfluencers(getQueryString(`${getUrl ? getUrl : router.asPath}${getQueryString(getUrl ? getUrl : router.asPath) ? "&" : "?" }industry=${currentIndustry}&platform=${nicheVal}`));
     }, {
         enabled: false,
         staleTime: Infinity,
         retry: false
     });
-    const category = ["Food", "Fashion", "Travel", "Lifestyle", "Health & Fitness", "Gadgets & Technology", "Family & Children", "Sports"];
+    const [category, setCategory] = useState([]);
+    const { data: industryData, refetch: refetchIndustryData } = useQuery(["get-industries"], async () => {
+        return await getIndustries();
+    }, {
+        enabled: false,
+        staleTime: Infinity,
+        retry: false,
+        onSuccess(data) {
+            setCategory(data.data.data);
+        }
+    });
+    // const category = ["Food", "Fashion", "Travel", "Lifestyle", "Health & Fitness", "Gadgets & Technology", "Family & Children", "Sports"];
     const [nicheVal, setNicheVal] = useState("");
     const [searchString, setSearchString] = useState("");
     const { data, refetch } = useQuery(["get-niche"], async () => {
@@ -35,9 +47,13 @@ const Search = () => {
         retry: false
     });
     useEffect(() => {
-        refetchInfluencerData();
+        refetchIndustryData();
         refetch();
     }, [router.asPath])
+    useEffect(() => {
+        refetchInfluencerData();
+    }, [router.asPath, currentIndustry, nicheVal])
+    
 
     return (
         <Container>
@@ -48,10 +64,12 @@ const Search = () => {
                         <CustomSelect borderLeft>
                             <label>Platform</label>
                             <select val={nicheVal} onChange={(e) => setNicheVal(e.target.value)}>
-                                <option value="">Choose Platform</option>
-                                <option value="Tiktok">Tiktok</option>
-                                <option value="Facebook">Facebook</option>
-                                <option value="Instagram">Instagram</option>
+                                <option value="">All</option>
+                                <option value="tiktok">Tiktok</option>
+                                <option value="facebook">Facebook</option>
+                                <option value="instagram">Instagram</option>
+                                <option value="youtube">Youtube</option>
+                                <option value="twitter">Twitter</option>
                             </select>
                         </CustomSelect>
                         <CustomSelect>
@@ -64,8 +82,9 @@ const Search = () => {
                         }}><Image src="/search.svg" height={15} width={15}/></button>
                     </form>
                     <CategoryWrapper>
+                        <Category isSelected={"" === currentIndustry} onClick={() => setCurrentIndustry("")}>All</Category>
                         {category.map((val, i) => (
-                            <Category key={i}>{val}</Category>
+                            <Category key={i} isSelected={val === currentIndustry} onClick={() => setCurrentIndustry(val)}>{val}</Category>
                         ))}
                     </CategoryWrapper>
                 </TopBanner>
@@ -82,7 +101,7 @@ const Search = () => {
                         </Filter>
                         <ListWrapper>
                             {
-                                influencersData?.data?.data?.data.map((val, i) => {
+                                influencersData?.data?.data?.data?.map((val, i) => {
                                     let genSkills = "";
                                     val.skills.forEach((val, i) => {
                                         if(i < 5){

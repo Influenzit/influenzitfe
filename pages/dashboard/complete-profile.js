@@ -11,12 +11,13 @@ import { TextAreaContainer } from '../../styles/contact.style';
 import Image from 'next/image';
 import { getUser, updateUser } from '../../app/reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { accountMedia, getUserAccount, updateAccount } from '../../api/auth';
 import { useRouter } from 'next/router';
 import { setError, setLoading } from '../../app/reducers/status';
 import { colors } from '../../styles/theme';
 import { toast } from 'react-toastify';
+import { getIndustries } from 'api/influencer';
 
 const CompleteProfile = () => {
   const [step, setStep] = useState(1);
@@ -41,9 +42,19 @@ const CompleteProfile = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [coverImages, setCoverImages] = useState([]);
+  const [industryList, setIndustryList] = useState([]);
 
   // Update account mutation
-
+  const { data: industryData, refetch: refetchIndustryData } = useQuery(["get-industries"], async () => {
+    return await getIndustries();
+}, {
+    enabled: false,
+    staleTime: Infinity,
+    retry: false,
+    onSuccess(data) {
+        setIndustryList(data.data.data);
+    }
+});
   const updateAccountMutation = useMutation((data) => {
         return updateAccount(user.id, data);
     }, {
@@ -270,8 +281,8 @@ const CompleteProfile = () => {
     }
   }, [user])
   useEffect(() => {
-    
-  }, [coverImages])
+    refetchIndustryData();
+  }, [])
   
   
   return (
@@ -291,10 +302,11 @@ const CompleteProfile = () => {
                         <InputContainer style={{ marginTop: "20px" }}>
                             <label>Industry</label>
                             <select style={{ fontSize: "14px" }} value={industry} onChange={(e) => setIndustry(e.target.value)}>
-                                <option value="Entertainment">Entertainment</option>
-                                <option value="Technology">Technology</option>
-                                <option value="Gaming">Gaming</option>
-                                <option value="Sport">Sport</option>
+                                {
+                                    industryList.map((val, i) => (
+                                        <option key={i} value={val}>{val}</option>
+                                    ))
+                                }
                             </select>
                         </InputContainer>
                         <InputWrap>
