@@ -74,7 +74,12 @@ const Home = () => {
             <CustomSelect borderLeft>
               <label>Platform</label>
               <select val={nicheVal} onChange={(e) => setNicheVal(e.target.value)}>
-                <option value="">Choose a platform</option>
+                <option value="">All</option>
+                <option value="tiktok">Tiktok</option>
+                <option value="facebook">Facebook</option>
+                <option value="instagram">Instagram</option>
+                <option value="youtube">Youtube</option>
+                <option value="twitter">Twitter</option>
                 {
                   data?.data?.data?.map((val, i) => (
                     <option key={i} value={val.name}>{val.name}</option>

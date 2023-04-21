@@ -297,11 +297,12 @@ export const CategoryWrapper = styled.div`
 `;
 export const Category = styled.button`
     border-radius: 999px;
-    border: 2px solid ${colors.textColor};
-    padding: 10px 20px;
-    background: transparent;
-    color: ${colors.textColor};
+    border: 1px solid ${colors.textColor};
+    padding: 6px 12px;
+    background: ${({isSelected}) => isSelected ? colors.textColor : "transparent" };
+    color: ${({isSelected}) => !isSelected ? colors.textColor : "#fff" };
     transition: .3s ease-in-out;
+    font-size: 14px;
     cursor: pointer;
     :hover {
         background: ${colors.textColor};

@@ -178,7 +178,6 @@ export const CustomSelect = styled.div`
         cursor: pointer;
         width: 100% !important;
         border: 1px solid #FFF !important;
-        margin-left: -5px;
         outline: none !important;
     }
     input {
