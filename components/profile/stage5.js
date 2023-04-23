@@ -65,8 +65,8 @@ const Stage5 = ({user}) => {
                 <h1>Instagram </h1>
                 <SocialCardList>
                     {getFacebookList()?.length ? (
-                        getFacebookList()?.map((account) => (
-                            <SocialCard>
+                        getFacebookList()?.map((account, i) => (
+                            <SocialCard key={i}>
                                 <p>{account.profile_name}</p>
                                 <div>
                                     <button>Set as Default</button>
@@ -93,8 +93,8 @@ const Stage5 = ({user}) => {
                 <h1>Twitter</h1>
                 <SocialCardList>
                     {getTwitterList()?.length ? (
-                        getTwitterList()?.map((account) => (
-                            <SocialCard>
+                        getTwitterList()?.map((account, i) => (
+                            <SocialCard key={i}>
                                 <p>{account.profile_name}</p>
                                 <div>
                                     <button>Set as Default</button>
@@ -122,8 +122,8 @@ const Stage5 = ({user}) => {
                 <h1>TikTok</h1>
                 <SocialCardList>
                     {getTiktokList()?.length ? (
-                        getTiktokList()?.map((account) => (
-                            <SocialCard>
+                        getTiktokList()?.map((account, i) => (
+                            <SocialCard key={i}>
                                 <p>{account.profile_name}</p>
                                 <div>
                                     <button>Set as Default</button>
@@ -151,8 +151,8 @@ const Stage5 = ({user}) => {
                 <h1>Facebook</h1>
                 <SocialCardList>
                     {getFacebookList()?.length ? (
-                        getFacebookList()?.map((account) => (
-                            <SocialCard>
+                        getFacebookList()?.map((account, i) => (
+                            <SocialCard key={i}>
                                 <p>{account.profile_name}</p>
                                 <div>
                                     <button>Set as Default</button>
@@ -180,8 +180,8 @@ const Stage5 = ({user}) => {
                 <h1>Youtube</h1>
                 <SocialCardList>
                     {getYoutubeList()?.length ? (
-                        getYoutubeList()?.map((account) => (
-                            <SocialCard>
+                        getYoutubeList()?.map((account, i) => (
+                            <SocialCard key={i}>
                                 <p>{account.profile_name}</p>
                                 <div>
                                     <button>Set as Default</button>

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
@@ -6,55 +6,86 @@ import { useDispatch } from 'react-redux'
 import { getCampaigns } from '../../../../../api/campaigns'
 import { setLoading } from '../../../../../app/reducers/status'
 import { ChevronLeft, ChevronRight } from '../../../../../assets/svgIcons'
-import LandingLayout from '../../../../../layouts/landing.layout'
+import LandingLayout from '../../../../../layouts/admin.layout'
 import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../../../../styles/connect-pages.style'
+import { getAllUsers, verifyUserAccount } from 'api/admin'
+import { getQueryString } from 'helpers/helper'
+import { toast } from 'react-toastify'
 
 const Campaigns = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [getUrl, setGetUrl] = useState("");
-  const [campaignList, setCampaignList] = useState({
+  const [userList, setUserList] = useState({
     data: [],
   });
-  const { data, refetch } = useQuery(["get-campaigns"], async () => {
-        return await getCampaigns(getUrl);
-    }, {
-        enabled: false,
-        staleTime: Infinity,
-        retry: false,
-        onSuccess(res) {
-            dispatch(setLoading(false));
-            setCampaignList(res.data.data);
-        },
-        onError(res) {
-            dispatch(setLoading(false));
-            dispatch(setError({error: true, message: "An error occured"}));
-        } 
-    });
-    useEffect(() => {
-        refetch();
-    }, [getUrl])
+  const { data: usersData, refetch: refetchUsersData } = useQuery(["get-users"], async () => {
+    return await getAllUsers(getQueryString(getUrl));
+}, {
+    enabled: false,
+    staleTime: Infinity,
+    retry: false,
+    onSuccess(res) {
+        dispatch(setLoading(false));
+        setUserList(res.data.data);
+    },
+    onError(res) {
+        dispatch(setLoading(false));
+    } 
+});
+const updateAccountMutation = useMutation(
+    (data) => {
+      return verifyUserAccount(data);
+    },
+    {
+      onSuccess(successRes) {
+        const res = successRes.data;
+        toast.success("Account verified successfully", {
+            position: toast.POSITION.TOP_RIGHT
+          });
+        refetchUsersData();
+        dispatch(setLoading(false));
+      },
+      onError(error) {
+        const res = error.response.data;
+        dispatch(setLoading(false));
+        if (res) {
+          dispatch(setError({ error: true, message: res.message }));
+          return;
+        }
+        dispatch(setError({ error: true, message: "An error occured" }));
+      },
+    }
+  );
+  const verifyAcc = (id) => {
+    dispatch(setLoading(true));
+    updateAccountMutation.mutate(id);
+  }
+useEffect(() => {
+  refetchUsersData();
+  console.log
+}, [getUrl])
+
   return (
     <Container>
         <Wrapper>
             <TableWrapper>
                 <TableHeader>
-                    <h2>My Campaigns</h2>
+                    <h2>Validate Users</h2>
                 </TableHeader>
                 <TableControls>
                         <SearchContainer>
-                            <input type="text" placeholder="Search by influencer"/>
+                            <input type="text" placeholder="Search by user"/>
                             <button>
                                 <Image src="/search-b.svg" alt="" height={22} width={22}/>
                             </button>
                         </SearchContainer>
-                        <FilterContainer>
-                            <button><Image src="/filter.svg" alt="" height={20} width={20} /><span>Filter</span></button>
-                            <button><Image src="/upload.svg" alt="" height={20} width={20} /><span>Export</span></button>
-                            <button>Find Influencers</button>
-                        </FilterContainer>
                 </TableControls>
-                <TableContent>
+                <TableWrapper style={{ marginBottom: "15px" }}>
+                    <TableHeader>
+                        <h2>Users</h2>
+                    </TableHeader>
+                    <TableContent>
                     <Table>
                         <THead>
                             <TrH>
@@ -62,44 +93,45 @@ const Campaigns = () => {
                                     <Checkbox>
                                     </Checkbox>
                                 </Th>
-                                <Th cellWidth="500px">Influencer</Th>
-                                <Th cellWidth="150px">Start Date</Th>
-                                <Th cellWidth="150px">Duration</Th>
+                                <Th cellWidth="400px">Fullname</Th>
+                                <Th cellWidth="150px">Join Date</Th>
+                                <Th cellWidth="250px">Email</Th>
                                 <Th cellWidth="120px">Status</Th>
                                 <Th cellWidth="120px">Action</Th>
                             </TrH>
                         </THead>
                         <TBody>
                             {
-                                campaignList.data.map((val, i) => (
+                                userList.data.map((val, i) => (
                                     <Tr key={i}>
                                         <Td cellWidth="50px">
                                             <Checkbox>
                                             </Checkbox>
                                         </Td>
-                                        <Td cellWidth="500px">{val.provider.firstname} {val.provider.lastname}</Td>
-                                        <Td cellWidth="150px">{val.start_date ? (new Date(val.start_date)).toDateString() : "Not specified"}</Td>
-                                        <Td cellWidth="150px">{val.duration_count ?? "Not specified"} {val.duration_type}</Td>
-                                        <Td cellWidth="120px">{val.status}</Td>
+                                        <Td cellWidth="400px">{val.firstname} {val.lastname}</Td>
+                                        <Td cellWidth="150px">{val.created_at ? (new Date(val.created_at)).toDateString() : "Not specified"}</Td>
+                                        <Td cellWidth="250px">{val.email}</Td>
+                                        <Td cellWidth="120px">{val.account.influenzit_verified ? "Verified" : "Not Verified"}</Td>
                                         <Td cellWidth="120px">
-                                            <ActionBtn onClick={() => router.push(`/dashboard/campaigns/view/${val.id}`)}>View</ActionBtn>
+                                            <ActionBtn onClick={() => verifyAcc(val.account.id)}>{val.account.influenzit_verified ? "Disable User" : "Verify User"}</ActionBtn>
                                         </Td>
                                     </Tr>
                                 ))
                             }
                         </TBody>
                     </Table>
-                </TableContent>
+                    </TableContent>
+                </TableWrapper>
                 <TableFooter>
-                    <p>Showing {((campaignList.current_page - 1) * campaignList.per_page) + campaignList.data.length} of {campaignList.total}</p>
+                    <p>Showing {((userList.current_page - 1) * userList.per_page) + userList.data.length} of {userList.total}</p>
                     <Pagination>
-                        <NavBtn onClick={() => campaignList.current_page.prev_page_url && setGetUrl(campaignList.current_page.prev_page_url.replace(process.env.NEXT_PUBLIC_API_URI + "/api/v1", ""))}>
+                        <NavBtn onClick={() => userList.prev_page_url && setGetUrl(userList.prev_page_url.replace(process.env.NEXT_PUBLIC_API_URI + "/api/v1", ""))}>
                             <ChevronLeft />
                         </NavBtn>
                         <Pages>
-                            <PageBtn activePage={true}>{campaignList.current_page}</PageBtn>
+                            <PageBtn activePage={true}>{userList.current_page}</PageBtn>
                         </Pages>
-                        <NavBtn onClick={() => campaignList.current_page.next_page_url && setGetUrl(campaignList.current_page.next_page_url.replace(process.env.NEXT_PUBLIC_API_URI + "/api/v1", ""))}>
+                        <NavBtn onClick={() => userList.next_page_url && setGetUrl(userList.next_page_url.replace(process.env.NEXT_PUBLIC_API_URI + "/api/v1", ""))}>
                             <ChevronRight />
                         </NavBtn>
                     </Pagination>
