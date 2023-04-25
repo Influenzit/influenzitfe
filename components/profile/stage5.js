@@ -69,7 +69,6 @@ const Stage5 = ({user}) => {
                             <SocialCard key={i}>
                                 <p>{account.profile_name}</p>
                                 <div>
-                                    <button>Set as Default</button>
                                     <button>Disconnect</button>
                                 </div>
                             </SocialCard>
@@ -97,7 +96,6 @@ const Stage5 = ({user}) => {
                             <SocialCard key={i}>
                                 <p>{account.profile_name}</p>
                                 <div>
-                                    <button>Set as Default</button>
                                     <button>Disconnect</button>
                                 </div>
                             </SocialCard>
@@ -126,7 +124,6 @@ const Stage5 = ({user}) => {
                             <SocialCard key={i}>
                                 <p>{account.profile_name}</p>
                                 <div>
-                                    <button>Set as Default</button>
                                     <button>Disconnect</button>
                                 </div>
                             </SocialCard>
@@ -155,7 +152,6 @@ const Stage5 = ({user}) => {
                             <SocialCard key={i}>
                                 <p>{account.profile_name}</p>
                                 <div>
-                                    <button>Set as Default</button>
                                     <button>Disconnect</button>
                                 </div>
                             </SocialCard>
@@ -184,7 +180,6 @@ const Stage5 = ({user}) => {
                             <SocialCard key={i}>
                                 <p>{account.profile_name}</p>
                                 <div>
-                                    <button>Set as Default</button>
                                     <button>Disconnect</button>
                                 </div>
                             </SocialCard>

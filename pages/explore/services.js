@@ -12,20 +12,25 @@ import { CustomSelect } from '../../styles/home.style';
 import ServiceCard from '../../components/service-card';
 import Link from 'next/link';
 import { getUser } from '../../app/reducers/user';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoading } from 'app/reducers/status';
 
 const Search = () => {
     const [getUrl, setGetUrl] = useState("");
     const router = useRouter();
     const user = useSelector(getUser);
+    const dispatch = useDispatch();
     const [nicheVal, setNicheVal] = useState("");
     const [searchString, setSearchString] = useState("");
-    const { data: servicesData, refetch: refetchServicesData } = useQuery(["get-service"], async () => {
-        return await exploreServices(getQueryString(`${getUrl ? getUrl : router.asPath}${getQueryString(getUrl ? getUrl : router.asPath) ? "&" : "?" }industry=${currentIndustry}&platform=${nicheVal}`));
+    const { data: servicesData, refetch: refetchServicesData } = useQuery(["get-services"], async () => {
+        return await exploreServices(getQueryString(`${getUrl ? getUrl : router.asPath}${getQueryString(getUrl ? getUrl : router.asPath) ? "&" : "?" }industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}`));
     }, {
         enabled: false,
         staleTime: Infinity,
-        retry: false
+        retry: false,
+        onSuccess() {
+            dispatch(setLoading(false));
+        }
     });
     const { data, refetch } = useQuery(["get-niche"], async () => {
         return await getExploreNiches();
@@ -73,11 +78,12 @@ const Search = () => {
                         </CustomSelect>
                         <CustomSelect>
                         <label>Search</label>
-                        <input type="text" value={searchString} onChange={(e) => setSearchString(e.target.value)} placeholder="Enter keyword, niche or category" />
+                        <input type="text" value={searchString} onChange={(e) => setSearchString(e.target.value)} placeholder="Enter Service Name" />
                         </CustomSelect>
                         <button onClick={(e) => {
-                        e.preventDefault();
-                        router.push(`/explore?search=${searchString}&niche=${nicheVal.toLocaleLowerCase()}`);
+                            e.preventDefault();
+                           refetchServicesData();
+                           dispatch(setLoading(true));
                         }}><Image src="/search.svg" height={20} width={20}/></button>
                     </form>
                     <CategoryWrapper>

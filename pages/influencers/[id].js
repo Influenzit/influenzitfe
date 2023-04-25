@@ -12,13 +12,14 @@ import { getUser } from '../../app/reducers/user'
 import LandingLayout from '../../layouts/landing.layout'
 import { Controls, CreatorsCard, CreatorDetails, SocialHandle } from '../../styles/business-owner.style'
 import { BackImage, Bottom, BottomSection, Campaign, CollaborateBtn, Container, HeroSectionOne, ImageContainer, ImageContainerTwo, Info, LeftSection, Listing, RightSection, SkillCard, Social, SocialWrapper, Tag, Tags, Top, UserCardSection, WorkCard, Wrapper, UserDetails, UserImage } from '../../styles/creator-profile.style'
-import { AnalyticChart, AnalyticStats, AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, Stat, TabBtn, Tabs, TopImg, PerformanceCont, EngagementCard, StatsCard, Flex } from '../../styles/influencer-profile';
+import { AnalyticChart, AnalyticStats, AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, Stat, TabBtn, Tabs, TopImg, PerformanceCont, EngagementCard, StatsCard, Flex, AnalyticCard } from '../../styles/influencer-profile';
 import { Details, FormContainer, UpdateModal } from '../../styles/view.style'
 import { InputContainer } from '../../styles/profile.style'
 import { createDispute } from '../../api/support'
 import ServiceCard from '../../components/service-card'
 import ProfileCard from '../../components/profile-card'
 import { numberFormatter } from '../../helpers/helper'
+import { Chart } from "react-google-charts"
 
 const CreatorProfile = () => {
   const router = useRouter();
@@ -30,6 +31,18 @@ const CreatorProfile = () => {
   const [showEngagePopup, setShowEngagePopup] = useState(false);
   const [showDispute, setShowDispute] = useState(false);
   const [disputeSubject, setDisputeSubject] = useState("");
+  const optionsPie = {
+    pieHole: 0.5,
+    is3D: false,
+    colors: ["#DF475C", "#2A2939"]
+  };
+  const generateGenderData = () => {
+    const eData = [
+        ["Task", "Hours per Day"],
+        ...JSON.parse(inData?.analytics?.youtube?.genderviewerPercentage)
+    ]
+    return eData;
+  }
   const [disputeMessage, setDisputeMessage] = useState("");
   const { data: influencerData, refetch: refetchInfluencerData } = useQuery(["get-influencer"], async () => {
         return await getInfluencer(id);
@@ -305,7 +318,7 @@ const CreatorProfile = () => {
                                     <Image src="/dot.svg"  alt="" height={4} width={4}/>
                                     <p>
                                         <Image src="/star-p.svg"  alt="" height={16} width={16}/>
-                                        <span>5.0 (20 ratings)</span>
+                                        <span>{inData?.rating} (20 ratings)</span>
                                     </p>
                                 </div>
                             </UserDetails>
@@ -327,10 +340,10 @@ const CreatorProfile = () => {
                         <DataSection>
                             <Tabs>
                                 <TabBtn isActive={currentTab === "instagram"} onClick={() => setCurrentTab("instagram")}>Instagram</TabBtn>
+                                <TabBtn isActive={currentTab === "youtube"} onClick={() => setCurrentTab("youtube")}>Youtube</TabBtn>
                                 <TabBtn isActive={currentTab === "facebook"} onClick={() => setCurrentTab("facebook")}>Facebook</TabBtn>
                                 <TabBtn isActive={currentTab === "twitter"} onClick={() => setCurrentTab("twitter")}>Twitter</TabBtn>
                                 <TabBtn isActive={currentTab === "tiktok"} onClick={() => setCurrentTab("tiktok")}>TikTok</TabBtn>
-                                <TabBtn isActive={currentTab === "youtube"} onClick={() => setCurrentTab("youtube")}>Youtube</TabBtn>
                             </Tabs>
                             {
                                 currentTab === "instagram" && inData?.instagram_verified ? (
@@ -342,8 +355,8 @@ const CreatorProfile = () => {
                                             <p>Followers</p>
                                         </Stat>
                                         <Stat isCenter>
-                                            <h1>{numberFormatter(1000)}</h1>
-                                            <p>Following</p>
+                                            <h1>{numberFormatter(inData?.analytics?.instagram_insights?.reach)}</h1>
+                                            <p>Reach</p>
                                         </Stat>
                                         <Stat>
                                             <h1>{inData?.analytics?.instagram_insights?.engagement_rate}%</h1>
@@ -354,7 +367,6 @@ const CreatorProfile = () => {
                                        <AnalyticChart>
 
                                        </AnalyticChart>
-                                       <h3>Publications</h3>
                                        <PerformanceCont>
                                             <Flex>
                                                 <EngagementCard>
@@ -388,12 +400,12 @@ const CreatorProfile = () => {
                                                     </div>
                                                 </StatsCard>
                                                 <StatsCard>
-                                                    <h3>Avg. reel views</h3>
+                                                    <h3>Profile views</h3>
                                                     <div>
                                                         <span>
                                                             <Image src="/eye.svg" alt="heart" height={25} width={25}/>
                                                         </span>
-                                                        <h1>{numberFormatter(1200)}</h1>
+                                                        <h1>{numberFormatter(inData?.analytics?.instagram_insights?.profile_views)}</h1>
                                                     </div>
                                                 </StatsCard>
                                             </Flex>
@@ -451,9 +463,80 @@ const CreatorProfile = () => {
                                 )
                             }
                              {
-                                currentTab === "youtube" && inData?.tiktok_verified ? (
+                                currentTab === "youtube" && inData?.youtube_verified ? (
                                     <Content>
-                                        
+                                       <h3>Influencer Summary</h3>
+                                       <AnalyticStats>
+                                        <Stat>
+                                            <h1>{numberFormatter(Number(inData?.analytics?.youtube?.subscribersGained))}</h1>
+                                            <p>Subscribers</p>
+                                        </Stat>
+                                        <Stat isCenter>
+                                            <h1>{numberFormatter(inData?.analytics?.youtube?.views)}</h1>
+                                            <p>Total video views</p>
+                                        </Stat>
+                                        <Stat>
+                                            <h1>{numberFormatter(inData?.analytics?.youtube?.estimatedMinutesWatched)}</h1>
+                                            <p>Estimatated Minutes Watched</p>
+                                        </Stat>
+                                       </AnalyticStats>
+                                       <h3>Audience Insights</h3>
+                                       <AnalyticChart>
+                                            <AnalyticCard>
+                                                <h2>Gender</h2>
+                                                <Chart
+                                                    chartType="PieChart"
+                                                    width="100%"
+                                                    height="400px"
+                                                    data={generateGenderData()}
+                                                    options={optionsPie}
+                                                />
+                                            </AnalyticCard>
+                                       </AnalyticChart>
+                                       <h3>Performance</h3>
+                                       <PerformanceCont>
+                                            <Flex>
+                                                <EngagementCard>
+                                                    <h3>Avg. view percentage</h3>
+                                                    <div id="wrapper">
+                                                        <h1>{inData?.analytics?.youtube?.averageViewPercentage}%</h1>
+                                                        <div>
+                                                            <p>Average</p>
+                                                            <span>Higher than 60% of influencers</span>
+                                                        </div>
+                                                    </div>
+                                                </EngagementCard>
+                                                <StatsCard>
+                                                    <h3>Avg. likes per video</h3>
+                                                    <div>
+                                                        <span>
+                                                            <Image src="/heart-p.svg" alt="heart" height={25} width={25}/>
+                                                        </span>
+                                                        <h1>{numberFormatter(Number(inData?.analytics?.youtube?.likes))}</h1>
+                                                    </div>
+                                                </StatsCard>
+                                            </Flex>
+                                            <Flex>
+                                                <StatsCard>
+                                                    <h3>Avg. comments per video</h3>
+                                                    <div>
+                                                        <span>
+                                                            <Image src="/comment.svg" alt="heart" height={25} width={25}/>
+                                                        </span>
+                                                        <h1>{numberFormatter(Number(inData?.analytics?.youtube?.comments))}</h1>
+                                                    </div>
+                                                </StatsCard>
+                                                <StatsCard>
+                                                    <h3>Avg. views per video</h3>
+                                                    <div>
+                                                        <span>
+                                                            <Image src="/eye.svg" alt="heart" height={25} width={25}/>
+                                                        </span>
+                                                        <h1>{numberFormatter(inData?.analytics?.youtube?.averageViewDuration)}</h1>
+                                                    </div>
+                                                </StatsCard>
+                                            </Flex>
+                                       </PerformanceCont>
                                     </Content>
                                 ) : (currentTab === "youtube") && (
                                     <Content>

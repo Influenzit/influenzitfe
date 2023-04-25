@@ -287,6 +287,17 @@ export const EmptyWrapper = styled.div`
 `;
 export const AnalyticChart = styled.div`
 `;
+export const AnalyticCard = styled.div`
+    background: #FFFFFF;
+    border: 1px solid rgba(42, 41, 57, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    h2 {
+        font-weight: 600;
+        font-size: 20px;
+        color: ${colors.textColor};
+    }
+`;
 export const AnalyticStats = styled.div`
     background: #FFFFFF;
     border: 1px solid rgba(42, 41, 57, 0.1);

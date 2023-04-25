@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { sizes } from "./theme";
 
 export const Container = styled.div`
-    background: url("/bg.png");
     background-size: cover;
     background-position: center;
 `;
@@ -13,5 +12,5 @@ export const Wrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 50px 0;
+    padding: 140px 0 40px 0;
 `;
