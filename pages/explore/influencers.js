@@ -10,20 +10,27 @@ import { CustomSelect } from '../../styles/home.style';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getUser } from 'app/reducers/user';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoading } from 'app/reducers/status';
 
 const Search = () => {
-    const [getUrl, setGetUrl] = useState("")
+    const [getUrl, setGetUrl] = useState("");
+    const [nicheVal, setNicheVal] = useState("");
+    const [searchString, setSearchString] = useState("");
     const router = useRouter();
     const { id } = router.query;
+    const dispatch = useDispatch();
     const user = useSelector(getUser);
     const [currentIndustry, setCurrentIndustry] = useState("");
     const { data: influencersData, refetch: refetchInfluencerData } = useQuery(["get-influencers"], async () => {
-        return await getInfluencers(getQueryString(`${getUrl ? getUrl : router.asPath}${getQueryString(getUrl ? getUrl : router.asPath) ? "&" : "?" }industry=${currentIndustry}&platform=${nicheVal}`));
+        return await getInfluencers(getQueryString(`${getUrl ? getUrl : router.asPath}${getQueryString(getUrl ? getUrl : router.asPath) ? "&" : "?" }industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}`));
     }, {
         enabled: false,
         staleTime: Infinity,
-        retry: false
+        retry: false,
+        onSuccess() {
+            dispatch(setLoading(false));
+        }
     });
     const [category, setCategory] = useState([]);
     const { data: industryData, refetch: refetchIndustryData } = useQuery(["get-industries"], async () => {
@@ -37,8 +44,6 @@ const Search = () => {
         }
     });
     // const category = ["Food", "Fashion", "Travel", "Lifestyle", "Health & Fitness", "Gadgets & Technology", "Family & Children", "Sports"];
-    const [nicheVal, setNicheVal] = useState("");
-    const [searchString, setSearchString] = useState("");
     const { data, refetch } = useQuery(["get-niche"], async () => {
         return await getExploreNiches();
     }, {
@@ -74,11 +79,12 @@ const Search = () => {
                         </CustomSelect>
                         <CustomSelect>
                         <label>Search</label>
-                        <input type="text" value={searchString} onChange={(e) => setSearchString(e.target.value)} placeholder="Enter keyword, niche or category" />
+                        <input type="text" value={searchString} onChange={(e) => setSearchString(e.target.value)} placeholder="Enter Influencer's Name or Interest" />
                         </CustomSelect>
                         <button onClick={(e) => {
-                        e.preventDefault();
-                        router.push(`/explore?search=${searchString}&niche=${nicheVal.toLocaleLowerCase()}`);
+                            e.preventDefault();
+                            refetchInfluencerData();
+                            dispatch(setLoading(true));
                         }}><Image src="/search.svg" height={15} width={15}/></button>
                     </form>
                     <CategoryWrapper>
