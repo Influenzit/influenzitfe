@@ -301,6 +301,8 @@ const createDisputeMutation = useMutation( disputeData => {
               position: toast.POSITION.TOP_RIGHT
             });
             setShowCreateTicket(false);
+            dispatch(setLoading(false));
+            refetchConversationData();
         }
     },
     onError(error) {
@@ -329,7 +331,6 @@ const handleCreateDispute = () => {
 
   return (
     <Container>
-
         <MobileChatbar setConversationId={handleSetConversationId} conversations={conversations} setSupportId={setSupportId}/>
         <Wrapper>
             <ChatSidebar setConversationId={handleSetConversationId} conversations={conversations} setSupportId={setSupportId} supportId={supportId} setShowCreateTicket={setShowCreateTicket}/>

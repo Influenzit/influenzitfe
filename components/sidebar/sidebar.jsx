@@ -87,7 +87,7 @@ const Sidebar = () => {
                 </NavButton>
             )
         } */}
-      {(currentUserType === "Influencer" || currentUserType === "Creator") && (
+      {(currentUserType === "Creator") && (
         <NavButton
           onClick={() => router.push("/dashboard/services")}
           isActive={router.pathname.includes("services")}
