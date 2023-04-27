@@ -48,9 +48,9 @@ function Stage3({ user }) {
       <div className="let swipeIn">
         <div className="flex items-center justify-between py-5 border-b">
           <div>
-            <h1 className="text-lg">Business Information </h1>
+            <h1 className="text-lg">Influencer Information </h1>
             <p className="text-xs text-[#667085]">
-              Update your business innformation here
+              Update your Influencer innformation here
             </p>
           </div>
 

@@ -42,6 +42,7 @@ const Campaigns = () => {
   const [isAccepted, setisAccepted] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [currentValue, setcurrentValue] = useState(4);
+  const [clickedkMileStone, setclickedkMileStone] = useState(null);
   const [singlecampaign, setSingleCampaign] = useState(null);
   const [singlecampaignMilestones, setSingleCampaignMilestones] =
     useState(null);
@@ -81,6 +82,7 @@ const Campaigns = () => {
   };
 
   const updateCampaignMilsestone = (status, campaignId) => {
+    setclickedkMileStone(campaignId)
     const payload = {
       status: status,
     };
@@ -205,14 +207,14 @@ const Campaigns = () => {
                               Pending review
                             </button>
                           )}{" "}
-                          {item.status === "Pending" && (
+                          {item.status === "Ongoing" && (
                             <button
                               onClick={() => {
                                 updateCampaignMilsestone("Reviewing", item.id);
                               }}
                               className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white"
                             >
-                              {isUpdating ? "Updating" : "Submit"}
+                              {isUpdating && item.id === clickedkMileStone  ? "Updating" : "Submit"}
                             </button>
                           )}
                         </div>

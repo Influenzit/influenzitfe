@@ -31,6 +31,7 @@ import { toast } from "react-toastify";
 
 import ReactStars from "react-rating-stars-component";
 import Review from "../../../../components/Campaign/Review";
+import Chat from "../../../../components/Chat";
 import moment from "moment";
 
 const Campaigns = () => {
@@ -83,6 +84,9 @@ const Campaigns = () => {
         })
         .catch((err) => {
           console.log(err.response);
+          toast.error(err.response.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
         });
     } else {
       rejectCampaignMilestone(id, campaignId)
@@ -95,6 +99,9 @@ const Campaigns = () => {
         })
         .catch((err) => {
           console.log(err.response);
+          toast.error(err.response.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
         });
     }
   };
@@ -118,10 +125,34 @@ const Campaigns = () => {
     <div className="flex bg-gray-50">
       {singlecampaign !== null ? (
         <div className="w-full md:mr-[500px] pt-28 px-10 min-h-screen">
+          {/*   <div className="flex space-x-4 w-full border-b mb-4">
+            <button
+              onClick={() => {
+                setactivetab("milestone");
+              }}
+              className={`${
+                activetab == "milestone" &&
+                "text-primary-100 border-b border-primary-100"
+              } pb-4`}
+            >
+              Campaign Details
+            </button>
+            <button
+              onClick={() => {
+                setactivetab("requirement");
+              }}
+              className={`${
+                activetab == "requirement" &&
+                "text-primary-100 border-b border-primary-100"
+              } pb-4`}
+            >
+              Chat
+            </button>
+          </div> */}
           <h1 className="text-xl font-bold">{singlecampaign.title}</h1>
           <div className="my-4">
-            <div className="grid grid-cols-3 gap-4">
-              <div className="pr-10 border-r py-1 flex space-x-2">
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="md:pr-10 border-r py-1 flex space-x-2">
                 <Image
                   src={singlecampaign.user.profile_pic}
                   alt={"img"}
@@ -134,7 +165,7 @@ const Campaigns = () => {
                   <h1 className="font-medium"> {singlecampaign.user.name} </h1>
                 </div>
               </div>
-              <div className="pr-10 border-r py-1 flex space-x-2">
+              <div className="md:pr-10 border-r py-1 flex space-x-2">
                 <div>
                   <p className="text-xs text-gray-500">Delivery Date</p>
                   <h1 className="font-medium">
@@ -229,60 +260,6 @@ const Campaigns = () => {
                       </div>
                     </div>
                   ))}
-
-                {/*  
-              <div className="bg-white border border-gray-200 px-4 py-5 rounded-lg mb-4">
-                <div className="-1 flex justify-between">
-                  <div className="flex space-x-3 ">
-                    <Image src={lock} alt={"img"} className="h-4 w-4" />
-                    <div>
-                      <h1 className="">Prep images for posting</h1>
-                      <p className="text-sm font-semibold text-tert-100">
-                        ₦40,000
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <button className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white">
-                      Accept
-                    </button>
-                    <button className="mx-2 rounded-lg py-1 px-2  h-auto bg-primary-100 text-[10px] text-white">
-                      Reject
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white border border-gray-200 px-4 py-5 rounded-lg mb-4">
-                <div className="-1 flex justify-between">
-                  <div className="flex space-x-3 ">
-                    <Image src={lock} alt={"img"} className="h-4 w-4" />
-                    <div>
-                      <h1 className="">Prep images for posting</h1>
-                      <p className="text-sm font-semibold text-tert-100">
-                        ₦40,000
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => {
-                        setisAccepted(!isAccepted);
-                      }}
-                      className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white"
-                    >
-                      Accept
-                    </button>
-                    <button
-                      onClick={() => {
-                        setisRejected(!isRejected);
-                      }}
-                      className="mx-2 rounded-lg py-1 px-2  h-auto bg-primary-100 text-[10px] text-white"
-                    >
-                      Reject
-                    </button>
-                  </div>
-                </div>
-              </div> */}
               </div>
             </div>
           )}
@@ -302,56 +279,8 @@ const Campaigns = () => {
         // ====================================ChatBox==================================
       }
 
-      <div className="w-[480px] fixed right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto pt-28 pb-4 px-4">
-        <div className="flex flex-col gap-5 h-full relative pb-[140px]">
-          <div className="h-full overflow-y-auto">
-            {[1].map((x, i) => (
-              <div
-                className="mb-6 pr-10 py-1 flex space-x-2 items-start"
-                key={i}
-              >
-                <Image src={chatlady} alt={"img"} className="h-4 w-4" />
-                <div>
-                  <p className="text-xs text-gray-500">
-                    <span className="font-medium mr-2 text-black">You</span>
-                    <span className="text-[10px] ">2:35 pm</span>
-                  </p>
-                  <p className="text-gray-500 text-sm">
-                    Hey bayowaruwa, can you help me with IG template designs?
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="h-[120px] absolute bottom-0  w-full ">
-            <div className="border rounded-lg h-full flex flex-col">
-              <div className="h-[63%]">
-                <textarea
-                  name="chatbox"
-                  id="chatbox"
-                  rows="2"
-                  className="resize-none text-sm w-full h-full rounded-lg  outline-none bg-transparent p-2"
-                  placeholder="Write your message"
-                ></textarea>
-              </div>
-              <div className="h-[37%] border-t flex justify-between p-2">
-                <div className="flex items-center space-x-2">
-                  <Image src={bold} alt={"img"} className="h-4 w-4" />
-                  <Image src={italics} alt={"img"} className="h-4 w-4" />
-                  <Image src={link} alt={"img"} className="h-4 w-4" />
-                  <Image src={listdot} alt={"img"} className="h-4 w-4" />
-                  <Image src={listnumeral} alt={"img"} className="h-4 w-4" />
-                </div>
-                <div>
-                  <button className="flex items-center space-x-1">
-                    <Image src={send} alt={"img"} className="h-4 w-4" />{" "}
-                    <span className="text-primary-100  text-sm">Send</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className=" md:w-[480px] md:fixed right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto pt-28 pb-4 px-4">
+        <Chat serviceId={id} />
       </div>
 
       {isRejected && <RejectModal handleClose={handleClose} />}

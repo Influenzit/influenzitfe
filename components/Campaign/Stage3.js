@@ -6,10 +6,7 @@ function Stage3({
   loading,
   handleIncrement,
   handleDecrement,
-  serviceid,
-  setserviceId,
-  clientEmail,
-  setclientEmail,
+
   endDate,
   setendDate,
   amount,
@@ -32,32 +29,8 @@ function Stage3({
           <p className="text-xs ">Request Requirements</p>
         </div>
       </div>
-      <div className="my-6 flex flex-col space-y-2 ">
-        <label htmlFor="b_id">Client Email</label>
-        <input
-          type="text"
-          id="b_id"
-          className="p-2 border outline-none rounded-md w-full"
-          placeholder="influenzitbiz@influenzit.com"
-          value={clientEmail}
-          onChange={(e) => {
-            setclientEmail(e.target.value);
-          }}
-        />
-      </div>
-      <div className="mb-6 flex flex-col space-y-2">
-        <label htmlFor="Campaign_name">Service ID</label>
-        <input
-          type="text"
-          id="Campaign_name"
-          className="p-2 border outline-none rounded-md w-full"
-          placeholder="Package Id"
-          value={serviceid}
-          onChange={(e) => {
-            setserviceId(e.target.value);
-          }}
-        />
-      </div>
+     
+
       <div className="mb-6 flex flex-col space-y-2">
         <label htmlFor="desc">Delivery Date</label>
         <input
