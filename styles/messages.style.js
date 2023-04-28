@@ -3,6 +3,9 @@ import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.div`
     background: #F7FAFC;
+    ${breakpoints.md} {
+        padding-top: 100px;
+    }
 `;
 export const Wrapper = styled.div`
     width: 100%;
@@ -15,6 +18,10 @@ export const Wrapper = styled.div`
     border-radius: 5px;
     display: flex;
     margin-top: 70px;
+    ${breakpoints.md} {
+        margin-top: 10px;
+        max-height: calc(100vh - 200px);
+    }
 `;
 export const MessageSection = styled.div`
     width: 100%;

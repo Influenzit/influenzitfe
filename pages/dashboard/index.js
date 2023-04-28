@@ -16,9 +16,11 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { UpdateModal } from '../../styles/view.style'
 import { toast } from 'react-toastify'
+import { getBusinessesFromState } from 'app/reducers/business'
 
 const Dashboard = () => {
   const user = useSelector(getUser);
+  const business = useSelector(getBusinessesFromState);
   const currentAcctType = useSelector(getUserType);
   const [userDetails, setUserDetails] = useState(null);
   const [showPrompt, setShowPrompt] = useState(false);
@@ -78,6 +80,12 @@ const Dashboard = () => {
                 position: toast.POSITION.TOP_RIGHT
               });
         }
+        const handleBusinessIdCopy = () => {
+            navigator.clipboard.writeText(business?.[0]?.reference ?? "");
+            toast.success("Business ID copied to clipboard", {
+                position: toast.POSITION.TOP_RIGHT
+              });
+        }
         const { data: serviceData, refetch: refetchServiceData } = useQuery(["get-services"], async () => {
             return await getServices();
         }, {
@@ -115,8 +123,16 @@ const Dashboard = () => {
             </WelcomeHeading>
             <ReferralCode>
                 <p>Referral Code: <span>{user?.referral_code ?? ""}</span> </p>
-                <button onClick={handleReferralCopy}>Copy Link</button>
+                <button onClick={handleReferralCopy}>Copy</button>
             </ReferralCode>
+            {
+                (currentAcctType === "Business Owner") && (
+                    <ReferralCode>
+                        <p>Business ID: <span>{business?.[0]?.reference ?? ""}</span> </p>
+                        <button onClick={handleBusinessIdCopy}>Copy</button>
+                    </ReferralCode>
+                )
+            }
             {
                 (currentAcctType === "Business Owner") && (
                     <BizCard>
@@ -204,9 +220,9 @@ const Dashboard = () => {
                                             </div>
                                         </UserMiniCard>
                                         <ProjectDetails>
-                                            <div id="img">
+                                            {/* <div id="img">
                                                 <Image src="/dog.png" layout="fill" objectFit="cover" objectPosition="center"/>
-                                            </div>
+                                            </div> */}
                                             <div>
                                                 <h4>{val.title}</h4>
                                                 <p>{val.description}</p>
@@ -360,9 +376,9 @@ const Dashboard = () => {
                                     projectList.data.map((val, i) => (
                                         <ProjectCard key={i}>
                                             <ProjectDetails>
-                                                <div id="img">
+                                                {/* <div id="img">
                                                     <Image src="/dog.png" layout="fill" objectFit="cover" objectPosition="center"/>
-                                                </div>
+                                                </div> */}
                                                 <div>
                                                     <h4>{val.title}</h4>
                                                     <p>{val.description}</p>

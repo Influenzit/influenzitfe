@@ -27,8 +27,7 @@ const Campaigns = () => {
   const [campaignName, setCampaignName] = useState("");
   const [bId, setbId] = useState("");
   const [description, setdescription] = useState("");
-  const [clientEmail, setclientEmail] = useState("");
-  const [serviceid, setserviceId] = useState("");
+
   const [endDate, setendDate] = useState("");
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
@@ -107,8 +106,6 @@ const Campaigns = () => {
     duration_type: "Month",
     duration_count: "1",
     client_business_id: +bId,
-    service_package_id: serviceid,
-    client_email: clientEmail,
     milestones: milestone,
   };
 
@@ -138,7 +135,7 @@ const Campaigns = () => {
       })
       .catch((err) => {
         console.log(err.response);
-        toast.error(err.response.data.errors.message, {
+        toast.error(err.response.data.message, {
           position: toast.POSITION.TOP_RIGHT,
         });
         setLoading(false);
@@ -301,10 +298,7 @@ const Campaigns = () => {
               <Stage3
                 handleIncrement={handleIncrement}
                 handleDecrement={handleDecrement}
-                serviceid={serviceid}
-                setserviceId={setserviceId}
-                clientEmail={clientEmail}
-                setclientEmail={setclientEmail}
+       
                 endDate={endDate}
                 setendDate={setendDate}
                 amount={amount}

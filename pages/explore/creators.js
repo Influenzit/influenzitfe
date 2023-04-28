@@ -10,21 +10,26 @@ import { CustomSelect } from '../../styles/home.style';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getUser } from 'app/reducers/user';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoading } from 'app/reducers/status';
 
 const Search = () => {
     const [getUrl, setGetUrl] = useState("");
+    const [nicheVal, setNicheVal] = useState("");
+    const [searchString, setSearchString] = useState("");
+    const dispatch = useDispatch();
     const router = useRouter();
     const user = useSelector(getUser);
-    const { data: creatorsData, refetch: refetchCreatorData } = useQuery(["get-service"], async () => {
-        return await getCreators(getQueryString(`${getUrl ? getUrl : router.asPath}${getQueryString(getUrl ? getUrl : router.asPath) ? "&" : "?" }industry=${currentIndustry}&platform=${nicheVal}`));
+    const { data: creatorsData, refetch: refetchCreatorData } = useQuery(["get-creators"], async () => {
+        return await getCreators(getQueryString(`${getUrl ? getUrl : router.asPath}${getQueryString(getUrl ? getUrl : router.asPath) ? "&" : "?" }industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}`));
     }, {
         enabled: false,
         staleTime: Infinity,
-        retry: false
+        retry: false,
+        onSuccess() {
+            dispatch(setLoading(false));
+        }
     });
-    const [nicheVal, setNicheVal] = useState("");
-    const [searchString, setSearchString] = useState("");
     const { data, refetch } = useQuery(["get-niche"], async () => {
         return await getExploreNiches();
     }, {
@@ -71,11 +76,12 @@ const Search = () => {
                         </CustomSelect>
                         <CustomSelect>
                         <label>Search</label>
-                        <input type="text" value={searchString} onChange={(e) => setSearchString(e.target.value)} placeholder="Enter keyword, niche or category" />
+                        <input type="text" value={searchString} onChange={(e) => setSearchString(e.target.value)} placeholder="Enter Creator's Name or Interest" />
                         </CustomSelect>
                         <button onClick={(e) => {
-                        e.preventDefault();
-                        router.push(`/explore?search=${searchString}&niche=${nicheVal.toLocaleLowerCase()}`);
+                            e.preventDefault();
+                            refetchCreatorData();
+                            dispatch(setLoading(true));
                         }}><Image src="/search.svg" height={20} width={20}/></button>
                     </form>
                     <CategoryWrapper>

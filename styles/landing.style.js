@@ -11,7 +11,7 @@ export const Wrapper = styled.main`
 export const Content = styled.div`
     width: 100%;
     padding-left: ${(props) => props.isPadded ? "230px" : "0" };
-    ${breakpoints.sm} {
+    ${breakpoints.md} {
         padding-left: 0;
     }
 `;

@@ -286,6 +286,49 @@ export const EmptyWrapper = styled.div`
     }
 `;
 export const AnalyticChart = styled.div`
+     
+`;
+export const MapWrapper = styled.div`
+   display: flex;
+   margin: 30px 0;
+   background: #fff;
+   border: 1px solid rgba(42, 41, 57, 0.1);
+   border-radius: 16px;
+`;
+export const CountryList = styled.div`
+    width: 180px;
+    margin-top: 70px;
+    padding-right: 20px;
+`;
+export const CountrySection = styled.div`
+    width: 100%;
+    margin: 15px 0;
+`;
+export const Guage = styled.div`
+    height: 4px;
+    background: #EAEAEB;
+    border-radius: 999px;
+    ::after {
+        content: "";
+        display: block;
+        height: 100%;
+        width: ${({guage}) => `${guage}%`};
+        background: ${colors.primaryColor};
+        border-radius: 999px;
+        overflow: hidden;
+        margin: 3px 0;
+    }
+`;
+export const AnalyticCard = styled.div`
+    background: #FFFFFF;
+    border: 1px solid rgba(42, 41, 57, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    h2 {
+        font-weight: 600;
+        font-size: 20px;
+        color: ${colors.textColor};
+    }
 `;
 export const AnalyticStats = styled.div`
     background: #FFFFFF;

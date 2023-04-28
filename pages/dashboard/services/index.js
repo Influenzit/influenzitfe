@@ -15,6 +15,7 @@ import Pricing from "../../../components/service/pricing";
 import Gallery from "../../../components/service/gallery";
 import Faq from "../../../components/service/faq";
 import Review from "../../../components/service/review";
+import Requirement from "../../../components/service/requirement";
 import { toast } from "react-toastify";
 import {
   createServices,
@@ -50,6 +51,9 @@ const Services = () => {
   const [currentPackagesIndex, setcurrentPackagesIndex] = useState(0);
   const [currentPackageId, setCurrentPackageId] = useState(null);
   const [faqs, setfaqs] = useState([{ question: "", answer: "" }]);
+  const [requirements, setRequirements] = useState([
+    { title: "", description: "", format: "" },
+  ]);
   const [review, setreview] = useState({ name: "", comment: "" });
   const [packages, setpackages] = useState([
     {
@@ -59,7 +63,11 @@ const Services = () => {
       name: "",
       features: [
         {
-          name: "",
+          name: "Delivery days",
+          quantity: "",
+        },
+        {
+          name: "Reviews",
           quantity: "",
         },
       ],
@@ -125,6 +133,16 @@ const Services = () => {
       return newState;
     });
   };
+  const handleAddReq = () => {
+    setRequirements((prevState) => {
+      const newState = [
+        ...prevState,
+        { title: "", description: "", format: "" },
+      ];
+
+      return newState;
+    });
+  };
 
   const handleAddFeature = () => {
     setpackages((prevState) => {
@@ -144,6 +162,14 @@ const Services = () => {
     });
   };
   const handleRemoveFaq = (id) => {
+    setfaqs((prevState) => {
+      const newState = [...prevState];
+      newState.splice(id, 1);
+
+      return newState;
+    });
+  };
+  const handleRemoveReq = (id) => {
     setfaqs((prevState) => {
       const newState = [...prevState];
       newState.splice(id, 1);
@@ -194,6 +220,14 @@ const Services = () => {
       return newState;
     });
   };
+  const handleReqinput = (e, reqid) => {
+    const { name, value } = e.target;
+    setRequirements((prevState) => {
+      const newState = [...prevState];
+      newState[reqid][name] = value;
+      return newState;
+    });
+  };
   const handleReviewinput = (e) => {
     const { name, value } = e.target;
     setreview((prevState) => {
@@ -203,50 +237,36 @@ const Services = () => {
     });
   };
 
-  const handleGetCampaign = (campaign) => {
-    // getCampaigns()
-    //   .then((res) => {
-    //     console.log(res);
-    //     setCampaignList(res.data.data.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response);
-    //   });
-  };
   const handleIncrement = () => {
-    if (step >= 1 && step < 5) {
+    if (step >= 1 && step < 6) {
       setstep(step + 1);
     }
   };
   const handleDecrement = () => {
-    if (step > 1 && step <= 5) {
+    if (step > 1 && step <= 6) {
       setstep(step - 1);
     }
   };
 
   const handleServiceCreation = () => {
-    let activePackages = [];
-    for (let i = 0; i < packages.length; i++) {
-      // push complete packages into activePackages
-      const item = packages[i];
-      if (item.name) {
-        if (
-          item.description !== "" ||
-          item.amount !== "" ||
-          item.name !== "" ||
-          item.features.some((f) => f.name !== "" || f.quantity !== "")
-        ) {
-          activePackages.push(item);
-        }
-      }
-    }
-    if (activePackages.length === 0) {
-      // if no active packages
-      toast.error("Atleast one package is required", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return;
-    }
+   
+    let formData = new FormData();
+
+    formData.append("coverImage", coverImage);
+    formData.append("image1", image1);
+    formData.append("image2", image2);
+    formData.append("image3", image3);
+    formData.append("image4", image4);
+    formData.append("name", title);
+    formData.append("description", description);
+    formData.append("type", "project");
+    formData.append("price", +price);
+    formData.append("currency", "NGN");
+    formData.append("is_negotiable", true);
+    formData.append("link", "http://johndoe.myname.com/services/social-media");
+    formData.append("packages", packages);
+    formData.append("faqs", faqs);
+    formData.append("requirements", requirements);
     setloading(true);
 
     const payload = {
@@ -256,16 +276,21 @@ const Services = () => {
       price: +price,
       currency: "NGN",
       is_negotiable: true,
-      link: "http://johndoe.myname.com/services/social-media",
-      packages: activePackages,
+      packages: packages,
+      faqs,
+      requirements,
     };
-    createServices(payload)
+    console.log(payload)
+    createServices(formData)
       .then((res) => {
         console.log(res.data.data);
-        setCurrentPackageId(res.data.data.id); // save current ServiceId upon creation , so as to update the service with other features to fill
+        toast.success("Service created successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        window.location.reload();
         setloading(false);
 
-        handleIncrement();
+        // handleIncrement();
       })
       .catch((err) => {
         setloading(false);
@@ -276,23 +301,7 @@ const Services = () => {
       });
   };
   const handleFaqCreation = () => {
-    setloading(true);
-
-    const payload = faqs;
-    createFaqServices(currentPackageId, payload)
-      .then((res) => {
-        console.log(res.data.data);
-        setloading(false);
-
-        handleIncrement();
-      })
-      .catch((err) => {
-        setloading(false);
-        toast.error(err.response.data.message, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        console.log(err.response);
-      });
+    handleIncrement();
   };
   const handleGalleryCreation = () => {
     if (!coverImage || !image1 || !image2 || !image3 || !image4) {
@@ -301,41 +310,9 @@ const Services = () => {
       });
       return;
     }
-    let formData = new FormData();
-
-    formData.append("coverImage", coverImage);
-    formData.append("image1", image1);
-    formData.append("image2", image2);
-    formData.append("image3", image3);
-    formData.append("image4", image4);
-    setloading(true);
-
-    uploadServiceMedia(currentPackageId, formData)
-      .then((res) => {
-        console.log(res.data.data);
-        setloading(false);
-
-        handleIncrement();
-      })
-      .catch((err) => {
-        setloading(false);
-        toast.error(err.response.data.message, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        console.log(err.response);
-      });
+    handleIncrement();
   };
-  const handleReviewCreation = () => {
-    // const payload = review;
-    // createReviewServices(currentPackageId, payload)
-    //   .then((res) => {
-    //     console.log(res.data.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response);
-    //     handleIncrement();
-    //   });
-  };
+
   const handleGetServices = () => {
     getServices()
       .then((res) => {
@@ -423,14 +400,15 @@ const Services = () => {
             </button>
           </div>
           <div className="w-[80%] mx-auto">
-            <div className="grid grid-cols-5 gap-4 text-[#94949C] text-sm mb-2">
+            <div className="grid grid-cols-6 gap-4 text-[#94949C] text-sm mb-2">
               <div className="">Overview</div>
               <div className="">Pricing</div>
               <div className="">Gallery</div>
+              <div className="">Requirements</div>
               <div className="">FAQ</div>
               <div className="">Review</div>
             </div>
-            <div className="grid grid-cols-5 gap-4 mb-4">
+            <div className="grid grid-cols-6 gap-4 mb-4">
               <div
                 className={` ${
                   step > 0 ? "bg-primary-100" : "bg-[#EAEAEB]"
@@ -455,6 +433,11 @@ const Services = () => {
               <div
                 className={` ${
                   step > 4 ? "bg-primary-100" : "bg-[#EAEAEB]"
+                }   h-1 w-full rounded-full`}
+              ></div>
+              <div
+                className={` ${
+                  step > 5 ? "bg-primary-100" : "bg-[#EAEAEB]"
                 }   h-1 w-full rounded-full`}
               ></div>
             </div>
@@ -486,7 +469,6 @@ const Services = () => {
                   setcurrentPackagesIndex={setcurrentPackagesIndex}
                   handleFormInput={handleFormInput}
                   handleFormFeatureInput={handleFormFeatureInput}
-                  handleServiceCreation={handleServiceCreation}
                   loading={loading}
                 />
               )}
@@ -506,6 +488,17 @@ const Services = () => {
               )}
 
               {step === 4 && (
+                <Requirement
+                  handleIncrement={handleIncrement}
+                  handleDecrement={handleDecrement}
+                  handleAddReq={handleAddReq}
+                  handleRemoveReq={handleRemoveReq}
+                  requirements={requirements}
+                  handleReqinput={handleReqinput}
+                  loading={loading}
+                />
+              )}
+              {step === 5 && (
                 <Faq
                   handleIncrement={handleIncrement}
                   handleDecrement={handleDecrement}
@@ -517,14 +510,12 @@ const Services = () => {
                   loading={loading}
                 />
               )}
-              {step === 5 && (
+              {step === 6 && (
                 <Review
-                  review={review}
-                  setreview={setreview}
                   handleIncrement={handleIncrement}
                   handleDecrement={handleDecrement}
-                  handleReviewinput={handleReviewinput}
-                  handleReviewCreation={handleReviewCreation}
+                  loading={loading}
+                  handleServiceCreation={handleServiceCreation}
                 />
               )}
             </section>

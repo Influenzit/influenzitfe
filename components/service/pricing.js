@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 
 function Pricing({
   handleDecrement,
+  handleIncrement,
   packages,
   setpackages,
   handleAddFeature,
@@ -19,32 +20,53 @@ function Pricing({
   handleServiceCreation,
   loading,
 }) {
-  function validateArray(array) {
-    for (let i = 0; i < array.length; i++) {
-      const item = array[i];
-      if (item.name) {
-        if (
-          item.description === "" ||
-          item.amount === "" ||
-          item.name === "" ||
-          item.features.some((f) => f.name === "" || f.quantity === "")
-        ) {
-          return false;
-        }
+  // function validateArray(array) {
+  //   for (let i = 0; i < array.length; i++) {
+  //     const item = array[i];
+  //     if (item.name) {
+  //       if (
+  //         item.description === "" ||
+  //         item.amount === "" ||
+  //         item.name === "" ||
+  //         item.features.some((f) => f.name === "" || f.quantity === "")
+  //       ) {
+  //         return false;
+  //       }
+  //     }
+  //   }
+  //   return true;
+  // }
+
+ 
+
+
+  const handleContinue = () => {
+    let activePackages = [];
+  for (let i = 0; i < packages.length; i++) {
+    // push complete packages into activePackages
+    const item = packages[i];
+    if (item.name) {
+      if (
+        item.description !== "" ||
+        item.amount !== "" ||
+        item.name !== "" ||
+        item.features.some((f) => f.name !== "" || f.quantity !== "")
+      ) {
+        activePackages.push(item);
+
       }
     }
-    return true;
   }
-
-  const isValid = validateArray(packages);
-  const handleContinue = () => {
-    if (!isValid) {
-      toast.error("All fields are required", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return;
-    }
-    handleServiceCreation();
+  if (activePackages.length === 0) {
+    // if no active packages
+    toast.error("Atleast one package is required", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+    return;
+  }
+  console.log(activePackages);
+  setpackages(activePackages)
+  handleIncrement();
   };
 
   return (
@@ -105,7 +127,7 @@ function Pricing({
         <div>
           <input
             type="text"
-            placeholder="Krystal Beauty"
+            placeholder="Basic"
             className="p-2 border outline-none rounded-md w-full"
             name="name"
             value={packages[currentPackagesIndex].name}

@@ -3,13 +3,16 @@ import Link from 'next/link'
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { forgotPassword } from '../../api/auth';
+import { resetPassword } from '../../api/auth';
 import LandingLayout from '../../layouts/landing.layout';
 import { setLoading, setError } from '../../app/reducers/status'
 import { Center, Container, FormFields, FormHeader, FormWrapper, Input, InputContainer, SubmitButton, Wrapper } from '../../styles/auth.style'
 
-const Login = () => {
-  const [formVal, setFormVal] = useState({})
+const Update = () => {
+  const [formVal, setFormVal] = useState({
+    password: "",
+    cpassword: ""
+  })
   const handleInputChange = (val, field) => {
     setFormVal((prevVal) => {
       return {...prevVal, [field]: val};
@@ -17,27 +20,39 @@ const Login = () => {
   }
   const router = useRouter();
   const dispatch = useDispatch();
-  const mutation = useMutation(emailData => {
-    return forgotPassword(emailData);
+  const mutation = useMutation(pData => {
+    return resetPassword(pData);
+  }, {
+    onSuccess(successRes) {
+        const res = successRes.data
+        if(res.errors || res.status === "error") {
+          dispatch(setLoading(false));
+          dispatch(setError({error: true, message: res.message}));
+        } else {
+            router.push("/login")
+        }
+    },
+    onError() {
+      const res = error.response.data;
+      if(res){
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: res.message}));
+        return;
+      }
+      dispatch(setLoading(false));
+      dispatch(setError({error: true, message: "Check your internet connection"}));
+    }
   })
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(setLoading(true));
     mutation.mutate({
-        email: formVal.email
+        email: "",
+        password: formVal.password,
+        password_confirmation: formVal.cpassword,
+        token: "",
     })
-  }
-  if (mutation.isLoading) dispatch(setLoading(true));
-  if (mutation.isSuccess) {
-    const res = mutation.data.data;
-    if(res.message === "Email could not be sent to this email address") {
-      dispatch(setLoading(false));
-      dispatch(setError({error: true, message: res.message}));
-    } else {
-      dispatch(setLoading(false));
-      router.push("/reset-password/email-sent");
-    }
   }
   return (
     <Container>
@@ -47,18 +62,27 @@ const Login = () => {
             <h2>Reset Password</h2>
           </FormHeader>
           <Center>
-            <p>Enter your username or email address and click the Send Email button.</p>
+            <p>Reset your password</p>
             <FormFields onSubmit={handleSubmit}>
-              <InputContainer hasContent={formVal.email}>
-                <label>Email</label>
+              <InputContainer hasContent={formVal.password}>
+                <label>Password</label>
                 <Input
-                type="email"
-                value={formVal.email}
-                onChange={(e) => handleInputChange(e.target.value, "email")}
+                type="password"
+                value={formVal.password}
+                onChange={(e) => handleInputChange(e.target.value, "password")}
                 required
                 />
               </InputContainer>
-              <SubmitButton type="submit">Send Email</SubmitButton>
+              <InputContainer hasContent={formVal.cpassword}>
+                <label>Confirm Password</label>
+                <Input
+                type="password"
+                value={formVal.cpassword}
+                onChange={(e) => handleInputChange(e.target.value, "cpassword")}
+                required
+                />
+              </InputContainer>
+              <SubmitButton type="submit">Update</SubmitButton>
             </FormFields>
             <Link href="/login">
                 <a id="cancel">Cancel &amp; Login</a>
@@ -69,9 +93,9 @@ const Login = () => {
     </Container>
   )
 }
-Login.getLayout = (page) => (
+Update.getLayout = (page) => (
     <LandingLayout>
         {page}
     </LandingLayout>
 )
-export default Login
+export default Update
