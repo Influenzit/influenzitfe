@@ -102,16 +102,16 @@ const Home = () => {
         </WrapperOne>
       </HeroSectionOne>
       <HeroSectionTwo>
-        <h1>Access Data . Run Campaigns <br /><span>Drive Sales</span></h1>
-        <p>Discover the top influencers for your product. Efficiently identify and engage with the most relevant key creators for your brand, then start driving revenue from their audiences.</p>
+        <h1>Find Influencers, Connect with Businesses, <br />Generate <span>Massive Sales</span> and Revenue</h1>
+        <p>Discover the top influencers for your product. Efficiently identify and engage with the most relevant key creators for your brand, then start driving revenue from their audiences. We are here to make collaborations between businesses and influencers seamless</p>
       </HeroSectionTwo>
       <HeroSectionThree>
         <WrapperThree>
           <InfoCardM>
               <Info>
-                <span>SEARCH INFLUENCERS</span>
-                <h1>Find the right influencer for your marketing campaign</h1>
-                <p>Unlock the power of influencer marketing, and take your brand to new heights. We have result-driven and perfect influencers to promote your products and services to drive actual results.</p>
+                <span>Connect With Influencers</span>
+                <h1>Find the perfect influencer for your marketing campaign</h1>
+                <p>Unlock the power of influencer marketing, and take your brand to new heights. We have result-driven and perfect influencers to promote your products and services to drive actual results. </p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -125,9 +125,10 @@ const Home = () => {
                 <Image src="/hero2.png" alt='' layout='fill' objectFit='contain' objectPosition="left" />
               </ImageWrapper>
               <Info leftP>
-                <span>INFLUENCER INSIGHTS</span>
-                <h1>Make better decisions with detailed analytics</h1>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <span>Advanced Analytics</span>
+                <h1>Make informed decisions with our advanced analytics</h1>
+                <p>Leverage the power of comprehensive data to make smarter choices for your influencer marketing campaigns. Influenzit provides in-depth analytics, allowing you to track the performance and impact of your collaborations.
+ Gain valuable insights into engagement, reach, and ROI, ensuring that you're always making informed decisions for your brand's growth. </p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -137,7 +138,7 @@ const Home = () => {
               <Info>
                 <span>PROJECT MANAGEMENT</span>
                 <h1>Manage campaigns and projects seamlessly</h1>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <p>Streamline your influencer marketing campaigns with Influenzit's intuitive project management tools. Effortlessly plan, execute, and monitor your campaigns, keeping all your collaborations organized and on track. Our user-friendly interface allows you to manage multiple projects simultaneously, ensuring clear communication and timely progress.</p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -152,8 +153,8 @@ const Home = () => {
               </ImageWrapper>
               <Info leftP>
                 <span>SECURE PAYMENTS</span>
-                <h1>Handle influencer payments easily</h1>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <h1>Safe , Secure & Seamless Payments</h1>
+                <p>Simplify your influencer payment process with Influenzit's secure and efficient escrow system. Our platform enables you to manage payments effortlessly, ensuring timely compensation for the influencers you collaborate with. Funds are securely held in escrow until the campaign has been marked and accepted as completed by the business owner. This added layer of protection fosters trust between both parties and helps to prevent payment disputes.</p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -167,9 +168,9 @@ const Home = () => {
                 <Image src="/hero1.png" alt='' layout='fill' objectFit='contain' objectPosition="center" />
               </ImageWrapper>
               <Infos>
-                <span>SEARCH INFLUENCERS</span>
-                <h1>Find the right influencer for your business needs</h1>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <span>Connect With Influencers</span>
+                <h1>Find the perfect influencer for your marketing campaign</h1>
+                <p>Unlock the power of influencer marketing, and take your brand to new heights. We have result-driven and perfect influencers to promote your products and services to drive actual results. </p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -180,9 +181,10 @@ const Home = () => {
                 <Image src="/hero2.png" alt='' layout='fill' objectFit='contain' objectPosition="center" />
               </ImageWrapper>
               <Infos>
-                <span>INFLUENCER INSIGHTS</span>
-                <h1>Make better decisions with detailed analytics</h1>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+              <span>Advanced Analytics</span>
+                <h1>Make informed decisions with our advanced analytics</h1>
+                <p>Leverage the power of comprehensive data to make smarter choices for your influencer marketing campaigns. Influenzit provides in-depth analytics, allowing you to track the performance and impact of your collaborations.
+ Gain valuable insights into engagement, reach, and ROI, ensuring that you're always making informed decisions for your brand's growth. </p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -195,7 +197,7 @@ const Home = () => {
               <Infos>
                 <span>PROJECT MANAGEMENT</span>
                 <h1>Manage campaigns and projects seamlessly</h1>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <p>Streamline your influencer marketing campaigns with Influenzit's intuitive project management tools. Effortlessly plan, execute, and monitor your campaigns, keeping all your collaborations organized and on track. Our user-friendly interface allows you to manage multiple projects simultaneously, ensuring clear communication and timely progress.</p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -207,8 +209,8 @@ const Home = () => {
               </ImageWrapper>
               <Infos>
                 <span>SECURE PAYMENTS</span>
-                <h1>Handle influencer payments easily</h1>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <h1>Safe , Secure & Seamless Payments</h1>
+                <p>Simplify your influencer payment process with Influenzit's secure and efficient escrow system. Our platform enables you to manage payments effortlessly, ensuring timely compensation for the influencers you collaborate with. Funds are securely held in escrow until the campaign has been marked and accepted as completed by the business owner. This added layer of protection fosters trust between both parties and helps to prevent payment disputes.</p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -220,8 +222,8 @@ const Home = () => {
       </HeroSectionThree>
       <HeroSectionFour>
         <WrapperFour>
-          <h1>Over <span>500 Influencers</span> Available</h1>
-          <p>When you choose Influenzit over other solutions, you&apos;ll grow 2.3x faster, and save hundreds of hours wasted on boring manual work.</p>
+          <h1>A whole world of <span>results-focused</span> influencers at your fingertips.</h1>
+          {/* <p>When you choose Influenzit over other solutions, you&apos;ll grow 2.3x faster, and save hundreds of hours wasted on boring manual work.</p> */}
           <NicheWrapper>
             <NicheCard>
               <ImgW1 id="anim">

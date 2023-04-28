@@ -17,14 +17,14 @@ const MobileChatbar = ({ setConversationId, conversations, setSupportId }) => {
                             }
                         }}>
                         <ProfilePicWrapper>
-                            <Image src={val.heading?.image ?? ""} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
+                            <Image src={val.heading?.image ?? "/ticket.svg"} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
                         </ProfilePicWrapper>
                         {
                             !!val.unread_count ? (
                                 <ChatCount>{val.unread_count}</ChatCount>
                             ) : null
                         } 
-                        <ChatTitle>{val.heading?.title}</ChatTitle>
+                        <ChatTitle>{val.heading?.title ?? val.subject}</ChatTitle>
                     </UserCard>
                 ))
             }
