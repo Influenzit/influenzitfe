@@ -6,9 +6,9 @@ const Terms = () => {
   return (
     <Container>
        <h2>Introduction</h2>
-       <p>These Terms and Conditions ("Terms") govern the use of the Influenzit platform and services
-("Services") provided by Influenzit ("we", "us", or "our"). By using our Services, you ("User",
-"you", or "your") agree to be bound by these Terms</p>
+       <p>These Terms and Conditions (&quot;Terms&quot;) govern the use of the Influenzit platform and services
+(&quot;Services&quot;) provided by Influenzit (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;). By using our Services, you (&quot;User&quot;,
+&quot;you&quot;, or &quot;your&quot;) agree to be bound by these Terms</p>
         <h2>Acceptance of Terms</h2>
         <p>By accessing and using our Services, you acknowledge that you have read, understood, and
 agree to be bound by these Terms. We may update or modify these Terms at any time without
@@ -53,7 +53,7 @@ policies</p>
 <p>Our Services may integrate with third-party services, and users agree to comply with the terms
 and conditions of those services</p>
 <h2>Disclaimers and Limitations of Liability</h2>
-<p>Our Services are provided on an "as is" basis, and we disclaim any warranties or guarantees
+<p>Our Services are provided on an &quot;as is&quot; basis, and we disclaim any warranties or guarantees
 regarding the performance or results of our platform. Our liability for damages shall be limited to
 the amount paid by the user for the Service</p>
 <h2>Indemnification</h2>

@@ -608,8 +608,8 @@ const CreatorProfile = () => {
                                                     </AnalyticCard>
                                                     <CountryList>
                                                         {
-                                                            getTopFive().map(val => (
-                                                                <CountrySection>
+                                                            getTopFive().map(val, i => (
+                                                                <CountrySection key={i}>
                                                                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: colors.textColor }}>
                                                                         <p>{country.filter((valu) => valu.isoCode.toLocaleLowerCase() === val.country)[0].flag} {country.filter((valu) => valu.isoCode.toLocaleLowerCase() === val.country)[0].name}</p>
                                                                         <div>{(((val.value) / generateTotalCount()) * 100).toFixed(2)}%</div>

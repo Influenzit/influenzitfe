@@ -7,7 +7,7 @@ const Privacy = () => {
     <div>
         <Container>
           <p>This Privacy Policy describes how Influenzit collects, uses, and shares your personal
-            information when you use our platform and services ("Services"). By using our Services, you
+            information when you use our platform and services (&quot;Services&quot;). By using our Services, you
             agree to the collection and use of information in accordance with this policy.
           </p>
           <h2>Information We Collect</h2>
@@ -66,7 +66,7 @@ unsubscribe instructions in the email or by contacting us.</p>
           <p>Our Services may contain links to third-party websites or services that are not owned or
 controlled by Influenzit. We are not responsible for the privacy practices or content of these
 third-party websites or services</p>
-          <h2>Children's Privacy</h2>
+          <h2>Children&apos;s Privacy</h2>
           <p>Our Services are not intended for use by children under the age of 13. We do not knowingly
 collect personal information from children under 13. If we become aware that we have collected
 personal information from a child under 13, we will take steps to delete that information.</p>

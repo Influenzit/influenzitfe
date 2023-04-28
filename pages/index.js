@@ -128,7 +128,7 @@ const Home = () => {
                 <span>Advanced Analytics</span>
                 <h1>Make informed decisions with our advanced analytics</h1>
                 <p>Leverage the power of comprehensive data to make smarter choices for your influencer marketing campaigns. Influenzit provides in-depth analytics, allowing you to track the performance and impact of your collaborations.
- Gain valuable insights into engagement, reach, and ROI, ensuring that you're always making informed decisions for your brand's growth. </p>
+ Gain valuable insights into engagement, reach, and ROI, ensuring that you&apos;re always making informed decisions for your brand&apos;s growth. </p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -138,7 +138,7 @@ const Home = () => {
               <Info>
                 <span>PROJECT MANAGEMENT</span>
                 <h1>Manage campaigns and projects seamlessly</h1>
-                <p>Streamline your influencer marketing campaigns with Influenzit's intuitive project management tools. Effortlessly plan, execute, and monitor your campaigns, keeping all your collaborations organized and on track. Our user-friendly interface allows you to manage multiple projects simultaneously, ensuring clear communication and timely progress.</p>
+                <p>Streamline your influencer marketing campaigns with Influenzit&apos;s intuitive project management tools. Effortlessly plan, execute, and monitor your campaigns, keeping all your collaborations organized and on track. Our user-friendly interface allows you to manage multiple projects simultaneously, ensuring clear communication and timely progress.</p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -154,7 +154,7 @@ const Home = () => {
               <Info leftP>
                 <span>SECURE PAYMENTS</span>
                 <h1>Safe , Secure & Seamless Payments</h1>
-                <p>Simplify your influencer payment process with Influenzit's secure and efficient escrow system. Our platform enables you to manage payments effortlessly, ensuring timely compensation for the influencers you collaborate with. Funds are securely held in escrow until the campaign has been marked and accepted as completed by the business owner. This added layer of protection fosters trust between both parties and helps to prevent payment disputes.</p>
+                <p>Simplify your influencer payment process with Influenzit&apos;s secure and efficient escrow system. Our platform enables you to manage payments effortlessly, ensuring timely compensation for the influencers you collaborate with. Funds are securely held in escrow until the campaign has been marked and accepted as completed by the business owner. This added layer of protection fosters trust between both parties and helps to prevent payment disputes.</p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -184,7 +184,7 @@ const Home = () => {
               <span>Advanced Analytics</span>
                 <h1>Make informed decisions with our advanced analytics</h1>
                 <p>Leverage the power of comprehensive data to make smarter choices for your influencer marketing campaigns. Influenzit provides in-depth analytics, allowing you to track the performance and impact of your collaborations.
- Gain valuable insights into engagement, reach, and ROI, ensuring that you're always making informed decisions for your brand's growth. </p>
+ Gain valuable insights into engagement, reach, and ROI, ensuring that you&apos;re always making informed decisions for your brand&apos;s growth. </p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -197,7 +197,7 @@ const Home = () => {
               <Infos>
                 <span>PROJECT MANAGEMENT</span>
                 <h1>Manage campaigns and projects seamlessly</h1>
-                <p>Streamline your influencer marketing campaigns with Influenzit's intuitive project management tools. Effortlessly plan, execute, and monitor your campaigns, keeping all your collaborations organized and on track. Our user-friendly interface allows you to manage multiple projects simultaneously, ensuring clear communication and timely progress.</p>
+                <p>Streamline your influencer marketing campaigns with Influenzit&apos;s intuitive project management tools. Effortlessly plan, execute, and monitor your campaigns, keeping all your collaborations organized and on track. Our user-friendly interface allows you to manage multiple projects simultaneously, ensuring clear communication and timely progress.</p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -210,7 +210,7 @@ const Home = () => {
               <Infos>
                 <span>SECURE PAYMENTS</span>
                 <h1>Safe , Secure & Seamless Payments</h1>
-                <p>Simplify your influencer payment process with Influenzit's secure and efficient escrow system. Our platform enables you to manage payments effortlessly, ensuring timely compensation for the influencers you collaborate with. Funds are securely held in escrow until the campaign has been marked and accepted as completed by the business owner. This added layer of protection fosters trust between both parties and helps to prevent payment disputes.</p>
+                <p>Simplify your influencer payment process with Influenzit&apos;s secure and efficient escrow system. Our platform enables you to manage payments effortlessly, ensuring timely compensation for the influencers you collaborate with. Funds are securely held in escrow until the campaign has been marked and accepted as completed by the business owner. This added layer of protection fosters trust between both parties and helps to prevent payment disputes.</p>
                 <Link href="/explore" passHref>
                   <a>Find Influencers</a>
                 </Link>
