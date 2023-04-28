@@ -51,6 +51,17 @@ const CreatorProfile = () => {
         ))
         return cData.sort((a,b) => b.value - a.value);
     }
+    const generateICountryData = () => {
+        let cData = [];
+        let countryObj = JSON.parse(inData?.analytics?.instagram_insights?.audience_country ?? "{}")
+        Object.keys(countryObj).forEach((val, i) => (
+            cData.push({
+                country: val.toLocaleLowerCase(),
+                value: countryObj[val]
+            })
+        ))
+        return cData.sort((a,b) => b.value - a.value);
+    }
     const generateTotalCount = () => {
         let cData = 0;
         JSON.parse(inData?.analytics?.youtube?.countryviews ?? "[]").forEach((val, i) => (
@@ -58,9 +69,31 @@ const CreatorProfile = () => {
         ))
         return cData;
     }
+    const generateITotalCount = () => {
+        let cData = 0;
+        generateICountryData()?.forEach((val, i) => (
+            cData += val.value
+        ))
+        return cData;
+    }
     const getTopFive = () => {
         let topFive = [];
-        generateCountryData().forEach((val) => {
+        generateCountryData()?.forEach((val) => {
+            if (topFive.length < 6) {
+                topFive.push(val)
+            } else {
+                if (topFive.some((valu) => valu.value < val.value)) {
+                    topFive.push(val);
+                    topFive.splice(topFive.lastIndexOf(topFive.filter((valu) => valu.value < val.value)[0]), 1);
+                }
+                
+            }
+        })
+        return topFive;
+    }
+    const getITopFive = () => {
+        let topFive = [];
+        generateICountryData()?.forEach((val) => {
             if (topFive.length < 6) {
                 topFive.push(val)
             } else {
@@ -402,7 +435,25 @@ const CreatorProfile = () => {
                                             </AnalyticStats>
                                             <h3>Audience Insights</h3>
                                             <AnalyticChart>
-
+                                                <MapWrapper>
+                                                    <AnalyticCard style={{ border: "none" }}>
+                                                        <h2>Audience Location</h2>
+                                                        <WorldMap color={colors.primaryColor} size="lg" data={generateICountryData()} />
+                                                    </AnalyticCard>
+                                                    <CountryList>
+                                                        {
+                                                            getITopFive().map((val, i) => (
+                                                                <CountrySection key={i}>
+                                                                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: colors.textColor }}>
+                                                                        <p>{country.filter((valu) => valu.isoCode.toLocaleLowerCase() === val.country)[0].flag} {country.filter((valu) => valu.isoCode.toLocaleLowerCase() === val.country)[0].name}</p>
+                                                                        <div>{(((val.value) / generateITotalCount()) * 100).toFixed(2)}%</div>
+                                                                    </div>
+                                                                    <Guage guage={(((val.value) / generateITotalCount()) * 100).toFixed(2)}/>
+                                                                </CountrySection>
+                                                            ))
+                                                        }
+                                                    </CountryList>
+                                                </MapWrapper>
                                             </AnalyticChart>
                                             <PerformanceCont>
                                                 <Flex>
@@ -608,7 +659,7 @@ const CreatorProfile = () => {
                                                     </AnalyticCard>
                                                     <CountryList>
                                                         {
-                                                            getTopFive().map(val, i => (
+                                                            getTopFive().map((val, i) => (
                                                                 <CountrySection key={i}>
                                                                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: colors.textColor }}>
                                                                         <p>{country.filter((valu) => valu.isoCode.toLocaleLowerCase() === val.country)[0].flag} {country.filter((valu) => valu.isoCode.toLocaleLowerCase() === val.country)[0].name}</p>
