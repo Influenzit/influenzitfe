@@ -220,9 +220,9 @@ const Dashboard = () => {
                                             </div>
                                         </UserMiniCard>
                                         <ProjectDetails>
-                                            <div id="img">
+                                            {/* <div id="img">
                                                 <Image src="/dog.png" layout="fill" objectFit="cover" objectPosition="center"/>
-                                            </div>
+                                            </div> */}
                                             <div>
                                                 <h4>{val.title}</h4>
                                                 <p>{val.description}</p>
@@ -376,9 +376,9 @@ const Dashboard = () => {
                                     projectList.data.map((val, i) => (
                                         <ProjectCard key={i}>
                                             <ProjectDetails>
-                                                <div id="img">
+                                                {/* <div id="img">
                                                     <Image src="/dog.png" layout="fill" objectFit="cover" objectPosition="center"/>
-                                                </div>
+                                                </div> */}
                                                 <div>
                                                     <h4>{val.title}</h4>
                                                     <p>{val.description}</p>
