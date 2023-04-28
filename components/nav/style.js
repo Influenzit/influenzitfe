@@ -11,12 +11,6 @@ export const Container = styled.nav`
     display: flex;
     z-index: 99999;
     ${({showBg}) => showBg && "border-bottom: 1px solid #EAEAEB"};
-    ${breakpoints.md} {
-        padding: 1rem 15px;
-    }
-    ${breakpoints.lg} {
-        padding: 1rem 15px;
-    }
 `;
 export const Wrapper = styled.div`
     width:  ${({fullWidth}) => fullWidth ? "100%" : "98%"};
@@ -30,11 +24,15 @@ export const Wrapper = styled.div`
      ${({fullWidth}) => fullWidth && "padding-right: 25px"};
     #logo {
         display: flex;
+        align-items: center;
         ${({fullWidth}) => fullWidth && "width: 230px"};
         ${({fullWidth}) => fullWidth && "padding-left: 16px"};
         ${({fullWidth}) => fullWidth && "max-width: 230px"};
         ${({fullWidth}) => fullWidth && "border-right: 1px solid #EAEAEB"};
         height: 100%;
+        ${breakpoints.md} {
+            border-right: none;
+        }
     }
 `;
 export const Logo = styled(Link)`
@@ -497,7 +495,9 @@ export const Qlinks = styled.div`
             color: ${colors.primaryColor};
         }
     }
-
+    ${breakpoints.md} {
+        display: none;
+    }
 `;
 export const UserBtn = styled.div`
     border: none;
@@ -630,7 +630,7 @@ export const SidebarBtn = styled.button`
     display: none;
     cursor: pointer;
     margin: 0 15px 0 2px;
-    ${breakpoints.sm} {
+    ${breakpoints.md} {
         display: block;
         height: 29px;
         width: 29px;
