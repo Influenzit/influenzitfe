@@ -349,7 +349,7 @@ const CompleteProfile = () => {
                                 </ToggleBtn>
                             </ToggleCont>
                         </InputContainer>
-                        <h4>Summarize yourself</h4>
+                        <h4>Profile Summary</h4>
                         <p>This is shown on your profile</p>
                         <InputContainer style={{ marginTop: "10px" }}>
                             <Input style={{ fontSize: "14px", borderColor: headlineError ? colors.primaryColor : "#D0D5DD" }} value={headline} onChange={(e) => setHeadline(e.target.value)} type="text" placeholder='e.g Lifestyle Creator and Food Enthusiast' />

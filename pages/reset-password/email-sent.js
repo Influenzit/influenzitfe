@@ -8,7 +8,7 @@ const EmailSent = () => {
     <Container>
         <Wrapper>
             <NotifyCard 
-                imgSrc="/mail-icon.svg"
+                imgSrc="/message-sent.svg"
                 header="Email sent!"
                 link="/"
                 linkDisplay="Resend Email"

@@ -175,6 +175,9 @@ export const ProjectCard = styled.div`
     border-radius: 16px;
     display: flex;
     margin-bottom: 10px;
+    ${breakpoints.md} {
+        flex-direction: column;
+    }
 `;
 export const  ProjectDetails = styled.div`
     display: flex;
@@ -182,6 +185,7 @@ export const  ProjectDetails = styled.div`
     border-right: 1px solid rgba(42, 41, 57, 0.1);
     width: 100%;
     align-items: center;
+    padding-left: 10px;
     #img {
         position: relative;
         width: 70px;
@@ -201,6 +205,15 @@ export const  ProjectDetails = styled.div`
         color: #555461;
         font-size: 14px;
         line-height: 150%;
+    }
+    ${breakpoints.md} {
+        border-right: none;
+        flex-direction: column;
+        padding: 15px 0;
+        align-items: start;
+        h4 {
+            padding-top: 15px;
+        }
     }
 `;
 export const UserMiniCard = styled.div`
@@ -239,6 +252,10 @@ export const UserMiniCard = styled.div`
         color: rgba(31, 32, 36, 0.5);
         font-weight: 500;
     }
+    ${breakpoints.md} {
+        border-right: none;
+        padding: 0;
+    }
 `;
 export const Status = styled.div`
     display: flex;
@@ -263,5 +280,8 @@ export const Status = styled.div`
             background: ${({inProgress}) => inProgress ? "#F79009": "green"};
             border-radius: 50%;
         }
+    }
+    ${breakpoints.md} {
+        padding: 0;
     }
 `;

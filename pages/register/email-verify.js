@@ -8,7 +8,7 @@ const EmailVerify = () => {
     <Container>
         <Wrapper>
             <NotifyCard 
-                imgSrc="/ok-icon.svg"
+                imgSrc="/message-verify.svg"
                 header="Email Verified"
                 link="/login"
                 linkDisplay="Login Here"

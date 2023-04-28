@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import { useMutation } from "@tanstack/react-query"
 import { BannerReg, BanReg, Bottom, BottomP, Center, Container, FacebookBtn, FlexInput, FormFields, FormHeader, FormWrapper, GoogleBtn, Input, InputContainer, SocialIcon, SocialLogin, SubmitButton, Wrapper, AuthFlex, ErrorMessageCont } from '../../styles/auth.style'
 import { createAccount, socialLogin } from '../../api/auth';
-import { setError, setLoading, setUserType } from '../../app/reducers/status';
-import { useDispatch } from 'react-redux';
+import { isLoading, setError, setLoading, setUserType } from '../../app/reducers/status';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { setBusinesses } from '../../app/reducers/business';
@@ -13,9 +13,11 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { Logo } from '../../components/nav/style';
 import Image from 'next/image';
 import { useEffect } from 'react';
+import Loader from '../../components/loading'
 
 const Register = () => {
   const router = useRouter();
+  const loadingStatus = useSelector(isLoading);
   const [formVal, setFormVal] = useState({
     firstname: "",
     lastname: "",
@@ -409,6 +411,7 @@ const Register = () => {
 
         </BannerReg>
     </AuthFlex>
+    {loadingStatus && <Loader />}
     </>
   )
 }
