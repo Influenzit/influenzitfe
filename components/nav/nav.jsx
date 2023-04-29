@@ -368,6 +368,9 @@ const Nav = () => {
                             ) : null
                         } */}
             <Qlinks>
+              <Link href="/dashboard" passHref>
+                <a>Dashboard</a>
+              </Link>
               <Link href="/explore/influencers" passHref>
                 <a>Find Influencers</a>
               </Link>
@@ -478,6 +481,9 @@ const Nav = () => {
           <Right>
             <Center>
               <NavLinks>
+                <Link href="/">Home</Link>
+              </NavLinks>
+              <NavLinks>
                 <Link href="/register">Join Influencers</Link>
               </NavLinks>
               <ConnectDropdown
@@ -506,9 +512,9 @@ const Nav = () => {
                   </ConnectDropdownCont>
                 )}
               </ConnectDropdown>
-              <NavLinks>
+              {/* <NavLinks>
                 <Link href="/pricing">Pricing</Link>
-              </NavLinks>
+              </NavLinks> */}
             </Center>
             <Controls>
               <Link href="/login" passHref>

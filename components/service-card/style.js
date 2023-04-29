@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../styles/theme";
+import { breakpoints, colors } from "../../styles/theme";
 
 export const Container = styled.div`
     height: auto;
@@ -24,6 +24,9 @@ export const Container = styled.div`
     }
     :hover {
         box-shadow: 0px 16px 24px 0px #2A29391A;
+    }
+    ${breakpoints.md} {
+        margin: 0 auto;
     }
 `;
 export const SocialHandle = styled.div`
