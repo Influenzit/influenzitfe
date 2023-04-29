@@ -294,11 +294,17 @@ export const MapWrapper = styled.div`
    background: #fff;
    border: 1px solid rgba(42, 41, 57, 0.1);
    border-radius: 16px;
+   ${breakpoints.lg} {
+    flex-direction: column;
+   }
 `;
 export const CountryList = styled.div`
     width: 180px;
     margin-top: 70px;
     padding-right: 20px;
+    ${breakpoints.lg} {
+        width: 100%;
+    }
 `;
 export const CountrySection = styled.div`
     width: 100%;
@@ -329,6 +335,9 @@ export const AnalyticCard = styled.div`
         font-size: 20px;
         color: ${colors.textColor};
     }
+    ${breakpoints.lg} {
+        width: 100%;
+    }
 `;
 export const AnalyticStats = styled.div`
     background: #FFFFFF;
@@ -352,6 +361,11 @@ export const Stat = styled.div`
         color: #2A293980;
         font-size: 14px;
     }
+    ${breakpoints.md} {
+         h1 {
+            font-size: 20px;
+        }
+    }
 `;
 export const PerformanceCont = styled.div`
     display: flex;
@@ -369,6 +383,9 @@ export const EngagementCard = styled.div`
     padding: 20px;
     width: calc(50% - 12px);
     max-width: calc(50% - 12px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     h3 {
         font-weight: 600;
         font-size: 20px;
@@ -402,6 +419,14 @@ export const EngagementCard = styled.div`
             justify-content: baseline;
         }
     }
+    ${breakpoints.md} {
+         h3 {
+            font-size: 16px;
+        }
+        h1 {
+            font-size: 25px;
+        }
+    }
 `;
 export const StatsCard = styled.div`
     background: #FFFFFF;
@@ -410,15 +435,18 @@ export const StatsCard = styled.div`
     padding: 20px;
     width: calc(50% - 12px);
     max-width: calc(50% - 12px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     h3 {
         font-weight: 600;
-        font-size: 20px;
+        font-size: 18px;
         line-height: 24px;
         margin: 0;
     }
     h1 {
         font-weight: 700;
-        font-size: 50px;
+        font-size: 40px;
         line-height: 100%;
         color: ${colors.textColor};
     }
@@ -435,6 +463,14 @@ export const StatsCard = styled.div`
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+    }
+    ${breakpoints.md} {
+         h3 {
+            font-size: 16px;
+        }
+        h1 {
+            font-size: 25px;
         }
     }
 `;

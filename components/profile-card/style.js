@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "../../styles/theme";
+import { breakpoints, colors } from "../../styles/theme";
 
 export const Container = styled.div`
     height: auto;
@@ -24,6 +24,9 @@ export const Container = styled.div`
         top: 15px;
         right: 15px;
         z-index: 999;
+    }
+    ${breakpoints.sm} {
+        margin: 0 auto;
     }
 `;
 export const SocialHandle = styled.div`

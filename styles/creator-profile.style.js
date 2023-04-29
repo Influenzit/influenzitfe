@@ -53,6 +53,13 @@ export const UserDetails = styled.div`
     color: #555461;
     font-size: 14px;
    }
+   ${breakpoints.md} {
+    h2 {
+        font-size: 25px;
+        font-weight: 700;
+        color: #2A2939;
+    }
+   }
 `;
 export const ProfileStats = styled.div`
     margin-right: 20px;
@@ -266,6 +273,9 @@ export const Popup = styled.div`
 `;
 export const Container = styled.div`
     background: #FAFBFC;
+    ${breakpoints.md} {
+        margin-top: 50px;
+    }
 `;
 export const Wrapper = styled.div`
     width: 98%;
@@ -411,10 +421,16 @@ export const BottomSection = styled.div`
     display: flex;
     margin-top: 35px;
     column-gap: 20px;
+    ${breakpoints.lg} {
+        flex-direction: column;
+    }
 `;
 export const LeftSection = styled.div`
     width: calc(100% - 380px);
     min-width: calc(100% - 380px);
+    ${breakpoints.lg} {
+        width: 100%;
+    }
 `;
 export const UserCardSection = styled.div`
     display: flex;
@@ -453,6 +469,9 @@ export const RightSection = styled.div`
         color: #2A2939;
         font-size: 18px;
         margin-bottom: 10px;
+    }
+    ${breakpoints.lg} {
+        width: 100%;
     }
 `;
 export const SocialWrapper = styled.div`
