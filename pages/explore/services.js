@@ -21,6 +21,7 @@ const Search = () => {
     const user = useSelector(getUser);
     const dispatch = useDispatch();
     const [nicheVal, setNicheVal] = useState("");
+    const [seeAll, setSeeAll] = useState(false);
     const [searchString, setSearchString] = useState("");
     const { data: servicesData, refetch: refetchServicesData } = useQuery(["get-services"], async () => {
         return await exploreServices(getQueryString(`${getUrl ? getUrl : router.asPath}${getQueryString(getUrl ? getUrl : router.asPath) ? "&" : "?" }industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}`));
@@ -88,9 +89,10 @@ const Search = () => {
                     </form>
                     <CategoryWrapper>
                         <Category isSelected={"" === currentIndustry} onClick={() => setCurrentIndustry("")}>All</Category>
-                        {category.map((val, i) => (
+                        {(seeAll ? category : JSON.parse(JSON.stringify(category)).splice(0, 8)).map((val, i) => (
                             <Category key={i} isSelected={val === currentIndustry} onClick={() => setCurrentIndustry(val)}>{val}</Category>
                         ))}
+                        <Category onClick={() => setSeeAll(!seeAll)}>{seeAll ? "See less" : "See all"}</Category>
                     </CategoryWrapper>
                 </TopBanner>
             </Section>

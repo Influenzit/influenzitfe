@@ -165,6 +165,9 @@ export const AEmptyCard = styled.div`
         align-items: center;
         column-gap: 5px;
     }
+    ${breakpoints.md} {
+        flex-direction: column;
+    }
 `;
 export const List = styled.div`
 `;
