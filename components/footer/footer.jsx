@@ -10,7 +10,7 @@ const Footer = () => {
             <Top>
                 <MainSection>
                 <Image src="/influenzit_logo.png" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
-                <p>We'd love to hear from you! Contact us via email, phone, or live chat for any questions, feedback, or inquiries.</p>
+                <p>We&apos;d love to hear from you! Contact us via email, phone, or live chat for any questions, feedback, or inquiries.</p>
                     <ul>
                         <li><Link href="mailto:help@influenzit.com">help@influenzit.com</Link></li>
                         <li><Link href="tel:+2349098765432">+2349098765432</Link></li>
