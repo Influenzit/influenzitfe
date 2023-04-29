@@ -273,7 +273,9 @@ export const Popup = styled.div`
 `;
 export const Container = styled.div`
     background: #FAFBFC;
-
+    ${breakpoints.md} {
+        margin-top: 50px;
+    }
 `;
 export const Wrapper = styled.div`
     width: 98%;
