@@ -17,6 +17,7 @@ const Search = () => {
     const [getUrl, setGetUrl] = useState("");
     const [nicheVal, setNicheVal] = useState("");
     const [searchString, setSearchString] = useState("");
+    const [seeAll, setSeeAll] = useState(false);
     const dispatch = useDispatch();
     const router = useRouter();
     const user = useSelector(getUser);
@@ -86,9 +87,10 @@ const Search = () => {
                     </form>
                     <CategoryWrapper>
                         <Category isSelected={"" === currentIndustry} onClick={() => setCurrentIndustry("")}>All</Category>
-                        {category.map((val, i) => (
+                        {(seeAll ? category : JSON.parse(JSON.stringify(category)).splice(0, 8)).map((val, i) => (
                             <Category key={i} isSelected={val === currentIndustry} onClick={() => setCurrentIndustry(val)}>{val}</Category>
                         ))}
+                        <Category onClick={() => setSeeAll(!seeAll)}>{seeAll ? "See less" : "See all"}</Category>
                     </CategoryWrapper>
                 </TopBanner>
             </Section>
@@ -123,7 +125,8 @@ const Search = () => {
                                         handle={val.twitter}
                                         name={`${val.user.firstname} ${val.user.lastname}`}
                                         sex={val.gender}
-                                        skills={genSkills}
+                                        rating={val.rating}
+                                        skills={val.user.email}
                                         address={val.address}
                                     />
                                 })

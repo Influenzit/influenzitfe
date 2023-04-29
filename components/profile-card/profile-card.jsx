@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { Container, Controls, CreatorDetails, SocialHandle, Stats, TopImg } from './style'
 
-const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink, skills}) => {
+const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink, skills, rating}) => {
     const router = useRouter();
     return (
     <Container>
@@ -25,7 +25,7 @@ const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink, skills}) 
                 </div>
                 <div>
                     <Image src="/star-p.svg" alt="" height={15} width={15}/>
-                    <span>5.0</span>
+                    <span>{rating}</span>
                 </div>
             </Stats>
             <h4>{name}</h4>

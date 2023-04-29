@@ -5,11 +5,14 @@ import { useEffect, useState } from "react"
 import { getExploreNiches } from "../api/influencer"
 import LandingLayout from "../layouts/landing.layout"
 import { Answer, Banner, BannerImg, CustomSelect, Faq, FaqWrapper, HeroSectionFive, HeroSectionFour, HeroSectionOne, HeroSectionSix, HeroSectionThree, HeroSectionTwo, ImageWrapper, ImgSlider, ImgW1, ImgWrapper, Info, Infos, InfoCard, InfoCardM, InfoCardMob, InfoDetails, InfoList, InfoSectOne, ListItem, NicheCard, NicheWrapper, Question, ReviewCard, ReviewWrapper, SlideBtn, SlideControl, UserCard, UserDetails, UserImage, WrapperFive, WrapperFour, WrapperOne, WrapperSix, WrapperThree, WrapperTwo, FormDivide } from "../styles/home.style"
+import { useRouter } from "next/router"
 
 const Home = () => {
   const [faq, setFaq] = useState({});
-  const [nicheVal, setNicheVal] = useState("");
+  const [nicheVal, setNicheVal] = useState("Influencer");
   const [searchString, setSearchString] = useState("");
+  const [platform, setPlatform] = useState("");
+  const router = useRouter();
   const handleFaqToggle = (index) => {
     console.log(index)
     setFaq((prev) => {
@@ -51,6 +54,9 @@ const Home = () => {
       staleTime: Infinity,
       retry: false
   });
+  const getCategoryRoute = () => {
+    return nicheVal === "Influencer" ? "influencers" : nicheVal === "Creator" ? "creators": "services"
+  }
   useEffect(() => {
     refetch();
   }, [])
@@ -68,12 +74,12 @@ const Home = () => {
               <select val={nicheVal} onChange={(e) => setNicheVal(e.target.value)}>
                 <option value="Influencer">Influencer</option>
                 <option value="Creator">Creator</option>
-                <option value="Creator">Business Owner</option>
+                <option value="Service">Service</option>
               </select>
             </CustomSelect>
             <CustomSelect borderLeft>
               <label>Platform</label>
-              <select val={nicheVal} onChange={(e) => setNicheVal(e.target.value)}>
+              <select val={platform} onChange={(e) => setPlatform(e.target.value)}>
                 <option value="">All</option>
                 <option value="tiktok">Tiktok</option>
                 <option value="facebook">Facebook</option>
@@ -94,7 +100,7 @@ const Home = () => {
             </CustomSelect>
             <button onClick={(e) => {
               e.preventDefault();
-              router.push(`/explore?search=${searchString}&niche=${nicheVal.toLocaleLowerCase()}`);
+              router.push(`/explore/${getCategoryRoute()}?search=${searchString}&niche=${nicheVal.toLocaleLowerCase()}`);
             }}><span>Search</span> <Image src="/search.svg" height={15} width={15}/></button>
           </form>
           <BannerImg>
@@ -112,7 +118,7 @@ const Home = () => {
                 <span>Connect With Influencers</span>
                 <h1>Find the perfect influencer for your marketing campaign</h1>
                 <p>Unlock the power of influencer marketing, and take your brand to new heights. We have result-driven and perfect influencers to promote your products and services to drive actual results. </p>
-                <Link href="/explore" passHref>
+                <Link href="/explore/influencers" passHref>
                   <a>Find Influencers</a>
                 </Link>
               </Info>
@@ -129,7 +135,7 @@ const Home = () => {
                 <h1>Make informed decisions with our advanced analytics</h1>
                 <p>Leverage the power of comprehensive data to make smarter choices for your influencer marketing campaigns. Influenzit provides in-depth analytics, allowing you to track the performance and impact of your collaborations.
  Gain valuable insights into engagement, reach, and ROI, ensuring that you&apos;re always making informed decisions for your brand&apos;s growth. </p>
-                <Link href="/explore" passHref>
+                <Link href="/explore/influencers" passHref>
                   <a>Find Influencers</a>
                 </Link>
               </Info>
@@ -139,7 +145,7 @@ const Home = () => {
                 <span>PROJECT MANAGEMENT</span>
                 <h1>Manage campaigns and projects seamlessly</h1>
                 <p>Streamline your influencer marketing campaigns with Influenzit&apos;s intuitive project management tools. Effortlessly plan, execute, and monitor your campaigns, keeping all your collaborations organized and on track. Our user-friendly interface allows you to manage multiple projects simultaneously, ensuring clear communication and timely progress.</p>
-                <Link href="/explore" passHref>
+                <Link href="/explore/influencers" passHref>
                   <a>Find Influencers</a>
                 </Link>
               </Info>
@@ -155,7 +161,7 @@ const Home = () => {
                 <span>SECURE PAYMENTS</span>
                 <h1>Safe , Secure & Seamless Payments</h1>
                 <p>Simplify your influencer payment process with Influenzit&apos;s secure and efficient escrow system. Our platform enables you to manage payments effortlessly, ensuring timely compensation for the influencers you collaborate with. Funds are securely held in escrow until the campaign has been marked and accepted as completed by the business owner. This added layer of protection fosters trust between both parties and helps to prevent payment disputes.</p>
-                <Link href="/explore" passHref>
+                <Link href="/explore/influencers" passHref>
                   <a>Find Influencers</a>
                 </Link>
               </Info>
@@ -171,7 +177,7 @@ const Home = () => {
                 <span>Connect With Influencers</span>
                 <h1>Find the perfect influencer for your marketing campaign</h1>
                 <p>Unlock the power of influencer marketing, and take your brand to new heights. We have result-driven and perfect influencers to promote your products and services to drive actual results. </p>
-                <Link href="/explore" passHref>
+                <Link href="/explore/influencers" passHref>
                   <a>Find Influencers</a>
                 </Link>
               </Infos>
@@ -185,7 +191,7 @@ const Home = () => {
                 <h1>Make informed decisions with our advanced analytics</h1>
                 <p>Leverage the power of comprehensive data to make smarter choices for your influencer marketing campaigns. Influenzit provides in-depth analytics, allowing you to track the performance and impact of your collaborations.
  Gain valuable insights into engagement, reach, and ROI, ensuring that you&apos;re always making informed decisions for your brand&apos;s growth. </p>
-                <Link href="/explore" passHref>
+                <Link href="/explore/influencers" passHref>
                   <a>Find Influencers</a>
                 </Link>
               </Infos>
@@ -198,7 +204,7 @@ const Home = () => {
                 <span>PROJECT MANAGEMENT</span>
                 <h1>Manage campaigns and projects seamlessly</h1>
                 <p>Streamline your influencer marketing campaigns with Influenzit&apos;s intuitive project management tools. Effortlessly plan, execute, and monitor your campaigns, keeping all your collaborations organized and on track. Our user-friendly interface allows you to manage multiple projects simultaneously, ensuring clear communication and timely progress.</p>
-                <Link href="/explore" passHref>
+                <Link href="/explore/influencers" passHref>
                   <a>Find Influencers</a>
                 </Link>
               </Infos>
@@ -211,7 +217,7 @@ const Home = () => {
                 <span>SECURE PAYMENTS</span>
                 <h1>Safe , Secure & Seamless Payments</h1>
                 <p>Simplify your influencer payment process with Influenzit&apos;s secure and efficient escrow system. Our platform enables you to manage payments effortlessly, ensuring timely compensation for the influencers you collaborate with. Funds are securely held in escrow until the campaign has been marked and accepted as completed by the business owner. This added layer of protection fosters trust between both parties and helps to prevent payment disputes.</p>
-                <Link href="/explore" passHref>
+                <Link href="/explore/influencers" passHref>
                   <a>Find Influencers</a>
                 </Link>
               </Infos>
@@ -298,12 +304,12 @@ const Home = () => {
               <span>Hair</span>
             </NicheCard>
           </NicheWrapper>
-          <Link href="/explore" passHref>
+          <Link href="/explore/influencers" passHref>
             <a>Explore all influencers</a>
           </Link>
         </WrapperFour>
       </HeroSectionFour>
-      <HeroSectionFive>
+      {/* <HeroSectionFive>
         <WrapperFive>
           <p id="heading">Testimonials</p>
           <h1>Don&apos;t take our word for it</h1>
@@ -349,7 +355,7 @@ const Home = () => {
             </ReviewCard>
           </ReviewWrapper>
         </WrapperFive>
-      </HeroSectionFive>
+      </HeroSectionFive> */}
       <HeroSectionSix>
         <WrapperSix>
           <h1>Frequently asked questions</h1>
