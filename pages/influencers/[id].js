@@ -237,7 +237,16 @@ const CreatorProfile = () => {
             setInData(influencerData?.data?.data);
         }
     }, [influencerData])
-
+    const generateRatingText = (num) => {
+        console.log(num)
+        if(num < 2) {
+            return "average";
+        } else if ((num > 2) && (num < 5)) {
+            return "good";
+        } else {
+            return "excellent";
+        }
+    }
     return (
         <Container>
             <HeroSectionOne>
@@ -462,8 +471,8 @@ const CreatorProfile = () => {
                                                         <div id="wrapper">
                                                             <h1>{inData?.analytics?.instagram_insights?.engagement_rate}%</h1>
                                                             <div>
-                                                                <p>Average</p>
-                                                                <span>Higher than 60% of influencers</span>
+                                                                <p>{generateRatingText(Number(inData?.analytics?.instagram_insights?.engagement_rate ?? "0"))}</p>
+                                                                {/* <span>Higher than 60% of influencers</span> */}
                                                             </div>
                                                         </div>
                                                     </EngagementCard>
@@ -792,7 +801,7 @@ const CreatorProfile = () => {
                                     <p>Completed <br /> Campaigns</p>
                                 </div>
                                 <div className='cont'>
-                                    <h1>5.0</h1>
+                                    <h1>{inData?.rating}</h1>
                                     <div>
                                         <Image src="/star-p.svg" alt="" height={15} width={15} />
                                         <Image src="/star-p.svg" alt="" height={15} width={15} />
@@ -800,7 +809,7 @@ const CreatorProfile = () => {
                                         <Image src="/star-p.svg" alt="" height={15} width={15} />
                                         <Image src="/star-p.svg" alt="" height={15} width={15} />
                                     </div>
-                                    <p>20 ratings</p>
+                                    <p>0 ratings</p>
                                 </div>
                             </Campaign>
                         </RightSection>

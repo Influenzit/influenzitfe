@@ -10,7 +10,7 @@ const Footer = () => {
             <Top>
                 <MainSection>
                 <Image src="/influenzit_logo.png" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+                <p>We&apos;d love to hear from you! Contact us via email, phone, or live chat for any questions, feedback, or inquiries.</p>
                     <ul>
                         <li><Link href="mailto:help@influenzit.com">help@influenzit.com</Link></li>
                         <li><Link href="tel:+2349098765432">+2349098765432</Link></li>
@@ -26,9 +26,9 @@ const Footer = () => {
                 <Section>
                     <h3>Discover</h3>
                     <ul>
-                        <li><Link href="/explore">Find Influencers</Link></li>
-                        <li><Link href="/explore">Find Creators</Link></li>
-                        <li><Link href="/explore">Buy Services</Link></li>
+                        <li><Link href="/explore/influencers">Find Influencers</Link></li>
+                        <li><Link href="/explore/creators">Find Creators</Link></li>
+                        <li><Link href="/explore/services">Buy Services</Link></li>
                     </ul>
                 </Section>
                 <Section>
