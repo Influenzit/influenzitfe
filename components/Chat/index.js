@@ -31,7 +31,7 @@ const Messages = ({serviceId}) => {
   const messagesRef = useRef(null);
   const user = useSelector(getUser);
   const [socketSet, setSocketSet] = useState(false);
-  const conversationId = useSelector(getCurrentConversationId);
+  const [conversationId, setconversationId] = useState(null);
   const dispatch = useDispatch();
   const handleInput = (e) => {
     if(e.currentTarget.innerHTML === "<br>") {
@@ -173,21 +173,24 @@ const { data: conversationData, refetch: refetchConversationData } = useQuery(["
     retry: false,
     onSuccess(successRes) {
         console.log(successRes.data.data)
-        setConversations(successRes.data.data)
+        const {conversation_id} =  successRes.data.data.messages[0]
+        setconversationId(conversation_id)
+        sessionStorage.setItem("cid", conversation_id)
+        setConversations(successRes.data.data.messages)
     }
 });
 const { data: messagesData, refetch: refetchMessagesData } = useQuery(["get-messages"], async () => {
-    return await getConversationServiceMessages(conversationId);
+    return await getConversationServiceMessages(serviceId);
 }, {
     enabled: false,
     staleTime: Infinity,
     retry: false,
     onSuccess(successRes) {
-        setMessages(successRes.data.data.data.reverse());
+        setMessages(successRes.data.data.data);
     }
 });
 const sendMessageMutation = useMutation((data) => {
-    return sendServiceConversation(conversationId, data);
+    return sendServiceConversation(serviceId, data);
 }, {
     onSuccess(successRes) {
         const res = successRes.data;
@@ -209,9 +212,7 @@ const sendMessageMutation = useMutation((data) => {
         dispatch(setError({error: true, message: "An error occured"}));
     }
 });
-const handleSetConversationId = (id) => {
-    dispatch(setCurrentConversation(id));
-} 
+
 const getCurrentConversation = () => {
     if(conversationId) {
         return conversations.filter((val) => val.id === conversationId)[0]
@@ -224,6 +225,8 @@ const handleMessageSend = () => {
     })
 }
 const handleConversation = (conversation) => {
+    console.log(conversation);
+
     if(conversation){
         if(conversation.id === Number(sessionStorage.getItem("cid"))) {
             console.log("ego")
@@ -234,9 +237,10 @@ const handleConversation = (conversation) => {
             })
         }
         setConversations((oldConversations) => {
+            console.log(oldConversations);
             let copyOldConversations = JSON.parse(JSON.stringify(oldConversations));
             let cantFindOne = true;
-            copyOldConversations = copyOldConversations.map((val) => {
+            copyOldConversations = copyOldConversations.map((val) => { // TODO
                 if(conversation.id === val.id) {
                     cantFindOne = false;
                     return conversation;
@@ -284,8 +288,8 @@ useEffect(() => {
   return (
     <Container>
 
-        <MobileChatbar setConversationId={handleSetConversationId} conversations={conversations}/>
-        <Wrapper>
+{/*         <MobileChatbar setConversationId={handleSetConversationId} conversations={conversations}/>
+ */}        <Wrapper>
            {/*  <ChatSidebar setConversationId={handleSetConversationId} conversations={conversations} conversationId={conversationId}/> */}
             <MessageSection>
                 {
