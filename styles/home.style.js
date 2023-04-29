@@ -228,8 +228,8 @@ export const HeroSectionTwo = styled.section`
         }
     }
     p {
-        width: 40%;
-        max-width: 500px;
+        width: 50%;
+        max-width: 600px;
         line-height: 25px;
         font-size: 17px;
         color: ${colors.textColor};
@@ -356,6 +356,7 @@ export const Info = styled.div`
         color: ${colors.primaryColor};
         font-size: 14px;
         font-weight: 700;
+        text-transform: uppercase;
     }
     h1 {
         font-size: 40px;
@@ -397,6 +398,7 @@ export const Infos = styled.div`
         color: ${colors.primaryColor};
         font-size: 14px;
         font-weight: 700;
+        text-transform: uppercase;
     }
     h1 {
         font-size: 40px;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { breakpoints } from "../../styles/theme";
+import { breakpoints, colors } from "../../styles/theme";
 
 export const Container = styled.div`
     display: none;
@@ -17,6 +17,7 @@ export const UserCard = styled.button`
     border: none;
     background: transparent;
     width: 60px;
+    min-width: 60px;
     padding: 2px 0;
     border-right: 1px solid #D2D2D2;
     position: relative;
@@ -40,7 +41,7 @@ export const ChatCount = styled.div`
     position: absolute;
     top: 0;
     right: 5px;
-    background: #14A800;
+    background: ${colors.primaryColor};
     font-size: 10px;
     height: 16px;
     width: 16px;

@@ -322,7 +322,7 @@ const Nav = () => {
         <div id="logo">
           {router.pathname.includes("/dashboard") && isLoggedIn && (
             <SidebarBtn onClick={handleShowSidebar} ref={sidebarBtn}>
-              <HamburgerIcon />
+              <Image src="/hamburger.svg" alt="ham" height={20} width={20} />
             </SidebarBtn>
           )}
           <Logo href="/">
