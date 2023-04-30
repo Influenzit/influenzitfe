@@ -362,3 +362,20 @@ export const ViewMore = styled.div`
         }
     }
 `;
+export const EmptySearch = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 30px 0;
+    h1 {
+        color: ${colors.textColor};
+        font-size: 30px;
+        font-weight: 700;
+        margin-top: 20px;
+    }
+    p {
+        color: ${colors.textColor};
+    }
+`;
