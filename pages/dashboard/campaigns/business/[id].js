@@ -392,14 +392,14 @@ const Campaigns = () => {
                     </div>
                     {
                       <div className="flex items-center space-x-2">
-                        <button
+                       {item.status === "Unpaid" ? <button
                           onClick={() => {
                             PayInvoice(item.id, item.amount);
                           }}
                           className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white"
                         >
                           Pay
-                        </button>
+                        </button> : <h2 className="text-[#27C281] text-base font-bold"> Paid</h2> }
                    
                       </div>
                     }
@@ -410,9 +410,9 @@ const Campaigns = () => {
             </div>
           )}
 
-          <div className="flex justify-end my-12">
+       {/*    <div className="flex justify-end my-12">
             <button className="text-primary-100">Cancel Campaign</button>
-          </div>
+          </div> */}
         </div>
       ) : (
         <div>Loading...</div>

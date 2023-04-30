@@ -12,26 +12,109 @@ import { getUser } from '../../app/reducers/user'
 import LandingLayout from '../../layouts/landing.layout'
 import { Controls, CreatorsCard, CreatorDetails, SocialHandle } from '../../styles/business-owner.style'
 import { BackImage, Bottom, BottomSection, Campaign, CollaborateBtn, Container, HeroSectionOne, ImageContainer, ImageContainerTwo, Info, LeftSection, Listing, RightSection, SkillCard, Social, SocialWrapper, Tag, Tags, Top, UserCardSection, WorkCard, Wrapper, UserDetails, UserImage } from '../../styles/creator-profile.style'
-import { AnalyticChart, AnalyticStats, AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, Stat, TabBtn, Tabs, TopImg, PerformanceCont, EngagementCard, StatsCard, Flex } from '../../styles/influencer-profile';
+import { AnalyticChart, AnalyticStats, AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, Stat, TabBtn, Tabs, TopImg, PerformanceCont, EngagementCard, StatsCard, Flex, AnalyticCard, MapWrapper, CountryList, CountrySection, Guage } from '../../styles/influencer-profile';
 import { Details, FormContainer, UpdateModal } from '../../styles/view.style'
 import { InputContainer } from '../../styles/profile.style'
 import { createDispute } from '../../api/support'
 import ServiceCard from '../../components/service-card'
 import ProfileCard from '../../components/profile-card'
 import { numberFormatter } from '../../helpers/helper'
+import { Chart } from "react-google-charts"
+import { colors } from 'styles/theme'
+import { WorldMap } from 'react-svg-worldmap'
+import { Country } from 'country-state-city'
 
 const CreatorProfile = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const user = useSelector(getUser);
-  const [inData, setInData] = useState(null);
-  const dispatch = useDispatch();
-  const [currentTab, setCurrentTab] = useState("instagram");
-  const [showEngagePopup, setShowEngagePopup] = useState(false);
-  const [showDispute, setShowDispute] = useState(false);
-  const [disputeSubject, setDisputeSubject] = useState("");
-  const [disputeMessage, setDisputeMessage] = useState("");
-  const { data: influencerData, refetch: refetchInfluencerData } = useQuery(["get-influencer"], async () => {
+    const router = useRouter();
+    const { id } = router.query;
+    const user = useSelector(getUser);
+    const [inData, setInData] = useState(null);
+    const dispatch = useDispatch();
+    const [currentTab, setCurrentTab] = useState("instagram");
+    const [showEngagePopup, setShowEngagePopup] = useState(false);
+    const [showDispute, setShowDispute] = useState(false);
+    const [disputeSubject, setDisputeSubject] = useState("");
+    const [country] = useState(Country.getAllCountries());
+
+    const optionsPie = {
+        pieHole: 0.5,
+        is3D: false,
+        colors: ["#DF475C", "#2A2939"]
+    };
+    const generateCountryData = () => {
+        let cData = [];
+        JSON.parse(inData?.analytics?.youtube?.countryviews ?? "[]").forEach((val, i) => (
+            cData.push({
+                country: val[0].toLocaleLowerCase(),
+                value: val[1]
+            })
+        ))
+        return cData.sort((a,b) => b.value - a.value);
+    }
+    const generateICountryData = () => {
+        let cData = [];
+        let countryObj = JSON.parse(inData?.analytics?.instagram_insights?.audience_country ?? "{}")
+        Object.keys(countryObj).forEach((val, i) => (
+            cData.push({
+                country: val.toLocaleLowerCase(),
+                value: countryObj[val]
+            })
+        ))
+        return cData.sort((a,b) => b.value - a.value);
+    }
+    const generateTotalCount = () => {
+        let cData = 0;
+        JSON.parse(inData?.analytics?.youtube?.countryviews ?? "[]").forEach((val, i) => (
+            cData += val[1]
+        ))
+        return cData;
+    }
+    const generateITotalCount = () => {
+        let cData = 0;
+        generateICountryData()?.forEach((val, i) => (
+            cData += val.value
+        ))
+        return cData;
+    }
+    const getTopFive = () => {
+        let topFive = [];
+        generateCountryData()?.forEach((val) => {
+            if (topFive.length < 6) {
+                topFive.push(val)
+            } else {
+                if (topFive.some((valu) => valu.value < val.value)) {
+                    topFive.push(val);
+                    topFive.splice(topFive.lastIndexOf(topFive.filter((valu) => valu.value < val.value)[0]), 1);
+                }
+                
+            }
+        })
+        return topFive;
+    }
+    const getITopFive = () => {
+        let topFive = [];
+        generateICountryData()?.forEach((val) => {
+            if (topFive.length < 6) {
+                topFive.push(val)
+            } else {
+                if (topFive.some((valu) => valu.value < val.value)) {
+                    topFive.push(val);
+                    topFive.splice(topFive.lastIndexOf(topFive.filter((valu) => valu.value < val.value)[0]), 1);
+                }
+                
+            }
+        })
+        return topFive;
+    }
+    const generateGenderData = () => {
+        const eData = [
+            ["Task", "Hours per Day"],
+            ...JSON.parse(inData?.analytics?.youtube?.genderviewerPercentage)
+        ]
+        return eData;
+    }
+    const [disputeMessage, setDisputeMessage] = useState("");
+    const { data: influencerData, refetch: refetchInfluencerData } = useQuery(["get-influencer"], async () => {
         return await getInfluencer(id);
     }, {
         enabled: false,
@@ -42,7 +125,7 @@ const CreatorProfile = () => {
         },
         onError(res) {
             dispatch(setLoading(false));
-        } 
+        }
     });
     const { data: influencersData, refetch: refetchInfluencersData } = useQuery(["get-influencers"], async () => {
         return await getInfluencers("");
@@ -56,57 +139,57 @@ const CreatorProfile = () => {
     }, {
         onSuccess(successRes) {
             const res = successRes.data;
-            if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+            if (res.errors || res.status === "error" || res.message === "Unauthenticated.") {
                 dispatch(setLoading(false));
-                dispatch(setError({error: true, message: res.message}));
+                dispatch(setError({ error: true, message: res.message }));
             } else {
                 router.push("/dashboard/messages");
             }
         },
         onError(error) {
             const res = error.response.data;
-            if(res){
-            dispatch(setError({error: true, message: res.message}));
-            return;
+            if (res) {
+                dispatch(setError({ error: true, message: res.message }));
+                return;
             }
-            dispatch(setError({error: true, message: "An error occured"}));
+            dispatch(setError({ error: true, message: "An error occured" }));
         }
     });
     const handleLinkCopy = () => {
         navigator.clipboard.writeText(location.href);
         toast.success("Profile URL copied to clipboard", {
             position: toast.POSITION.TOP_RIGHT
-          });
+        });
     }
-    const createDisputeMutation = useMutation( disputeData => {
+    const createDisputeMutation = useMutation(disputeData => {
         return createDispute(disputeData);
     }, {
         onSuccess(successRes) {
             const res = successRes.data;
-            if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+            if (res.errors || res.status === "error" || res.message === "Unauthenticated.") {
                 dispatch(setLoading(false));
-                dispatch(setError({error: true, message: res.message}));
-            } else { 
+                dispatch(setError({ error: true, message: res.message }));
+            } else {
                 dispatch(setLoading(false));
                 toast.success("Dispute created successfully", {
-                  position: toast.POSITION.TOP_RIGHT
+                    position: toast.POSITION.TOP_RIGHT
                 });
                 setShowDispute(false);
             }
         },
         onError(error) {
             const res = error.response.data;
-            if(res){
-              dispatch(setLoading(false));
-              dispatch(setError({error: true, message: res.message}));
-              return;
+            if (res) {
+                dispatch(setLoading(false));
+                dispatch(setError({ error: true, message: res.message }));
+                return;
             }
             dispatch(setLoading(false));
-            dispatch(setError({error: true, message: "An error occured"}));
+            dispatch(setError({ error: true, message: "An error occured" }));
         }
     });
     const handleStartConversation = () => {
-        if(user?.id) {
+        if (user?.id) {
             startConversationMutation.mutate({
                 to_user_id: inData.user_id,
                 text: "Hi " + inData?.user?.firstname,
@@ -114,12 +197,12 @@ const CreatorProfile = () => {
         } else {
             toast.error("Please login to start a conversation", {
                 position: toast.POSITION.TOP_RIGHT
-              });
+            });
         }
     }
     const handleReportAccount = () => {
-        if(user?.id) {
-           setShowDispute(true);
+        if (user?.id) {
+            setShowDispute(true);
         } else {
             toast.error("Please login before you can report account", {
                 position: toast.POSITION.TOP_RIGHT
@@ -127,30 +210,30 @@ const CreatorProfile = () => {
         }
     }
     const handleCreateDispute = () => {
-        if(!disputeSubject && !disputeSubject) {
-          return;
+        if (!disputeSubject && !disputeSubject) {
+            return;
         } else {
-          dispatch(setLoading(true));
-          createDisputeMutation.mutate({
-            subject: disputeSubject,
-            message: disputeMessage,
-            account_id: id,
-          })
+            dispatch(setLoading(true));
+            createDisputeMutation.mutate({
+                subject: disputeSubject,
+                message: disputeMessage,
+                account_id: id,
+            })
         }
-      }
-      const getCoverImages = (list) => {
+    }
+    const getCoverImages = (list) => {
         const checker = ["cover_img_1", "cover_img_2", "cover_img_3", "cover_img_4"]
         return list?.filter((val) => checker.includes(val.identifier))
-      }
+    }
     useEffect(() => {
         dispatch(setLoading(true));
         refetchInfluencersData();
-        if(id){
+        if (id) {
             refetchInfluencerData();
         }
     }, [router.pathname, id]);
     useEffect(() => {
-        if(influencerData?.data?.data) {
+        if (influencerData?.data?.data) {
             setInData(influencerData?.data?.data);
         }
     }, [influencerData])
@@ -388,8 +471,8 @@ const CreatorProfile = () => {
                                                         <div id="wrapper">
                                                             <h1>{inData?.analytics?.instagram_insights?.engagement_rate}%</h1>
                                                             <div>
-                                                                <p>Average</p>
-                                                                <span>Higher than 60% of influencers</span>
+                                                                <p>{generateRatingText(Number(inData?.analytics?.instagram_insights?.engagement_rate ?? "0"))}</p>
+                                                                {/* <span>Higher than 60% of influencers</span> */}
                                                             </div>
                                                         </div>
                                                     </EngagementCard>
@@ -718,7 +801,7 @@ const CreatorProfile = () => {
                                     <p>Completed <br /> Campaigns</p>
                                 </div>
                                 <div className='cont'>
-                                    <h1>5.0</h1>
+                                    <h1>{inData?.rating}</h1>
                                     <div>
                                         <Image src="/star-p.svg" alt="" height={15} width={15} />
                                         <Image src="/star-p.svg" alt="" height={15} width={15} />
@@ -726,7 +809,7 @@ const CreatorProfile = () => {
                                         <Image src="/star-p.svg" alt="" height={15} width={15} />
                                         <Image src="/star-p.svg" alt="" height={15} width={15} />
                                     </div>
-                                    <p>20 ratings</p>
+                                    <p>0 ratings</p>
                                 </div>
                             </Campaign>
                         </RightSection>
@@ -771,7 +854,7 @@ const CreatorProfile = () => {
                         </Bottom>
                     </Listing> : null
                 } */}
-                {/* {inData?.reviews.length ?
+                    {/* {inData?.reviews.length ?
                     <Listing>
                         <h3>Reviews</h3>
                         <Bottom style={{ columnGap: "15px"}}>
@@ -795,63 +878,63 @@ const CreatorProfile = () => {
                         </Bottom>
                     </Listing> : null
                 } */}
-                <Listing>
-                    {inData?.similar.length ? <h3>Similar influencers</h3> : null}
-                    <Bottom>
-                        {
-                            inData?.similar.map((val, i) => {
-                                let genSkills = "";
-                                val?.skills?.forEach((val, i) => {
-                                    if(i < 5){
-                                        if (i !== 0) {
-                                            genSkills += `| ${val.name} `
-                                        } else {
-                                            genSkills += `${val.name} `
+                    <Listing>
+                        {inData?.similar.length ? <h3>Similar influencers</h3> : null}
+                        <Bottom>
+                            {
+                                inData?.similar.map((val, i) => {
+                                    let genSkills = "";
+                                    val?.skills?.forEach((val, i) => {
+                                        if (i < 5) {
+                                            if (i !== 0) {
+                                                genSkills += `| ${val.name} `
+                                            } else {
+                                                genSkills += `${val.name} `
+                                            }
                                         }
-                                    }
+                                    })
+                                    return <ProfileCard
+                                        key={i}
+                                        profileLink={`/influencers/${val.id}`}
+                                        imgSrc={val?.media.filter(med => med.identifier === 'profile_pic')?.[0]?.url ?? '/niche8.png'}
+                                        handle={val.twitter}
+                                        name={`${val.user.firstname} ${val.user.lastname}`}
+                                        sex={val.gender}
+                                        skills={genSkills}
+                                        address={val.address}
+                                    />
                                 })
-                                return <ProfileCard
-                                    key={i}
-                                    profileLink={`/influencers/${val.id}`}
-                                    imgSrc={val?.media.filter(med => med.identifier === 'profile_pic')?.[0]?.url ?? '/niche8.png'  }
-                                    handle={val.twitter}
-                                    name={`${val.user.firstname} ${val.user.lastname}`}
-                                    sex={val.gender}
-                                    skills={genSkills}
-                                    address={val.address}
-                                />
-                            })
-                        }
-                    </Bottom>
-                </Listing>
-            </Wrapper>
-        </HeroSectionOne>
-        {showDispute &&(
-            <UpdateModal>
-            <FormContainer>
-                <h3>Report Account</h3>
-                <InputContainer>
-                    <label>Subject</label>
-                    <input type="text"
-                    value={disputeSubject}
-                    onChange={(e) => setDisputeSubject(e.target.value)}
-                    />
-                </InputContainer>
-                <InputContainer>
-                    <label>Message</label>
-                    <textarea
-                    value={disputeMessage}
-                    onChange={(e) => setDisputeMessage(e.target.value)}
-                    >
-                    </textarea>
-                </InputContainer>
-                <button onClick={() => setShowDispute(false)}>Go back</button>
-                <button onClick={handleCreateDispute}>Create Dispute</button>
-            </FormContainer>
-            </UpdateModal>
-        )}
-    </Container>
-  )
+                            }
+                        </Bottom>
+                    </Listing>
+                </Wrapper>
+            </HeroSectionOne>
+            {showDispute && (
+                <UpdateModal>
+                    <FormContainer>
+                        <h3>Report Account</h3>
+                        <InputContainer>
+                            <label>Subject</label>
+                            <input type="text"
+                                value={disputeSubject}
+                                onChange={(e) => setDisputeSubject(e.target.value)}
+                            />
+                        </InputContainer>
+                        <InputContainer>
+                            <label>Message</label>
+                            <textarea
+                                value={disputeMessage}
+                                onChange={(e) => setDisputeMessage(e.target.value)}
+                            >
+                            </textarea>
+                        </InputContainer>
+                        <button onClick={() => setShowDispute(false)}>Go back</button>
+                        <button onClick={handleCreateDispute}>Create Dispute</button>
+                    </FormContainer>
+                </UpdateModal>
+            )}
+        </Container>
+    )
 }
 CreatorProfile.getLayout = (page) => (
     <LandingLayout>
@@ -859,4 +942,4 @@ CreatorProfile.getLayout = (page) => (
     </LandingLayout>
 )
 
-export default CreatorProfile;
+export default CreatorProfile

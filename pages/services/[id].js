@@ -209,7 +209,7 @@ const ServiceView = () => {
           setSuccess({ success: true, message: successRes.data.message })
         );
         setTimeout(() => {
-          router.push("/dashboard/campaigns");
+          router.push("/dashboard");
         }, 3000);
       })
       .catch((err) => {

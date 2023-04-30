@@ -73,7 +73,7 @@ const Contact = () => {
   };
 
   return (
-    <div>
+    <div >
       {/* <div className="bg-[#FDFAF5] ">
         <div className=" py-40 md:px-20 container mx-auto">
           <div className="grid grid-cols-2 items-center gap-[64px] w-full">
@@ -201,10 +201,11 @@ const Contact = () => {
 
       {/* Responsive Version */}
 
+    <div className="mx-auto max-w-[1200px]">
       <Container>
         <ContactFlex>
           <FormContainer>
-          <div>
+          <div >
             <FormTop>
               <h1> Get in touch</h1>
               <p>
@@ -300,6 +301,7 @@ const Contact = () => {
             </BanImage>
         </ContactFlex>
       </Container>
+      </div>
     </div>
   );
 };

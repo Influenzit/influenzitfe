@@ -321,7 +321,7 @@ const Campaigns = () => {
           </div>
 
           <div className=" grid md:grid-cols-2 mt-10  py-4 bg-white  ">
-            <div className=" flex space-x-3 px-3 rounded-lg border  bg-transparent outline-none w-full">
+           {/*  <div className=" flex space-x-3 px-3 rounded-lg border  bg-transparent outline-none w-full">
               <div className=" py-3  grid place-content-center">
                 <Image src={search} alt="search" />
               </div>
@@ -330,7 +330,7 @@ const Campaigns = () => {
                 className="bg-transparent outline-none w-full flex-1"
                 placeholder="Search..."
               />
-            </div>
+            </div> */}
             <div className="flex justify-end">
               <h1></h1>
             </div>
@@ -344,7 +344,7 @@ const Campaigns = () => {
               </h1>
             </div>
             <div className="w-full overflow-x-auto">
-              <div className="table -mt-1  border  border-[#EAEAEB] min-w-[1000px] text-[#667085]">
+              <div className="table -mt-1  border  border-[#EAEAEB] md:w-full min-w-[1200px] text-[#667085]">
                 <div className="grid grid-cols-12 gap-4 bg-[#F9FAFB] p-4 rounded-t-lg border-b w-full">
                   <div className="col-span-2">Date</div>
                   <div className="col-span-2">Amount</div>
