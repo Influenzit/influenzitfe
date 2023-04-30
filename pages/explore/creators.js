@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LandingLayout from '../../layouts/landing.layout';
-import { Bottom, Category, CategoryWrapper, Container, Content, Filter, ListWrapper, PageBtn, Pages, Section, Tab, Tabs, Top, TopBanner, ViewMore, Wrapper } from '../../styles/search.style';
+import { Bottom, Category, CategoryWrapper, Container, Content, EmptySearch, Filter, ListWrapper, PageBtn, Pages, Section, Tab, Tabs, Top, TopBanner, ViewMore, Wrapper } from '../../styles/search.style';
 import ProfileCard from '../../components/profile-card';
 import { getCreators, getExploreNiches, getIndustries, getInfluencers } from '../../api/influencer';
 import { useQuery } from '@tanstack/react-query';
@@ -113,6 +113,7 @@ const Search = () => {
                         </Filter>
                         <ListWrapper>
                             {
+                                creatorsData?.data?.data?.data.length > 0 ? (
                                 creatorsData?.data?.data?.data.map((val, i) => {
                                     let genSkills = "";
                                     val.skills.forEach((val, i) => {
@@ -135,7 +136,13 @@ const Search = () => {
                                         skills={val.user.email}
                                         address={val.address}
                                     />
-                                })
+                                })) : (
+                                    <EmptySearch>
+                                        <Image src="/i-empty.svg" alt="" height={150} width={150} />
+                                        <h1>No creators found</h1>
+                                        <p>We have no influencers that match your search terms</p>
+                                    </EmptySearch>
+                                )
                             }
                         </ListWrapper>
                         {

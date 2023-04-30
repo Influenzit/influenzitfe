@@ -110,6 +110,7 @@ const Search = () => {
                         </Filter>
                         <ListWrapper>
                             {
+                                servicesData?.data?.data?.data.length > 0 ?
                                 servicesData?.data?.data?.data.map((val, i) => {
                                     return (
                                         <ServiceCard
@@ -122,7 +123,13 @@ const Search = () => {
                                             profileImg={val.user.profile_pic}
                                         />
                                     )
-                                })
+                                }) : (
+                                    <EmptySearch>
+                                        <Image src="/i-empty.svg" alt="" height={150} width={150} />
+                                        <h1>No services found</h1>
+                                        <p>We have no influencers that match your search terms</p>
+                                    </EmptySearch>
+                                )
                             }
                         </ListWrapper>
                         {!user && (
