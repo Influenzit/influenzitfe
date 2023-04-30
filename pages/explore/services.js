@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import LandingLayout from '../../layouts/landing.layout';
 import { Bottom, Category, CategoryWrapper, Container, Content, Filter, ListWrapper, PageBtn, Pages, Section, Tab, Tabs, Top, TopBanner, ViewMore, Wrapper } from '../../styles/search.style';
-import { exploreServices, getExploreNiches, getIndustries } from '../../api/influencer';
+import { exploreServices, getExploreNiches, getIndustries, getServices } from '../../api/influencer';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { EmptyWrapper, ImageWrap, ServRate, ServStats, ServUserCard, TopImg } from '../../styles/influencer-profile';
@@ -18,19 +18,22 @@ import { setLoading } from 'app/reducers/status';
 const Search = () => {
     const [getUrl, setGetUrl] = useState("");
     const router = useRouter();
+    const { search } = router.query;
     const user = useSelector(getUser);
     const dispatch = useDispatch();
     const [nicheVal, setNicheVal] = useState("");
     const [seeAll, setSeeAll] = useState(false);
     const [searchString, setSearchString] = useState("");
+    const [firstLoad, setFirstLoad] = useState(true);
     const { data: servicesData, refetch: refetchServicesData } = useQuery(["get-services"], async () => {
-        return await exploreServices(getQueryString(`${getUrl ? getUrl : router.asPath}${getQueryString(getUrl ? getUrl : router.asPath) ? "&" : "?" }industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}`));
+        return await exploreServices(getQueryString(`${getUrl ? getUrl : firstLoad ? router.asPath : ""}${getQueryString(getUrl ? getUrl : router.asPath) && firstLoad ? `&industry=${currentIndustry}&platform=${nicheVal}` : `?industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}` }`));
     }, {
         enabled: false,
         staleTime: Infinity,
         retry: false,
         onSuccess() {
             dispatch(setLoading(false));
+            setFirstLoad(false);
         }
     });
     const { data, refetch } = useQuery(["get-niche"], async () => {
@@ -58,7 +61,10 @@ const Search = () => {
     }, [router.asPath]);
     useEffect(() => {
         refetchServicesData();
-    }, [router.asPath, currentIndustry, nicheVal])
+        if (search) {
+            setSearchString(search);
+        }
+    }, [router.asPath, currentIndustry, nicheVal, search])
 
     return (
         <Container>
