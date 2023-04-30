@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LandingLayout from '../../layouts/landing.layout';
-import { Bottom, Category, CategoryWrapper, Container, Content, Filter, ListWrapper, PageBtn, Pages, Section, Tab, Tabs, Top, TopBanner, ViewMore, Wrapper } from '../../styles/search.style';
+import { Bottom, Category, CategoryWrapper, Container, Content, EmptySearch, Filter, ListWrapper, PageBtn, Pages, Section, Tab, Tabs, Top, TopBanner, ViewMore, Wrapper } from '../../styles/search.style';
 import { exploreServices, getExploreNiches, getIndustries, getServices } from '../../api/influencer';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
