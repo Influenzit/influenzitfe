@@ -154,11 +154,20 @@ const CreatorProfile = () => {
             setInData(influencerData?.data?.data);
         }
     }, [influencerData])
-    
-  return (
-    <Container>
-        <HeroSectionOne>
-            {/* <BackImage>
+    const generateRatingText = (num) => {
+        console.log(num)
+        if(num < 2) {
+            return "average";
+        } else if ((num > 2) && (num < 5)) {
+            return "good";
+        } else {
+            return "excellent";
+        }
+    }
+    return (
+        <Container>
+            <HeroSectionOne>
+                {/* <BackImage>
                 <UserCard>
                     <ProfileStats>
                         <ProfileImgCont>
@@ -225,345 +234,524 @@ const CreatorProfile = () => {
                     </Stats>
                 </UserCard>
             </BackImage> */}
-            
-            <Wrapper>
-                {
-                    (getCoverImages(inData?.media)?.length === 1) && (
-                        <ImageContainer>
-                            <div id="img">
-                                <Image src={getCoverImages(inData?.media)[0]?.url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
-                            </div>
-                        </ImageContainer>
-                    )
-                }
-                {
-                    (getCoverImages(inData?.media)?.length === 2) && (
-                        <ImageContainerTwo>
-                            <div className='wrap'>
-                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
-                            </div>
-                            <div className='wrap'>
-                                <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
-                            </div>
-                        </ImageContainerTwo>
-                    )
-                }
-                {
-                    (getCoverImages(inData?.media)?.length === 3) && (
-                        <ImageContainerTwo>
-                            <div className='wrap'>
-                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
-                            </div>
-                            <div className="wrap">
-                                <div className='wrap-top'>
-                                    <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
+
+                <Wrapper>
+                    {
+                        (getCoverImages(inData?.media)?.length === 1) && (
+                            <ImageContainer>
+                                <div id="img">
+                                    <Image src={getCoverImages(inData?.media)[0]?.url} alt="" layout='fill' objectPosition="top center" objectFit="cover" />
                                 </div>
-                                <div className='wrap-bottom'>
-                                    <Image src={getCoverImages(inData?.media)[2].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
+                            </ImageContainer>
+                        )
+                    }
+                    {
+                        (getCoverImages(inData?.media)?.length === 2) && (
+                            <ImageContainerTwo>
+                                <div className='wrap'>
+                                    <Image src={getCoverImages(inData?.media)[0].url} alt="" layout='fill' objectPosition="top center" objectFit="cover" />
                                 </div>
-                            </div>
-                        </ImageContainerTwo>
-                    )
-                }
-                {
-                    (getCoverImages(inData?.media)?.length === 4) && (
-                        <ImageContainerTwo>
-                            <div className='wrap'>
-                                <Image src={getCoverImages(inData?.media)[0].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
-                            </div>
-                            <div className='wrap'>
-                                <div className='wrap-top'>
-                                    <Image src={getCoverImages(inData?.media)[1].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
+                                <div className='wrap'>
+                                    <Image src={getCoverImages(inData?.media)[1].url} alt="" layout='fill' objectPosition="top center" objectFit="cover" />
                                 </div>
-                                <div className='wrap-bottom'>
-                                    <div>
-                                        <Image src={getCoverImages(inData?.media)[2].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
+                            </ImageContainerTwo>
+                        )
+                    }
+                    {
+                        (getCoverImages(inData?.media)?.length === 3) && (
+                            <ImageContainerTwo>
+                                <div className='wrap'>
+                                    <Image src={getCoverImages(inData?.media)[0].url} alt="" layout='fill' objectPosition="top center" objectFit="cover" />
+                                </div>
+                                <div className="wrap">
+                                    <div className='wrap-top'>
+                                        <Image src={getCoverImages(inData?.media)[1].url} alt="" layout='fill' objectPosition="top center" objectFit="cover" />
                                     </div>
-                                    <div>
-                                        <Image src={getCoverImages(inData?.media)[3].url}  alt="" layout='fill' objectPosition="top center" objectFit="cover"/>
+                                    <div className='wrap-bottom'>
+                                        <Image src={getCoverImages(inData?.media)[2].url} alt="" layout='fill' objectPosition="top center" objectFit="cover" />
                                     </div>
                                 </div>
-                            </div>
-                        </ImageContainerTwo>
-                    )
-                }
-                <BottomSection>
-                    <LeftSection>
-                        <UserCardSection>
-                            <UserDetails>
-                                <h2>{inData?.user?.name}</h2>
-                                <div>
-                                    <p>
-                                        <Image src="/nigeria.svg"  alt="" height={16} width={16}/>
-                                        <span>Nigeria</span>
-                                    </p>
-                                    <Image src="/dot.svg"  alt="" height={4} width={4}/>
-                                    <p>
-                                        <Image src="/gender.svg"  alt="" height={16} width={16}/>
-                                        <span>{inData?.gender}</span>
-                                    </p>
-                                    <Image src="/dot.svg"  alt="" height={4} width={4}/>
-                                    <p>
-                                        <Image src="/star-p.svg"  alt="" height={16} width={16}/>
-                                        <span>5.0 (20 ratings)</span>
-                                    </p>
+                            </ImageContainerTwo>
+                        )
+                    }
+                    {
+                        (getCoverImages(inData?.media)?.length === 4) && (
+                            <ImageContainerTwo>
+                                <div className='wrap'>
+                                    <Image src={getCoverImages(inData?.media)[0].url} alt="" layout='fill' objectPosition="top center" objectFit="cover" />
                                 </div>
-                            </UserDetails>
-                            <UserImage>
-                                <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
-                            </UserImage>
-                        </UserCardSection>
-                        <Info>
-                            <h3>{inData?.headline}</h3>
-                            <p>{inData?.biography}</p>
-                            <Tags>
+                                <div className='wrap'>
+                                    <div className='wrap-top'>
+                                        <Image src={getCoverImages(inData?.media)[1].url} alt="" layout='fill' objectPosition="top center" objectFit="cover" />
+                                    </div>
+                                    <div className='wrap-bottom'>
+                                        <div>
+                                            <Image src={getCoverImages(inData?.media)[2].url} alt="" layout='fill' objectPosition="top center" objectFit="cover" />
+                                        </div>
+                                        <div>
+                                            <Image src={getCoverImages(inData?.media)[3].url} alt="" layout='fill' objectPosition="top center" objectFit="cover" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </ImageContainerTwo>
+                        )
+                    }
+                    <BottomSection>
+                        <LeftSection>
+                            <UserCardSection>
+                                <UserDetails>
+                                    <h2>{inData?.user?.name}</h2>
+                                    <div>
+                                        <p>
+                                            <Image src="/nigeria.svg" alt="" height={16} width={16} />
+                                            <span>Nigeria</span>
+                                        </p>
+                                        <Image src="/dot.svg" alt="" height={4} width={4} />
+                                        <p>
+                                            <Image src="/gender.svg" alt="" height={16} width={16} />
+                                            <span>{inData?.gender}</span>
+                                        </p>
+                                        <Image src="/dot.svg" alt="" height={4} width={4} />
+                                        <p>
+                                            <Image src="/star-p.svg" alt="" height={16} width={16} />
+                                            <span>{inData?.rating} (20 ratings)</span>
+                                        </p>
+                                    </div>
+                                </UserDetails>
+                                <UserImage>
+                                    <Image src={inData?.user?.profile_pic} alt="" layout='fill' objectPosition="center" objectFit="cover" />
+                                </UserImage>
+                            </UserCardSection>
+                            <Info>
+                                <h3>{inData?.headline}</h3>
+                                <p>{inData?.biography}</p>
+                                <Tags>
+                                    {
+                                        inData?.skills.map((val, i) => (
+                                            <Tag key={i}>{val.name}</Tag>
+                                        ))
+                                    }
+                                </Tags>
+                            </Info>
+                            <DataSection>
+                                <Tabs>
+                                    <TabBtn isActive={currentTab === "instagram"} onClick={() => setCurrentTab("instagram")}>Instagram</TabBtn>
+                                    <TabBtn isActive={currentTab === "youtube"} onClick={() => setCurrentTab("youtube")}>Youtube</TabBtn>
+                                    <TabBtn isActive={currentTab === "facebook"} onClick={() => setCurrentTab("facebook")}>Facebook</TabBtn>
+                                    <TabBtn isActive={currentTab === "twitter"} onClick={() => setCurrentTab("twitter")}>Twitter</TabBtn>
+                                    <TabBtn isActive={currentTab === "tiktok"} onClick={() => setCurrentTab("tiktok")}>TikTok</TabBtn>
+                                </Tabs>
                                 {
-                                    inData?.skills.map((val, i) => (
-                                        <Tag key={i}>{val.name}</Tag>
+                                    currentTab === "instagram" && inData?.instagram_verified ? (
+                                        <Content>
+                                            <h3>Influencer Summary</h3>
+                                            <AnalyticStats>
+                                                <Stat>
+                                                    <h1>{numberFormatter(Number(inData?.analytics?.instagram_insights?.follower_count))}</h1>
+                                                    <p>Followers</p>
+                                                </Stat>
+                                                <Stat isCenter>
+                                                    <h1>{numberFormatter(inData?.analytics?.instagram_insights?.reach)}</h1>
+                                                    <p>Reach</p>
+                                                </Stat>
+                                                <Stat>
+                                                    <h1>{inData?.analytics?.instagram_insights?.engagement_rate}%</h1>
+                                                    <p>Engagement</p>
+                                                </Stat>
+                                            </AnalyticStats>
+                                            <h3>Audience Insights</h3>
+                                            <AnalyticChart>
+                                                <MapWrapper>
+                                                    <AnalyticCard style={{ border: "none" }}>
+                                                        <h2>Audience Location</h2>
+                                                        <WorldMap color={colors.primaryColor} size="lg" data={generateICountryData()} />
+                                                    </AnalyticCard>
+                                                    <CountryList>
+                                                        {
+                                                            getITopFive().map((val, i) => (
+                                                                <CountrySection key={i}>
+                                                                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: colors.textColor }}>
+                                                                        <p>{country.filter((valu) => valu.isoCode.toLocaleLowerCase() === val.country)[0].flag} {country.filter((valu) => valu.isoCode.toLocaleLowerCase() === val.country)[0].name}</p>
+                                                                        <div>{(((val.value) / generateITotalCount()) * 100).toFixed(2)}%</div>
+                                                                    </div>
+                                                                    <Guage guage={(((val.value) / generateITotalCount()) * 100).toFixed(2)}/>
+                                                                </CountrySection>
+                                                            ))
+                                                        }
+                                                    </CountryList>
+                                                </MapWrapper>
+                                            </AnalyticChart>
+                                            <PerformanceCont>
+                                                <Flex>
+                                                    <EngagementCard>
+                                                        <h3>Engagement Rate</h3>
+                                                        <div id="wrapper">
+                                                            <h1>{inData?.analytics?.instagram_insights?.engagement_rate}%</h1>
+                                                            <div>
+                                                                <p>Average</p>
+                                                                <span>Higher than 60% of influencers</span>
+                                                            </div>
+                                                        </div>
+                                                    </EngagementCard>
+                                                    <StatsCard>
+                                                        <h3>Avg. likes per post</h3>
+                                                        <div>
+                                                            <span>
+                                                                <Image src="/heart-p.svg" alt="heart" height={25} width={25} />
+                                                            </span>
+                                                            <h1>{numberFormatter(Number(inData?.analytics?.instagram_insights?.likes))}</h1>
+                                                        </div>
+                                                    </StatsCard>
+                                                </Flex>
+                                                <Flex>
+                                                    <StatsCard>
+                                                        <h3>Avg. comments per post</h3>
+                                                        <div>
+                                                            <span>
+                                                                <Image src="/comment.svg" alt="heart" height={25} width={25} />
+                                                            </span>
+                                                            <h1>{numberFormatter(Number(inData?.analytics?.instagram_insights?.comments))}</h1>
+                                                        </div>
+                                                    </StatsCard>
+                                                    <StatsCard>
+                                                        <h3>Profile views</h3>
+                                                        <div>
+                                                            <span>
+                                                                <Image src="/eye.svg" alt="heart" height={25} width={25} />
+                                                            </span>
+                                                            <h1>{numberFormatter(inData?.analytics?.instagram_insights?.profile_views)}</h1>
+                                                        </div>
+                                                    </StatsCard>
+                                                </Flex>
+                                            </PerformanceCont>
+                                        </Content>
+                                    ) : (currentTab === "instagram") && (
+                                        <Content>
+                                            <EmptyWrapper>
+                                                <Image src="/empty.png" alt="" height={120} width={120} />
+                                                <h3>Instagram not connected yet</h3>
+                                            </EmptyWrapper>
+                                        </Content>
+                                    )
+                                }
+                                {
+                                    currentTab === "facebook" && inData?.facebook_verified ? (
+                                        <Content>
+                                            <h3>Influencer Summary</h3>
+                                            <AnalyticStats style={{ marginBottom: "20px" }}>
+                                                <Stat>
+                                                    <h1>{numberFormatter(Number(inData?.analytics?.facebook?.page_fans))}</h1>
+                                                    <p>Followers</p>
+                                                </Stat>
+                                                <Stat isCenter>
+                                                    <h1>{numberFormatter(inData?.analytics?.facebook?.count)}</h1>
+                                                    <p>Reach</p>
+                                                </Stat>
+                                                <Stat>
+                                                    <h1>{inData?.analytics?.facebook?.engagement}%</h1>
+                                                    <p>Engagement</p>
+                                                </Stat>
+                                            </AnalyticStats>
+
+                                            <PerformanceCont>
+                                                <Flex>
+                                                    <EngagementCard>
+                                                        <h3>Engagement Rate</h3>
+                                                        <div id="wrapper">
+                                                            <h1>{inData?.analytics?.facebook?.engagement}%</h1>
+                                                            <div>
+                                                                <p>Average</p>
+                                                                <span>Higher than 60% of influencers</span>
+                                                            </div>
+                                                        </div>
+                                                    </EngagementCard>
+                                                    <StatsCard>
+                                                        <h3>Avg. likes per post</h3>
+                                                        <div>
+                                                            <span>
+                                                                <Image src="/heart-p.svg" alt="heart" height={25} width={25} />
+                                                            </span>
+                                                            <h1>{numberFormatter(Number(inData?.analytics?.facebook?.page_like_total))}</h1>
+                                                        </div>
+                                                    </StatsCard>
+                                                </Flex>
+                                                <Flex>
+                                                    <StatsCard>
+                                                        <h3>Impressions</h3>
+                                                        <div>
+                                                            <span>
+                                                                <Image src="/comment.svg" alt="heart" height={25} width={25} />
+                                                            </span>
+                                                            <h1>{numberFormatter(Number(inData?.analytics?.facebook?.page_impressions))}</h1>
+                                                        </div>
+                                                    </StatsCard>
+                                                    <StatsCard>
+                                                        <h3>Profile views</h3>
+                                                        <div>
+                                                            <span>
+                                                                <Image src="/eye.svg" alt="heart" height={25} width={25} />
+                                                            </span>
+                                                            <h1>{numberFormatter(inData?.analytics?.facebook?.page_views_total)}</h1>
+                                                        </div>
+                                                    </StatsCard>
+                                                </Flex>
+                                            </PerformanceCont>
+                                        </Content>
+                                    ) : (currentTab === "facebook") && (
+                                        <Content>
+                                            <EmptyWrapper>
+                                                <Image src="/empty.png" alt="" height={120} width={120} />
+                                                <h3>Facebook not connected yet</h3>
+                                            </EmptyWrapper>
+                                        </Content>
+                                    )
+                                }
+                                {
+                                    currentTab === "twitter" && inData?.twitter_verified ? (
+                                        <Content>
+                                            <h3>Influencer Summary</h3>
+                                            <AnalyticStats style={{ marginBottom: "20px" }}>
+                                                <Stat>
+                                                    <h1>{numberFormatter(Number(inData?.analytics?.twitter?.following_count))}</h1>
+                                                    <p>Following</p>
+                                                </Stat>
+                                                <Stat isCenter>
+                                                    <h1>{numberFormatter(Number(inData?.analytics?.twitter?.followers_count))}</h1>
+                                                    <p>Followers</p>
+                                                </Stat>
+                                                <Stat>
+                                                    <h1>{numberFormatter(Number(inData?.analytics?.twitter?.tweet_count))}</h1>
+                                                    <p>Tweet Count</p>
+                                                </Stat>
+                                            </AnalyticStats>
+                                        </Content>
+                                    ) : (currentTab === "twitter") && (
+                                        <Content>
+                                            <EmptyWrapper>
+                                                <Image src="/empty.png" alt="" height={120} width={120} />
+                                                <h3>Twitter not connected yet</h3>
+                                            </EmptyWrapper>
+                                        </Content>
+                                    )
+                                }
+                                {
+                                    currentTab === "tiktok" && inData?.tiktok_verified ? (
+                                        <Content>
+
+                                        </Content>
+                                    ) : (currentTab === "tiktok") && (
+                                        <Content>
+                                            <EmptyWrapper>
+                                                <Image src="/empty.png" alt="" height={120} width={120} />
+                                                <h3>TikTok not connected yet</h3>
+                                            </EmptyWrapper>
+                                        </Content>
+                                    )
+                                }
+                                {
+                                    currentTab === "youtube" && inData?.youtube_verified ? (
+                                        <Content>
+                                            <h3>Influencer Summary</h3>
+                                            <AnalyticStats>
+                                                <Stat>
+                                                    <h1>{numberFormatter(Number(inData?.analytics?.youtube?.subscribersGained))}</h1>
+                                                    <p>Subscribers</p>
+                                                </Stat>
+                                                <Stat isCenter>
+                                                    <h1>{numberFormatter(inData?.analytics?.youtube?.views)}</h1>
+                                                    <p>Total video views</p>
+                                                </Stat>
+                                                <Stat>
+                                                    <h1>{numberFormatter(inData?.analytics?.youtube?.estimatedMinutesWatched)}</h1>
+                                                    <p>Estimatated Minutes Watched</p>
+                                                </Stat>
+                                            </AnalyticStats>
+                                            <h3>Audience Insights</h3>
+                                            <AnalyticChart>
+                                                <AnalyticCard>
+                                                    <h2>Gender</h2>
+                                                    <Chart
+                                                        chartType="PieChart"
+                                                        width="100%"
+                                                        height="400px"
+                                                        data={generateGenderData()}
+                                                        options={optionsPie}
+                                                    />
+                                                </AnalyticCard>
+                                                <MapWrapper>
+                                                    <AnalyticCard style={{ border: "none" }}>
+                                                        <h2>Audience Location</h2>
+                                                        <WorldMap color={colors.primaryColor} size="lg" data={generateCountryData()} />
+                                                    </AnalyticCard>
+                                                    <CountryList>
+                                                        {
+                                                            getTopFive().map((val, i) => (
+                                                                <CountrySection key={i}>
+                                                                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: colors.textColor }}>
+                                                                        <p>{country.filter((valu) => valu.isoCode.toLocaleLowerCase() === val.country)[0].flag} {country.filter((valu) => valu.isoCode.toLocaleLowerCase() === val.country)[0].name}</p>
+                                                                        <div>{(((val.value) / generateTotalCount()) * 100).toFixed(2)}%</div>
+                                                                    </div>
+                                                                    <Guage guage={(((val.value) / generateTotalCount()) * 100).toFixed(2)}/>
+                                                                </CountrySection>
+                                                            ))
+                                                        }
+                                                    </CountryList>
+                                                </MapWrapper>
+                                            </AnalyticChart>
+                                            <h3>Performance</h3>
+                                            <PerformanceCont>
+                                                <Flex>
+                                                    <EngagementCard>
+                                                        <h3>Avg. view percentage</h3>
+                                                        <div id="wrapper">
+                                                            <h1>{inData?.analytics?.youtube?.averageViewPercentage}%</h1>
+                                                            <div>
+                                                                <p>Average</p>
+                                                                <span>Higher than 60% of influencers</span>
+                                                            </div>
+                                                        </div>
+                                                    </EngagementCard>
+                                                    <StatsCard>
+                                                        <h3>Avg. likes per video</h3>
+                                                        <div>
+                                                            <span>
+                                                                <Image src="/heart-p.svg" alt="heart" height={25} width={25} />
+                                                            </span>
+                                                            <h1>{numberFormatter(Number(inData?.analytics?.youtube?.likes))}</h1>
+                                                        </div>
+                                                    </StatsCard>
+                                                </Flex>
+                                                <Flex>
+                                                    <StatsCard>
+                                                        <h3>Avg. comments per video</h3>
+                                                        <div>
+                                                            <span>
+                                                                <Image src="/comment.svg" alt="heart" height={25} width={25} />
+                                                            </span>
+                                                            <h1>{numberFormatter(Number(inData?.analytics?.youtube?.comments))}</h1>
+                                                        </div>
+                                                    </StatsCard>
+                                                    <StatsCard>
+                                                        <h3>Avg. views per video</h3>
+                                                        <div>
+                                                            <span>
+                                                                <Image src="/eye.svg" alt="heart" height={25} width={25} />
+                                                            </span>
+                                                            <h1>{numberFormatter(inData?.analytics?.youtube?.averageViewDuration)}</h1>
+                                                        </div>
+                                                    </StatsCard>
+                                                </Flex>
+                                            </PerformanceCont>
+                                        </Content>
+                                    ) : (currentTab === "youtube") && (
+                                        <Content>
+                                            <EmptyWrapper>
+                                                <Image src="/empty.png" alt="" height={120} width={120} />
+                                                <h3>Youtube not connected yet</h3>
+                                            </EmptyWrapper>
+                                        </Content>
+                                    )
+                                }
+                            </DataSection>
+                        </LeftSection>
+                        <RightSection>
+                            <h3>Social Media Handles</h3>
+                            <SocialWrapper>
+                                <Social>
+                                    <div>
+                                        <Image src="/instagram.png" alt="" height={32} width={32} />
+                                    </div>
+                                    <div>
+                                        <h4>INSTAGRAM</h4>
+                                        <p title={inData?.instagram}>@{inData?.instagram}</p>
+                                    </div>
+                                </Social>
+                                <Social>
+                                    <div>
+                                        <Image src="/youtube.svg" alt="" height={32} width={32} />
+                                    </div>
+                                    <div>
+                                        <h4>YOUTUBE</h4>
+                                        <p title={inData?.youtube}>@{inData?.youtube}</p>
+                                    </div>
+                                </Social>
+                            </SocialWrapper>
+                            <SocialWrapper>
+                                <Social>
+                                    <div>
+                                        <Image src="/tiktok.png" alt="" height={32} width={32} />
+                                    </div>
+                                    <div>
+                                        <h4>TIKTOK</h4>
+                                        <p title={inData?.tiktok}>@{inData?.tiktok}</p>
+                                    </div>
+                                </Social>
+                                <Social>
+                                    <div>
+                                        <Image src="/twitter.png" alt="" height={32} width={32} />
+                                    </div>
+                                    <div>
+                                        <h4>TWITTER</h4>
+                                        <p title={inData?.twitter}>@{inData?.twitter}</p>
+                                    </div>
+                                </Social>
+                            </SocialWrapper>
+                            <SocialWrapper>
+                                <Social style={{ minWidth: "100%" }}>
+                                    <div>
+                                        <Image src="/facebook.png" alt="" height={32} width={32} />
+                                    </div>
+                                    <div>
+                                        <h4>FACEBOOK</h4>
+                                        <p title={inData?.facebook}>@{inData?.facebook}</p>
+                                    </div>
+                                </Social>
+                            </SocialWrapper>
+                            <CollaborateBtn onClick={handleStartConversation}>
+                                <Image src="/envelope.svg" alt="" height={28} width={28} />
+                                <span>Collaborate with Influencer</span>
+                            </CollaborateBtn>
+                            <h3>Performance</h3>
+                            <Campaign>
+                                <div className='cont'>
+                                    <h1>{inData?.analytics.influenzit.completed_campaigns_count}</h1>
+                                    <p>Completed <br /> Campaigns</p>
+                                </div>
+                                <div className='cont'>
+                                    <h1>5.0</h1>
+                                    <div>
+                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
+                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
+                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
+                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
+                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
+                                    </div>
+                                    <p>20 ratings</p>
+                                </div>
+                            </Campaign>
+                        </RightSection>
+                    </BottomSection>
+                    {inData?.services.length ?
+                        <Listing>
+                            <h3>Services</h3>
+                            <Bottom style={{ columnGap: "15px" }}>
+                                {
+                                    inData?.services.map((val, i) => (
+                                        <ServiceCard
+                                            key={i}
+                                            title={val.name}
+                                            imgSrc={val.media[0]?.url ?? "/web-services.jpg"}
+                                            userName={inData?.user?.name}
+                                            price={`${val.currency} ${val.starting_from}`}
+                                            serviceLink={`/services/${val.id}`}
+                                            profileImg={inData?.user?.profile_pic}
+                                        />
                                     ))
                                 }
-                            </Tags>
-                        </Info>
-                        <DataSection>
-                            <Tabs>
-                                <TabBtn isActive={currentTab === "instagram"} onClick={() => setCurrentTab("instagram")}>Instagram</TabBtn>
-                                <TabBtn isActive={currentTab === "facebook"} onClick={() => setCurrentTab("facebook")}>Facebook</TabBtn>
-                                <TabBtn isActive={currentTab === "twitter"} onClick={() => setCurrentTab("twitter")}>Twitter</TabBtn>
-                                <TabBtn isActive={currentTab === "tiktok"} onClick={() => setCurrentTab("tiktok")}>TikTok</TabBtn>
-                                <TabBtn isActive={currentTab === "youtube"} onClick={() => setCurrentTab("youtube")}>Youtube</TabBtn>
-                            </Tabs>
-                            {
-                                currentTab === "instagram" && inData?.instagram_verified ? (
-                                    <Content>
-                                       <h3>Influencer Summary</h3>
-                                       <AnalyticStats>
-                                        <Stat>
-                                            <h1>{numberFormatter(Number(inData?.analytics?.instagram_insights?.follower_count))}</h1>
-                                            <p>Followers</p>
-                                        </Stat>
-                                        <Stat isCenter>
-                                            <h1>{numberFormatter(1000)}</h1>
-                                            <p>Following</p>
-                                        </Stat>
-                                        <Stat>
-                                            <h1>{inData?.analytics?.instagram_insights?.engagement_rate}%</h1>
-                                            <p>Engagement</p>
-                                        </Stat>
-                                       </AnalyticStats>
-                                       <h3>Audience Insights</h3>
-                                       <AnalyticChart>
-
-                                       </AnalyticChart>
-                                       <h3>Publications</h3>
-                                       <PerformanceCont>
-                                            <Flex>
-                                                <EngagementCard>
-                                                    <h3>Engagement Rate</h3>
-                                                    <div id="wrapper">
-                                                        <h1>{inData?.analytics?.instagram_insights?.engagement_rate}%</h1>
-                                                        <div>
-                                                            <p>Average</p>
-                                                            <span>Higher than 60% of influencers</span>
-                                                        </div>
-                                                    </div>
-                                                </EngagementCard>
-                                                <StatsCard>
-                                                    <h3>Avg. likes per post</h3>
-                                                    <div>
-                                                        <span>
-                                                            <Image src="/heart-p.svg" alt="heart" height={25} width={25}/>
-                                                        </span>
-                                                        <h1>{numberFormatter(Number(inData?.analytics?.instagram_insights?.likes))}</h1>
-                                                    </div>
-                                                </StatsCard>
-                                            </Flex>
-                                            <Flex>
-                                                <StatsCard>
-                                                    <h3>Avg. comments per post</h3>
-                                                    <div>
-                                                        <span>
-                                                            <Image src="/comment.svg" alt="heart" height={25} width={25}/>
-                                                        </span>
-                                                        <h1>{numberFormatter(Number(inData?.analytics?.instagram_insights?.comments))}</h1>
-                                                    </div>
-                                                </StatsCard>
-                                                <StatsCard>
-                                                    <h3>Avg. reel views</h3>
-                                                    <div>
-                                                        <span>
-                                                            <Image src="/eye.svg" alt="heart" height={25} width={25}/>
-                                                        </span>
-                                                        <h1>{numberFormatter(1200)}</h1>
-                                                    </div>
-                                                </StatsCard>
-                                            </Flex>
-                                       </PerformanceCont>
-                                    </Content>
-                                ) : (currentTab === "instagram") && (
-                                    <Content>
-                                        <EmptyWrapper>
-                                            <Image src="/empty.png" alt="" height={120} width={120}/>
-                                            <h3>Instagram not connected yet</h3>
-                                        </EmptyWrapper>
-                                    </Content>
-                                )
-                            }
-                            {
-                                currentTab === "facebook" && inData?.facebook_verified ? (
-                                    <Content>
-                                       
-                                    </Content>
-                                ) : (currentTab === "facebook") && (
-                                    <Content>
-                                        <EmptyWrapper>
-                                            <Image src="/empty.png" alt="" height={120} width={120}/>
-                                            <h3>Facebook not connected yet</h3>
-                                        </EmptyWrapper>
-                                    </Content>
-                                )
-                            }
-                            {
-                                currentTab === "twitter" && inData?.twitter_verified ? (
-                                    <Content>
-                                       
-                                    </Content>
-                                ) : (currentTab === "twitter") && (
-                                    <Content>
-                                        <EmptyWrapper>
-                                            <Image src="/empty.png" alt="" height={120} width={120}/>
-                                            <h3>Twitter not connected yet</h3>
-                                        </EmptyWrapper>
-                                    </Content>
-                                )
-                            }
-                             {
-                                currentTab === "tiktok" && inData?.tiktok_verified ? (
-                                    <Content>
-                                        
-                                    </Content>
-                                ) : (currentTab === "tiktok") && (
-                                    <Content>
-                                        <EmptyWrapper>
-                                            <Image src="/empty.png" alt="" height={120} width={120}/>
-                                            <h3>TikTok not connected yet</h3>
-                                        </EmptyWrapper>
-                                    </Content>
-                                )
-                            }
-                             {
-                                currentTab === "youtube" && inData?.tiktok_verified ? (
-                                    <Content>
-                                        
-                                    </Content>
-                                ) : (currentTab === "youtube") && (
-                                    <Content>
-                                        <EmptyWrapper>
-                                            <Image src="/empty.png" alt="" height={120} width={120}/>
-                                            <h3>Youtube not connected yet</h3>
-                                        </EmptyWrapper>
-                                    </Content>
-                                )
-                            }
-                        </DataSection>
-                    </LeftSection>
-                    <RightSection>
-                        <h3>Social Media Handles</h3>
-                        <SocialWrapper>
-                            <Social>
-                                <div>
-                                    <Image src="/instagram.png" alt="" height={32} width={32} />
-                                </div>
-                                <div>
-                                    <h4>INSTAGRAM</h4>
-                                    <p title={inData?.instagram}>@{inData?.instagram}</p>
-                                </div>
-                            </Social>
-                            <Social>
-                                <div>
-                                    <Image src="/youtube.svg" alt="" height={32} width={32} />
-                                </div>
-                                <div>
-                                    <h4>YOUTUBE</h4>
-                                    <p title={inData?.youtube}>@{inData?.youtube}</p>
-                                </div>
-                            </Social>
-                        </SocialWrapper>
-                        <SocialWrapper>
-                            <Social>
-                                <div>
-                                    <Image src="/tiktok.png" alt="" height={32} width={32} />
-                                </div>
-                                <div>
-                                    <h4>TIKTOK</h4>
-                                    <p title={inData?.tiktok}>@{inData?.tiktok}</p>
-                                </div>
-                            </Social>
-                            <Social>
-                                <div>
-                                    <Image src="/twitter.png" alt="" height={32} width={32} />
-                                </div>
-                                <div>
-                                    <h4>TWITTER</h4>
-                                    <p title={inData?.twitter}>@{inData?.twitter}</p>
-                                </div>
-                            </Social>
-                        </SocialWrapper>
-                        <SocialWrapper>
-                            <Social style={{ minWidth: "100%" }}>
-                                <div>
-                                    <Image src="/facebook.png" alt="" height={32} width={32} />
-                                </div>
-                                <div>
-                                    <h4>FACEBOOK</h4>
-                                    <p title={inData?.facebook}>@{inData?.facebook}</p>
-                                </div>
-                            </Social>
-                        </SocialWrapper>
-                        <CollaborateBtn onClick={handleStartConversation}>
-                            <Image src="/envelope.svg" alt="" height={28} width={28} />
-                            <span>Collaborate with Influencer</span>
-                        </CollaborateBtn>
-                        <h3>Performance</h3>
-                        <Campaign>
-                            <div className='cont'>
-                                <h1>{inData?.analytics.influenzit.completed_campaigns_count}</h1>
-                                <p>Completed <br /> Campaigns</p>
-                            </div>
-                            <div className='cont'>
-                                <h1>5.0</h1>
-                                <div>
-                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
-                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
-                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
-                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
-                                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
-                                </div>
-                                <p>20 ratings</p>
-                            </div>
-                        </Campaign>
-                    </RightSection>
-                </BottomSection>
-                {inData?.services.length ?
-                    <Listing>
-                        <h3>Services</h3>
-                        <Bottom style={{ columnGap: "15px"}}>
-                            {
-                            inData?.services.map((val, i) => (
-                                <ServiceCard
-                                    key={i}
-                                    title={val.name}
-                                    imgSrc={val.media[0]?.url ?? "/web-services.jpg"}
-                                    userName={inData?.user?.name}
-                                    price={`${val.currency} ${val.starting_from}`}
-                                    serviceLink={`/services/${val.id}`}
-                                    profileImg={inData?.user?.profile_pic}
-                                />
-                            )) 
-                            }
-                        </Bottom>
-                    </Listing> : null
-                }
-                {/* {inData?.services.length ?
+                            </Bottom>
+                        </Listing> : null
+                    }
+                    {/* {inData?.services.length ?
                     <Listing>
                         <h3>Portfolio</h3>
                         <Bottom style={{ columnGap: "15px"}}>

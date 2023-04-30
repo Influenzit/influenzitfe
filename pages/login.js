@@ -162,7 +162,8 @@ const Login = () => {
     })
   }
   const googleLogin = useGoogleLogin({
-    onSuccess: tokenResponse => console.log(tokenResponse),
+    onSuccess: tokenResponse => handleGoogleLogin(tokenResponse),
+    redirect_uri: "https://api.influenzit.com/auth/google/callback"
   });
   const handleFailure = () => {
     dispatch(setLoading(false));
