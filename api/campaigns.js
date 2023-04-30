@@ -6,6 +6,9 @@ export const getCampaigns = (url) => {
 export const getCampaign = (id) => {
   return axiosInstance().get(`/campaigns/${id}`);
 };
+export const getCampaignInvoice = (id) => {
+  return axiosInstance().get(`/campaigns/${id}/invoices`);
+};
 export const createCampaignMilestone = (id, data) => {
   return axiosInstance().post(`/campaigns/${id}/milestones`, data);
 };

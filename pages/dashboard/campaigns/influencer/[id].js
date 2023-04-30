@@ -27,6 +27,7 @@ import LandingLayout from "../../../../layouts/landing.layout";
 
 import cancel from "./../../../../assets/close.svg";
 import chatlady from "./../../../../assets/campaign/chatlady.svg";
+import Chat from "../../../../components/Chat";
 
 import ReactStars from "react-rating-stars-component";
 import Review from "../../../../components/Campaign/Review";
@@ -294,59 +295,9 @@ const Campaigns = () => {
         // ====================================ChatBox==================================
       }
 
-      <div className="w-[480px] fixed right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto pt-28 pb-4 px-4">
-        <div className="flex flex-col gap-5 h-full relative pb-[140px]">
-          <div className="h-full overflow-y-auto">
-            {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map(
-              (x, i) => (
-                <div
-                  className="mb-6 pr-10 py-1 flex space-x-2 items-start"
-                  key={i}
-                >
-                  <Image src={chatlady} alt={"img"} className="h-4 w-4" />
-                  <div>
-                    <p className="text-xs text-gray-500">
-                      <span className="font-medium mr-2 text-black">You</span>
-                      <span className="text-[10px] ">2:35 pm</span>
-                    </p>
-                    <p className="text-gray-500 text-sm">
-                      Hey bayowaruwa, can you help me with IG template designs?
-                    </p>
-                  </div>
-                </div>
-              )
-            )}
-          </div>
-          <div className="h-[120px] absolute bottom-0  w-full ">
-            <div className="border rounded-lg h-full flex flex-col">
-              <div className="h-[63%]">
-                <textarea
-                  name="chatbox"
-                  id="chatbox"
-                  rows="2"
-                  className="resize-none text-sm w-full h-full rounded-lg  outline-none bg-transparent p-2"
-                  placeholder="Write your message"
-                ></textarea>
-              </div>
-              <div className="h-[37%] border-t flex justify-between p-2">
-                <div className="flex items-center space-x-2">
-                  <Image src={bold} alt={"img"} className="h-4 w-4" />
-                  <Image src={italics} alt={"img"} className="h-4 w-4" />
-                  <Image src={link} alt={"img"} className="h-4 w-4" />
-                  <Image src={listdot} alt={"img"} className="h-4 w-4" />
-                  <Image src={listnumeral} alt={"img"} className="h-4 w-4" />
-                </div>
-                <div>
-                  <button className="flex items-center space-x-1">
-                    <Image src={send} alt={"img"} className="h-4 w-4" />{" "}
-                    <span className="text-primary-100  text-sm">Send</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div className=" md:w-[480px] md:fixed right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto  pb-4 px-4">
+      <Chat serviceId={id} />
+    </div>
 
       {isRejected && <RejectModal handleClose={handleClose} />}
       {isAccepted && <Review handleClose={handleCloseReview} />}

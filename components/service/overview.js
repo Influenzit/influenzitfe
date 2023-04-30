@@ -82,7 +82,7 @@ function Overview({
           Select a category to make it easy for clients to find your service.
         </p>
 
-        <div className="p-2 border outline-none rounded-md w-1/2">
+        <div className="p-2 border outline-none rounded-md md:w-1/2 w-full">
           <select
             name=""
             id=""

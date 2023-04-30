@@ -22,6 +22,6 @@ export const getConversationServiceMessages = (id) => {
 export const getServiceConversation = (id) => {
     return axiosInstance().get(`/campaigns/${id}/conversation`);
 }
-export const sendServiceConversation = (id) => {
-    return axiosInstance().post(`/campaigns/${id}/conversation`);
+export const sendServiceConversation = (id, data) => {
+    return axiosInstance().post(`/campaigns/${id}/conversation`, data);
 }

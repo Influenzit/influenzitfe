@@ -9,6 +9,7 @@ import {
   acceptCampaignMilestone,
   rejectCampaignMilestone,
   getCampaign,
+  getCampaignInvoice,
 } from "../../../../api/campaigns";
 import { setLoading } from "../../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../../assets/svgIcons";
@@ -28,11 +29,16 @@ import LandingLayout from "../../../../layouts/landing.layout";
 import cancel from "./../../../../assets/close.svg";
 import chatlady from "./../../../../assets/campaign/chatlady.svg";
 import { toast } from "react-toastify";
+import { getUser } from "app/reducers/user";
+import { useSelector } from "react-redux";
 
 import ReactStars from "react-rating-stars-component";
 import Review from "../../../../components/Campaign/Review";
 import Chat from "../../../../components/Chat";
 import moment from "moment";
+import { usePaystackPayment } from "react-paystack";
+import { calculateTotalPrice } from "paystack-transaction-charges-to-cus";
+import { createPaymentLog, processPayment } from "api/payment";
 
 const Campaigns = () => {
   const router = useRouter();
@@ -44,13 +50,22 @@ const Campaigns = () => {
   const [isAccepted, setisAccepted] = useState(false);
   const [currentValue, setcurrentValue] = useState(4);
   const [singlecampaign, setSingleCampaign] = useState(null);
+  const [singlecampaignInvoice, setSingleCampaignInvoice] = useState([]);
+  const [paystackConfig, setPaystackConfig] = useState({});
+
+  const [makePayment, setmakePayment] = useState(false);
+  const [triggerPayment, settriggerPayment] = useState(false);
+  const [amount, setamount] = useState(0);
 
   const { id } = router.query;
+  const user = useSelector(getUser);
+  console.log(user)
+
   const handleMilestoneStatus = (status) => {
-    if (status.toLowerCase() === "ongoing") {
+    if (status.toLowerCase() === "ongoing" || status.toLowerCase() === "unpaid") {
       return lock;
     }
-    if (status.toLowerCase() === "completed") {
+    if (status.toLowerCase() === "completed" || status.toLowerCase() === "paid") {
       return checkmark;
     }
     if (status.toLowerCase() === "disputed") {
@@ -64,6 +79,16 @@ const Campaigns = () => {
       .then((res) => {
         console.log(res);
         setSingleCampaign(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+  const handleGetSingleCampaignInvoice = () => {
+    getCampaignInvoice(id)
+      .then((res) => {
+        console.log(res.data.data);
+        setSingleCampaignInvoice(res.data.data);
       })
       .catch((err) => {
         console.log(err.response);
@@ -116,8 +141,84 @@ const Campaigns = () => {
     setisAccepted(false);
   };
 
+  // const user = useSelector(getUser);
+
+  let paymentReference = "";
+  // you can call this function anything
+  const onSuccess = (reference) => {
+    // Implementation for whatever you want to do with reference and after success call.
+    console.log(reference);
+    handleProcessTransaction(reference);
+  };
+
+  // you can call this function anything
+  const onClose = () => {
+    // implementation for  whatever you want to do when the Paystack dialog closed.
+    console.log("closed");
+  };
+
+  const initializePayment = usePaystackPayment(paystackConfig);
+
+  const handleCreateTransaction = async (invoiceId, amt) => {
+
+
+    setLoading(true);
+    const payload = {
+      channel: "paystack",
+      amount: +amt,
+      currency: "NGN",
+      invoice_id: invoiceId,
+   payment_type: "invoice_payment",
+
+    };
+    await createPaymentLog(payload)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data.data.payment_reference);
+        paymentReference = res.data.data.payment_reference.toString();
+        setPaystackConfig({
+          currency: "NGN",
+          reference: paymentReference,
+          email: user.email,
+          amount: calculateTotalPrice(Number(amt * 100)), //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+          publicKey: "pk_test_9d97cf0be86b0758ece444694d57a8db41a4be59",
+        });
+        setmakePayment(true);
+        settriggerPayment(true);  
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+  const handleProcessTransaction = async (data) => {
+
+
+    const payload = {
+      channel: "paystack",
+      payment_reference: data.reference,
+    };
+    await processPayment(payload)
+      .then((res) => {
+        console.log(res);
+ 
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+  const PayInvoice = (invoiceId, amt) =>{
+    console.log(amt)
+    handleCreateTransaction(invoiceId, amt)
+    setamount(amt)
+  }
+  useEffect(() => {
+    if (makePayment) {
+      initializePayment(onSuccess, onClose);
+    }
+  }, [triggerPayment]);
   useEffect(() => {
     handleGetSingleCampaign();
+    handleGetSingleCampaignInvoice();
     // handleGetSingleCampaignMilestones();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -198,14 +299,14 @@ const Campaigns = () => {
             </button>
             <button
               onClick={() => {
-                setactivetab("requirement");
+                setactivetab("invoice");
               }}
               className={`${
-                activetab == "requirement" &&
+                activetab == "invoice" &&
                 "text-primary-100 border-b border-primary-100"
               } pb-4`}
             >
-              Requirements
+            Invoice
             </button>
           </div>
           {activetab == "milestone" && (
@@ -263,13 +364,55 @@ const Campaigns = () => {
               </div>
             </div>
           )}
-          {activetab == "requirement" && (
-            <div className="let swipeIn">Requirement </div>
+          {activetab == "invoice" && (
+            <div className="let swipeIn">
+            <div className="">
+            {
+              //============================= Tracker==========================
+            }
+            {singlecampaignInvoice.length > 0 &&
+              singlecampaignInvoice.map((item, idx) => (
+                <div
+                  className="bg-white border border-gray-200 px-4 py-5 rounded-lg mb-4"
+                  key={idx}
+                >
+                  <div className="-1 flex justify-between">
+                    <div className="flex space-x-3 ">
+                      <Image
+                        src={handleMilestoneStatus(item.status)}
+                        alt={"img"}
+                        className="h-4 w-4"
+                      />{" "}
+                      <div>
+                        <h1 className="">{item.description}</h1>
+                        <p className="text-sm font-semibold text-tert-100">
+                          ₦{item.amount}
+                        </p>
+                      </div>
+                    </div>
+                    {
+                      <div className="flex items-center space-x-2">
+                       {item.status === "Unpaid" ? <button
+                          onClick={() => {
+                            PayInvoice(item.id, item.amount);
+                          }}
+                          className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white"
+                        >
+                          Pay
+                        </button> : <h2 className="text-[#27C281] text-base font-bold"> Paid</h2> }
+                   
+                      </div>
+                    }
+                  </div>
+                </div>
+              ))}
+          </div>
+            </div>
           )}
 
-          <div className="flex justify-end my-12">
+       {/*    <div className="flex justify-end my-12">
             <button className="text-primary-100">Cancel Campaign</button>
-          </div>
+          </div> */}
         </div>
       ) : (
         <div>Loading...</div>
@@ -279,7 +422,7 @@ const Campaigns = () => {
         // ====================================ChatBox==================================
       }
 
-      <div className=" md:w-[480px] md:fixed right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto pt-28 pb-4 px-4">
+      <div className=" md:w-[480px] md:fixed right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto  pb-4 px-4">
         <Chat serviceId={id} />
       </div>
 

@@ -123,7 +123,7 @@ function Requirement({
                     }}
                     className=" py-2 px-4 rounded-lg text-primary-100 flex items-center space-x-2 text-xs"
                   >
-                    <span className="mr-2  text-red-500">- Remove FAQ</span>
+                    <span className="mr-2  text-red-500">- Remove Requirement</span>
                   </button>
                 </div>
               )}
