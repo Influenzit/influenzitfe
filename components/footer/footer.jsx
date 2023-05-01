@@ -19,7 +19,7 @@ const Footer = () => {
                 <Section>
                     <h3>Company</h3>
                     <ul>
-                        <li><Link href="/about">About</Link></li>
+                        {/* <li><Link href="/about">About</Link></li> */}
                         <li><Link href="/contact">Contact</Link></li>
                     </ul>
                 </Section>
@@ -34,10 +34,10 @@ const Footer = () => {
                 <Section>
                     <h3>Information</h3>
                     <ul>
-                        <li><Link href="/explore">How it Works</Link></li>
+                        {/* <li><Link href="/explore">How it Works</Link></li> */}
                         <li><Link href="/faqs">Frequently Asked Questions</Link></li>
-                        <li><Link href="/blog">Blog</Link></li>
-                        <li><Link href="/resources">Resources</Link></li>
+                        {/* <li><Link href="/blog">Blog</Link></li> */}
+                        {/* <li><Link href="/resources">Resources</Link></li> */}
                     </ul>
                 </Section>
             </Top>
