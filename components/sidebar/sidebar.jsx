@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { getShowSidebar, getUserType } from "../../app/reducers/status";
+import { useDispatch, useSelector } from "react-redux";
+import { getShowSidebar, getUserType, setShowSidebar } from "../../app/reducers/status";
 import { getUser } from "../../app/reducers/user";
 import {
   BagIcon,
@@ -30,16 +30,21 @@ const Sidebar = () => {
   const currentUserType = useSelector(getUserType);
   const showSidebar = useSelector(getShowSidebar);
   const router = useRouter();
+  const dispatch = useDispatch();
   const [userData, setUserData] = useState({});
   useEffect(() => {
     if (user) {
       setUserData(user);
     }
   }, [user]);
+  const handleRouting = (link) => {
+    dispatch(setShowSidebar(false));
+    router.push(link);
+  }
   return (
     <Container showSidebar={showSidebar}>
       <NavButton
-        onClick={() => router.push("/dashboard")}
+        onClick={() => handleRouting("/dashboard")}
         isActive={router.pathname === "/dashboard"}
       >
         <DashboardIcon />
@@ -48,7 +53,7 @@ const Sidebar = () => {
       {(currentUserType === "Business Owner" ||
         currentUserType === "Creator") && (
         <NavButton
-          onClick={() => router.push("/dashboard/projects")}
+          onClick={() => handleRouting("/dashboard/projects")}
           isActive={router.pathname === "/dashboard/projects"}
         >
           <ProjectIcon />
@@ -59,7 +64,7 @@ const Sidebar = () => {
         currentUserType === "Influencer") && (
         <NavButton
           onClick={() =>
-            router.push(
+            handleRouting(
               currentUserType === "Business Owner"
                 ? "/dashboard/campaigns/business"
                 : "/dashboard/campaigns/influencer"
@@ -89,7 +94,7 @@ const Sidebar = () => {
         } */}
       {(currentUserType === "Creator") && (
         <NavButton
-          onClick={() => router.push("/dashboard/services")}
+          onClick={() => handleRouting("/dashboard/services")}
           isActive={router.pathname.includes("services")}
         >
           <BagIcon />
@@ -97,21 +102,21 @@ const Sidebar = () => {
         </NavButton>
       )}
       <NavButton
-        onClick={() => router.push("/dashboard/wallet")}
+        onClick={() => handleRouting("/dashboard/wallet")}
         isActive={router.pathname.includes("/dashboard/wallet")}
       >
         <WalletIcon />
         <span>Wallet</span>
       </NavButton>
       <NavButton
-        onClick={() => router.push("/dashboard/messages")}
+        onClick={() =>handleRouting("/dashboard/messages")}
         isActive={router.pathname.includes("/dashboard/messages")}
       >
         <MailIcon />
         <span>Messages</span>
       </NavButton>
       <NavButton
-        onClick={() => router.push("/dashboard/profile")}
+        onClick={() => handleRouting("/dashboard/profile")}
         isActive={router.pathname === "/dashboard/profile"}
       >
         <SettingsIcon />
@@ -122,7 +127,7 @@ const Sidebar = () => {
             <span>Security</span>
         </NavButton> */}
       <NavButton
-        onClick={() => router.push("/dashboard/support")}
+        onClick={() => handleRouting("/dashboard/support")}
         isActive={router.pathname.includes("/dashboard/support")}
       >
         <SupportIcon />

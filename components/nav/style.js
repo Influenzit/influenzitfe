@@ -482,6 +482,9 @@ export const NotificationCont = styled.div`
     #notify-pic {
         position: relative;
     }
+    ${breakpoints.md} {
+        width: 320px;
+    }
 `;
 export const Qlinks = styled.div`
     display: flex;

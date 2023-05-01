@@ -619,6 +619,17 @@ export const SocialMediaContainer = styled.div`
         font-size: 22px;
         font-weight: 600;
     }
+    #connect-btn {
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        column-gap: 10px;
+        padding: 7px 15px;
+        border-radius: 5px;
+        background: transparent;
+        outline: none;
+        border: none;
+    }
      a {
         font-size: 14px;
         display: inline-flex;
@@ -626,7 +637,7 @@ export const SocialMediaContainer = styled.div`
         column-gap: 10px;
         padding: 7px 15px;
         border-radius: 5px;
-        background: #FCEDEF;
+        background: transparent;
     }
 `;
 export const SocialCard = styled.div`
@@ -636,6 +647,12 @@ export const SocialCard = styled.div`
     border-radius: 16px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    span {
+        color: ${colors.primaryColor};
+        font-size: 12px;
+        font-weight: 600;
+    }
     div {
         button {
             outline: none;
