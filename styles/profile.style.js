@@ -624,7 +624,7 @@ export const SocialMediaContainer = styled.div`
         display: inline-flex;
         align-items: center;
         column-gap: 10px;
-        padding: 7px 15px;
+        padding: 7px 0px;
         border-radius: 5px;
         background: transparent;
         outline: none;
@@ -674,6 +674,14 @@ export const SocialCard = styled.div`
             color: #fff;
             background: ${colors.textColor};
             margin-left: 10px;
+        }
+    }
+    ${breakpoints.sm}{
+        flex-direction: column;
+        text-align: center;
+        button:last-of-type {
+            margin-left: 0;
+            margin-top: 14px;
         }
     }
 `;
