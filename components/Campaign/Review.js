@@ -6,10 +6,13 @@ import cancel from "./../../assets/close.svg";
 import attachment from "./../../assets/campaign/attachment.svg";
 import Image from "next/image";
 import ReactStars from "react-rating-stars-component";
+import Loader from "components/UI/Loader";
 
-function Review({ handleClose }) {
+function Review({loading, handleClose, handleUpdateCampaignReview, setrating, setcomment }) {
   const ratingChanged = (newRating) => {
     console.log(newRating);
+    setrating(newRating)
+
   };
   return (
     <div>
@@ -44,12 +47,13 @@ function Review({ handleClose }) {
               rows="5"
               className="resize-none text-sm w-full h-full rounded-lg  outline-none bg-transparent p-2"
               placeholder="Write your message"
+              onChange={(e)=> {setcomment(e.target.value)}}
             ></textarea>
           </div>
 
-          <div onClick={handleClose} className="flex justify-end">
+          <div onClick={handleUpdateCampaignReview} className="flex justify-end">
             <button className="bg-primary-100 py-2 px-4 rounded-lg text-white">
-              Submit
+              {loading ? <Loader /> : "Submit"}
             </button>
           </div>
         </div>

@@ -39,7 +39,7 @@ import { colors } from "../../styles/theme";
 import dynamic from "next/dynamic";
 import {
   getConversationServiceMessages,
-  getServiceConversation,
+  getServiceConversation,serviceType, 
   sendServiceConversation,
 } from "../../api/messaging";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -59,7 +59,7 @@ const Picker = dynamic(
   { ssr: false }
 );
 
-const Messages = ({ serviceId }) => {
+const Messages = ({ serviceId, service, conversationId} ) => {
   const [messageContent, setMessageContent] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
   const emojiRef = useRef(null);
@@ -69,7 +69,6 @@ const Messages = ({ serviceId }) => {
   const messagesRef = useRef(null);
   const user = useSelector(getUser);
   const [socketSet, setSocketSet] = useState(false);
-  const [conversationId, setconversationId] = useState(null);
   const dispatch = useDispatch();
   const handleInput = (e) => {
     if (e.currentTarget.innerHTML === "<br>") {
@@ -215,7 +214,7 @@ const Messages = ({ serviceId }) => {
   const { data: conversationData, refetch: refetchConversationData } = useQuery(
     ["get-conversation"],
     async () => {
-      return await getServiceConversation(serviceId);
+      return await getServiceConversation(service,  serviceId);
     },
     {
       enabled: false,
@@ -223,9 +222,8 @@ const Messages = ({ serviceId }) => {
       retry: false,
       onSuccess(successRes) {
         console.log(successRes.data.data);
-        const  conversation_id   = successRes.data?.data.length > 0 ? successRes.data?.data?.messages[0]?.conversation_id || null : null;
-        setconversationId(conversation_id ?? null);
-        sessionStorage.setItem("cid", conversation_id);
+
+        sessionStorage.setItem("cid", conversationId);
         setConversations(successRes.data.data.messages);
       },
     }
@@ -233,7 +231,7 @@ const Messages = ({ serviceId }) => {
   const { data: messagesData, refetch: refetchMessagesData } = useQuery(
     ["get-messages"],
     async () => {
-      return await getConversationServiceMessages(serviceId);
+      return await getConversationServiceMessages(service, serviceId);
     },
     {
       enabled: false,
@@ -246,7 +244,7 @@ const Messages = ({ serviceId }) => {
   );
   const sendMessageMutation = useMutation(
     (data) => {
-      return sendServiceConversation(serviceId, data);
+      return sendServiceConversation(service, serviceId, data);
     },
     {
       onSuccess(successRes) {

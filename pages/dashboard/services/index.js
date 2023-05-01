@@ -256,16 +256,6 @@ const Services = () => {
     formData.append("image2", image2);
     formData.append("image3", image3);
     formData.append("image4", image4);
-    // formData.append("name", title);
-    // formData.append("description", description);
-    // formData.append("type", "project");
-    // formData.append("price", +price);
-    // formData.append("currency", "NGN");
-    // formData.append("is_negotiable", true);
-    // formData.append("link", "http://johndoe.myname.com/services/social-media");
-    // formData.append("packages", JSON.stringify(packages));
-    // formData.append("faqs", JSON.stringify(faqs));
-    // formData.append("requirements", JSON.stringify(requirements));
     setloading(true);
 
     const payload = {
