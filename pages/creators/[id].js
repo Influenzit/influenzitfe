@@ -225,7 +225,7 @@ useEffect(() => {
                                     <Image src="/dot.svg"  alt="" height={4} width={4}/>
                                     <p>
                                         <Image src="/star-p.svg"  alt="" height={16} width={16}/>
-                                        <span>5.0 (20 ratings)</span>
+                                        <span>{inData?.rating.rating_count} ({inData?.rating.reviews_count} ratings)</span>
                                     </p>
                                 </div>
                             </UserDetails>
@@ -387,7 +387,7 @@ useEffect(() => {
                                 <p>Completed <br /> Campaigns</p>
                             </div>
                             <div className='cont'>
-                                <h1>5.0</h1>
+                                <h1>{inData?.rating.rating_count}</h1>
                                 <div>
                                     <Image src="/star-p.svg" alt="" height={15} width={15}/>
                                     <Image src="/star-p.svg" alt="" height={15} width={15}/>
@@ -395,7 +395,7 @@ useEffect(() => {
                                     <Image src="/star-p.svg" alt="" height={15} width={15}/>
                                     <Image src="/star-p.svg" alt="" height={15} width={15}/>
                                 </div>
-                                <p>20 ratings</p>
+                                <p>{inData?.rating.reviews_count} ratings</p>
                             </div>
                         </Campaign>
                     </RightSection>

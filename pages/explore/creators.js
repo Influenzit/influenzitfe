@@ -132,7 +132,7 @@ const Search = () => {
                                         handle={val.twitter}
                                         name={`${val.user.firstname} ${val.user.lastname}`}
                                         sex={val.gender}
-                                        rating={val.rating}
+                                        rating={val.rating.rating_count}
                                         skills={val.user.email}
                                         address={val.address}
                                     />

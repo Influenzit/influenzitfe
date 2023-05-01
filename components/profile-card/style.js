@@ -25,7 +25,7 @@ export const Container = styled.div`
         right: 15px;
         z-index: 999;
     }
-    ${breakpoints.sm} {
+    ${breakpoints.lg} {
         margin: 0 auto;
     }
 `;
