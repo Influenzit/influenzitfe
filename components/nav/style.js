@@ -484,6 +484,7 @@ export const NotificationCont = styled.div`
     }
     ${breakpoints.md} {
         width: 320px;
+        right: -40px;
     }
 `;
 export const Qlinks = styled.div`
@@ -498,7 +499,7 @@ export const Qlinks = styled.div`
             color: ${colors.primaryColor};
         }
     }
-    ${breakpoints.md} {
+    ${breakpoints.lg} {
         display: none;
     }
 `;
