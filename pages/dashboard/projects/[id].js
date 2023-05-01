@@ -5,28 +5,41 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getCampaigns } from "../../../api/campaigns";
-import { setLoading } from "../../../app/reducers/status";
-import { ChevronLeft, ChevronRight } from "../../../assets/svgIcons";
-import bold from "../../../assets/campaign/bold.svg";
-import italics from "../../../assets/campaign/italics.svg";
-import link from "../../../assets/campaign/link.svg";
-import listdot from "../../../assets/campaign/listdot.svg";
-import listnumeral from "../../../assets/campaign/listnumeral.svg";
-import send from "../../../assets/campaign/send.svg";
-import lock from "../../../assets/campaign/lock.svg";
-import checkmark from "../../../assets/campaign/checkmark.svg";
-import reject from "../../../assets/campaign/cancel.svg";
 
-import RejectModal from "../../../components/Campaign/rejectModal";
-import LandingLayout from "../../../layouts/landing.layout";
+import {
 
-import cancel from "./../../../assets/close.svg";
-import chatlady from "./../../../assets/campaign/chatlady.svg";
+  getProject,
+  getSingleProjectRequirement
+  
+} from "api/projects";
+import { setLoading } from "app/reducers/status";
+import { ChevronLeft, ChevronRight } from "assets/svgIcons";
+import bold from "assets/campaign/bold.svg";
+import italics from "assets/campaign/italics.svg";
+import link from "assets/campaign/link.svg";
+import listdot from "assets/campaign/listdot.svg";
+import listnumeral from "assets/campaign/listnumeral.svg";
+import send from "assets/campaign/send.svg";
+import lock from "assets/campaign/lock.svg";
+import checkmark from "assets/campaign/checkmark.svg";
+import reject from "assets/campaign/cancel.svg";
+
+import RejectModal from "components/Campaign/rejectModal";
+import LandingLayout from "layouts/landing.layout";
+
+import cancel from "assets/close.svg";
+import chatlady from "assets/campaign/chatlady.svg";
+import { toast } from "react-toastify";
+import { getUser } from "app/reducers/user";
+import { useSelector } from "react-redux";
 
 import ReactStars from "react-rating-stars-component";
-import Review from "../../../components/Campaign/Review";
+import Review from "components/Campaign/Review";
+import Chat from "components/Chat";
 import moment from "moment";
+import { usePaystackPayment } from "react-paystack";
+import { calculateTotalPrice } from "paystack-transaction-charges-to-cus";
+import { createPaymentLog, processPayment } from "api/payment";
 
 const Campaigns = () => {
   const router = useRouter();
@@ -37,58 +50,39 @@ const Campaigns = () => {
   const [isRejected, setisRejected] = useState(false);
   const [isAccepted, setisAccepted] = useState(false);
   const [currentValue, setcurrentValue] = useState(4);
-  const [campaignList, setCampaignList] = useState({
-    data: [],
-  });
+  const [singleproject, setSingleproject] = useState(null);
+  const [singleprojectReq, setSingleprojectReq] = useState([]);
+
+  const [makePayment, setmakePayment] = useState(false);
+  const [triggerPayment, settriggerPayment] = useState(false);
+  const [amount, setamount] = useState(0);
+
   const { id } = router.query;
-  console.log(id);
-  const dummyData = [
-    {
-      image: "avatar",
-      status: "Ongoing",
-    },
-    {
-      image: "avatar1",
-      status: "Not Started",
-    },
-    {
-      image: "avatar2",
-      status: "Ongoing",
-    },
-    {
-      image: "avatar3",
-      status: "Ongoing",
-    },
-    {
-      image: "avatar4",
-      status: "Completed",
-    },
-    {
-      image: "avatar3",
-      status: "Ongoing",
-    },
-    {
-      image: "avatar1",
-      status: "Completed",
-    },
-  ];
-  const [messages, setMessages] = useState([
-    {
-      message: " Hey bayowaruwa, can you help me with IG template designs?",
-      time: "8:08 PM",
-    },
-  ]);
+  const user = useSelector(getUser);
+  console.log(user)
 
-  const [singleMessage, setSingleMessage] = useState("");
 
-  const handleMessage = () => {
-    setMessages([
-      ...messages,
-      { message: singleMessage, time: moment(Date.now()).format("LT") },
-    ]);
-    setSingleMessage("");
+  const handleGetSingleproject = () => {
+    getProject(id)
+      .then((res) => {
+        console.log(res);
+        setSingleproject(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   };
-
+  const handleGetSingleprojectReq = () => {
+    getSingleProjectRequirement(id)
+      .then((res) => {
+        console.log(res);
+        setSingleprojectReq(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+ 
   const ratingChanged = (newRating) => {
     console.log(newRating);
   };
@@ -100,264 +94,131 @@ const Campaigns = () => {
     setisAccepted(false);
   };
 
-  const { data, refetch } = useQuery(
-    ["get-campaigns"],
-    async () => {
-      return await getCampaigns(getUrl);
-    },
-    {
-      enabled: false,
-      staleTime: Infinity,
-      retry: false,
-      onSuccess(res) {
-        dispatch(setLoading(false));
-        setCampaignList(res.data.data);
-      },
-      onError(res) {
-        dispatch(setLoading(false));
-        dispatch(setError({ error: true, message: "An error occured" }));
-      },
-    }
-  );
-  const platform = ["instagram", "twitter", "tiktok", "facebook", "youtube"];
 
+  
   useEffect(() => {
-    refetch();
-  }, [getUrl]);
+    handleGetSingleproject();
+    handleGetSingleprojectReq();
+    // handleGetSingleprojectMilestones();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div className="flex bg-gray-50">
-      <div className="w-full md:mr-[500px] pt-28 px-10 min-h-screen">
-        <h1 className="text-xl font-bold">
-          1 Instagram post and 1 story for Krystal beauty
-        </h1>
-        <div className="my-4">
-          <div className="grid grid-cols-3 gap-4">
-            <div className="pr-10 border-r py-1 flex space-x-2">
-              <Image src={chatlady} alt={"img"} className="h-4 w-4" />
-              <div>
-                <p className="text-xs text-gray-500">Influencer</p>
-                <h1 className="font-medium">Seth the Dog</h1>
-              </div>
-            </div>
-            <div className="pr-10 border-r py-1 flex space-x-2">
-              <div>
-                <p className="text-xs text-gray-500">Delivery Date</p>
-                <h1 className="font-medium">Jan 8, 1:09 PM</h1>
-              </div>
-            </div>
-            <div>
-              <p className="text-xs text-gray-500">Price</p>
-              <h1 className="font-medium">₦120,000</h1>
-            </div>
-          </div>
-        </div>
-        <div className="mb-4">
-          Excepteur sint occaecat cupidatat non proident, saeunt in culpa qui
-          officia deserunt mollit anim laborum. Seden utem perspiciatis undesieu
-          omnis voluptatem accusantium doque laudantium, totam rem aiam eaqueiu
-          ipsa quae ab illoion inventore veritatisetm quasitea architecto
-          beataea dictaed quia couuntur magni.
-        </div>
-
-        <div className="flex space-x-4 w-full border-b mb-4">
-          <button
-            onClick={() => {
-              setactivetab("milestone");
-            }}
-            className={`${
-              activetab == "milestone" &&
-              "text-primary-100 border-b border-primary-100"
-            } pb-4`}
-          >
-            Milestones
-          </button>
-          <button
-            onClick={() => {
-              setactivetab("requirement");
-            }}
-            className={`${
-              activetab == "requirement" &&
-              "text-primary-100 border-b border-primary-100"
-            } pb-4`}
-          >
-            Requirements
-          </button>
-        </div>
-        {activetab == "milestone" && (
-          <div className="let swipeIn">
-            <h1 className="text-xl font-semibold my-6">Milestone</h1>
-
-            <div className="realtive">
-              {
-                //============================= Tracker==========================
-              }
-              <div className="absolute h-[400px] z-[-1] w-[2px] bg-gray-300 left-8"></div>
-              <div className="bg-white border border-gray-200 px-4 py-5 rounded-lg mb-4">
-                <div className="py-1 flex space-x-3">
-                  <Image src={checkmark} alt={"img"} className="h-4 w-4" />
-                  <div>
-                    <h1 className="">Prep images for posting</h1>
-                    <p className="text-sm font-semibold text-tert-100">
-                      ₦40,000
-                    </p>
-                  </div>
+      {singleproject !== null ? (
+        <div className="w-full md:mr-[500px] pt-28 px-10 min-h-screen">
+          {/*   <div className="flex space-x-4 w-full border-b mb-4">
+            <button
+              onClick={() => {
+                setactivetab("milestone");
+              }}
+              className={`${
+                activetab == "milestone" &&
+                "text-primary-100 border-b border-primary-100"
+              } pb-4`}
+            >
+              Campaign Details
+            </button>
+            <button
+              onClick={() => {
+                setactivetab("requirement");
+              }}
+              className={`${
+                activetab == "requirement" &&
+                "text-primary-100 border-b border-primary-100"
+              } pb-4`}
+            >
+              Chat
+            </button>
+          </div> */}
+          <h1 className="text-xl font-bold">{singleproject.title}</h1>
+          <div className="my-4">
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="md:pr-10 border-r py-1 flex space-x-2">
+                <Image
+                  src={singleproject.provider.profile_pic}
+                  alt={"img"}
+                  className="h-4 w-4 rounded-full"
+                  height="60"
+                  width="60"
+                />
+                <div>
+                  <p className="text-xs text-gray-500">Influencer</p>
+                  <h1 className="font-medium"> {singleproject.provider.name} </h1>
                 </div>
               </div>
-              <div className="bg-white border border-gray-200 px-4 py-5 rounded-lg mb-4">
-                <div className="py-1 flex space-x-3">
-                  <Image src={checkmark} alt={"img"} className="h-4 w-4" />
-                  <div>
-                    <h1 className="">Prep images for posting</h1>
-                    <p className="text-sm font-semibold text-tert-100">
-                      ₦40,000
-                    </p>
-                  </div>
+              <div className="md:pr-10  py-1 flex space-x-2">
+                <div>
+                  <p className="text-xs text-gray-500">Start Date</p>
+                  <h1 className="font-medium">
+                    {" "}
+                    {moment(singleproject.created_at).format("LL")}{" "}
+                  </h1>
                 </div>
               </div>
-              <div className="bg-white border border-gray-200 px-4 py-5 rounded-lg mb-4">
-                <div className="-1 flex justify-between">
-                  <div className="flex space-x-3 ">
-                    <Image src={reject} alt={"img"} className="h-4 w-4" />
-                    <div>
-                      <h1 className="">Prep images for posting</h1>
-                      <p className="text-sm font-semibold text-tert-100">
-                        ₦40,000
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <button className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white">
-                      Accept
-                    </button>
-                    <button className="mx-2 rounded-lg py-1 px-2  h-auto bg-primary-100 text-[10px] text-white">
-                      Reject
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white border border-gray-200 px-4 py-5 rounded-lg mb-4">
-                <div className="-1 flex justify-between">
-                  <div className="flex space-x-3 ">
-                    <Image src={lock} alt={"img"} className="h-4 w-4" />
-                    <div>
-                      <h1 className="">Prep images for posting</h1>
-                      <p className="text-sm font-semibold text-tert-100">
-                        ₦40,000
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <button className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white">
-                      Accept
-                    </button>
-                    <button className="mx-2 rounded-lg py-1 px-2  h-auto bg-primary-100 text-[10px] text-white">
-                      Reject
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white border border-gray-200 px-4 py-5 rounded-lg mb-4">
-                <div className="-1 flex justify-between">
-                  <div className="flex space-x-3 ">
-                    <Image src={lock} alt={"img"} className="h-4 w-4" />
-                    <div>
-                      <h1 className="">Prep images for posting</h1>
-                      <p className="text-sm font-semibold text-tert-100">
-                        ₦40,000
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => {
-                        setisAccepted(!isAccepted);
-                      }}
-                      className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white"
-                    >
-                      Accept
-                    </button>
-                    <button
-                      onClick={() => {
-                        setisRejected(!isRejected);
-                      }}
-                      className="mx-2 rounded-lg py-1 px-2  h-auto bg-primary-100 text-[10px] text-white"
-                    >
-                      Reject
-                    </button>
-                  </div>
-                </div>
-              </div>
+             
             </div>
           </div>
-        )}
-        {activetab == "requirement" && (
-          <div className="let swipeIn">Requirement </div>
-        )}
+          <div className="mb-4">{singleproject.description}</div>
 
-        <div className="flex justify-end my-12">
-          <button className="text-primary-100">Cancel Campaign</button>
-        </div>
+          <div className="flex space-x-4 w-full border-b mb-4">
+        <h2 className="font-medium text-xl">Requirements</h2>
+          </div>
+         {singleprojectReq.map((item, idx)=>(
+          <div
+          className="flex flex-col space-y-2"
+          key={idx}
+        >
+        <div
+        className="bg-white border border-gray-200 px-4 py-5 rounded-lg mb-4"
+      >
+      <h2 className="font-medium">Title</h2>
+      <p> {item.title} </p>
+
+
       </div>
+        
+        <div
+        className="bg-white border border-gray-200 px-4 py-5 rounded-lg mb-4"
+      >
+      <h2 className="font-medium">Description</h2>
+      <p> {item.description} </p>
+
+
+      </div>
+        <div
+        className="bg-white border border-gray-200 px-4 py-5 rounded-lg mb-4"
+      >
+      {item.format=== "text" ? <div>
+      <input
+      type="text"
+      placeholder="answer"
+      className="p-2 border outline-none rounded-md w-full"
+     
+    /> 
+      </div>  :  <input
+      type="file"
+      className="p-2 border outline-none rounded-md w-full"
+     
+    />   }
+
+
+      </div>
+
+        </div>
+         ))}
+
+         
+        </div>
+      ) : (
+        <div>Loading...</div>
+      )}
 
       {
         // ====================================ChatBox==================================
       }
 
-      <div className="w-[480px] fixed right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto pt-28 pb-4 px-4">
-        <div className="flex flex-col gap-5 h-full relative pb-[140px]">
-          <div className="h-full overflow-y-auto">
-            {messages.map((x, i) => (
-              <div
-                className="mb-6 pr-10 py-1 flex space-x-2 items-start"
-                key={i}
-              >
-                <Image src={chatlady} alt={"img"} className="h-4 w-4" />
-                <div>
-                  <p className="text-xs text-gray-500">
-                    <span className="font-medium mr-2 text-black">You</span>
-                    <span className="text-[10px] "> {x.time}</span>
-                  </p>
-                  <p className="text-gray-500 text-sm">{x.message}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="h-[120px] absolute bottom-0  w-full ">
-            <div className="border rounded-lg h-full flex flex-col">
-              <div className="h-[63%]">
-                <textarea
-                  name="chatbox"
-                  id="chatbox"
-                  rows="2"
-                  className="resize-none text-sm w-full h-full rounded-lg  outline-none bg-transparent p-2"
-                  placeholder="Write your message"
-                  onChange={(e) => {
-                    setSingleMessage(e.target.value);
-                  }}
-                  value={singleMessage}
-                ></textarea>
-              </div>
-              <div className="h-[37%] border-t flex justify-between p-2">
-                <div className="flex items-center space-x-2">
-                  <Image src={bold} alt={"img"} className="h-4 w-4" />
-                  <Image src={italics} alt={"img"} className="h-4 w-4" />
-                  <Image src={link} alt={"img"} className="h-4 w-4" />
-                  <Image src={listdot} alt={"img"} className="h-4 w-4" />
-                  <Image src={listnumeral} alt={"img"} className="h-4 w-4" />
-                </div>
-                <div>
-                  <button
-                    onClick={handleMessage}
-                    className="flex items-center space-x-1"
-                  >
-                    <Image src={send} alt={"img"} className="h-4 w-4" />{" "}
-                    <span className="text-primary-100  text-sm">Send</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className=" md:w-[480px] md:fixed right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto  pb-4 px-4">
+        <Chat serviceId={id} service='project' />
       </div>
 
       {isRejected && <RejectModal handleClose={handleClose} />}

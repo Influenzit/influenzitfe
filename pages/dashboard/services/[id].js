@@ -38,8 +38,8 @@ function Preview() {
   return (
     <LandingLayout>
       {singleService !== null ? (
-        <div className="py-28 px-12 b0">
-          <div className="grid grid-cols-12 gap-4">
+        <div className="py-28 px-12 w-full">
+          <div className="grid md:grid-cols-12 w-full gap-4">
             <div className="col-span-8">
               <Image
                 src={singleService.media[0]?.url || ""}
@@ -56,6 +56,80 @@ function Preview() {
 
               <p className="my-4 text-[#555461]">{singleService.description}</p>
 
+
+ {/*  Mobile view only */}
+ <div className="md:hidden flex w-full">
+ <div className="border rounded-lg">
+   <div className="w-full flex">
+     <button
+       onClick={() => {
+         setstate(0);
+         setpackageBody(singleService.packages[0]);
+       }}
+       className={`${
+         state === 0
+           ? "bg-[#2A2939] text-white"
+           : "bg-[#EAEAEB] text-[#2A2939]"
+       } p-3 w-full rounded-tl-lg`}
+     >
+       {singleService.packages[0].name}
+     </button>
+     <button
+       onClick={() => {
+         setstate(1);
+         setpackageBody(singleService?.packages[1]);
+       }}
+       className={`${
+         state === 1
+           ? "bg-[#2A2939] text-white"
+           : "bg-[#EAEAEB] text-[#2A2939]"
+       } p-3 w-full`}
+     >
+       {singleService?.packages[1]?.name}{" "}
+     </button>
+     <button
+       onClick={() => {
+         setstate(2);
+         setpackageBody(singleService?.packages[2]);
+       }}
+       className={`${
+         state === 2
+           ? "bg-[#2A2939] text-white"
+           : "bg-[#EAEAEB] text-[#2A2939]"
+       } p-3 w-full rounded-tr-lg`}
+     >
+       {singleService?.packages[2]?.name}{" "}
+     </button>
+   </div>
+
+   <div className="p-4 ">
+     <div className="flex justify-between items-center">
+       <h1 className="uppercase text-xl font-semibold">
+         {packageBody?.name || ""}
+       </h1>
+       <h1 className="uppercase text-xl font-semibold text-primary-100">
+         ₦{packageBody?.amount || ""}
+       </h1>
+     </div>
+
+     <p className="text-[#555461] py-5">
+       {packageBody?.description || ""}
+     </p>
+
+     {packageBody.features.map((item, id) => (
+       <div
+         key={id}
+         className="my-4 flex justify-between items-center"
+       >
+         <h1 className="uppercase  "> {item.name} </h1>
+         <h1 className="uppercase  ">{item.quantity}</h1>
+       </div>
+     ))}
+   </div>
+ </div>
+</div>
+
+
               <div className="py-10 grid grid-cols-12 gap-4">
                 <div className="col-span-2">
                   <Image
@@ -68,6 +142,7 @@ function Preview() {
                   />
                 </div>
 
+              
                 <div className="col-span-10 flex justify-between items-start">
                   <div className="space-y-2">
                     <h1 className="font-medium"> {singleService.user.name} </h1>
@@ -89,7 +164,7 @@ function Preview() {
                   />
                 ))}
             </div>
-            <div className="col-span-4">
+            <div className="md:flex hidden col-span-4">
               <div className="border rounded-lg">
                 <div className="w-full flex">
                   <button
@@ -163,7 +238,7 @@ function Preview() {
 
           <div className="my-5">
             <h1 className="text-xl my-5 font-medium">Gallery </h1>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-3 gap-4">
               {singleService.media.length > 0 &&
                 singleService.media.map((item, id) => (
                   <div key={id} className="h-[]">

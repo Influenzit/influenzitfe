@@ -140,7 +140,7 @@ const Search = () => {
                                     <EmptySearch>
                                         <Image src="/i-empty.svg" alt="" height={150} width={150} />
                                         <h1>No creators found</h1>
-                                        <p>We have no influencers that match your search terms</p>
+                                        <p>We have no creators that match your search terms</p>
                                     </EmptySearch>
                                 )
                             }
