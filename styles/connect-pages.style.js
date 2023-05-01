@@ -245,6 +245,10 @@ export const WelcomeModal = styled.div`
     }
     p {
         color: #555461;
+        a {
+            color: ${colors.primaryColor};
+            font-weight: 500;
+        }
     }
     div {
         display: flex;
@@ -256,6 +260,14 @@ export const WelcomeModal = styled.div`
         :last-of-type {
             margin-top: 20px;
             button {
+                padding: 12px 20px;
+                font-weight: 500;
+                font-size: 14px;
+                color: #fff;
+                background: ${colors.primaryColor};
+                border-radius: 8px;
+            }
+            a {
                 padding: 12px 20px;
                 font-weight: 500;
                 font-size: 14px;
