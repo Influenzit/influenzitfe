@@ -155,9 +155,7 @@ function Preview() {
                     <h1 className="font-medium"> {singleService.user.name} </h1>
                     <p>Nigeria</p>
                   </div>
-                  <a href='/dashboard/profile' className="px-4 py-3 bg-[#2A2939] block text-white rounded-lg">
-                    View profile
-                  </a>
+                
                 </div>
               </div>
 
