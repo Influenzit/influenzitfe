@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LandingLayout from '../../layouts/landing.layout';
-import { Bottom, Category, CategoryWrapper, Container, Content, Filter, ListWrapper, PageBtn, Pages, Section, Tab, Tabs, Top, TopBanner, ViewMore, Wrapper } from '../../styles/search.style';
+import { Bottom, Category, CategoryWrapper, Container, Content, EmptySearch, Filter, ListWrapper, PageBtn, Pages, Section, Tab, Tabs, Top, TopBanner, ViewMore, Wrapper } from '../../styles/search.style';
 import ProfileCard from '../../components/profile-card';
 import { getCreators, getExploreNiches, getIndustries, getInfluencers } from '../../api/influencer';
 import { useQuery } from '@tanstack/react-query';
@@ -20,15 +20,18 @@ const Search = () => {
     const [seeAll, setSeeAll] = useState(false);
     const dispatch = useDispatch();
     const router = useRouter();
+    const { search } = router.query;
     const user = useSelector(getUser);
+    const [firstLoad, setFirstLoad] = useState(true);
     const { data: creatorsData, refetch: refetchCreatorData } = useQuery(["get-creators"], async () => {
-        return await getCreators(getQueryString(`${getUrl ? getUrl : router.asPath}${getQueryString(getUrl ? getUrl : router.asPath) ? "&" : "?" }industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}`));
+        return await getCreators(getQueryString(`${getUrl ? getUrl : firstLoad ? router.asPath : ""}${getQueryString(getUrl ? getUrl : router.asPath) && firstLoad ? `&industry=${currentIndustry}&platform=${nicheVal}` : `?industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}` }`));
     }, {
         enabled: false,
         staleTime: Infinity,
         retry: false,
         onSuccess() {
             dispatch(setLoading(false));
+            setFirstLoad(false);
         }
     });
     const { data, refetch } = useQuery(["get-niche"], async () => {
@@ -56,7 +59,10 @@ const Search = () => {
     }, [router.asPath]);
     useEffect(() => {
         refetchCreatorData();
-    }, [router.asPath, currentIndustry, nicheVal])
+        if (search) {
+            setSearchString(search);
+        }
+    }, [router.asPath, currentIndustry, nicheVal, search])
 
     return (
         <Container>
@@ -107,6 +113,7 @@ const Search = () => {
                         </Filter>
                         <ListWrapper>
                             {
+                                creatorsData?.data?.data?.data.length > 0 ? (
                                 creatorsData?.data?.data?.data.map((val, i) => {
                                     let genSkills = "";
                                     val.skills.forEach((val, i) => {
@@ -129,7 +136,13 @@ const Search = () => {
                                         skills={val.user.email}
                                         address={val.address}
                                     />
-                                })
+                                })) : (
+                                    <EmptySearch>
+                                        <Image src="/i-empty.svg" alt="" height={150} width={150} />
+                                        <h1>No creators found</h1>
+                                        <p>We have no influencers that match your search terms</p>
+                                    </EmptySearch>
+                                )
                             }
                         </ListWrapper>
                         {

@@ -73,10 +73,10 @@ const Contact = () => {
   };
 
   return (
-    <div>
-      {/* <div className="bg-[#FDFAF5] ">
-        <div className=" py-40 md:px-20 container mx-auto">
-          <div className="grid grid-cols-2 items-center gap-[64px] w-full">
+    <div >
+    <div className="bg-[#FDFAF5] ">
+        <div className=" md:py-40 py-24 md:px-20 px-4 container mx-auto">
+          <div className="grid md:grid-cols-2 items-center gap-[64px] w-full">
             <div>
               <h1 className="text-sec-100 font-bold text-4xl"> Get in touch</h1>
               <p>
@@ -191,16 +191,17 @@ const Contact = () => {
                 </button>
               </div>
             </div>
-            <div>
+            <div className="md:flex hidden">
               <Image src={ContactImage} alt="contact_image" />
             </div>
           </div>
         </div>
-      </div> */}
+      </div> 
 
 
       {/* Responsive Version */}
 
+    {/* <div className="">
       <Container>
         <ContactFlex>
           <FormContainer>
@@ -300,6 +301,7 @@ const Contact = () => {
             </BanImage>
         </ContactFlex>
       </Container>
+      </div> */}
     </div>
   );
 };

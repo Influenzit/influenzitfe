@@ -100,7 +100,7 @@ const Home = () => {
             </CustomSelect>
             <button onClick={(e) => {
               e.preventDefault();
-              router.push(`/explore/${getCategoryRoute()}?search=${searchString}&niche=${nicheVal.toLocaleLowerCase()}`);
+              router.push(`/explore/${getCategoryRoute()}?search=${searchString}`);
             }}><span>Search</span> <Image src="/search.svg" height={15} width={15}/></button>
           </form>
           <BannerImg>

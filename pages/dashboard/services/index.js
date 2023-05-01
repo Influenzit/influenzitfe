@@ -249,7 +249,6 @@ const Services = () => {
   };
 
   const handleServiceCreation = () => {
-   
     let formData = new FormData();
 
     formData.append("coverImage", coverImage);
@@ -257,16 +256,16 @@ const Services = () => {
     formData.append("image2", image2);
     formData.append("image3", image3);
     formData.append("image4", image4);
-    formData.append("name", title);
-    formData.append("description", description);
-    formData.append("type", "project");
-    formData.append("price", +price);
-    formData.append("currency", "NGN");
-    formData.append("is_negotiable", true);
-    formData.append("link", "http://johndoe.myname.com/services/social-media");
-    formData.append("packages", packages);
-    formData.append("faqs", faqs);
-    formData.append("requirements", requirements);
+    // formData.append("name", title);
+    // formData.append("description", description);
+    // formData.append("type", "project");
+    // formData.append("price", +price);
+    // formData.append("currency", "NGN");
+    // formData.append("is_negotiable", true);
+    // formData.append("link", "http://johndoe.myname.com/services/social-media");
+    // formData.append("packages", JSON.stringify(packages));
+    // formData.append("faqs", JSON.stringify(faqs));
+    // formData.append("requirements", JSON.stringify(requirements));
     setloading(true);
 
     const payload = {
@@ -280,10 +279,12 @@ const Services = () => {
       faqs,
       requirements,
     };
-    console.log(payload)
-    createServices(formData)
+    console.log(payload);
+    createServices(payload)
       .then((res) => {
         console.log(res.data.data);
+        uploadServiceMedia(res.data.data.id, formData) 
+
         toast.success("Service created successfully", {
           position: toast.POSITION.TOP_RIGHT,
         });
@@ -344,7 +345,7 @@ const Services = () => {
               >
                 <Link href={`/dashboard/services/${x.id}`}>
                   <Image
-                    src={x.media[0]?.url || ""}
+                    src={x.media[0]?.url || "http://localhost:3000/web-services.jpg"}
                     alt="title_image"
                     className="h-full w-full object-cover rounded-t-lg"
                     width="100%"
@@ -389,7 +390,7 @@ const Services = () => {
       </div>
 
       {isServiceModalOpen && (
-        <div className="bg-white fixed overflow-y-auto inset-0 px-[100px] py-10  z-[999999]">
+        <div className="bg-white fixed overflow-y-auto inset-0 md:px-[100px] px-6 py-10  z-[999999]">
           <div className="flex justify-end mb-5">
             <button
               onClick={() => {
@@ -399,47 +400,50 @@ const Services = () => {
               <Image src={close} alt="close" />
             </button>
           </div>
-          <div className="w-[80%] mx-auto">
-            <div className="grid grid-cols-6 gap-4 text-[#94949C] text-sm mb-2">
-              <div className="">Overview</div>
-              <div className="">Pricing</div>
-              <div className="">Gallery</div>
-              <div className="">Requirements</div>
-              <div className="">FAQ</div>
-              <div className="">Review</div>
-            </div>
-            <div className="grid grid-cols-6 gap-4 mb-4">
-              <div
-                className={` ${
-                  step > 0 ? "bg-primary-100" : "bg-[#EAEAEB]"
-                }   h-1 w-full rounded-full`}
-              ></div>
-              <div
-                className={` ${
-                  step > 1 ? "bg-primary-100" : "bg-[#EAEAEB]"
-                }   h-1 w-full rounded-full`}
-              ></div>
-              <div
-                className={` ${
-                  step > 2 ? "bg-primary-100" : "bg-[#EAEAEB]"
-                }   h-1 w-full rounded-full`}
-              ></div>
+          <div className="md:w-[80%] w-full mx-auto">
+            <div className="overflow-x-auto">
+              <div className="grid grid-cols-6 gap-4 mb-4 md:w-full min-w-[600px]">
+                {" "}
+                <div className="">Overview</div>
+                <div className="">Pricing</div>
+                <div className="">Gallery</div>
+                <div className="">Requirements</div>
+                <div className="">FAQ</div>
+                <div className="">Review</div>
+              </div>
+              <div className="grid grid-cols-6 gap-4 mb-4 md:w-full min-w-[600px]">
+                <div
+                  className={` ${
+                    step > 0 ? "bg-primary-100" : "bg-[#EAEAEB]"
+                  }   h-1 w-full rounded-full`}
+                ></div>
+                <div
+                  className={` ${
+                    step > 1 ? "bg-primary-100" : "bg-[#EAEAEB]"
+                  }   h-1 w-full rounded-full`}
+                ></div>
+                <div
+                  className={` ${
+                    step > 2 ? "bg-primary-100" : "bg-[#EAEAEB]"
+                  }   h-1 w-full rounded-full`}
+                ></div>
 
-              <div
-                className={` ${
-                  step > 3 ? "bg-primary-100" : "bg-[#EAEAEB]"
-                }   h-1 w-full rounded-full`}
-              ></div>
-              <div
-                className={` ${
-                  step > 4 ? "bg-primary-100" : "bg-[#EAEAEB]"
-                }   h-1 w-full rounded-full`}
-              ></div>
-              <div
-                className={` ${
-                  step > 5 ? "bg-primary-100" : "bg-[#EAEAEB]"
-                }   h-1 w-full rounded-full`}
-              ></div>
+                <div
+                  className={` ${
+                    step > 3 ? "bg-primary-100" : "bg-[#EAEAEB]"
+                  }   h-1 w-full rounded-full`}
+                ></div>
+                <div
+                  className={` ${
+                    step > 4 ? "bg-primary-100" : "bg-[#EAEAEB]"
+                  }   h-1 w-full rounded-full`}
+                ></div>
+                <div
+                  className={` ${
+                    step > 5 ? "bg-primary-100" : "bg-[#EAEAEB]"
+                  }   h-1 w-full rounded-full`}
+                ></div>
+              </div>
             </div>
 
             <section className="mt-4">
