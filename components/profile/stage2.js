@@ -86,7 +86,7 @@ function Stage1({ user }) {
   }, [user]);
   return (
     <div>
-      <div className="let swipeIn">
+      <div className="">
         <div className="flex items-center justify-between py-5 border-b">
           <div>
             <h1 className="text-lg">Business Information </h1>

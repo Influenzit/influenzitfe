@@ -7,10 +7,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import {
-
   getProject,
-  getSingleProjectRequirement
-  
+  getSingleProjectRequirement,
+  submitRequirement,
 } from "api/projects";
 import { setLoading } from "app/reducers/status";
 import { ChevronLeft, ChevronRight } from "assets/svgIcons";
@@ -22,6 +21,7 @@ import listnumeral from "assets/campaign/listnumeral.svg";
 import send from "assets/campaign/send.svg";
 import lock from "assets/campaign/lock.svg";
 import checkmark from "assets/campaign/checkmark.svg";
+import Loader from "components/UI/Loader";
 import reject from "assets/campaign/cancel.svg";
 
 import RejectModal from "components/Campaign/rejectModal";
@@ -52,21 +52,32 @@ const Campaigns = () => {
   const [currentValue, setcurrentValue] = useState(4);
   const [singleproject, setSingleproject] = useState(null);
   const [singleprojectReq, setSingleprojectReq] = useState([]);
-
+  const [loading, setLoading] = useState(false);
+  const [answer, setanswer] = useState(null);
+  const [selectedFormat, setselectedFormat] = useState(null);
   const [makePayment, setmakePayment] = useState(false);
   const [triggerPayment, settriggerPayment] = useState(false);
   const [amount, setamount] = useState(0);
+  const [conversationId, setconversationId] = useState(null);
 
   const { id } = router.query;
   const user = useSelector(getUser);
-  console.log(user)
 
+  const handleAnswer = (format, e) => {
+    if (format === "text") {
+      setanswer(e.target.value);
+    } else {
+      setanswer(e.target.files[0]);
+    }
+  };
 
   const handleGetSingleproject = () => {
     getProject(id)
       .then((res) => {
         console.log(res);
         setSingleproject(res.data.data);
+        setconversationId(res.data.data?.conversation.id || null)
+
       })
       .catch((err) => {
         console.log(err.response);
@@ -82,7 +93,30 @@ const Campaigns = () => {
         console.log(err.response);
       });
   };
- 
+  const submitSingleprojectReq = (format, reqId) => {
+    setselectedFormat(format);
+    const formData = new FormData();
+    format === "text"
+      ? formData.append("content", answer ?? null)
+      : formData.append("attachment", answer ?? null);
+    if (!answer) {
+      toast.error("Please provide an answer");
+      return;
+    }
+    setLoading(true);
+    submitRequirement(id, reqId, formData)
+      .then((res) => {
+        console.log(res);
+        toast.success("Submission successfull");
+
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err.response);
+        setLoading(false);
+      });
+  };
+
   const ratingChanged = (newRating) => {
     console.log(newRating);
   };
@@ -94,8 +128,6 @@ const Campaigns = () => {
     setisAccepted(false);
   };
 
-
-  
   useEffect(() => {
     handleGetSingleproject();
     handleGetSingleprojectReq();
@@ -105,7 +137,7 @@ const Campaigns = () => {
   return (
     <div className="flex bg-gray-50">
       {singleproject !== null ? (
-        <div className="w-full md:mr-[500px] pt-28 px-10 min-h-screen">
+        <div className="w-full md:pr-[500px]  pt-28 px-10 min-h-screen">
           {/*   <div className="flex space-x-4 w-full border-b mb-4">
             <button
               onClick={() => {
@@ -143,7 +175,10 @@ const Campaigns = () => {
                 />
                 <div>
                   <p className="text-xs text-gray-500">Influencer</p>
-                  <h1 className="font-medium"> {singleproject.provider.name} </h1>
+                  <h1 className="font-medium">
+                    {" "}
+                    {singleproject.provider.name}{" "}
+                  </h1>
                 </div>
               </div>
               <div className="md:pr-10  py-1 flex space-x-2">
@@ -155,59 +190,56 @@ const Campaigns = () => {
                   </h1>
                 </div>
               </div>
-             
             </div>
           </div>
           <div className="mb-4">{singleproject.description}</div>
 
           <div className="flex space-x-4 w-full border-b mb-4">
-        <h2 className="font-medium text-xl">Requirements</h2>
+            <h2 className="font-medium text-xl">Requirements</h2>
           </div>
-         {singleprojectReq.map((item, idx)=>(
-          <div
-          className="flex flex-col space-y-2"
-          key={idx}
-        >
-        <div
-        className="bg-white border border-gray-200 px-4 py-5 rounded-lg mb-4"
-      >
-      <h2 className="font-medium">Title</h2>
-      <p> {item.title} </p>
+          {singleprojectReq.map((item, idx) => (
+            <div className="flex flex-col space-y-2 mb-6" key={idx}>
+              <div className="bg-white border border-gray-200 px-4 py-5 rounded-lg ">
+                <h2 className="font-medium">Title</h2>
+                <p> {item.title} </p>
+              </div>
 
-
-      </div>
-        
-        <div
-        className="bg-white border border-gray-200 px-4 py-5 rounded-lg mb-4"
-      >
-      <h2 className="font-medium">Description</h2>
-      <p> {item.description} </p>
-
-
-      </div>
-        <div
-        className="bg-white border border-gray-200 px-4 py-5 rounded-lg mb-4"
-      >
-      {item.format=== "text" ? <div>
-      <input
-      type="text"
-      placeholder="answer"
-      className="p-2 border outline-none rounded-md w-full"
-     
-    /> 
-      </div>  :  <input
-      type="file"
-      className="p-2 border outline-none rounded-md w-full"
-     
-    />   }
-
-
-      </div>
-
-        </div>
-         ))}
-
-         
+              <div className="bg-white border border-gray-200 px-4 py-5 rounded-lg ">
+                <h2 className="font-medium">Description</h2>
+                <p> {item.description} </p>
+              </div>
+              <div className="bg-white border flex space-x-2 item-center border-gray-200 px-4 py-5 rounded-lg ">
+                {item.format === "text" ? (
+                  <input
+                    type="text"
+                    placeholder="answer"
+                    onChange={(e) => {
+                      handleAnswer("text", e);
+                    }}
+                    className="p-2 border outline-none flex-1 rounded-md w-full"
+                  />
+                ) : (
+                  <input
+                    type="file"
+                    onChange={(e) => {
+                      handleAnswer("media", e);
+                    }}
+                    className="p-2 border outline-none flex-1 rounded-md w-full"
+                  />
+                )}
+                <button
+                  onClick={() => submitSingleprojectReq(item.format, item.id)}
+                  className="px-4 py-2 bg-red-500 block text-white rounded-lg"
+                >
+                  {loading & (item.format === selectedFormat) ? (
+                    <Loader />
+                  ) : (
+                    "Submit"
+                  )}
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       ) : (
         <div>Loading...</div>
@@ -218,7 +250,7 @@ const Campaigns = () => {
       }
 
       <div className=" md:w-[480px] md:fixed right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto  pb-4 px-4">
-        <Chat serviceId={id} service='project' />
+        <Chat serviceId={id} service="projects" conversationId={conversationId} />
       </div>
 
       {isRejected && <RejectModal handleClose={handleClose} />}

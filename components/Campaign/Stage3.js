@@ -44,19 +44,6 @@ function Stage3({
           }}
         />
       </div>
-      <div className="mb-6 flex flex-col space-y-2">
-        <label htmlFor="desc">Amount</label>
-        <input
-          type="number"
-          id="Campaign Amount"
-          className="p-2 border outline-none rounded-md w-full"
-          placeholder="#20, 000"
-          value={amount}
-          onChange={(e) => {
-            setAmount(e.target.value);
-          }}
-        />
-      </div>
 
       <div className="flex justify-between items-center mt-6 ">
         <button

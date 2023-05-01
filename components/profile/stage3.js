@@ -180,7 +180,7 @@ function Stage3({ user }) {
   console.log(user);
   return (
     <div>
-      <div className="let swipeIn">
+      <div className="">
         <div className="flex items-center justify-between py-5 border-b">
           <div>
             <h1 className="text-lg">Influencer Information </h1>
@@ -202,14 +202,14 @@ function Stage3({ user }) {
           </div>
         </div>
 
-        <div className="py-5 border-b grid grid-cols-12 gap-4 items-stretch">
-          <div className="col-span-3 py-5">
+        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-stretch">
+          <div className="md:col-span-3 py-5">
             <h1 className="text-lg">Your photo </h1>
             <p className="text-xs text-[#667085]">
               This will be displayed on your profile.
             </p>
           </div>
-          <div className="col-span-9 flex space-x-3">
+          <div className="md:col-span-9 flex space-x-3">
             <div className="grid grid-cols-12 gap-4">
               <div className="col-span-3">
                 <Image
