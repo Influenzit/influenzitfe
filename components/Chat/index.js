@@ -223,7 +223,7 @@ const Messages = ({ serviceId }) => {
       retry: false,
       onSuccess(successRes) {
         console.log(successRes.data.data);
-        const { conversation_id } = successRes.data.data?.messages[0];
+        const  conversation_id   = successRes.data?.data.length > 0 ? successRes.data?.data?.messages[0]?.conversation_id || null : null;
         setconversationId(conversation_id ?? null);
         sessionStorage.setItem("cid", conversation_id);
         setConversations(successRes.data.data.messages);
