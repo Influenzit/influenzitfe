@@ -96,7 +96,7 @@ function Stage1({ user }) {
           </div>
         </div>
 
-        <div className="py-5 border-b grid grid-cols-12 gap-4 items-center">
+        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
           <div className="col-span-3 py-5">
             <h1 className="text-[#344054]">Industry</h1>
           </div>
@@ -124,7 +124,7 @@ function Stage1({ user }) {
           </div>
         </div>
 
-        <div className="py-5 border-b grid grid-cols-12 gap-4 items-center">
+        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
           <div className="col-span-3 py-5">
             <h1 className="text-[#344054]">Country</h1>
           </div>
@@ -157,7 +157,7 @@ function Stage1({ user }) {
           </div>
         </div>
 
-        <div className="py-5 border-b grid grid-cols-12 gap-4 items-center">
+        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
           <div className="col-span-3 py-5">
             <h1 className="text-[#344054]">Gender</h1>
           </div>
@@ -225,7 +225,7 @@ function Stage1({ user }) {
           </div>
         </div>
 
-        <div className="py-5 border-b grid grid-cols-12 gap-4 items-center">
+        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
           <div className="col-span-3 py-5">
             <h1 className="text-[#344054]">Influencer summary</h1>
           </div>
@@ -242,7 +242,7 @@ function Stage1({ user }) {
           </div>
         </div>
 
-        <div className="py-5 border-b grid grid-cols-12 gap-4">
+        <div className="py-5 border-b grid md:grid-cols-12 gap-4">
           <div className="col-span-3 py-5">
             <h1 className="text-[#344054]">Influencer Description </h1>
           </div>
@@ -262,7 +262,7 @@ function Stage1({ user }) {
           </div>
         </div>
 
-        <div className="py-5 border-b grid grid-cols-12 gap-4 ">
+        <div className="py-5 border-b grid md:grid-cols-12 gap-4 ">
           <div className="col-span-3 py-5">
             <h1 className="text-[#344054]">
               Social media handles{" "}

@@ -6,6 +6,9 @@ export const getProjects = (url) => {
 export const getProject = (id) => {
     return axiosInstance().get(`/projects/${id}`)
 }
+export const getSingleProjectRequirement = (id) => {
+    return axiosInstance().get(`/projects/${id}/requirements`)
+}
 export const createProjectMilestone = (id, data) => {
     return axiosInstance().post(`/projects/${id}/milestones`, data)
 }

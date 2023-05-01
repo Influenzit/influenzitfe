@@ -72,7 +72,7 @@ function Stage2({
               <div className="my-6 flex flex-col space-y-2 ">
                 <label htmlFor="amount">Price</label>
                 <input
-                  type="text"
+                  type="number"
                   name="amount"
                   className="input p-3"
                   placeholder="#20, 000"

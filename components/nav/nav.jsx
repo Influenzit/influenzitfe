@@ -314,6 +314,8 @@ const Nav = () => {
     };
   }, [userDetails]);
 
+  const bizInfo = JSON.parse(localStorage.getItem('businesses'))
+
   return (
     <Container showBg={router.pathname.includes("/dashboard") ? true : showBg}>
       <Wrapper fullWidth={router.pathname.includes("/dashboard")}>
@@ -435,6 +437,8 @@ const Nav = () => {
                   <div id="user-d" onClick={() => router.push("/dashboard")}>
                     <h4>{user.name}</h4>
                     <p>{currentAcctType}</p>
+                    {currentAcctType === "Business Owner" &&  <div className='text-gray-500 text-xs'>Business ID: {bizInfo[0].reference} </div>}
+
                   </div>
                   <div id="switch">
                     <p>Switch Account</p>

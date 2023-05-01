@@ -4,23 +4,12 @@ import rightarrow from "../../assets/rightarrow.svg";
 import React from "react";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import Loader from '../UI/Loader';
 
-function Review({
-  handleIncrement,
-  handleDecrement,
-  handleAddFaq,
-  handleRemoveFaq,
-  faqs,
-  handleReviewinput,
-  handleReviewCreation,
-}) {
+function Review({ handleDecrement, loading, handleServiceCreation }) {
   const handleSubmit = () => {
-    toast.success("Service created successfully", {
-      position: toast.POSITION.TOP_RIGHT,
-    });
-    window.location.reload();
+    handleServiceCreation();
   };
-  console.log(faqs);
   return (
     <div>
       <h1 className="text-xl font-medium mb-8">Review and Publish</h1>
@@ -75,10 +64,10 @@ function Review({
           <span className="mr-2">Back</span>
         </button>
         <button
-          onClick={handleSubmit}
+          onClick={handleServiceCreation}
           className="bg-primary-100 py-2 px-4 rounded-lg text-white flex items-center space-x-2 "
         >
-          <span className="mr-2">Continue</span>
+        {loading ? <Loader /> : "Continue"}
           <Image src={rightarrow} alt="rightarrow" className="ml-2 w-4 h-4" />
         </button>
       </div>

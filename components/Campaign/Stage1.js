@@ -20,7 +20,7 @@ function Stage1({
       <div className="my-6 flex flex-col space-y-2 ">
         <label htmlFor="b_id">Business ID</label>
         <input
-          type="text"
+          type="number"
           id="b_id"
           className="p-2 border outline-none rounded-md w-full"
           placeholder="K12R567"

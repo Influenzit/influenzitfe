@@ -35,9 +35,7 @@ const Profile = () => {
   // dispatch(updateUser(userRes.data.data));
   //
 
-
   const [activetab, setactivetab] = useState("profile_details");
-
 
   return (
     <div className="py-28 px-12 b0">
@@ -46,69 +44,71 @@ const Profile = () => {
           <h1 className="text-xl">Account Settings </h1>
         </div>
       </div>
-      <div className="flex space-x-4 w-full border-b mb-4">
-        <button
-          onClick={() => {
-            setactivetab("profile_details");
-          }}
-          className={`${
-            activetab == "profile_details" &&
-            "text-primary-100 border-b border-primary-100"
-          } pb-4`}
-        >
-          Profile details
-        </button>
-        <button
-          onClick={() => {
-            setactivetab("influencer_details");
-          }}
-          className={`${
-            activetab == "influencer_details" &&
-            "text-primary-100 border-b border-primary-100"
-          } pb-4`}
-        >
-          Influencer Details
-        </button>
-        <button
-          onClick={() => {
-            setactivetab("images");
-          }}
-          className={`${
-            activetab == "images" &&
-            "text-primary-100 border-b border-primary-100"
-          } pb-4`}
-        >
-          Images
-        </button>
-        <button
-          onClick={() => {
-            setactivetab("change_password");
-          }}
-          className={`${
-            activetab == "change_password" &&
-            "text-primary-100 border-b border-primary-100"
-          } pb-4`}
-        >
-          Change Password
-        </button>
-        <button
-          onClick={() => {
-            setactivetab("social");
-          }}
-          className={`${
-            activetab === "social" &&
-            "text-primary-100 border-b border-primary-100"
-          } pb-4`}
-        >
-          Connect Social Media
-        </button>
+      <div className="w-full overflow-x-auto">
+        <div className="flex space-x-4 w-full border-b mb-4 md:w-full min-w-[1200px]">
+          <button
+            onClick={() => {
+              setactivetab("profile_details");
+            }}
+            className={`${
+              activetab == "profile_details" &&
+              "text-primary-100 border-b border-primary-100"
+            } pb-4`}
+          >
+            Profile details
+          </button>
+          <button
+            onClick={() => {
+              setactivetab("influencer_details");
+            }}
+            className={`${
+              activetab == "influencer_details" &&
+              "text-primary-100 border-b border-primary-100"
+            } pb-4`}
+          >
+            Influencer Details
+          </button>
+          <button
+            onClick={() => {
+              setactivetab("images");
+            }}
+            className={`${
+              activetab == "images" &&
+              "text-primary-100 border-b border-primary-100"
+            } pb-4`}
+          >
+            Images
+          </button>
+          <button
+            onClick={() => {
+              setactivetab("change_password");
+            }}
+            className={`${
+              activetab == "change_password" &&
+              "text-primary-100 border-b border-primary-100"
+            } pb-4`}
+          >
+            Change Password
+          </button>
+          <button
+            onClick={() => {
+              setactivetab("social");
+            }}
+            className={`${
+              activetab === "social" &&
+              "text-primary-100 border-b border-primary-100"
+            } pb-4`}
+          >
+            Connect Social Media
+          </button>
+        </div>
       </div>
 
       {activetab === "profile_details" && <Stage1 user={user} />}
       {activetab === "influencer_details" && <Stage2 user={user} />}
       {activetab === "images" && <Stage3 user={user} />}
       {activetab === "change_password" && <Stage4 user={user} />}
-      {activetab === "social" && <Stage5 user={user}/>}
+      {activetab === "social" && <Stage5 user={user} />}
     </div>
   );
 };
