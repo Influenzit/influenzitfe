@@ -273,15 +273,13 @@ const Services = () => {
     createServices(payload)
       .then((res) => {
         console.log(res.data.data);
-     uploadServiceMedia(res.data.data.id, formData).then(res=>{
-
-      toast.success("Service created successfully", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      window.location.reload();
-      setloading(false);
-       })
-
+        uploadServiceMedia(res.data.data.id, formData).then((res) => {
+          toast.success("Service created successfully", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          window.location.reload();
+          setloading(false);
+        });
 
         // handleIncrement();
       })
@@ -322,7 +320,7 @@ const Services = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="py-28 px-12">
+    <div className="py-28 md:px-12 px-4">
       <div className="flex justify-between mb-6">
         <h1 className="text-xl">My Services</h1>
       </div>
@@ -337,7 +335,10 @@ const Services = () => {
               >
                 <Link href={`/dashboard/services/${x.id}`}>
                   <Image
-                    src={x.media[0]?.url || "http://localhost:3000/web-services.jpg"}
+                    src={
+                      x.media[0]?.url ||
+                      "http://localhost:3000/web-services.jpg"
+                    }
                     alt="title_image"
                     className="h-full w-full object-cover rounded-t-lg"
                     width="100%"
