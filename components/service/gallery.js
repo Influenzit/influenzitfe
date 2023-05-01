@@ -65,7 +65,7 @@ function Gallery({
         <div
           className={` ${
             !coverImageViewer ? "p-12" : "p-0"
-          } text-[#667085] text-sm bg-transparent w-1/2 border border-dashed bg-white  rounded-lg flex-1  `}
+          } text-[#667085] text-sm bg-transparent w-full md:w-1/2 border border-dashed bg-white  rounded-lg flex-1  `}
         >
           {!coverImageViewer && (
             <div
@@ -115,7 +115,7 @@ function Gallery({
         <p className="text-tert-100 my-1">
           Add up to 4 images to showcase your work{" "}
         </p>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-4">
           <div
             onDrop={(e) => {
               handleDrop("image1", e);

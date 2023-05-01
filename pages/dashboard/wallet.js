@@ -112,7 +112,11 @@ const Campaigns = () => {
   };
   const handleCreateTransaction = async () => {
     if (!amount) {
-      toast.error("Amount field cant be empty");
+      toast.error("Amount field can't be empty");
+      return;
+    }
+    if (amount === 0) {
+      toast.error("Amount field can't be 0");
       return;
     }
 
@@ -124,7 +128,6 @@ const Campaigns = () => {
       channel: "paystack",
       amount: +amount,
       currency: "NGN",
-      remark: "",
       meta: {},
       flags: "",
       wallet_address: getWalletDepositAddress.address,
@@ -167,7 +170,7 @@ const Campaigns = () => {
     await processDepositTransaction(payload)
       .then((res) => {
         console.log(res);
-        setisOpen(!isOpen);
+        setisOpen(false);
         handleGetTransaction();
         handleGetWalletData();
       })
@@ -198,7 +201,7 @@ const Campaigns = () => {
         if (res.data.status === "error") {
           toast.error(res.data.message);
         } else {
-          toast.error(res.data.message);
+          toast.success(res.data.message);
         }
         setisWithdrawalOpen(false);
         setLoading(false);
@@ -247,7 +250,7 @@ const Campaigns = () => {
 
       {walledData !== null ? (
         <div>
-          <div className="grid grid-cols-3 gap-10">
+          <div className="grid md:grid-cols-3 gap-10">
             <div className="border border-[#EAEAEB] hover:transform translate-y-4 duration-200 ease-linear rounded-lg p-4">
               <div className="border-b">
                 <div className="flex justify-between mb-6">
@@ -317,17 +320,17 @@ const Campaigns = () => {
             </div>
           </div>
 
-          <div className=" grid grid-cols-2 mt-10  py-4 bg-white  ">
-            <div className=" flex space-x-3 px-3 rounded-lg border  bg-transparent outline-none w-full">
+          <div className=" grid md:grid-cols-2 mt-10  py-4 bg-white  ">
+           {/*  <div className=" flex space-x-3 px-3 rounded-lg border  bg-transparent outline-none w-full">
               <div className=" py-3  grid place-content-center">
                 <Image src={search} alt="search" />
               </div>
               <input
                 type="text"
                 className="bg-transparent outline-none w-full flex-1"
-                placeholder="krystalbeauty"
+                placeholder="Search..."
               />
-            </div>
+            </div> */}
             <div className="flex justify-end">
               <h1></h1>
             </div>
@@ -340,72 +343,74 @@ const Campaigns = () => {
                 <Image src={action} alt="search" />
               </h1>
             </div>
-            <div className="table -mt-1  border border-[#EAEAEB] w-full text-[#667085]">
-              <div className="grid grid-cols-12 gap-4 bg-[#F9FAFB] p-4 rounded-t-lg border-b">
-                <div className="col-span-2">Date</div>
-                <div className="col-span-2">Amount</div>
-                <div className="col-span-2">Activity</div>
-                <div className="col-span-4">Description</div>
-                <div className="col-span-2">Status</div>
-              </div>
-              {trxn && trxn.length > 0 ? (
-                trxn.map((item, idx) => (
-                  <div
-                    className="grid grid-cols-12 gap-4 p-4 border-b"
-                    key={idx}
-                  >
-                    <div className="col-span-2 text-sm">
-                      {moment(item.createdAt).format("L")}
-                    </div>
-                    <div className="col-span-2 text-sm text-green-500">
-                      {item.amount}
-                    </div>
-                    <div className="col-span-2 text-sm flex-col">
-                      <p className="text-gray-400">Influencer</p>
-                      {item.Activity}
-                    </div>
-                    <div className="col-span-4 text-sm">
-                      {item.remark || item.type}
-                    </div>
-
-                    <div className="col-span-2">
-                      {item.status.toLowerCase() === "pending" && (
-                        <div className="rounded-2xl py-1 pl-2 pr-4 bg-[#F2F4F7] text-xs w-max flex space-x-2 items-center text-[#344054]">
-                          <div className="bg-[#667085] rounded-full w-[6px] h-[6px]"></div>
-                          <p>{item.status}</p>
-                        </div>
-                      )}
-                      {item.status.toLowerCase() === "completed" && (
-                        <div className="rounded-2xl py-1 pl-2 pr-4 bg-[#ECFDF3] text-xs w-max flex space-x-2 items-center text-[#027A48]">
-                          <div className="bg-[#12B76A] rounded-full w-[6px] h-[6px]"></div>
-                          <p>{item.status}</p>
-                        </div>
-                      )}
-                      {item.status.toLowerCase() === "declined" && (
-                        <div className="rounded-2xl py-1 pl-2 pr-4 bg-[#FEF3F2] text-xs w-max flex space-x-2 items-center text-[#B42318]">
-                          <div className="bg-[#F04438] rounded-full w-[6px] h-[6px]"></div>
-                          <p>{item.status}</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="grid place-content-center py-10">
-                  No Result Found
+            <div className="w-full overflow-x-auto">
+              <div className="table -mt-1  border  border-[#EAEAEB] md:w-full min-w-[1200px] text-[#667085]">
+                <div className="grid grid-cols-12 gap-4 bg-[#F9FAFB] p-4 rounded-t-lg border-b w-full">
+                  <div className="col-span-2">Date</div>
+                  <div className="col-span-2">Amount</div>
+                  <div className="col-span-2">Activity</div>
+                  <div className="col-span-4">Description</div>
+                  <div className="col-span-2">Status</div>
                 </div>
-              )}
+                {trxn && trxn.length > 0 ? (
+                  trxn.map((item, idx) => (
+                    <div
+                      className="grid grid-cols-12 gap-4 p-4 border-b"
+                      key={idx}
+                    >
+                      <div className="col-span-2 text-sm">
+                        {moment(item.createdAt).format("L")}
+                      </div>
+                      <div className="col-span-2 text-sm text-green-500">
+                        {item.amount}
+                      </div>
+                      <div className="col-span-2 text-sm flex-col">
+                        <p className="text-gray-400">Influencer</p>
+                        {item.Activity}
+                      </div>
+                      <div className="col-span-4 text-sm">
+                        {item.remark || item.type}
+                      </div>
 
-              <div className="flex p-4 justify-between text-sm">
-                <div>
-                  <p>Page 1 0f 10</p>
-                </div>
-                <div className="flex items-center space-x-3 text-gray-600">
-                  <div className="border shadow-sm px-2 py-[6px] rounded-md ">
-                    Previous
+                      <div className="col-span-2">
+                        {item.status.toLowerCase() === "pending" && (
+                          <div className="rounded-2xl py-1 pl-2 pr-4 bg-[#F2F4F7] text-xs w-max flex space-x-2 items-center text-[#344054]">
+                            <div className="bg-[#667085] rounded-full w-[6px] h-[6px]"></div>
+                            <p>{item.status}</p>
+                          </div>
+                        )}
+                        {item.status.toLowerCase() === "completed" && (
+                          <div className="rounded-2xl py-1 pl-2 pr-4 bg-[#ECFDF3] text-xs w-max flex space-x-2 items-center text-[#027A48]">
+                            <div className="bg-[#12B76A] rounded-full w-[6px] h-[6px]"></div>
+                            <p>{item.status}</p>
+                          </div>
+                        )}
+                        {item.status.toLowerCase() === "declined" && (
+                          <div className="rounded-2xl py-1 pl-2 pr-4 bg-[#FEF3F2] text-xs w-max flex space-x-2 items-center text-[#B42318]">
+                            <div className="bg-[#F04438] rounded-full w-[6px] h-[6px]"></div>
+                            <p>{item.status}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="grid place-content-center py-10">
+                    No Result Found
                   </div>
-                  <div className="border shadow-sm px-2 py-[6px] rounded-md ">
-                    Next
+                )}
+
+                <div className="flex p-4 justify-between text-sm">
+                  <div>
+                    <p>Page 1 0f 10</p>
+                  </div>
+                  <div className="flex items-center space-x-3 text-gray-600">
+                    <div className="border shadow-sm px-2 py-[6px] rounded-md ">
+                      Previous
+                    </div>
+                    <div className="border shadow-sm px-2 py-[6px] rounded-md ">
+                      Next
+                    </div>
                   </div>
                 </div>
               </div>

@@ -73,7 +73,7 @@ function Stage4({ user }) {
           </div>
         </div>
 
-        <div className="py-5 border-b grid grid-cols-12 gap-4 items-center">
+        <div className="py-5 border-b md:grid grid-cols-12 gap-4 items-center">
           <div className="col-span-3 py-5">
             <h1 className="text-[#344054]">Current password</h1>
           </div>
@@ -89,7 +89,7 @@ function Stage4({ user }) {
             />
           </div>
         </div>
-        <div className="py-5 border-b grid grid-cols-12 gap-4 items-center">
+        <div className="py-5 border-b md:grid grid-cols-12 gap-4 items-center">
           <div className="col-span-3 py-5">
             <h1 className="text-[#344054]">New password</h1>
           </div>
@@ -105,7 +105,7 @@ function Stage4({ user }) {
             />
           </div>
         </div>
-        <div className="py-5 border-b grid grid-cols-12 gap-4 items-center">
+        <div className="py-5 border-b md:grid grid-cols-12 gap-4 items-center">
           <div className="col-span-3 py-5">
             <h1 className="text-[#344054]">Re-enter password</h1>
           </div>

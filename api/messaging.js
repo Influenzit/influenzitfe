@@ -12,3 +12,16 @@ export const sendConversationMessage = (id, body) => {
 export const startConversation = (data) => {
     return axiosInstance().post("/messages", data)
 }
+
+// /campaigns/1100/conversation/messages/
+
+//Campaign Messaging
+export const getConversationServiceMessages = (id) => {
+    return axiosInstance().get(`/campaigns/${id}/conversation/messages`);
+}
+export const getServiceConversation = (id) => {
+    return axiosInstance().get(`/campaigns/${id}/conversation`);
+}
+export const sendServiceConversation = (id, data) => {
+    return axiosInstance().post(`/campaigns/${id}/conversation`, data);
+}
