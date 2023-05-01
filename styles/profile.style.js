@@ -615,6 +615,8 @@ export const ConnectFlex = styled.div`
 `;
 export const SocialMediaContainer = styled.div`
     margin: 30px 0;
+    border-bottom: 1px solid #EAEAEB;
+    padding-bottom: 30px;
     h1 {
         font-size: 22px;
         font-weight: 600;
