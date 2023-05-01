@@ -248,7 +248,7 @@ const Services = () => {
     }
   };
 
-  const handleServiceCreation = () => {
+  const handleServiceCreation = async () => {
     let formData = new FormData();
 
     formData.append("coverImage", coverImage);
@@ -283,13 +283,15 @@ const Services = () => {
     createServices(payload)
       .then((res) => {
         console.log(res.data.data);
-        uploadServiceMedia(res.data.data.id, formData) 
+     uploadServiceMedia(res.data.data.id, formData).then(res=>{
 
-        toast.success("Service created successfully", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        window.location.reload();
-        setloading(false);
+      toast.success("Service created successfully", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      window.location.reload();
+      setloading(false);
+       })
+
 
         // handleIncrement();
       })
