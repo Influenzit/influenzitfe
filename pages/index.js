@@ -231,7 +231,7 @@ const Home = () => {
           <h1>A whole world of <span>results-focused</span> influencers at your fingertips.</h1>
           {/* <p>When you choose Influenzit over other solutions, you&apos;ll grow 2.3x faster, and save hundreds of hours wasted on boring manual work.</p> */}
           <NicheWrapper>
-            <NicheCard>
+            <NicheCard onClick={() => router.push(`/explore/influencers?industry=food`)}>
               <ImgW1 id="anim">
                 <Image src="/niche1.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
               </ImgW1>
@@ -240,7 +240,7 @@ const Home = () => {
               </ImgW1>
               <span>Food</span>
             </NicheCard>
-            <NicheCard>
+            <NicheCard onClick={() => router.push(`/explore/influencers?industry=fashion`)}>
               <ImgW1 id="anim">
                 <Image src="/niche2.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
               </ImgW1>
@@ -249,7 +249,7 @@ const Home = () => {
               </ImgW1>
               <span>Fashion</span>
             </NicheCard>
-            <NicheCard>
+            <NicheCard onClick={() => router.push(`/explore/influencers?industry=travel`)}>
               <ImgW1 id="anim">
                 <Image src="/niche3.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
               </ImgW1>
@@ -258,7 +258,7 @@ const Home = () => {
               </ImgW1>
               <span>Travel</span>
             </NicheCard>
-            <NicheCard>
+            <NicheCard onClick={() => router.push(`/explore/influencers?industry=lifestyle`)}>
               <ImgW1 id="anim">
                 <Image src="/niche4.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
               </ImgW1>
@@ -267,7 +267,7 @@ const Home = () => {
               </ImgW1>
               <span>Lifestyle</span>
             </NicheCard>
-            <NicheCard>
+            <NicheCard onClick={() => router.push(`/explore/influencers?industry=technology`)}>
               <ImgW1 id="anim">
                 <Image src="/niche5.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
               </ImgW1>
@@ -276,7 +276,7 @@ const Home = () => {
               </ImgW1>
               <span>Tech</span>
             </NicheCard>
-            <NicheCard>
+            <NicheCard onClick={() => router.push(`/explore/influencers?industry=family`)}>
               <ImgW1 id="anim">
                 <Image src="/niche6.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
               </ImgW1>
@@ -285,7 +285,7 @@ const Home = () => {
               </ImgW1>
               <span>Family &amp; Children</span>
             </NicheCard>
-            <NicheCard>
+            <NicheCard onClick={() => router.push(`/explore/influencers?industry=health`)}>
               <ImgW1 id="anim">
                 <Image src="/niche7.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
               </ImgW1>
@@ -294,7 +294,7 @@ const Home = () => {
               </ImgW1>
               <span>Health &amp; Fitness</span>
             </NicheCard>
-            <NicheCard>
+            <NicheCard onClick={() => router.push(`/explore/influencers?industry=hair`)}>
               <ImgW1 id="anim">
                 <Image src="/niche8.png" alt="" layout='fill' objectFit='cover' objectPosition="center"/>
               </ImgW1>
