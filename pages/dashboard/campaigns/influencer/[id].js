@@ -109,7 +109,7 @@ const Campaigns = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className=" bg-gray-50 min-h-screen">
+    <div className="flex flex-col bg-gray-50 min-h-screen">
       <div className="grid grid-cols-2 md:hidden  px-4 pt-20 space-x-4 w-full border-b mb-4">
         <button
           onClick={() => {

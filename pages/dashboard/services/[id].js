@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import LandingLayout from "../../../layouts/landing.layout";
 import Image from "next/image";
+import Link from "next/link";
 import Preview_image from "../../../assets/previewImage.png";
 import Accordion from "../../../components/service/accordion";
 import { useRouter } from "next/router";
@@ -77,7 +78,10 @@ function Preview() {
      <button
        onClick={() => {
          setstate(1);
-         setpackageBody(singleService?.packages[1]);
+         if(singleService?.packages[1]){
+
+           setpackageBody(singleService?.packages[1]);
+          }
        }}
        className={`${
          state === 1
@@ -90,7 +94,10 @@ function Preview() {
      <button
        onClick={() => {
          setstate(2);
-         setpackageBody(singleService?.packages[2]);
+         if(singleService?.packages[2]){
+
+           setpackageBody(singleService?.packages[2]);
+         }
        }}
        className={`${
          state === 2
@@ -148,9 +155,9 @@ function Preview() {
                     <h1 className="font-medium"> {singleService.user.name} </h1>
                     <p>Nigeria</p>
                   </div>
-                  <button className="px-4 py-3 bg-[#2A2939] text-white rounded-lg">
+                  <a href='/dashboard/profile' className="px-4 py-3 bg-[#2A2939] block text-white rounded-lg">
                     View profile
-                  </button>
+                  </a>
                 </div>
               </div>
 
@@ -164,7 +171,7 @@ function Preview() {
                   />
                 ))}
             </div>
-            <div className="md:flex hidden col-span-4">
+            <div className="md:block  hidden col-span-4">
               <div className="border rounded-lg">
                 <div className="w-full flex">
                   <button
@@ -183,7 +190,11 @@ function Preview() {
                   <button
                     onClick={() => {
                       setstate(1);
-                      setpackageBody(singleService?.packages[1]);
+                      if(singleService?.packages[1]){
+
+                        setpackageBody(singleService?.packages[1]);
+                      }
+
                     }}
                     className={`${
                       state === 1
@@ -196,7 +207,11 @@ function Preview() {
                   <button
                     onClick={() => {
                       setstate(2);
-                      setpackageBody(singleService?.packages[2]);
+                      if(singleService?.packages[2]){
+                        
+                        setpackageBody(singleService?.packages[2]);
+                      }
+
                     }}
                     className={`${
                       state === 2
