@@ -105,8 +105,19 @@ const LandingLayout = ({children, title, description}) => {
     return (
       <Container>
          <Head>
-          <title>{title ? title : "Influenzit"}</title>
+          <title>{title ? title : "INFLUENZIT  - The Number One Influencer Marketing Platform In Nigeria."}</title>
           <meta name="description" content={description} />
+          <meta name="keyword" content="Influencer marketing company in Nigeria, The best influencer marketing platform in Nigeria, Influencer marketing company 2023, 
+          The best influencer marketing platform 2023, Influencer marketing pricing in Nigeria, How to find influencers to grow my business, How to find influencers 
+          to promote products in Nigeria, Influencer marketing strategy 2023, Influencer marketing strategy, Influencer marketing cost 2023, Influencer marketing cost 
+          in Nigeria, Influencer marketing agency in Nigeria, Influencer marketing agency 2023, Influencer marketing platform in Nigeria, Nigeria influencer marketing platform, 
+          Nigeria influencer marketing agency, Nigeria macro influencers 2023, Nigeria macro influencers, Macro influencers in Nigeria, Online marketing influencers in Nigeria, Influencer marketplace in Nigeria, The best influencer marketing 
+          agency in Nigeria, The best influencer marketing agency, Influencer campaign 2023, Influencer campaign in Nigeria, 
+          Influencer marketing companies in Nigeria, Influencer marketing companies 2023, Influencers marketing services in Nigeria, Influencers marketing services, Influenzit 
+          influencers, Influenzit marketing platform, Influenzit pricing, Influencers marketing platform for business owners in Nigeria, Influencers marketing website in Nigeria, 
+          Influencer marketing website 2023, Using Nigerian influencers for marketing, Paid influencer marketing, Influencers promoting business in Nigeria, Best influencer marketing 
+          platform for small businesses in Nigeria, Influencers to promote your business in Nigeria, Find influencers to promote your business, Platform to connect influencers with brands in Nigeria, 
+          Influenzit, what is influenzit, influenzit sign-up page, influenzit login page, who created influenzit" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
         {(!!user && user?.is_admin) ? (

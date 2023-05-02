@@ -43,7 +43,7 @@ const CreatorProfile = () => {
     };
     const generateCountryData = () => {
         let cData = [];
-        JSON.parse(inData?.analytics?.youtube?.countryviews ?? "[]").forEach((val, i) => (
+        JSON.parse(inData?.analytics?.youtube?.countryviews === 0 ? false : inData?.analytics?.youtube?.countryviews ?? "[]").forEach((val, i) => (
             cData.push({
                 country: val[0].toLocaleLowerCase(),
                 value: val[1]
@@ -64,7 +64,7 @@ const CreatorProfile = () => {
     }
     const generateTotalCount = () => {
         let cData = 0;
-        JSON.parse(inData?.analytics?.youtube?.countryviews ?? "[]").forEach((val, i) => (
+        JSON.parse(inData?.analytics?.youtube?.countryviews === 0 ? false : inData?.analytics?.youtube?.countryviews ?? "[]").forEach((val, i) => (
             cData += val[1]
         ))
         return cData;
@@ -108,7 +108,7 @@ const CreatorProfile = () => {
     }
     const generateGenderData = () => {
         const eData = [
-            ["Task", "Hours per Day"],
+            ["Gender", "Count"],
             ...JSON.parse(inData?.analytics?.youtube?.genderviewerPercentage)
         ]
         return eData;
@@ -620,7 +620,21 @@ const CreatorProfile = () => {
                                 {
                                     currentTab === "tiktok" && inData?.tiktok_verified ? (
                                         <Content>
-
+                                            <h3>Influencer Summary</h3>
+                                            <AnalyticStats style={{ marginBottom: "20px" }}>
+                                                <Stat>
+                                                    <h1>{numberFormatter(Number(inData?.analytics?.tiktok?.following_count))}</h1>
+                                                    <p>Following</p>
+                                                </Stat>
+                                                <Stat isCenter>
+                                                    <h1>{numberFormatter(Number(inData?.analytics?.tiktok?.follower_count))}</h1>
+                                                    <p>Followers</p>
+                                                </Stat>
+                                                <Stat>
+                                                    <h1>{numberFormatter(Number(inData?.analytics?.tiktok?.likes_count))}</h1>
+                                                    <p>Likes Count</p>
+                                                </Stat>
+                                            </AnalyticStats>
                                         </Content>
                                     ) : (currentTab === "tiktok") && (
                                         <Content>
@@ -724,6 +738,9 @@ const CreatorProfile = () => {
                                                         </div>
                                                     </StatsCard>
                                                 </Flex>
+                                                <div style={{ marginTop: "20px" }}>
+                                                    <Image src={"/youtube-full.png"} height={35} width={156.1} />
+                                                </div>
                                             </PerformanceCont>
                                         </Content>
                                     ) : (currentTab === "youtube") && (

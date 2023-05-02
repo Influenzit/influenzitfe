@@ -14,6 +14,7 @@ import { Logo } from '../../components/nav/style';
 import Image from 'next/image';
 import { useEffect } from 'react';
 import Loader from '../../components/loading'
+import Head from 'next/head';
 
 const Register = () => {
   const router = useRouter();
@@ -274,6 +275,10 @@ const Register = () => {
 
     <>
     <AuthFlex>
+    <Head>
+          <title>{"Influenzit Registration Page"}</title>
+          <meta name="description" content="INFLUENZIT  discovering the top influencers for your product. Efficiently identifying and engaging with the most relevant key creators for your brand, then start driving revenue from their audiences." />
+    </Head>
     <FormWrapper>
           <div style={{ margin: "20px 0 40px 0"}}>
             <Logo href="/">

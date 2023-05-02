@@ -397,7 +397,7 @@ const Home = () => {
 }
 Home.getLayout = (page) => {
   return (
-    <LandingLayout>
+    <LandingLayout description={" INFLUENZIT  discovering the top influencers for your product. Efficiently identifying and engaging with the most relevant key creators for your brand, then start driving revenue from their audiences."}>
       {page}
     </LandingLayout>
   )
