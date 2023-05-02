@@ -1,27 +1,34 @@
 import { axiosInstance } from "./axios";
 
 export const getConversations = () => {
-    return axiosInstance().get("/messaging/conversations");
-}
+  return axiosInstance().get("/messaging/conversations");
+};
 export const getConversationMessages = (id) => {
-    return axiosInstance().get("/messaging/conversations/" + id + "/messages");
-}
+  return axiosInstance().get("/messaging/conversations/" + id + "/messages");
+};
 export const sendConversationMessage = (id, body) => {
-    return axiosInstance().post("/messaging/conversations/" + id + "/messages", body);
-}
+  return axiosInstance().post(
+    "/messaging/conversations/" + id + "/messages",
+    body
+  );
+};
 export const startConversation = (data) => {
-    return axiosInstance().post("/messages", data)
-}
+  return axiosInstance().post("/messages", data);
+};
 
 // /campaigns/1100/conversation/messages/
 
-//Campaign Messaging
-export const getConversationServiceMessages = (id) => {
-    return axiosInstance().get(`/campaigns/${id}/conversation/messages`);
-}
-export const getServiceConversation = (id) => {
-    return axiosInstance().get(`/campaigns/${id}/conversation`);
-}
-export const sendServiceConversation = (id, data) => {
-    return axiosInstance().post(`/campaigns/${id}/conversation`, data);
-}
+//Service Messaging
+export const getConversationServiceMessages = (service, id) => {
+    return axiosInstance().get(`/${service}/${id}/conversation/messages`);
+};
+export const getServiceConversation = (service, id) => {
+    if (service === "campaigns")
+
+  return axiosInstance().get(`/${service}/${id}/conversation`);
+  else return axiosInstance().get(`/${service}/${id}/conversations`);
+
+};
+export const sendServiceConversation = (service, id, data) => {
+  return axiosInstance().post(`/${service}/${id}/conversation`, data);
+};

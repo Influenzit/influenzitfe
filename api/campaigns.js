@@ -34,6 +34,9 @@ export const rejectCampaignMilestone = (id, milestoneId) => {
 export const updateCampaign = (id, data) => {
   return axiosInstance().patch(`/campaigns/${id}`, data);
 };
+export const updateCampaignReview = (id, data) => {
+  return axiosInstance().post(`/campaigns/${id}/reviews`, data);
+};
 export const handleCreateCampaign = (data) => {
   return axiosInstance().post(`/campaigns`, data);
 };

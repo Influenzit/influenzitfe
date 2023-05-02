@@ -97,7 +97,7 @@ const Campaigns = () => {
 
   const payload = {
     title: campaignName,
-    amount: +amount,
+    amount: 0,
     currency: "NGN",
     description: description,
     status: "Pending",

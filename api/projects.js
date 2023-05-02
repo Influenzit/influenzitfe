@@ -18,3 +18,6 @@ export const updateProjectMilestone = (id, data, milestoneId) => {
 export const updateProject = (id, data) => {
     return axiosInstance().patch(`/projects/${id}`, data,)
 }
+export const submitRequirement = (id, reqId, data) => {
+    return axiosInstance().post(`/projects/${id}/requirements/${reqId}/submit`, data,)
+}
