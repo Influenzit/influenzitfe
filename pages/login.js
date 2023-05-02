@@ -242,7 +242,7 @@ const Login = () => {
   )
 }
 Login.getLayout = (page) => (
-    <LandingLayout>
+    <LandingLayout title="Influenzit Login Page">
         {page}
     </LandingLayout>
 )
