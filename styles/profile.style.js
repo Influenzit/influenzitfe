@@ -615,9 +615,22 @@ export const ConnectFlex = styled.div`
 `;
 export const SocialMediaContainer = styled.div`
     margin: 30px 0;
+    border-bottom: 1px solid #EAEAEB;
+    padding-bottom: 30px;
     h1 {
         font-size: 22px;
         font-weight: 600;
+    }
+    #connect-btn {
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        column-gap: 10px;
+        padding: 7px 0px;
+        border-radius: 5px;
+        background: transparent;
+        outline: none;
+        border: none;
     }
      a {
         font-size: 14px;
@@ -626,7 +639,7 @@ export const SocialMediaContainer = styled.div`
         column-gap: 10px;
         padding: 7px 15px;
         border-radius: 5px;
-        background: #FCEDEF;
+        background: transparent;
     }
 `;
 export const SocialCard = styled.div`
@@ -636,6 +649,12 @@ export const SocialCard = styled.div`
     border-radius: 16px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    span {
+        color: ${colors.primaryColor};
+        font-size: 12px;
+        font-weight: 600;
+    }
     div {
         button {
             outline: none;
@@ -657,6 +676,14 @@ export const SocialCard = styled.div`
             color: #fff;
             background: ${colors.textColor};
             margin-left: 10px;
+        }
+    }
+    ${breakpoints.sm}{
+        flex-direction: column;
+        text-align: center;
+        button:last-of-type {
+            margin-left: 0;
+            margin-top: 14px;
         }
     }
 `;
