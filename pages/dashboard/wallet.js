@@ -244,7 +244,7 @@ const Campaigns = () => {
           }}
           className="bg-primary-100 py-2 px-4 rounded-lg text-white"
         >
-          Withdraw from wallett
+          Withdraw from wallet
         </button>
       </div>
 
