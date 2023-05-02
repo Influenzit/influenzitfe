@@ -37,6 +37,7 @@ const Campaigns = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [getUrl, setGetUrl] = useState("");
+  const [conversationId, setconversationId] = useState(null);
   const [newCamPaign, setNewCampaign] = useState(false);
   const [activetab, setactivetab] = useState("milestone");
   const [activeScreen, setactiveScreen] = useState("detail");
@@ -77,6 +78,7 @@ const Campaigns = () => {
       .then((res) => {
         console.log(res);
         setSingleCampaign(res.data.data);
+        setconversationId(res.data.data.conversation.id);
       })
       .catch((err) => {
         console.log(err.response);
@@ -137,7 +139,7 @@ const Campaigns = () => {
       {activeScreen === "detail" ? (
         <div>
           {singlecampaign !== null ? (
-            <div className="w-full md:mr-[500px] md:pt-28 pt-4 md:px-10 px-4 ">
+            <div className="w-full md:pr-[500px]  md:pt-28 pt-4 md:px-10 px-4 ">
               <div>
                 <h1 className="text-xl font-bold">{singlecampaign.title}</h1>
                 <div className="my-4">
@@ -202,7 +204,7 @@ const Campaigns = () => {
                   </button>
                 </div>
                 {activetab == "milestone" && (
-                  <div className="let swipeIn">
+                  <div className="">
                     <h1 className="text-xl font-semibold my-6">Milestone</h1>
 
                     <div className="realtive">
@@ -254,6 +256,21 @@ const Campaigns = () => {
                                       : "Submit"}
                                   </button>
                                 )}
+                                {item.status === "Disputed" && (
+                                  <button
+                                    onClick={() => {
+                                      updateCampaignMilsestone(
+                                        "Reviewing",
+                                        item.id
+                                      );
+                                    }}
+                                    className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white"
+                                  >
+                                    {isUpdating && item.id === clickedkMileStone
+                                      ? "Updating"
+                                      : "Re-Submit"}
+                                  </button>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -262,7 +279,7 @@ const Campaigns = () => {
                   </div>
                 )}
                 {activetab == "requirement" && (
-                  <div className="let swipeIn">Requirement </div>
+                  <div className="">Requirement </div>
                 )}
 
                 {/*    <div className="flex justify-end my-12">
@@ -276,7 +293,11 @@ const Campaigns = () => {
         </div>
       ) : (
         <div className=" md:w-[480px] w-full  right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto  pb-4 px-4">
-          <Chat serviceId={id} service="campaign" />
+          <Chat
+            serviceId={id}
+            service="campaigns"
+            conversationId={conversationId}
+          />
         </div>
       )}
 
@@ -285,9 +306,12 @@ const Campaigns = () => {
       }
 
       <div className=" md:w-[480px] fixed md:block hidden right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto  pb-4 px-4">
-        <Chat serviceId={id} service="campaign" />
+        <Chat
+          serviceId={id}
+          service="campaigns"
+          conversationId={conversationId}
+        />
       </div>
-
     </div>
   );
 };
@@ -295,4 +319,4 @@ const Campaigns = () => {
 Campaigns.getLayout = (page) => <LandingLayout>{page}</LandingLayout>;
 
 export default Campaigns;
-// py-28 px-12
+// py-28 md:px-12 px-4

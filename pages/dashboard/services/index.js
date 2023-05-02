@@ -256,16 +256,6 @@ const Services = () => {
     formData.append("image2", image2);
     formData.append("image3", image3);
     formData.append("image4", image4);
-    // formData.append("name", title);
-    // formData.append("description", description);
-    // formData.append("type", "project");
-    // formData.append("price", +price);
-    // formData.append("currency", "NGN");
-    // formData.append("is_negotiable", true);
-    // formData.append("link", "http://johndoe.myname.com/services/social-media");
-    // formData.append("packages", JSON.stringify(packages));
-    // formData.append("faqs", JSON.stringify(faqs));
-    // formData.append("requirements", JSON.stringify(requirements));
     setloading(true);
 
     const payload = {
@@ -283,15 +273,13 @@ const Services = () => {
     createServices(payload)
       .then((res) => {
         console.log(res.data.data);
-     uploadServiceMedia(res.data.data.id, formData).then(res=>{
-
-      toast.success("Service created successfully", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      window.location.reload();
-      setloading(false);
-       })
-
+        uploadServiceMedia(res.data.data.id, formData).then((res) => {
+          toast.success("Service created successfully", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          window.location.reload();
+          setloading(false);
+        });
 
         // handleIncrement();
       })
@@ -332,7 +320,7 @@ const Services = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="py-28 px-12">
+    <div className="py-28 md:px-12 px-4">
       <div className="flex justify-between mb-6">
         <h1 className="text-xl">My Services</h1>
       </div>
@@ -347,7 +335,10 @@ const Services = () => {
               >
                 <Link href={`/dashboard/services/${x.id}`}>
                   <Image
-                    src={x.media[0]?.url || "http://localhost:3000/web-services.jpg"}
+                    src={
+                      x.media[0]?.url ||
+                      "http://localhost:3000/web-services.jpg"
+                    }
                     alt="title_image"
                     className="h-full w-full object-cover rounded-t-lg"
                     width="100%"
