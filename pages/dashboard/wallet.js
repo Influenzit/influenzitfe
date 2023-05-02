@@ -234,7 +234,7 @@ const Campaigns = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="py-28 px-12">
+    <div className="py-28 md:px-12 px-4">
       <div className="flex justify-between mb-6">
         <h1 className="text-xl">Wallet</h1>
 
@@ -244,7 +244,7 @@ const Campaigns = () => {
           }}
           className="bg-primary-100 py-2 px-4 rounded-lg text-white"
         >
-          Fund wallet
+          Withdraw from wallet
         </button>
       </div>
 
@@ -321,7 +321,7 @@ const Campaigns = () => {
           </div>
 
           <div className=" grid md:grid-cols-2 mt-10  py-4 bg-white  ">
-           {/*  <div className=" flex space-x-3 px-3 rounded-lg border  bg-transparent outline-none w-full">
+            {/*  <div className=" flex space-x-3 px-3 rounded-lg border  bg-transparent outline-none w-full">
               <div className=" py-3  grid place-content-center">
                 <Image src={search} alt="search" />
               </div>

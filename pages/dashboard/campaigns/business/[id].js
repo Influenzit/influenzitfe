@@ -10,7 +10,7 @@ import {
   rejectCampaignMilestone,
   getCampaign,
   getCampaignInvoice,
-  updateCampaignReview
+  updateCampaignReview,
 } from "../../../../api/campaigns";
 import { setLoading } from "../../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../../assets/svgIcons";
@@ -91,7 +91,7 @@ const Campaigns = () => {
       .then((res) => {
         console.log(res);
         setSingleCampaign(res.data.data);
-        setconversationId(res.data.data.conversation.id)
+        setconversationId(res.data.data.conversation.id);
       })
       .catch((err) => {
         console.log(err.response);
@@ -148,37 +148,35 @@ const Campaigns = () => {
     }
   };
   const handleUpdateCampaignReview = (campaignId, idx) => {
-    if(!comment || !rating)
-    {
+    if (!comment || !rating) {
       toast.error("Comment is required", {
         position: toast.POSITION.TOP_RIGHT,
       });
-      return 
+      return;
     }
     const payload = {
       comment,
-      rating
-  }
-setloading(true)
+      rating,
+    };
+    setloading(true);
     updateCampaignReview(id, payload)
-    .then((res) => {
-      console.log(res);
-      toast.success("Rating updated succesfully", {
-        position: toast.POSITION.TOP_RIGHT,
+      .then((res) => {
+        console.log(res);
+        toast.success("Rating updated succesfully", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+
+        handleCloseReview();
+        setloading(false);
+      })
+      .catch((err) => {
+        setloading(false);
+
+        console.log(err.response);
+        toast.error(err.response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       });
-
-      handleCloseReview()
-      setloading(false)
-
-    })
-    .catch((err) => {
-      setloading(false)
-
-      console.log(err.response);
-      toast.error(err.response.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    });
   };
   const ratingChanged = (newRating) => {
     console.log(newRating);
@@ -483,7 +481,11 @@ setloading(true)
         </div>
       ) : (
         <div className=" md:w-[480px] w-full  right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto  pb-4 px-4">
-          <Chat serviceId={id} service="campaigns" conversationId={conversationId} />
+          <Chat
+            serviceId={id}
+            service="campaigns"
+            conversationId={conversationId}
+          />
         </div>
       )}
 
@@ -492,11 +494,23 @@ setloading(true)
       }
 
       <div className=" md:w-[480px] fixed md:block hidden right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto  pb-4 px-4">
-        <Chat serviceId={id} service="campaigns" conversationId={conversationId}/>
+        <Chat
+          serviceId={id}
+          service="campaigns"
+          conversationId={conversationId}
+        />
       </div>
 
       {isRejected && <RejectModal handleClose={handleClose} />}
-      {isAccepted && <Review handleClose={handleCloseReview} handleUpdateCampaignReview={handleUpdateCampaignReview}  setrating={setrating} setcomment={setcomment} loading={loading} />}
+      {isAccepted && (
+        <Review
+          handleClose={handleCloseReview}
+          handleUpdateCampaignReview={handleUpdateCampaignReview}
+          setrating={setrating}
+          setcomment={setcomment}
+          loading={loading}
+        />
+      )}
     </div>
   );
 };
@@ -504,4 +518,4 @@ setloading(true)
 Campaigns.getLayout = (page) => <LandingLayout>{page}</LandingLayout>;
 
 export default Campaigns;
-// py-28 px-12
+// py-28 md:px-12 px-4

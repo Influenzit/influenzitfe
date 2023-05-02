@@ -76,8 +76,7 @@ const Campaigns = () => {
       .then((res) => {
         console.log(res);
         setSingleproject(res.data.data);
-        setconversationId(res.data.data?.conversation.id || null)
-
+        setconversationId(res.data.data?.conversation.id || null);
       })
       .catch((err) => {
         console.log(err.response);
@@ -204,14 +203,11 @@ const Campaigns = () => {
                 <p> {item.title} </p>
               </div>
 
-           
               <div className="bg-white border w-full flex space-x-2 item-center border-gray-200 px-4 py-5 rounded-lg ">
                 {item.format === "text" ? (
                   <div>
                     {item.submissions.map((x, id) => (
-                      <div
-                        key={id}
-                      >
+                      <div key={id}>
                         {id + 1}. {x.content}
                       </div>
                     ))}
@@ -219,19 +215,19 @@ const Campaigns = () => {
                 ) : (
                   <div>
                     {item.submissions.map((x, id) => (
-                      <div
-                        key={id}
-                      >
-                      {x.media.map((v, idx) => ( <div key={idx}                        className="p-2 border outline-none flex-1 rounded-md w-full"
-                      > 
-                      <div>{v.url}</div>
-                        
-                        </div> ))}
+                      <div key={id}>
+                        {x.media.map((v, idx) => (
+                          <div
+                            key={idx}
+                            className="p-2 border outline-none flex-1 rounded-md w-full"
+                          >
+                            <div>{v.url}</div>
+                          </div>
+                        ))}
                       </div>
                     ))}
                   </div>
                 )}
-               
               </div>
             </div>
           ))}
@@ -245,7 +241,11 @@ const Campaigns = () => {
       }
 
       <div className=" md:w-[480px] md:fixed right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto  pb-4 px-4">
-        <Chat serviceId={id} service="projects" conversationId={conversationId} />
+        <Chat
+          serviceId={id}
+          service="projects"
+          conversationId={conversationId}
+        />
       </div>
 
       {isRejected && <RejectModal handleClose={handleClose} />}
@@ -257,4 +257,4 @@ const Campaigns = () => {
 Campaigns.getLayout = (page) => <LandingLayout>{page}</LandingLayout>;
 
 export default Campaigns;
-// py-28 px-12
+// py-28 md:px-12 px-4

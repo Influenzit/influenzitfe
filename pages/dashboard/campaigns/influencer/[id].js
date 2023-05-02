@@ -78,8 +78,7 @@ const Campaigns = () => {
       .then((res) => {
         console.log(res);
         setSingleCampaign(res.data.data);
-        setconversationId(res.data.data.conversation.id)
-
+        setconversationId(res.data.data.conversation.id);
       })
       .catch((err) => {
         console.log(err.response);
@@ -294,7 +293,11 @@ const Campaigns = () => {
         </div>
       ) : (
         <div className=" md:w-[480px] w-full  right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto  pb-4 px-4">
-          <Chat serviceId={id} service="campaigns" conversationId={conversationId}/>
+          <Chat
+            serviceId={id}
+            service="campaigns"
+            conversationId={conversationId}
+          />
         </div>
       )}
 
@@ -303,7 +306,11 @@ const Campaigns = () => {
       }
 
       <div className=" md:w-[480px] fixed md:block hidden right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto  pb-4 px-4">
-        <Chat serviceId={id} service="campaigns" conversationId={conversationId}/>
+        <Chat
+          serviceId={id}
+          service="campaigns"
+          conversationId={conversationId}
+        />
       </div>
     </div>
   );
@@ -312,4 +319,4 @@ const Campaigns = () => {
 Campaigns.getLayout = (page) => <LandingLayout>{page}</LandingLayout>;
 
 export default Campaigns;
-// py-28 px-12
+// py-28 md:px-12 px-4

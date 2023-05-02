@@ -76,8 +76,7 @@ const Campaigns = () => {
       .then((res) => {
         console.log(res);
         setSingleproject(res.data.data);
-        setconversationId(res.data.data?.conversation.id || null)
-
+        setconversationId(res.data.data?.conversation.id || null);
       })
       .catch((err) => {
         console.log(err.response);
@@ -250,7 +249,11 @@ const Campaigns = () => {
       }
 
       <div className=" md:w-[480px] md:fixed right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto  pb-4 px-4">
-        <Chat serviceId={id} service="projects" conversationId={conversationId} />
+        <Chat
+          serviceId={id}
+          service="projects"
+          conversationId={conversationId}
+        />
       </div>
 
       {isRejected && <RejectModal handleClose={handleClose} />}
@@ -262,4 +265,4 @@ const Campaigns = () => {
 Campaigns.getLayout = (page) => <LandingLayout>{page}</LandingLayout>;
 
 export default Campaigns;
-// py-28 px-12
+// py-28 md:px-12 px-4
