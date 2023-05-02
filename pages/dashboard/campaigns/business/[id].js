@@ -10,6 +10,7 @@ import {
   rejectCampaignMilestone,
   getCampaign,
   getCampaignInvoice,
+  updateCampaignReview,
 } from "../../../../api/campaigns";
 import { setLoading } from "../../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../../assets/svgIcons";
@@ -53,6 +54,10 @@ const Campaigns = () => {
   const [singlecampaignInvoice, setSingleCampaignInvoice] = useState([]);
   const [paystackConfig, setPaystackConfig] = useState({});
   const [activeScreen, setactiveScreen] = useState("detail");
+  const [comment, setcomment] = useState("");
+  const [rating, setrating] = useState("");
+  const [loading, setloading] = useState(false);
+  const [conversationId, setconversationId] = useState(null);
 
   const [makePayment, setmakePayment] = useState(false);
   const [triggerPayment, settriggerPayment] = useState(false);
@@ -86,6 +91,7 @@ const Campaigns = () => {
       .then((res) => {
         console.log(res);
         setSingleCampaign(res.data.data);
+        setconversationId(res.data.data.conversation.id);
       })
       .catch((err) => {
         console.log(err.response);
@@ -101,7 +107,7 @@ const Campaigns = () => {
         console.log(err.response);
       });
   };
-  const updateCampaignMilsestone = (status, campaignId) => {
+  const updateCampaignMilsestone = (status, campaignId, idx) => {
     const payload = {
       status: status,
     };
@@ -112,7 +118,11 @@ const Campaigns = () => {
           toast.success("Milestone updated succesfully", {
             position: toast.POSITION.TOP_RIGHT,
           });
+
           handleGetSingleCampaign();
+          if (singlecampaign.milestones.length - 1 === idx) {
+            setisAccepted(true);
+          }
         })
         .catch((err) => {
           console.log(err.response);
@@ -136,6 +146,37 @@ const Campaigns = () => {
           });
         });
     }
+  };
+  const handleUpdateCampaignReview = (campaignId, idx) => {
+    if (!comment || !rating) {
+      toast.error("Comment is required", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+    const payload = {
+      comment,
+      rating,
+    };
+    setloading(true);
+    updateCampaignReview(id, payload)
+      .then((res) => {
+        console.log(res);
+        toast.success("Rating updated succesfully", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+
+        handleCloseReview();
+        setloading(false);
+      })
+      .catch((err) => {
+        setloading(false);
+
+        console.log(err.response);
+        toast.error(err.response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      });
   };
   const ratingChanged = (newRating) => {
     console.log(newRating);
@@ -253,7 +294,7 @@ const Campaigns = () => {
       {activeScreen === "detail" ? (
         <div>
           {singlecampaign !== null ? (
-            <div className="w-full md:mr-[500px] md:pt-28 pt-4 md:px-10 px-4 ">
+            <div className="w-full md:pr-[500px] md:pt-28 pt-4 md:px-10 px-4 ">
               <h1 className="text-xl font-bold">{singlecampaign.title}</h1>
               <div className="my-4">
                 <div className="grid md:grid-cols-3 gap-4">
@@ -317,10 +358,10 @@ const Campaigns = () => {
                 </button>
               </div>
               {activetab == "milestone" && (
-                <div className="let swipeIn">
+                <div className="">
                   <h1 className="text-xl font-semibold my-6">Milestone</h1>
 
-                  <div className="realtive">
+                  <div className="relative">
                     {
                       //============================= Tracker==========================
                     }
@@ -349,7 +390,11 @@ const Campaigns = () => {
                               <div className="flex items-center space-x-2">
                                 <button
                                   onClick={() => {
-                                    updateCampaignMilsestone("accept", item.id);
+                                    updateCampaignMilsestone(
+                                      "accept",
+                                      item.id,
+                                      idx
+                                    );
                                   }}
                                   className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white"
                                 >
@@ -375,7 +420,7 @@ const Campaigns = () => {
                 </div>
               )}
               {activetab == "invoice" && (
-                <div className="let swipeIn">
+                <div className="">
                   <div className="">
                     {
                       //============================= Tracker==========================
@@ -436,7 +481,11 @@ const Campaigns = () => {
         </div>
       ) : (
         <div className=" md:w-[480px] w-full  right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto  pb-4 px-4">
-          <Chat serviceId={id} service="campaign" />
+          <Chat
+            serviceId={id}
+            service="campaigns"
+            conversationId={conversationId}
+          />
         </div>
       )}
 
@@ -445,11 +494,23 @@ const Campaigns = () => {
       }
 
       <div className=" md:w-[480px] fixed md:block hidden right-0 bg-white border-l border-[#EAEAEB] h-screen overflow-y-auto  pb-4 px-4">
-        <Chat serviceId={id} service="campaign" />
+        <Chat
+          serviceId={id}
+          service="campaigns"
+          conversationId={conversationId}
+        />
       </div>
 
       {isRejected && <RejectModal handleClose={handleClose} />}
-      {isAccepted && <Review handleClose={handleCloseReview} />}
+      {isAccepted && (
+        <Review
+          handleClose={handleCloseReview}
+          handleUpdateCampaignReview={handleUpdateCampaignReview}
+          setrating={setrating}
+          setcomment={setcomment}
+          loading={loading}
+        />
+      )}
     </div>
   );
 };
@@ -457,4 +518,4 @@ const Campaigns = () => {
 Campaigns.getLayout = (page) => <LandingLayout>{page}</LandingLayout>;
 
 export default Campaigns;
-// py-28 px-12
+// py-28 md:px-12 px-4

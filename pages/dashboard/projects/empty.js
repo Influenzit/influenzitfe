@@ -93,7 +93,7 @@ const Campaigns = () => {
     refetch();
   }, [getUrl]);
   return (
-    <div className="py-28 px-12 b0">
+    <div className="py-28 md:px-12 px-4 b0">
       <div className="flex justify-between mb-6">
         <div className="flex items-center">
           <h1 className="text-xl">My Projects </h1>

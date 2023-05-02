@@ -62,7 +62,7 @@ function Stage4({ user }) {
   };
   return (
     <div>
-      <div className="let swipeIn">
+      <div className="">
         <div className="flex items-center justify-between py-5 border-b">
           <div>
             {" "}
