@@ -271,26 +271,6 @@ const Dashboard = () => {
                     <SettingsIcon />
                 </Card>
             </CardsWrapper>
-            <ChartContainer>
-                <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart
-                    width={500}
-                    height={400}
-                    data={data}
-                    margin={{
-                        top: 10,
-                        right: 30,
-                        left: 0,
-                        bottom: 0,
-                    }}
-                    >
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Area type="monotone" dataKey="uv" stroke="#12544D" fill="#12544D" />
-                    </AreaChart>
-                </ResponsiveContainer>
-            </ChartContainer>
             <TableWrapper style={{ marginBottom: "15px" }}>
                     <TableHeader>
                         <h2>Niches</h2>

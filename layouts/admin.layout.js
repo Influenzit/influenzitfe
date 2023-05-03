@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Nav from '../components/admin-nav'
 import Footer from '../components/footer'
 import Loader from '../components/loading'
-import { Container } from '../styles/landing.style'
+import { Container, Content, Wrapper } from '../styles/landing.style'
 import DashboardFooter from '../components/dashboard-footer'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUser, updateUser } from '../app/reducers/user'
@@ -14,6 +14,7 @@ import SuccessPopup from '../components/success-popup'
 import { hasAValidAccount } from '../helpers/helper'
 import { useQuery } from '@tanstack/react-query'
 import { getUserAccount } from '../api/auth'
+import Sidebar from 'components/admin-sidebar'
 
 const AdminLayout = ({ children, title, description }) => {
   const user = useSelector(getUser);
@@ -75,7 +76,12 @@ const AdminLayout = ({ children, title, description }) => {
         {loadingStatus && <Loader />}
         {errorStatus && <ErrorPopup message={message} />}
         {successStatus && <SuccessPopup message={message} />}
-        <main>{children}</main>
+        <Wrapper>
+            {router.pathname.includes("/dashboard") && <Sidebar />}
+            <Content isPadded={router.pathname.includes("/dashboard")}>
+              {children}
+            </Content>
+          </Wrapper>
         <DashboardFooter />
       </Container>
     )

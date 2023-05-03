@@ -219,13 +219,18 @@ export const Checkbox = styled.button`
     cursor: pointer;
 `;
 export const ActionBtn = styled.button`
-    background: #F0F1FF;
-    padding: 10px 15px;
-    border-radius: 5px;
+    outline: none;
+    background: transparent;
     border: none;
-    color: #333;
-    font-weight: 500;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    background: #FCEDEF;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: ${colors.textColor};
 `;
 export const WelcomeModal = styled.div`
     background: #fff;
