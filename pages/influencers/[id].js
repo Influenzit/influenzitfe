@@ -109,7 +109,7 @@ const CreatorProfile = () => {
     const generateGenderData = () => {
         const eData = [
             ["Gender", "Count"],
-            ...JSON.parse(inData?.analytics?.youtube?.genderviewerPercentage)
+            ...JSON.parse(inData?.analytics?.youtube?.genderviewerPercentage === 0 ? false : inData?.analytics?.youtube?.genderviewerPercentage ?? "[]")
         ]
         return eData;
     }
