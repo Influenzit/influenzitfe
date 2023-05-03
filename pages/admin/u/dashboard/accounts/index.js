@@ -73,18 +73,15 @@ useEffect(() => {
                 <TableHeader>
                     <h2>Validate Users</h2>
                 </TableHeader>
-                <TableControls>
+                {/* <TableControls>
                         <SearchContainer>
                             <input type="text" placeholder="Search by user"/>
                             <button>
                                 <Image src="/search-b.svg" alt="" height={22} width={22}/>
                             </button>
-                        </SearchContainer>
-                </TableControls>
+                        </SearchContainer> 
+                </TableControls> */}
                 <TableWrapper style={{ marginBottom: "15px" }}>
-                    <TableHeader>
-                        <h2>Users</h2>
-                    </TableHeader>
                     <TableContent>
                     <Table>
                         <THead>
@@ -93,7 +90,7 @@ useEffect(() => {
                                     <Checkbox>
                                     </Checkbox>
                                 </Th>
-                                <Th cellWidth="400px">Fullname</Th>
+                                <Th cellWidth="250px">Fullname</Th>
                                 <Th cellWidth="150px">Join Date</Th>
                                 <Th cellWidth="250px">Email</Th>
                                 <Th cellWidth="120px">Status</Th>
@@ -108,7 +105,7 @@ useEffect(() => {
                                             <Checkbox>
                                             </Checkbox>
                                         </Td>
-                                        <Td cellWidth="400px">{val.firstname} {val.lastname}</Td>
+                                        <Td cellWidth="250px">{val.firstname} {val.lastname}</Td>
                                         <Td cellWidth="150px">{val.created_at ? (new Date(val.created_at)).toDateString() : "Not specified"}</Td>
                                         <Td cellWidth="250px">{val.email}</Td>
                                         <Td cellWidth="120px">{val.account.influenzit_verified ? "Verified" : "Not Verified"}</Td>

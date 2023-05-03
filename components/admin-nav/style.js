@@ -15,7 +15,6 @@ export const Container = styled.nav`
 export const Wrapper = styled.div`
     width: 98%;
     height: 100%;
-    max-width: ${sizes.wrapperWidth};
     margin: 0 auto;
     display: flex;
     align-items: center;
