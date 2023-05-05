@@ -397,7 +397,7 @@ const Home = () => {
 }
 Home.getLayout = (page) => {
   return (
-    <LandingLayout description={" INFLUENZIT  discovering the top influencers for your product. Efficiently identifying and engaging with the most relevant key creators for your brand, then start driving revenue from their audiences."}>
+    <LandingLayout description={"Influenzit is the premier platform connecting Nigerian influencers with businesses. Our platform streamlines the influencer marketing process, making it easy for businesses to find and collaborate with the right influencers for their brand. Join our community today and take your influencer marketing to the next"}>
       {page}
     </LandingLayout>
   )
