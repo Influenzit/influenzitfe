@@ -107,6 +107,7 @@ const LandingLayout = ({children, title, description}) => {
          <Head>
           <title>{title ? title : "INFLUENZIT  - The Number One Influencer Marketing Platform In Nigeria."}</title>
           <meta name="description" content={description} />
+          <meta name="facebook-domain-verification" content="yaoox27tyrn1d5eslbbvp1d9w4lwnj" />
           <meta name="keyword" content="Influencer marketing company in Nigeria, The best influencer marketing platform in Nigeria, Influencer marketing company 2023, 
           The best influencer marketing platform 2023, Influencer marketing pricing in Nigeria, How to find influencers to grow my business, How to find influencers 
           to promote products in Nigeria, Influencer marketing strategy 2023, Influencer marketing strategy, Influencer marketing cost 2023, Influencer marketing cost 
