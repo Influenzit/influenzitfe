@@ -6,7 +6,7 @@ const Privacy = () => {
   return (
     <div>
         <Container>
-          <p>This Privacy Policy describes how Ascend Brand Managements product - Influenzit, collects, uses, and shares your personal
+          <p>This Privacy Policy describes how Ascend Brand Managements &apos;product - Influenzit, collects, uses, and shares your personal
             information when you use our platform and services (&quot;Services&quot;). By using our Services, you
             agree to the collection and use of information in accordance with this policy.
           </p>
