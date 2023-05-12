@@ -25,7 +25,7 @@ const ChooseProfile = () => {
         dispatch(setLoading(false));
         dispatch(setError({error: true, message: res.message}));
       } else {
-        getUserAccount(res.data.user_id).then((userRes) => {
+        getUserAccount().then((userRes) => {
           if(userRes.data.data) {
             dispatch(setLoading(false));
             dispatch(updateUser(userRes.data.data));

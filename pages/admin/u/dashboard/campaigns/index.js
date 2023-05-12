@@ -79,7 +79,7 @@ const Campaigns = () => {
                                         </Td>
                                         <Td cellWidth="300px">{val.provider.firstname} {val.provider.lastname}</Td>
                                         <Td cellWidth="150px">{val.start_date ? (new Date(val.start_date)).toDateString() : "Not specified"}</Td>
-                                        <Td cellWidth="150px">{val.duration_count ?? "Not specified"} {val.duration_type}</Td>
+                                        <Td cellWidth="150px">{val.duration_count ?? "Not specified"} {val.duration_count && val.duration_type}</Td>
                                         <Td cellWidth="120px">{val.status}</Td>
                                         <Td cellWidth="120px">
                                             <ActionBtn onClick={() => router.push(`/admin/u/dashboard/campaigns/view/${val.id}`)}>View</ActionBtn>

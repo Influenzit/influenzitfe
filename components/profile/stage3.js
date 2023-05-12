@@ -51,7 +51,7 @@ function Stage3({ user }) {
           dispatch(setLoading(false));
           dispatch(setError({ error: true, message: res.message }));
         } else {
-          getUserAccount(user.id)
+          getUserAccount()
             .then((userRes) => {
               console.log(userRes);
               if (userRes.data.data) {

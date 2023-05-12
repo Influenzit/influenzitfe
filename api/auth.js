@@ -23,8 +23,8 @@ export const changePassword = (data) => {
 export const resendEmail = (data) => {
     return axiosInstance().post("/auth/email/resend", data);
 }
-export const getUserAccount = (userId) => {
-    return axiosInstance().get(`/users/${userId}`)
+export const getUserAccount = () => {
+    return axiosInstance().get(`/users/me`);
 }
 export const updateAccount = (userId, data) => {
     return axiosInstance().patch(`/accounts`, data)

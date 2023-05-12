@@ -43,7 +43,7 @@ const Update = () => {
       dispatch(setError({error: true, message: "Check your internet connection"}));
     }
   })
-
+  // TODO: Token validation
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(setLoading(true));

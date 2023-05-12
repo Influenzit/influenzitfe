@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useMutation } from "@tanstack/react-query"
 import { BannerReg, BanReg, Bottom, BottomP, Center, Container, FacebookBtn, FlexInput, FormFields, FormHeader, FormWrapper, GoogleBtn, Input, InputContainer, SocialIcon, SocialLogin, SubmitButton, Wrapper, AuthFlex, ErrorMessageCont } from '../../styles/auth.style'
 import { createAccount, socialLogin } from '../../api/auth';
-import { isLoading, setError, setLoading, setUserType } from '../../app/reducers/status';
+import { isLoading, setError, isError as errorSelector, setLoading, setUserType, getMessage } from '../../app/reducers/status';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
@@ -15,10 +15,13 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 import Loader from '../../components/loading'
 import Head from 'next/head';
+import ErrorPopup from 'components/error-popup/error-popup';
 
 const Register = () => {
   const router = useRouter();
   const loadingStatus = useSelector(isLoading);
+  const errorStatus = useSelector(errorSelector);
+  const message = useSelector(getMessage);
   const [formVal, setFormVal] = useState({
     firstname: "",
     lastname: "",
@@ -48,8 +51,13 @@ const Register = () => {
     },
     onError(error) {
       const res = error.response.data;
+      if(res){
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: res.message}));
+        return;
+      }
       dispatch(setLoading(false));
-      dispatch(setError({error: true, message: res.message}));
+      dispatch(setError({error: true, message: "An error occured"}));
     }
   })
   const handleInputChange = (val, field) => {
@@ -76,7 +84,6 @@ const Register = () => {
               dispatch(setBusinesses(bizRes.data.data))
               dispatch(updateUser(res.user));
               dispatch(setError({error: false, message: ""}));
-              localStorage.setItem("user-id", res.user.id);
               router.push("/dashboard");
             }
           }).catch( _ => {
@@ -88,7 +95,6 @@ const Register = () => {
           dispatch(updateUser(res.user));
           dispatch(setError({error: false, message: ""}));
           localStorage.setItem("token", res.token);
-          localStorage.setItem("user-id", res.user.id);
           
           if (is_influencer || is_creator) {
             is_influencer ? dispatch(setUserType("Influencer")) : (is_creator && dispatch(setUserType("Creator")))
@@ -151,11 +157,11 @@ const Register = () => {
           password: formVal.password,
           password_confirmation: formVal.password_confirmation,
           account_type: formVal.account_type,
+          business_name: formVal.business_name,
           referral_code: formVal.referral_code
       })
     }
   }
-  if (mutation.isLoading) dispatch(setLoading(true));
   useEffect(() => {
     if(referral_code) {
       handleInputChange(referral_code, "referral_code");
@@ -163,9 +169,7 @@ const Register = () => {
   }, [referral_code])
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const id = localStorage.getItem("user-id");
-    console.log(token, id)
-    if(token && id) {
+    if(token) {
       router.push("/dashboard")
     }
   }, [router.pathname])
@@ -417,6 +421,7 @@ const Register = () => {
         </BannerReg>
     </AuthFlex>
     {loadingStatus && <Loader />}
+    {errorStatus && <ErrorPopup message={message} />}
     </>
   )
 }
