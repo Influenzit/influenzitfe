@@ -41,7 +41,7 @@ const BusinessOwner = () => {
         dispatch(setLoading(false));
         dispatch(setError({error: true, message: res.message}));
       } else {
-        getUserAccount(res.data.user_id).then((userRes) => {
+        getUserAccount().then((userRes) => {
           if(userRes.data.data) {
             dispatch(updateUser(userRes.data.data));
             dispatch(setUserType("Business Owner"));

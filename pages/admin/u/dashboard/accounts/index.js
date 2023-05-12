@@ -7,7 +7,7 @@ import { getCampaigns } from '../../../../../api/campaigns'
 import { setLoading } from '../../../../../app/reducers/status'
 import { ChevronLeft, ChevronRight } from '../../../../../assets/svgIcons'
 import LandingLayout from '../../../../../layouts/admin.layout'
-import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../../../../styles/connect-pages.style'
+import { ActionBtn, ActionBtnB, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../../../../styles/connect-pages.style'
 import { getAllUsers, verifyUserAccount } from 'api/admin'
 import { getQueryString } from 'helpers/helper'
 import { toast } from 'react-toastify'
@@ -73,44 +73,27 @@ useEffect(() => {
                 <TableHeader>
                     <h2>Validate Users</h2>
                 </TableHeader>
-                {/* <TableControls>
-                        <SearchContainer>
-                            <input type="text" placeholder="Search by user"/>
-                            <button>
-                                <Image src="/search-b.svg" alt="" height={22} width={22}/>
-                            </button>
-                        </SearchContainer> 
-                </TableControls> */}
                 <TableWrapper style={{ marginBottom: "15px" }}>
                     <TableContent>
                     <Table>
                         <THead>
                             <TrH>
-                                <Th cellWidth="50px">
-                                    <Checkbox>
-                                    </Checkbox>
-                                </Th>
-                                <Th cellWidth="250px">Fullname</Th>
-                                <Th cellWidth="150px">Join Date</Th>
+                                <Th cellWidth="370px">Fullname</Th>
                                 <Th cellWidth="250px">Email</Th>
                                 <Th cellWidth="120px">Status</Th>
-                                <Th cellWidth="120px">Action</Th>
+                                <Th cellWidth="200px">Action</Th>
                             </TrH>
                         </THead>
                         <TBody>
                             {
                                 userList.data.map((val, i) => (
                                     <Tr key={i}>
-                                        <Td cellWidth="50px">
-                                            <Checkbox>
-                                            </Checkbox>
-                                        </Td>
-                                        <Td cellWidth="250px">{val.firstname} {val.lastname}</Td>
-                                        <Td cellWidth="150px">{val.created_at ? (new Date(val.created_at)).toDateString() : "Not specified"}</Td>
-                                        <Td cellWidth="250px">{val.email}</Td>
-                                        <Td cellWidth="120px">{val.account.influenzit_verified ? "Verified" : "Not Verified"}</Td>
-                                        <Td cellWidth="120px">
-                                            <ActionBtn onClick={() => verifyAcc(val.account.id)}>{val.account.influenzit_verified ? "Disable User" : "Verify User"}</ActionBtn>
+                                        <Td cellWidth="370px">{val.user.firstname} {val.user.lastname}</Td>
+                                        <Td cellWidth="250px">{val.user.email}</Td>
+                                        <Td cellWidth="120px">{val.influenzit_verified ? "Verified" : "Not Verified"}</Td>
+                                        <Td cellWidth="200px" style={{ display: "flex",  justifyContent: "space-between", paddingRight: "20px" }}>
+                                            <ActionBtn onClick={() => verifyAcc(val.id)}>{val.influenzit_verified ? "Disable User" : "Verify User"}</ActionBtn>
+                                            <ActionBtnB onClick={() =>router.push(`/admin/u/dashboard/accounts/${val.id}`)}>View</ActionBtnB>
                                         </Td>
                                     </Tr>
                                 ))

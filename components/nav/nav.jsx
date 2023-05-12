@@ -172,7 +172,7 @@ const Nav = () => {
           dispatch(setLoading(false));
           dispatch(setError({ error: true, message: res.message }));
         } else {
-          getUserAccount(res.data.user_id)
+          getUserAccount()
             .then((userRes) => {
               if (userRes.data.data) {
                 dispatch(setLoading(false));
