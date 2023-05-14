@@ -29,6 +29,7 @@
     "react-dom": "18.2.0",
     "react-facebook-login": "^4.1.1",
     "react-google-charts": "^4.0.0",
+    "react-password-strength-bar": "^0.4.1",
     "react-paystack": "^4.0.1",
     "react-phone-input-2": "^2.15.1",
     "react-rating-stars-component": "^2.2.0",

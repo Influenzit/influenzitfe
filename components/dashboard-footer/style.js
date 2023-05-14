@@ -7,7 +7,8 @@ export const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 20px 0;
-    font-size: 14pxu;
+    padding-left: 200px;
+    font-size: 14px;
     margin: 0 auto;
     width: 98%;
     max-width: ${sizes.wrapperWidth};
@@ -22,6 +23,7 @@ export const Wrapper = styled.div`
         flex-direction: column-reverse;
         row-gap: 10px;
         align-items: center;
+        padding-left: 0;
         a:first-of-type{
             padding-left: 0;
         }

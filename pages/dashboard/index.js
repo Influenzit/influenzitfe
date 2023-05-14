@@ -24,6 +24,8 @@ const Dashboard = () => {
   const currentAcctType = useSelector(getUserType);
   const [userDetails, setUserDetails] = useState(null);
   const [showPrompt, setShowPrompt] = useState(false);
+  const [showOnboard, setShowOnboard] = useState(false);
+
   const dispatch = useDispatch();
     useEffect(() => {
       if (user) {
@@ -37,6 +39,7 @@ const Dashboard = () => {
         data: [],
       });
       const router = useRouter();
+      const {status} = router.query;
       const [projectList, setProjectList] = useState({
         data: [],
       });
@@ -96,7 +99,15 @@ const Dashboard = () => {
             refetch();
             refetchServiceData();
             projectRefetch();
-        }, [])
+        }, []);
+        useEffect(() => {
+          if(status) {
+            if(status === "success") {
+                setShowOnboard(true);
+            }
+          }
+        }, [status])
+        
     
   return (
     <Container>
@@ -112,6 +123,23 @@ const Dashboard = () => {
                         <p>You need to complete your influencer profile in order to start using the platform.</p>
                         <div>
                             <button onClick={() => router.push("/dashboard/complete-profile")}>Complete Profile</button>
+                        </div>
+                    </WelcomeModal>
+                </UpdateModal>
+            )
+        }
+         {
+            showOnboard && (
+                <UpdateModal>
+                    <WelcomeModal>
+                        <div>
+                            <button onClick={() => setShowOnboard(false)}><Image src="/cancel.svg" alt="" height={14} width={14} /></button>
+                        </div>
+                        <Image src="/congrat.svg" alt="" height={110} width={110}/>
+                        <h2>Update Successful, One more step left</h2>
+                        <p>You need to connect your social media before your profile can be listed.</p>
+                        <div>
+                            <button onClick={() => router.push("/dashboard/profile?tab=social")}>Connect Social Media</button>
                         </div>
                     </WelcomeModal>
                 </UpdateModal>

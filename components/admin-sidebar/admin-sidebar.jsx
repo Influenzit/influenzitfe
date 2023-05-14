@@ -57,20 +57,34 @@ const Sidebar = () => {
         <UserIcon />
         <span>Accounts</span>
       </NavButton>
-      {/* <NavButton
+      <NavButton
         onClick={() => handleRouting("/admin/u/dashboard/projects")}
         isActive={router.pathname === "/admin/u/dashboard/projects"}
       >
         <ProjectIcon />
         <span>Projects</span>
-      </NavButton> */}
+      </NavButton>
+       <NavButton
+          onClick={() => handleRouting("/admin/u/dashboard/businesses")}
+          isActive={router.pathname === "/admin/u/dashboard/businesses"}
+        >
+          <BagIcon />
+          <span>Businesses</span>
+        </NavButton>
+      <NavButton
+        onClick={() => handleRouting("/admin/u/dashboard/wallet")}
+        isActive={router.pathname.includes("/admin/u/dashboard/wallet")}
+      >
+        <WalletIcon />
+        <span>Wallets</span>
+      </NavButton>
       <NavButton
          onClick={() => handleRouting("/admin/u/dashboard/campaigns")}
          isActive={router.pathname === "/admin/u/dashboard/campaigns"}
         >
           <HashTagIcon />
           <span>Campaigns</span>
-        </NavButton>
+      </NavButton>
     </Container>
   );
 };

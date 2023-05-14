@@ -30,7 +30,7 @@ const LandingLayout = ({children, title, description}) => {
   const [show, setShow] = useState(false);
   
   const { data, refetch } = useQuery(["get-user"], async () => {
-      return await getUserAccount(localStorage.getItem("user-id"));
+      return await getUserAccount();
   }, {
       staleTime: false,
       enabled: false,
@@ -41,7 +41,7 @@ const LandingLayout = ({children, title, description}) => {
       },
       onError(res) {
           dispatch(setLoading(false));
-          if(localStorage.getItem("user-id")) {
+          if(localStorage.getItem("token")) {
             localStorage.clear();
             router.replace("/login");
           } else {

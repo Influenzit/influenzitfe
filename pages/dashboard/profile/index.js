@@ -23,6 +23,7 @@ import youtube from "./../../../assets/youtube.svg";
 import ReactStars from "react-rating-stars-component";
 import Link from "next/link";
 import { getUser, updateUser } from "../../../app/reducers/user";
+import { Container } from "styles/connect-pages.style";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -36,16 +37,24 @@ const Profile = () => {
   //
 
   const [activetab, setactivetab] = useState("profile_details");
-
+  const {tab} = router.query;
+  useEffect(() => {
+    if(tab) {
+      if(tab === "social") {
+          setactivetab("social");
+      }
+    }
+  }, [status])
+  
   return (
-    <div className="py-28 md:px-12 px-4 ">
+    <Container>
       <div className="flex justify-between mb-6">
         <div className="flex items-center">
           <h1 className="text-xl">Account Settings </h1>
         </div>
       </div>
       <div className="w-full overflow-x-auto">
-        <div className="flex space-x-4 w-full border-b mb-4 md:w-full min-w-[1200px]">
+        <div className="flex space-x-4 w-full border-b mb-4 md:w-full min-w-[600px]">
           <button
             onClick={() => {
               setactivetab("profile_details");
@@ -53,7 +62,7 @@ const Profile = () => {
             className={`${
               activetab == "profile_details" &&
               "text-primary-100 border-b border-primary-100"
-            } pb-4`}
+            } pb-4 text-sm md:text-base`}
           >
             Profile details
           </button>
@@ -64,7 +73,7 @@ const Profile = () => {
             className={`${
               activetab == "influencer_details" &&
               "text-primary-100 border-b border-primary-100"
-            } pb-4`}
+            } pb-4 text-sm md:text-base`}
           >
             Influencer Details
           </button>
@@ -75,7 +84,7 @@ const Profile = () => {
             className={`${
               activetab == "images" &&
               "text-primary-100 border-b border-primary-100"
-            } pb-4`}
+            } pb-4 text-sm md:text-base`}
           >
             Images
           </button>
@@ -86,7 +95,7 @@ const Profile = () => {
             className={`${
               activetab == "change_password" &&
               "text-primary-100 border-b border-primary-100"
-            } pb-4`}
+            } pb-4 text-sm md:text-base`}
           >
             Change Password
           </button>
@@ -97,7 +106,7 @@ const Profile = () => {
             className={`${
               activetab === "social" &&
               "text-primary-100 border-b border-primary-100"
-            } pb-4`}
+            } pb-4 text-sm md:text-base`}
           >
             Connect Social Media
           </button>
@@ -109,7 +118,7 @@ const Profile = () => {
       {activetab === "images" && <Stage3 user={user} />}
       {activetab === "change_password" && <Stage4 user={user} />}
       {activetab === "social" && <Stage5 user={user} />}
-    </div>
+    </Container>
   );
 };
 

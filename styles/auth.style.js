@@ -34,9 +34,6 @@ export const Container = styled.div`
 `;
 export const Center = styled.div`
     padding: 15px 0;
-    p {
-        color: #333333;
-    }
     #cancel {
         display: block;
         text-align: center;

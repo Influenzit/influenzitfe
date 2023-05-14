@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.div`
-    background: #F7FAFC;
+    background: #fff;
     padding: 110px 20px 30px 20px;
     min-height: 100vh;
 `;
@@ -120,17 +120,17 @@ export const Table = styled.table`
 `;
 export const THead = styled.thead`
     width: 100%;
-    color: #333333;
-    font-weight: 600;
+    color: ${colors.textColor};
+    font-weight: 500;
 `;
 export const TBody = styled.tbody`
     width: 100%;
-    color: #333333;
+    color: ${colors.textColor};
 `;
 export const TrH = styled.tr`
     display: flex;
     align-items: center;
-    padding: 15px 0;
+    padding: 15px 10px;
     border-bottom: 1px solid #D2D2D2;
 `;
 export const Th = styled.th`
@@ -158,7 +158,7 @@ export const Td = styled.td`
 export const Tr = styled.tr`
     display: flex;
     align-items: center;
-    padding: 15px 0;
+    padding: 15px 10px;
     border-bottom: 1px solid #D2D2D2;
     font-size: 14px;
     ${breakpoints.lg}{
@@ -220,7 +220,6 @@ export const Checkbox = styled.button`
 `;
 export const ActionBtn = styled.button`
     outline: none;
-    background: transparent;
     border: none;
     cursor: pointer;
     display: inline-flex;
@@ -231,6 +230,20 @@ export const ActionBtn = styled.button`
     font-size: 12px;
     font-weight: 600;
     color: ${colors.textColor};
+`;
+export const ActionBtnB = styled.button`
+    outline: none;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    background: ${colors.textColor};
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    margin-left: 5px;
 `;
 export const WelcomeModal = styled.div`
     background: #fff;
@@ -283,4 +296,29 @@ export const WelcomeModal = styled.div`
         }
     }
     
+`;
+export const Tabs = styled.div`
+    display: flex;
+    height: 50px;
+    column-gap: 15px;
+`;
+export const TabBtn = styled.button`
+    color: ${(props) => props.isActive ? colors.primaryColor : "#6A6974"};
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    background: transparent;
+    position: relative;
+    ::after {
+        content: "";
+        position: absolute;
+        display: block;
+        width: 100%;
+        background: ${(props) => props.isActive ? colors.primaryColor : "transparent"};
+        height: 4px;
+        bottom: 0;
+        border-top-left-radius: 99px;
+        border-top-right-radius: 99px;
+    }
 `;
