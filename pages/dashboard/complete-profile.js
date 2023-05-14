@@ -9,10 +9,10 @@ import "react-phone-input-2/lib/style.css";
 import { CountryDropdown } from 'react-country-region-selector';
 import { TextAreaContainer } from '../../styles/contact.style';
 import Image from 'next/image';
-import { getUser, updateUser } from '../../app/reducers/user';
+import { updateUser } from '../../app/reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { accountMedia, getUserAccount, updateAccount } from '../../api/auth';
+import { accountMedia, getAccount, getUserAccount, updateAccount } from '../../api/auth';
 import { useRouter } from 'next/router';
 import { setError, setLoading } from '../../app/reducers/status';
 import { colors } from '../../styles/theme';
@@ -38,7 +38,7 @@ const CompleteProfile = () => {
   const [handleError, setHandleError] = useState(false);
   const [fileSelected, setFileSelected] = useState(null);
   const [imgSrc, setImgSrc] = useState("");
-  const user = useSelector(getUser);
+  const [user, setUser] = useState(null);
   const router = useRouter();
   const dispatch = useDispatch();
   const [coverImages, setCoverImages] = useState([]);
@@ -55,6 +55,16 @@ const { data: industryData, refetch: refetchIndustryData } = useQuery(["get-indu
     retry: false,
     onSuccess(data) {
         setIndustryList(data.data.data);
+    }
+});
+const { data, refetch } = useQuery(["get-account"], async () => {
+    return await getAccount();
+}, {
+    staleTime: false,
+    enabled: false,
+    retry: false,
+    onSuccess(res) {
+        setUser(res.data.data);
     }
 });
   const updateAccountMutation = useMutation((data) => {
@@ -284,21 +294,22 @@ const { data: industryData, refetch: refetchIndustryData } = useQuery(["get-indu
     }
   useEffect(() => {
     if(user) {
-        setPhone(user.account.phone1 ?? "");
-        setGender(user.account.gender ?? "");
-        setCountry(user.account.country ?? "");
-        setHeadline(user.account.headline ?? "");
-        setBiography(user.account.biography ?? "");
-        setFacebook(user.account.facebook ?? "");
-        setInstagram(user.account.instagram ?? "");
-        setTwitter(user.account.twitter ?? "");
-        setTiktok(user.account.tiktok ?? "");
-        setYoutube(user.account.youtube ?? "");
-        setIndustry(user.account.industry ?? "");
+        setPhone(user.phone1 ?? "");
+        setGender(user.gender ?? "");
+        setCountry(user.country ?? "");
+        setHeadline(user.headline ?? "");
+        setBiography(user.biography ?? "");
+        setFacebook(user.facebook ?? "");
+        setInstagram(user.instagram ?? "");
+        setTwitter(user.twitter ?? "");
+        setTiktok(user.tiktok ?? "");
+        setYoutube(user.youtube ?? "");
+        setIndustry(user.industry ?? "");
     }
   }, [user])
   useEffect(() => {
     refetchIndustryData();
+    refetch();
   }, [])
   
   
