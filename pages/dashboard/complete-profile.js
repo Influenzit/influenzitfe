@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import LandingLayout from '../../layouts/landing.layout'
-import { Input, InputContainer } from '../../styles/auth.style';
+import { ErrorMessageCont, Input, InputContainer } from '../../styles/auth.style';
 import { Container, CoverImageContainer, CustomInput, HandleError, ImagePreview, ProfileForm, ProfileUploadCont, Step, StepContainer, StepControl, ToggleBtn, ToggleCont, UploadContainer, UploadHeader, UploadInfo } from '../../styles/complete.style'
 import { InputWrap } from '../../styles/messages.style';
 import PhoneInput from "react-phone-input-2";
@@ -9,10 +9,10 @@ import "react-phone-input-2/lib/style.css";
 import { CountryDropdown } from 'react-country-region-selector';
 import { TextAreaContainer } from '../../styles/contact.style';
 import Image from 'next/image';
-import { getUser, updateUser } from '../../app/reducers/user';
+import { updateUser } from '../../app/reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { accountMedia, getUserAccount, updateAccount } from '../../api/auth';
+import { accountMedia, getAccount, getUserAccount, updateAccount } from '../../api/auth';
 import { useRouter } from 'next/router';
 import { setError, setLoading } from '../../app/reducers/status';
 import { colors } from '../../styles/theme';
@@ -38,14 +38,16 @@ const CompleteProfile = () => {
   const [handleError, setHandleError] = useState(false);
   const [fileSelected, setFileSelected] = useState(null);
   const [imgSrc, setImgSrc] = useState("");
-  const user = useSelector(getUser);
+  const [user, setUser] = useState(null);
   const router = useRouter();
   const dispatch = useDispatch();
   const [coverImages, setCoverImages] = useState([]);
   const [industryList, setIndustryList] = useState([]);
+  const [imgError, setImgError] = useState(false);
+  const [imgMessage, setImgMessage] = useState("");
 
   // Update account mutation
-  const { data: industryData, refetch: refetchIndustryData } = useQuery(["get-industries"], async () => {
+const { data: industryData, refetch: refetchIndustryData } = useQuery(["get-industries"], async () => {
     return await getIndustries();
 }, {
     enabled: false,
@@ -53,6 +55,16 @@ const CompleteProfile = () => {
     retry: false,
     onSuccess(data) {
         setIndustryList(data.data.data);
+    }
+});
+const { data, refetch } = useQuery(["get-account"], async () => {
+    return await getAccount();
+}, {
+    staleTime: false,
+    enabled: false,
+    retry: false,
+    onSuccess(res) {
+        setUser(res.data.data);
     }
 });
   const updateAccountMutation = useMutation((data) => {
@@ -75,7 +87,7 @@ const CompleteProfile = () => {
                     if(step < 3) {
                         setStep(step + 1);
                     } else {
-                        router.push("/dashboard");
+                        router.push("/dashboard?status=success");
                     }
                 }
                 }).catch(err => {
@@ -114,7 +126,7 @@ const CompleteProfile = () => {
                         toast.success("Image uploaded successfully", {
                             position: toast.POSITION.TOP_RIGHT
                         });
-                        router.push("/dashboard");
+                        router.push("/dashboard?status=success");
                     }
                 }).catch(err => {
                     dispatch(setLoading(false));
@@ -213,6 +225,11 @@ const CompleteProfile = () => {
         if(file.size < 5000000){
             setFileSelected(file);
             setImgSrc(URL.createObjectURL(file));
+            setImgError(false)
+            setImgMessage("")
+        } else {
+            setImgError(true)
+            setImgMessage("Image too large (Image must be less than 5MB)")
         }
     }
   const handleFileChange = (e) => {
@@ -231,6 +248,11 @@ const CompleteProfile = () => {
                     })
                     return newList;
                 })
+                setImgError(false)
+                setImgMessage("")
+            }  else {
+                setImgError(true)
+                setImgMessage("Image too large (Image must be less than 5MB)")
             }
         }
     }
@@ -248,6 +270,11 @@ const CompleteProfile = () => {
                     })
                     return newList;
                 })
+                setImgError(false)
+                setImgMessage("")
+            } else {
+                setImgError(true)
+                setImgMessage("Image too large (Image must be less than 5MB)")
             }
         }
     }
@@ -267,21 +294,22 @@ const CompleteProfile = () => {
     }
   useEffect(() => {
     if(user) {
-        setPhone(user.account.phone1 ?? "");
-        setGender(user.account.gender ?? "");
-        setCountry(user.account.country ?? "");
-        setHeadline(user.account.headline ?? "");
-        setBiography(user.account.biography ?? "");
-        setFacebook(user.account.facebook ?? "");
-        setInstagram(user.account.instagram ?? "");
-        setTwitter(user.account.twitter ?? "");
-        setTiktok(user.account.tiktok ?? "");
-        setYoutube(user.account.youtube ?? "");
-        setIndustry(user.account.industry ?? "");
+        setPhone(user.phone1 ?? "");
+        setGender(user.gender ?? "");
+        setCountry(user.country ?? "");
+        setHeadline(user.headline ?? "");
+        setBiography(user.biography ?? "");
+        setFacebook(user.facebook ?? "");
+        setInstagram(user.instagram ?? "");
+        setTwitter(user.twitter ?? "");
+        setTiktok(user.tiktok ?? "");
+        setYoutube(user.youtube ?? "");
+        setIndustry(user.industry ?? "");
     }
   }, [user])
   useEffect(() => {
     refetchIndustryData();
+    refetch();
   }, [])
   
   
@@ -434,6 +462,9 @@ const CompleteProfile = () => {
                     <>
                         <h3>Upload Images</h3>
                         <p>Update your profile information here</p>
+                        {
+                            imgError && <ErrorMessageCont>{imgMessage}</ErrorMessageCont>
+                        }
                         <ProfileUploadCont>
                             <div>
                                 <p>Add profile image</p>
@@ -452,7 +483,7 @@ const CompleteProfile = () => {
                                     <span>Drop your image or </span>
                                     <label htmlFor="upload-cover">Upload</label>
                                 </UploadHeader>
-                                <UploadInfo>JPG or PNG, no larger than 10MB</UploadInfo>
+                                <UploadInfo>JPG or PNG, no larger than 5MB</UploadInfo>
                                 <input type="file" hidden id="upload-cover" onChange={handleFileChangeDrop}/>
                             </UploadContainer>
                             <ImagePreview>

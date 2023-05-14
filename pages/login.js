@@ -43,7 +43,6 @@ const Login = () => {
               dispatch(setBusinesses(bizRes.data.data))
               dispatch(updateUser(res.user));
               dispatch(setError({error: false, message: ""}));
-              localStorage.setItem("user-id", res.user.id);
               router.push("/dashboard");
             }
           }).catch( _ => {
@@ -55,7 +54,6 @@ const Login = () => {
           dispatch(updateUser(res.user));
           dispatch(setError({error: false, message: ""}));
           localStorage.setItem("token", res.token);
-          localStorage.setItem("user-id", res.user.id);
           
           if (is_influencer || is_creator) {
             is_influencer ? dispatch(setUserType("Influencer")) : (is_creator && dispatch(setUserType("Creator")))
@@ -96,7 +94,6 @@ const Login = () => {
               dispatch(setBusinesses(bizRes.data.data))
               dispatch(updateUser(res.user));
               dispatch(setError({error: false, message: ""}));
-              localStorage.setItem("user-id", res.user.id);
               router.push("/dashboard");
             }
           }).catch( _ => {
@@ -108,7 +105,6 @@ const Login = () => {
           dispatch(updateUser(res.user));
           dispatch(setError({error: false, message: ""}));
           localStorage.setItem("token", res.token);
-          localStorage.setItem("user-id", res.user.id);
           
           if (is_influencer || is_creator) {
             is_influencer ? dispatch(setUserType("Influencer")) : (is_creator && dispatch(setUserType("Creator")))
@@ -202,7 +198,7 @@ const Login = () => {
               <HelpSection>
                 <RememberMe>
                 </RememberMe>
-                <Link href="/reset-password">
+                <Link href="/forgot-password">
                   <a>Forgot Password</a>
                 </Link>
               </HelpSection>
