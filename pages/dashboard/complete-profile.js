@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import LandingLayout from '../../layouts/landing.layout'
-import { Input, InputContainer } from '../../styles/auth.style';
+import { ErrorMessageCont, Input, InputContainer } from '../../styles/auth.style';
 import { Container, CoverImageContainer, CustomInput, HandleError, ImagePreview, ProfileForm, ProfileUploadCont, Step, StepContainer, StepControl, ToggleBtn, ToggleCont, UploadContainer, UploadHeader, UploadInfo } from '../../styles/complete.style'
 import { InputWrap } from '../../styles/messages.style';
 import PhoneInput from "react-phone-input-2";
@@ -43,9 +43,11 @@ const CompleteProfile = () => {
   const dispatch = useDispatch();
   const [coverImages, setCoverImages] = useState([]);
   const [industryList, setIndustryList] = useState([]);
+  const [imgError, setImgError] = useState(false);
+  const [imgMessage, setImgMessage] = useState("");
 
   // Update account mutation
-  const { data: industryData, refetch: refetchIndustryData } = useQuery(["get-industries"], async () => {
+const { data: industryData, refetch: refetchIndustryData } = useQuery(["get-industries"], async () => {
     return await getIndustries();
 }, {
     enabled: false,
@@ -75,7 +77,7 @@ const CompleteProfile = () => {
                     if(step < 3) {
                         setStep(step + 1);
                     } else {
-                        router.push("/dashboard");
+                        router.push("/dashboard?status=success");
                     }
                 }
                 }).catch(err => {
@@ -114,7 +116,7 @@ const CompleteProfile = () => {
                         toast.success("Image uploaded successfully", {
                             position: toast.POSITION.TOP_RIGHT
                         });
-                        router.push("/dashboard");
+                        router.push("/dashboard?status=success");
                     }
                 }).catch(err => {
                     dispatch(setLoading(false));
@@ -213,6 +215,11 @@ const CompleteProfile = () => {
         if(file.size < 5000000){
             setFileSelected(file);
             setImgSrc(URL.createObjectURL(file));
+            setImgError(false)
+            setImgMessage("")
+        } else {
+            setImgError(true)
+            setImgMessage("Image too large (Image must be less than 5MB)")
         }
     }
   const handleFileChange = (e) => {
@@ -231,6 +238,11 @@ const CompleteProfile = () => {
                     })
                     return newList;
                 })
+                setImgError(false)
+                setImgMessage("")
+            }  else {
+                setImgError(true)
+                setImgMessage("Image too large (Image must be less than 5MB)")
             }
         }
     }
@@ -248,6 +260,11 @@ const CompleteProfile = () => {
                     })
                     return newList;
                 })
+                setImgError(false)
+                setImgMessage("")
+            } else {
+                setImgError(true)
+                setImgMessage("Image too large (Image must be less than 5MB)")
             }
         }
     }
@@ -434,6 +451,9 @@ const CompleteProfile = () => {
                     <>
                         <h3>Upload Images</h3>
                         <p>Update your profile information here</p>
+                        {
+                            imgError && <ErrorMessageCont>{imgMessage}</ErrorMessageCont>
+                        }
                         <ProfileUploadCont>
                             <div>
                                 <p>Add profile image</p>
@@ -452,7 +472,7 @@ const CompleteProfile = () => {
                                     <span>Drop your image or </span>
                                     <label htmlFor="upload-cover">Upload</label>
                                 </UploadHeader>
-                                <UploadInfo>JPG or PNG, no larger than 10MB</UploadInfo>
+                                <UploadInfo>JPG or PNG, no larger than 5MB</UploadInfo>
                                 <input type="file" hidden id="upload-cover" onChange={handleFileChangeDrop}/>
                             </UploadContainer>
                             <ImagePreview>

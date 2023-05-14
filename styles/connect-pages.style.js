@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.div`
-    background: #F7FAFC;
+    background: #fff;
     padding: 110px 20px 30px 20px;
     min-height: 100vh;
 `;
