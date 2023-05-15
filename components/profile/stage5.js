@@ -71,33 +71,6 @@ const Stage5 = ({user}) => {
     <div>
         <div>
             <SocialMediaContainer>
-                <h1>Instagram </h1>
-                <SocialCardList>
-                    {getInstagramList()?.length ? (
-                        getInstagramList()?.map((account, i) => (
-                            <SocialCard key={i}>
-                                <p>{account.profile_name} <br/><span>{account.profile_type}</span></p>
-                                <div>
-                                    <button>Disconnect</button>
-                                </div>
-                            </SocialCard>
-                        ))
-                    ): <p>No instagram account connected</p>
-                    }
-                </SocialCardList>
-                <Link href={`${process.env.NEXT_PUBLIC_API_URI}/connect?provider=instagram&user=${user.id}`}>
-                    <a>
-                        <Image
-                            src={instagram}
-                            width={25}
-                            height={25}
-                            alt="social"
-                        />
-                        <span>Connect</span>
-                    </a>
-                </Link>
-            </SocialMediaContainer>
-            <SocialMediaContainer>
                 <h1>Twitter</h1>
                 <SocialCardList>
                     {getTwitterList()?.length ? (
@@ -112,7 +85,7 @@ const Stage5 = ({user}) => {
                     ): <p>No Twitter account connected</p>
                     }
                 </SocialCardList>
-                <Link href={`${process.env.NEXT_PUBLIC_API_URI}/connect?provider=twitter&user=${user.id}`}>
+                <Link href={`${process.env.NEXT_PUBLIC_API_URI}/connect?provider=twitter&user=${user?.id}`}>
                     <a>
                         <Image
                             src={twitter}
@@ -140,7 +113,7 @@ const Stage5 = ({user}) => {
                     ): <p>No Tiktok account connected</p>
                     }
                 </SocialCardList>
-                <Link href={`${process.env.NEXT_PUBLIC_API_URI}/connect?provider=tiktok&user=${user.id}`}>
+                <Link href={`${process.env.NEXT_PUBLIC_API_URI}/connect?provider=tiktok&user=${user?.id}`}>
                     <a>
                         <Image
                             src={tiktok}
@@ -168,7 +141,7 @@ const Stage5 = ({user}) => {
                     ): <p>No Facebook account connected</p>
                     }
                 </SocialCardList>
-                <Link href={`${process.env.NEXT_PUBLIC_API_URI}/connect?provider=facebook&user=${user.id}`}>
+                <Link href={`${process.env.NEXT_PUBLIC_API_URI}/connect?provider=facebook&user=${user?.id}`}>
                     <a>
                         <Image
                             src={facebook}
