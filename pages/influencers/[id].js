@@ -438,8 +438,8 @@ const CreatorProfile = () => {
                                                     <p>Reach</p>
                                                 </Stat>
                                                 <Stat>
-                                                    <h1>{inData?.analytics?.instagram_insights?.engagement_rate}%</h1>
-                                                    <p>Engagement</p>
+                                                    <h1>{inData?.analytics?.instagram_insights?.impressions}</h1>
+                                                    <p>Impressions</p>
                                                 </Stat>
                                             </AnalyticStats>
                                             <h3>Audience Insights</h3>
@@ -469,7 +469,7 @@ const CreatorProfile = () => {
                                                     <EngagementCard>
                                                         <h3>Engagement Rate</h3>
                                                         <div id="wrapper">
-                                                            <h1>{inData?.analytics?.instagram_insights?.engagement_rate}%</h1>
+                                                            <h1>{inData?.analytics?.instagram_insights?.engagement_rate ?? 0}%</h1>
                                                             <div>
                                                                 <p>{generateRatingText(Number(inData?.analytics?.instagram_insights?.engagement_rate ?? "0"))}</p>
                                                                 {/* <span>Higher than 60% of influencers</span> */}
