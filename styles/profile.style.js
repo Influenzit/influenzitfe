@@ -615,8 +615,10 @@ export const ConnectFlex = styled.div`
 `;
 export const SocialMediaContainer = styled.div`
     margin: 30px 0;
-    border-bottom: 1px solid #EAEAEB;
-    padding-bottom: 30px;
+    border: 1px solid #EAEAEB;
+    padding: 30px 20px;
+    border-radius: 16px;
+    background: #fff;
     h1 {
         font-size: 22px;
         font-weight: 600;
@@ -637,7 +639,7 @@ export const SocialMediaContainer = styled.div`
         display: inline-flex;
         align-items: center;
         column-gap: 10px;
-        padding: 7px 15px;
+        padding: 7px 0;
         border-radius: 5px;
         background: transparent;
     }
