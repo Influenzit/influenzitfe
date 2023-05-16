@@ -7,13 +7,14 @@ import youtube from "../../assets/youtube.svg";
 import { ConnectFlex, SocialCard, SocialCardList, SocialMediaContainer } from '../../styles/profile.style';
 import Image from 'next/image';
 import Link from 'next/link';
-import { accountMedia, getUserSocialMedia } from 'api/auth';
+import { accountMedia, disconnectSocialMedia, getUserSocialMedia } from 'api/auth';
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
-import { setLoading } from 'app/reducers/status';
+import { setError, setLoading } from 'app/reducers/status';
 import { UpdateModal } from 'styles/view.style';
 import { WelcomeModal } from 'styles/connect-pages.style';
+import { toast } from 'react-toastify'; 
 
 const Stage5 = ({user}) => {
     const dispatch = useDispatch();
@@ -33,6 +34,33 @@ const Stage5 = ({user}) => {
             dispatch(setLoading(false));
         } 
     });
+    const updateSocialMutation = useMutation(
+        (data) => {
+          return disconnectSocialMedia(data);
+        },
+        {
+          onSuccess() {
+            toast.success("Account Disconnected", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            refetchSocialData();
+            dispatch(setLoading(false));
+          },
+          onError(error) {
+            const res = error.response.data;
+            dispatch(setLoading(false));
+            if (res) {
+              dispatch(setError({ error: true, message: res.message }));
+              return;
+            }
+            dispatch(setError({ error: true, message: "An error occured" }));
+          },
+        }
+      );
+      const disconnectSocialMediaFunc = (id) => {
+        dispatch(setLoading(true));
+        updateSocialMutation.mutate(id);
+      }
     useEffect(() => {
       refetchSocialData();
     }, []);
@@ -78,7 +106,9 @@ const Stage5 = ({user}) => {
                             <SocialCard key={i}>
                                 <p>{account.profile_name}<br/><span>{account.profile_type}</span></p>
                                 <div>
-                                    <button>Disconnect</button>
+                                    <button onClick={() => {
+                                        disconnectSocialMediaFunc(account.id)
+                                    }}>Disconnect</button>
                                 </div>
                             </SocialCard>
                         ))
@@ -106,7 +136,9 @@ const Stage5 = ({user}) => {
                             <SocialCard key={i}>
                                 <p>{account.profile_name}<br/><span>{account.profile_type}</span></p>
                                 <div>
-                                    <button>Disconnect</button>
+                                    <button onClick={() => {
+                                        disconnectSocialMediaFunc(account.id)
+                                    }}>Disconnect</button>
                                 </div>
                             </SocialCard>
                         ))
@@ -134,7 +166,9 @@ const Stage5 = ({user}) => {
                             <SocialCard key={i}>
                                 <p>{account.profile_name}<br/><span>{account.profile_type}</span></p>
                                 <div>
-                                    <button>Disconnect</button>
+                                    <button onClick={() => {
+                                        disconnectSocialMediaFunc(account.id)
+                                    }}>Disconnect</button>
                                 </div>
                             </SocialCard>
                         ))
@@ -162,7 +196,9 @@ const Stage5 = ({user}) => {
                             <SocialCard key={i}>
                                 <p>{account.profile_name}<br/><span>{account.profile_type}</span></p>
                                 <div>
-                                    <button>Disconnect</button>
+                                    <button onClick={() => {
+                                        disconnectSocialMediaFunc(account.id)
+                                    }}>Disconnect</button>
                                 </div>
                             </SocialCard>
                         ))
