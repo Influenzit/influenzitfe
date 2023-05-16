@@ -47,7 +47,7 @@ const Profile = () => {
   }, [status])
   
   return (
-    <Container>
+    <Container style={{background: activetab === "social" ? "rgb(250, 251, 252)":"#fff"}}>
       <div className="flex justify-between mb-6">
         <div className="flex items-center">
           <h1 className="text-xl">Account Settings </h1>

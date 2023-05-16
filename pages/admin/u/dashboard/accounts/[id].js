@@ -7,10 +7,12 @@ import { ActionBtn, Checkbox, Container, Table, TableContent, TableWrapper, TBod
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '../../../../../app/reducers/status';
-import { useQuery } from '@tanstack/react-query';
-import { getSingleUser, getWalletRequests, getWalletSummary, getWalletTransactions } from '../../../../../api/admin'
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { getSingleUser, getWalletRequests, getWalletSummary, getWalletTransactions, verifyUserAccount } from '../../../../../api/admin'
 import { WelcomeHeading, ReferralCode } from '../../../../../styles/dashboard';
 import { ChevronLeft, ChevronRight } from '../../../../../assets/svgIcons';
+import { ActionBtnB } from '../../../../../styles/connect-pages.style';
+import { toast } from 'react-toastify'
 
 
 const SingleWallet = () => {
@@ -100,6 +102,34 @@ const SingleWallet = () => {
         refetchWalletRq();
     }
   }, [id])
+  const updateAccountMutation = useMutation(
+    (data) => {
+      return verifyUserAccount(data);
+    },
+    {
+      onSuccess(successRes) {
+        const res = successRes.data;
+        toast.success("Account verified successfully", {
+            position: toast.POSITION.TOP_RIGHT
+          });
+        refetchUserData();
+        dispatch(setLoading(false));
+      },
+      onError(error) {
+        const res = error.response.data;
+        dispatch(setLoading(false));
+        if (res) {
+          dispatch(setError({ error: true, message: res.message }));
+          return;
+        }
+        dispatch(setError({ error: true, message: "An error occured" }));
+      },
+    }
+  );
+  const verifyAcc = (id) => {
+    dispatch(setLoading(true));
+    updateAccountMutation.mutate(id);
+  }
   
   
   return (
@@ -107,7 +137,7 @@ const SingleWallet = () => {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <div className="col-span-3 relative" style={{ height: "150px", width: "150px" }}>
                 <Image
-                    src={account?.user?.profile_pic}
+                    src={userData?.data.data.user?.profile_pic}
                     alt="avatar"
                     layout='fill'
                     objectFit='cover'
@@ -116,11 +146,15 @@ const SingleWallet = () => {
                 />
             </div>
             <WelcomeHeading>
-                {account?.user?.name}
+                {userData?.data.data.user?.name}
             </WelcomeHeading>
             <ReferralCode>
-                <p><span>{account?.user?.email}</span> </p>
+                <p><span>{userData?.data.data.user?.email}</span> </p>
             </ReferralCode>
+            <div>
+                <ActionBtn onClick={() => verifyAcc(id)}>{userData?.data.data.influenzit_verified ? "Disapprove User" : "Approve User" }</ActionBtn>
+                <ActionBtnB onClick={() =>router.push(`/admin/u/dashboard/accounts/view/${id}`)}>More Info</ActionBtnB>
+            </div>
          </div>
         <div>
             <div className="grid md:grid-cols-3 gap-10">

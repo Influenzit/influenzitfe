@@ -92,7 +92,7 @@ useEffect(() => {
                                         <Td cellWidth="250px">{val.user.email}</Td>
                                         <Td cellWidth="120px">{val.influenzit_verified ? "Verified" : "Not Verified"}</Td>
                                         <Td cellWidth="200px" style={{ display: "flex",  justifyContent: "space-between", paddingRight: "20px" }}>
-                                            <ActionBtn onClick={() => verifyAcc(val.id)}>{val.influenzit_verified ? "Disable User" : "Verify User"}</ActionBtn>
+                                            <ActionBtn onClick={() => verifyAcc(val.id)}>{val.influenzit_verified ? "Disapprove User" : "Approve User"}</ActionBtn>
                                             <ActionBtnB onClick={() =>router.push(`/admin/u/dashboard/accounts/${val.id}`)}>View</ActionBtnB>
                                         </Td>
                                     </Tr>
