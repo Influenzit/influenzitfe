@@ -39,5 +39,9 @@ export const accountMedia = (data) => {
     return axiosInstance().post(`/accounts/media`, data);
 }
 export const getUserSocialMedia = () => {
-    return axiosInstance().get(`/accounts/social-profiles`)
+    return axiosInstance().get(`/accounts/social-profiles`);
+}
+
+export const disconnectSocialMedia = (id) => {
+    return axiosInstance().delete(`/accounts/social-profiles/${id}`);
 }
