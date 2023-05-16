@@ -716,8 +716,8 @@ const CreatorProfile = () => {
                                             <Bottom style={{ columnGap: "15px" }}>
                                                 {
                                                     inData?.businesses.map((val, i) => (
-                                                        <div>
-                                                            <ProjectCard key={i}>
+                                                        <div key={i}>
+                                                            <ProjectCard>
                                                                 <UserMiniCard>
                                                                     <div>
                                                                         <h4>{val.name}</h4>
@@ -733,6 +733,7 @@ const CreatorProfile = () => {
                                                                         <p>{val.phone}</p>
                                                                     </div>
                                                                 </ProjectDetails>
+                                                                
                                                             </ProjectCard>
                                                         </div>
                                                     ))
