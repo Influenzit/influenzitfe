@@ -8,21 +8,23 @@ import DashboardFooter from '../components/dashboard-footer'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUser, updateUser } from '../app/reducers/user'
 import { useRouter } from 'next/router'
-import { getMessage, isError, isLoading, isSuccess, setLoading, setUserType } from '../app/reducers/status'
+import { getLogoutModalStatus, getMessage, isError, isLoading, isSuccess, setLoading, setLogoutModal, setUserType } from '../app/reducers/status'
 import ErrorPopup from '../components/error-popup'
 import SuccessPopup from '../components/success-popup'
 import { hasAValidAccount } from '../helpers/helper'
-import { useQuery } from '@tanstack/react-query'
-import { getUserAccount } from '../api/auth'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { getUserAccount, logoutUser } from '../api/auth'
 import AdminNav from '../components/admin-nav'
 import Sidebar from '../components/sidebar'
 import { toast } from 'react-toastify'
+import LogoutModal from '../components/logout-modal'
 
 const LandingLayout = ({children, title, description}) => {
   const user = useSelector(getUser);
   const loadingStatus = useSelector(isLoading);
   const errorStatus = useSelector(isError);
   const successStatus = useSelector(isSuccess);
+  const showLogoutModal = useSelector(getLogoutModalStatus);
   const message = useSelector(getMessage);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -65,14 +67,49 @@ const LandingLayout = ({children, title, description}) => {
       position: toast.POSITION.TOP_RIGHT
     });
   }
+  const unloadFunc = (e) => {
+    e.preventDefault();
+    localStorage.clear();
+    e.returnValue = "";
+  }
+  const updateActivity = () => {
+    localStorage.setItem("last-activity", `${Date.now()}`);
+  }
+  const checkActivity = () => {
+    if(localStorage.getItem("last-activity")) {
+      const lastTime = Number(localStorage.getItem("last-activity") ?? "0");
+      const allowedTime = Number(process.env.NEXT_PUBLIC_ALLOWED_INACTIVITY_TIME ?? "5000");
+      if((Date.now() - lastTime) > allowedTime) {
+       if(localStorage.getItem("token")) {
+        dispatch(setLogoutModal(true));
+       }
+      }
+    } else {
+      localStorage.setItem("last-activity", `${Date.now()}`);
+    }
+  }
+  let evInterval;
   useEffect(() => {
     dispatch(setUserType(localStorage.getItem("user-type")));
     refetch();
-    addEventListener("offline", offlineFunc)
-    addEventListener("online", onlineFunc)
+    addEventListener("offline", offlineFunc);
+    addEventListener("online", onlineFunc);
+    addEventListener("beforeunload", unloadFunc);
+    // Checking for mouseup, keydown, scroll and mousemove to update the last time the user interacted with the website
+    addEventListener("mouseup", updateActivity);
+    addEventListener("scroll", updateActivity);
+    addEventListener("keydown", updateActivity);
+    addEventListener("mousemove", updateActivity);
+    evInterval = setInterval(checkActivity, 2000);
     return () => {
-      removeEventListener("offline", offlineFunc)
-      removeEventListener("online", onlineFunc)
+      removeEventListener("offline", offlineFunc);
+      removeEventListener("online", onlineFunc);
+      removeEventListener("beforeunload", unloadFunc);
+      removeEventListener("mouseup", updateActivity);
+      removeEventListener("scroll", updateActivity);
+      removeEventListener("keydown", updateActivity);
+      removeEventListener("mousemove", updateActivity);
+      clearInterval(evInterval);
     }
   }, [])
   
@@ -129,6 +166,7 @@ const LandingLayout = ({children, title, description}) => {
           {loadingStatus && <Loader />}
           {errorStatus && <ErrorPopup message={message} />}
           {successStatus && <SuccessPopup message={message} />}
+          {showLogoutModal && <LogoutModal />}
           <Wrapper>
             {router.pathname.includes("/dashboard") && <Sidebar />}
             <Content isPadded={router.pathname.includes("/dashboard")}>

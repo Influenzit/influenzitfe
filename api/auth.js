@@ -45,3 +45,6 @@ export const getUserSocialMedia = () => {
 export const disconnectSocialMedia = (id) => {
     return axiosInstance().delete(`/accounts/social-profiles/${id}`);
 }
+export const logoutUser = () => {
+    return axiosInstance().post("/auth/logout");
+}

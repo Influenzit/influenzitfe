@@ -63,3 +63,6 @@ export const getAllProjects = () => {
 export const getWaitlist = () => {
     return axiosInstance().get("/admin/waitlist");
 }
+export const getAccountActivities = (query) => {
+    return axiosInstance().get(query ? query : "/admin/logs/activities?paginate=20")
+}
