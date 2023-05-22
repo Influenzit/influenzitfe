@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react'
-import { AttachmentIcon, BoldIcon, EmojiIcon, ItalicIcon, MarkupIcon, SendIcon, UnderlineIcon } from '../../assets/svgIcons';
+import { AttachmentIcon, BoldIcon, DeleteIcon, EmojiIcon, ItalicIcon, MarkupIcon, SendIcon, UnderlineIcon } from '../../assets/svgIcons';
 import ChatSidebar from '../../components/chat-sidebar';
 import LandingLayout from '../../layouts/landing.layout';
-import { ActionBtn, ChatContainer, ChatControls, ChatHeader, Container, ContextBtn, Editor, EditorBtn, HLeft, ImageWrapper, LeftControls, MessageCard, MessageContent, MessageInput, MessagesContB, MessageSection, NonSelectedCont, PickerContainer, ProfilePicWrapper, RightControls, UserSect, Wrapper } from '../../styles/messages.style';
+import { ActionBtn, BContainer, ChatContainer, ChatControls, ChatHeader, Container, ContextBtn, Editor, EditorBtn, FileContainer, FilesList, HLeft, ImageWrapper, Label, LeftControls, MessageCard, MessageContent, MessageInput, MessagesContB, MessageSection, NonSelectedCont, PickerContainer, PImageContainer, ProfilePicWrapper, RightControls, UserSect, Wrapper } from '../../styles/messages.style';
 import { colors } from '../../styles/theme';
 import dynamic from 'next/dynamic';
 import { getConversationMessages, getConversations, sendConversationMessage } from '../../api/messaging';
@@ -14,6 +14,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../app/reducers/user';
 import { getCurrentConversationId, setCurrentConversation } from '../../app/reducers/status';
 import MobileChatbar from '../../components/mobile-chatbar';
+import { UpdateModal } from 'styles/view.style';
+import { WelcomeModal } from 'styles/connect-pages.style';
+import { InputContainer } from 'styles/auth.style';
 const Picker = dynamic(
   () => {
     return import('emoji-picker-react');
@@ -32,6 +35,9 @@ const Messages = () => {
   const user = useSelector(getUser);
   const [socketSet, setSocketSet] = useState(false);
   const conversationId = useSelector(getCurrentConversationId);
+  const [filesToSend, setFilesToSend] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [comment, setComment] = useState([]);
   const dispatch = useDispatch();
   const handleInput = (e) => {
     if(e.currentTarget.innerHTML === "<br>") {
@@ -222,6 +228,26 @@ const handleMessageSend = () => {
         text:  messageBoxRef.current.innerHTML
     })
 }
+const handleFileChangeDrop = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    setFilesToSend((prev) => {
+        let newList = [...prev];
+        newList.push({
+            url: file.type.includes("image") ? URL.createObjectURL(file) : "",
+            file: file,
+        })
+        return newList;
+    })
+    setShowPopup(true);
+}
+const handleImageRemove = (i) => {
+    setFilesToSend((prev) => {
+        let newList = [...prev];
+        newList.splice(i,1);
+        return newList;
+    })
+}
 const handleConversation = (conversation) => {
     if(conversation){
         if(conversation.id === Number(sessionStorage.getItem("cid"))) {
@@ -271,7 +297,7 @@ useEffect(() => {
   if(conversationId){
     refetchMessagesData();
   }
-}, [conversationId])
+}, [conversationId]);
 useEffect(() => {
     if(messagesRef.current) {
         messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
@@ -282,7 +308,60 @@ useEffect(() => {
 
   return (
     <Container>
+         {
+            showPopup && (
+                <UpdateModal>
+                    <WelcomeModal style={{ width: "400px", padding: "10px 30px" }}>
+                        <div style={{ paddingBottom: "0" }}>
+                            <button onClick={() => setShowPopup(false)}><Image src="/cancel.svg" alt="" height={14} width={14} /></button>
+                        </div>
+                        <h2 style={{ fontSize: "18px" }}>{filesToSend.length} file(s) selected</h2>
+                        <FilesList>
+                            {
+                                filesToSend.map((val, i) => {
+                                    return val.url ? (
+                                        <PImageContainer>
+                                            <Image src={val.url} alt="file" layout="fill" objectPosition="center" objectFit='contain'/>
+                                            <button id="delete" onClick={() => handleImageRemove(i)}>
+                                                <Image src="/delete.svg" alt="del" height={20} width={20} />
+                                            </button>
+                                        </PImageContainer>
+                                    ) : (
+                                        <FileContainer>
+                                            <div id="icon">
+                                                <Image src="/file.svg" alt="file_icon" height={25} width={25} />
+                                            </div>
+                                            <div id="details">
+                                                <p>{val.file.name}</p>
+                                                <span>{(val.file.size / 1000).toFixed(1)} KB</span>
+                                            </div>
+                                            <button id="delete" onClick={() => handleImageRemove(i)}>
+                                                <Image src="/delete.svg" alt="del" height={20} width={20} />
+                                            </button>
+                                        </FileContainer>
+                                    )
+                                })
+                            }
+                        </FilesList>
+                        <InputContainer style={{ flexDirection: "column", alignItems: "start" }}>
+                            <label>Comment</label>
+                            <textarea 
+                                placeholder='Enter Comment'
+                                value={comment}
+                                onInput={(e) => setComment(e.target.value)}
+                                style={{ height: "100px" }}
+                            >
 
+                            </textarea>
+                        </InputContainer>
+                        <BContainer>
+                            <label htmlFor='attachment'>Add</label>
+                            <button onClick={() => {}}>Send Message</button>
+                        </BContainer>
+                    </WelcomeModal>
+                </UpdateModal>
+            )
+        }
         <MobileChatbar setConversationId={handleSetConversationId} conversations={conversations}/>
         <Wrapper>
             <ChatSidebar setConversationId={handleSetConversationId} conversations={conversations} conversationId={conversationId}/>
@@ -341,9 +420,10 @@ useEffect(() => {
                                     {/* <EditorBtn>
                                         <MarkupIcon />
                                     </EditorBtn> */}
-                                    <EditorBtn>
+                                    <input type="file" hidden id="attachment" onChange={handleFileChangeDrop}/>
+                                    <Label htmlFor='attachment'>
                                         <AttachmentIcon />
-                                    </EditorBtn>
+                                    </Label>
                                     <EditorBtn onClick={() => setShowEmoji(!showEmoji)}>
                                         <EmojiIcon />
                                     </EditorBtn>

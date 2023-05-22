@@ -67,11 +67,6 @@ const LandingLayout = ({children, title, description}) => {
       position: toast.POSITION.TOP_RIGHT
     });
   }
-  const unloadFunc = (e) => {
-    e.preventDefault();
-    localStorage.clear();
-    e.returnValue = "";
-  }
   const updateActivity = () => {
     localStorage.setItem("last-activity", `${Date.now()}`);
   }
@@ -94,7 +89,6 @@ const LandingLayout = ({children, title, description}) => {
     refetch();
     addEventListener("offline", offlineFunc);
     addEventListener("online", onlineFunc);
-    addEventListener("beforeunload", unloadFunc);
     // Checking for mouseup, keydown, scroll and mousemove to update the last time the user interacted with the website
     addEventListener("mouseup", updateActivity);
     addEventListener("scroll", updateActivity);
@@ -104,7 +98,6 @@ const LandingLayout = ({children, title, description}) => {
     return () => {
       removeEventListener("offline", offlineFunc);
       removeEventListener("online", onlineFunc);
-      removeEventListener("beforeunload", unloadFunc);
       removeEventListener("mouseup", updateActivity);
       removeEventListener("scroll", updateActivity);
       removeEventListener("keydown", updateActivity);

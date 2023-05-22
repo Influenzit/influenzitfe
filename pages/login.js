@@ -7,13 +7,16 @@ import React, { useState, useEffect } from 'react'
 
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { useDispatch } from 'react-redux'
-import { loginUser, socialLogin } from '../api/auth'
+import { loginUser, resendEmail, socialLogin } from '../api/auth'
 import { getBusinesses } from '../api/business'
 import { setBusinesses } from '../app/reducers/business'
 import { setError, setLoading, setUserType } from '../app/reducers/status'
 import { updateUser } from '../app/reducers/user'
 import LandingLayout from '../layouts/landing.layout'
 import { Bottom, Center, CheckContainer, Container, FacebookBtn, FormFields, FormHeader, FormWrapper, FrameContainer, GoogleBtn, HelpSection, Input, InputContainer, OrContainer, RememberMe, SocialIcon, SocialLogin, SubmitButton, Wrapper } from '../styles/auth.style'
+import { UpdateModal } from 'styles/view.style'
+import { WelcomeModal } from 'styles/connect-pages.style'
+import { toast } from 'react-toastify'
 
 
 
@@ -22,6 +25,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const [showPrompt, setShowPrompt] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const mutation = useMutation(userData => {
@@ -68,8 +72,13 @@ const Login = () => {
       const res = error.response.data;
       if(res){
         dispatch(setLoading(false));
-        dispatch(setError({error: true, message: res.message}));
-        return;
+        if(error.response.status === 423) {
+          setShowPrompt(true);
+          return;
+        } else {
+          dispatch(setError({error: true, message: res.message}));
+          return;
+        }
       }
       dispatch(setLoading(false));
       dispatch(setError({error: true, message: "An error occured"}));
@@ -119,13 +128,42 @@ const Login = () => {
       const res = error.response.data;
       if(res){
         dispatch(setLoading(false));
-        dispatch(setError({error: true, message: res.message}));
-        return;
+        if(error.response.status === 423) {
+          setShowPrompt(true);
+          return;
+        } else {
+          dispatch(setError({error: true, message: res.message}));
+          return;
+        }
       }
       dispatch(setLoading(false));
       dispatch(setError({error: true, message: "An error occured"}));
     }
-  })
+  });
+  const mailMutation = useMutation(
+    (data) => {
+      return resendEmail(data);
+    },
+    {
+      onSuccess(successRes) {
+        const res = successRes.data;
+        toast.success("Verification mail sent successfully. Check your inbox.", {
+            position: toast.POSITION.TOP_RIGHT
+        });
+        setShowPrompt(false);
+        dispatch(setLoading(false));
+      },
+      onError(error) {
+        const res = error.response.data;
+        dispatch(setLoading(false));
+        if (res) {
+          dispatch(setError({ error: true, message: res.message }));
+          return;
+        }
+        dispatch(setError({ error: true, message: "An error occured" }));
+      },
+    }
+  );
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -139,6 +177,13 @@ const Login = () => {
     mutation.mutate({
         email,
         password,
+    })
+  }
+  const handleResendEmail = (e) => {
+    e.preventDefault();
+    dispatch(setLoading(true));
+    mailMutation.mutate({
+        email,
     })
   }
 
@@ -234,6 +279,22 @@ const Login = () => {
           </Bottom>
         </FormWrapper>
       </Wrapper>
+      {
+            showPrompt && (
+                <UpdateModal>
+                    <WelcomeModal>
+                        <div style={{ paddingBottom: "0" }}>
+                            <button onClick={() => setShowPrompt(false)}><Image src="/cancel.svg" alt="" height={14} width={14} /></button>
+                        </div>
+                        <h2>Email not verified</h2>
+                        <p>It seems your email is not yet veified. Click the button below to get the verication mail again.</p>
+                        <div>
+                            <button onClick={handleResendEmail}>Resend Verification Email</button>
+                        </div>
+                    </WelcomeModal>
+                </UpdateModal>
+            )
+        }
     </Container>
   )
 }

@@ -26,6 +26,90 @@ export const Wrapper = styled.div`
 export const MessageSection = styled.div`
     width: 100%;
 `;
+export const BContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    button, label {
+        background: transparent !important;
+        color: ${colors.primaryColor} !important;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+`;
+export const FilesList = styled.div`
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    height: 160px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+`;
+
+export const FileContainer = styled.div`
+    position: relative;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between !important;
+    align-items: center;
+    column-gap: 3px;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    #icon {
+        height: 40px;
+        width: 40px;
+        min-width: 40px;
+        padding-bottom: 0;
+        border-radius: 50%;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        background: ${colors.primaryColor};
+    }
+    #delete {
+        position: absolute;
+        background: transparent;
+        color: #fff;
+        font-size: 12px;
+        right: 5px;
+        padding: 2px 5px;
+        border-radius: 4px !important;
+    }
+    #details {
+        width: calc(100% - 42px);
+        flex-direction: column;
+        align-items: start;
+        margin-top: 0;
+        padding-left: 10px;
+        p {
+            font-size: 14px
+        }
+        span {
+            font-size: 12px;
+        }
+    }
+`;
+export const PImageContainer = styled.div`
+    position: relative;
+    height: 150px;
+    min-height: 150px;
+    width: 100%;
+    border-radius: 8px;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    #delete {
+        position: absolute;
+        background: transparent;
+        color: #fff;
+        font-size: 12px;
+        top: 5px;
+        right: 5px;
+        padding: 2px 5px;
+        border-radius: 4px;
+    }
+`;
 export const NonSelectedCont = styled.div`
     height: 100%;
     width: 100%;
@@ -263,6 +347,19 @@ export const RightControls = styled.div`
     display: flex;
     align-items: center;
     column-gap: 10px;
+`;
+export const Label = styled.label`
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 4px;
+    cursor: pointer;
+    color: #949494;
+    display: flex;
+    align-items: center;
+    :hover {
+        color: ${colors.primaryColor};
+    }
 `;
 export const EditorBtn = styled.button`
     border: none;

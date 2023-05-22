@@ -258,7 +258,6 @@ const { data, refetch } = useQuery(["get-account"], async () => {
     }
     const handleFileChangeDrop = (e) => {
         e.preventDefault();
-        console.log(coverImages);
         if(coverImages.length < 4) {
             const file = e.target.files[0];
             if(file.size < 5000000) {
@@ -472,7 +471,7 @@ const { data, refetch } = useQuery(["get-account"], async () => {
                                     <Image src={imgSrc ? imgSrc : "/placeholder.png"} alt="" layout='fill' objectFit='cover' objectPosition="center" />
                                 </div>
                             </div>
-                            <input type="file" hidden id="upload-input" onChange={handleFileChange}/>
+                            <input type="file" hidden id="upload-input" accept='image/*' onChange={handleFileChange}/>
                             <label htmlFor='upload-input'>Upload Image</label>
                         </ProfileUploadCont>
                         <CoverImageContainer>
@@ -484,7 +483,7 @@ const { data, refetch } = useQuery(["get-account"], async () => {
                                     <label htmlFor="upload-cover">Upload</label>
                                 </UploadHeader>
                                 <UploadInfo>JPG or PNG, no larger than 5MB</UploadInfo>
-                                <input type="file" hidden id="upload-cover" onChange={handleFileChangeDrop}/>
+                                <input type="file" hidden id="upload-cover" accept='image/*' onChange={handleFileChangeDrop}/>
                             </UploadContainer>
                             <ImagePreview>
                                 {
