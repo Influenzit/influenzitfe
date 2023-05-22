@@ -50,6 +50,7 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { clearUser, getUser, updateUser } from "../../app/reducers/user";
 import { clearBusiness } from "../../app/reducers/business";
 import {
+  getLogoutModalStatus,
   getShowSidebar,
   getUserType,
   setError,
@@ -71,6 +72,7 @@ const Nav = () => {
   const [searchBy, setSearchBy] = useState("influencers");
   const currentAcctType = useSelector(getUserType);
   const rShowSidebar = useSelector(getShowSidebar);
+  const showLogoutModal = useSelector(getLogoutModalStatus);
   const switchRef = useRef(null);
   const connectRef = useRef(null);
   const profileRef = useRef(null);
@@ -172,7 +174,7 @@ const Nav = () => {
           dispatch(setLoading(false));
           dispatch(setError({ error: true, message: res.message }));
         } else {
-          getUserAccount(res.data.user_id)
+          getUserAccount()
             .then((userRes) => {
               if (userRes.data.data) {
                 dispatch(setLoading(false));
@@ -252,7 +254,7 @@ const Nav = () => {
     if (user) {
       setUserDetails(user);
     }
-  }, [user, router.pathname]);
+  }, [user, router.pathname, showLogoutModal]);
   const handleClosing = (e) => {
     if (
       connectRef.current &&

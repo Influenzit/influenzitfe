@@ -50,7 +50,7 @@ const Information = () => {
                     dispatch(setLoading(false));
                     dispatch(setError({error: true, message: res.message}));
                 } else { 
-                    getUserAccount(user.id).then((userRes) => {
+                    getUserAccount().then((userRes) => {
                         if(userRes.data.data) {
                           dispatch(updateUser(userRes.data.data));
                           dispatch(setLoading(false));
@@ -90,7 +90,7 @@ const Information = () => {
                     dispatch(setLoading(false));
                     dispatch(setError({error: true, message: res.message}));
                 } else { 
-                    getUserAccount(user.id).then((userRes) => {
+                    getUserAccount().then((userRes) => {
                     if(userRes.data.data) {
                         dispatch(updateUser(userRes.data.data));
                         dispatch(setLoading(false));

@@ -41,7 +41,7 @@ const Campaigns = () => {
                 <TableHeader>
                     <h2>Campaigns</h2>
                 </TableHeader>
-                <TableControls>
+                {/* <TableControls>
                         <SearchContainer>
                             <input type="text" placeholder="Search by influencer"/>
                             <button>
@@ -53,7 +53,7 @@ const Campaigns = () => {
                             <button><Image src="/upload.svg" alt="" height={20} width={20} /><span>Export</span></button>
                             <button>Find Influencers</button>
                         </FilterContainer>
-                </TableControls>
+                </TableControls> */}
                 <TableContent>
                     <Table>
                         <THead>
@@ -62,7 +62,7 @@ const Campaigns = () => {
                                     <Checkbox>
                                     </Checkbox>
                                 </Th>
-                                <Th cellWidth="500px">Influencer</Th>
+                                <Th cellWidth="300px">Influencer</Th>
                                 <Th cellWidth="150px">Start Date</Th>
                                 <Th cellWidth="150px">Duration</Th>
                                 <Th cellWidth="120px">Status</Th>
@@ -77,9 +77,9 @@ const Campaigns = () => {
                                             <Checkbox>
                                             </Checkbox>
                                         </Td>
-                                        <Td cellWidth="500px">{val.provider.firstname} {val.provider.lastname}</Td>
+                                        <Td cellWidth="300px">{val.provider.firstname} {val.provider.lastname}</Td>
                                         <Td cellWidth="150px">{val.start_date ? (new Date(val.start_date)).toDateString() : "Not specified"}</Td>
-                                        <Td cellWidth="150px">{val.duration_count ?? "Not specified"} {val.duration_type}</Td>
+                                        <Td cellWidth="150px">{val.duration_count ?? "Not specified"} {val.duration_count && val.duration_type}</Td>
                                         <Td cellWidth="120px">{val.status}</Td>
                                         <Td cellWidth="120px">
                                             <ActionBtn onClick={() => router.push(`/admin/u/dashboard/campaigns/view/${val.id}`)}>View</ActionBtn>

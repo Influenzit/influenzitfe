@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useMutation } from "@tanstack/react-query"
 import { BannerReg, BanReg, Bottom, BottomP, Center, Container, FacebookBtn, FlexInput, FormFields, FormHeader, FormWrapper, GoogleBtn, Input, InputContainer, SocialIcon, SocialLogin, SubmitButton, Wrapper, AuthFlex, ErrorMessageCont } from '../../styles/auth.style'
 import { createAccount, socialLogin } from '../../api/auth';
-import { isLoading, setError, setLoading, setUserType } from '../../app/reducers/status';
+import { isLoading, setError, isError as errorSelector, setLoading, setUserType, getMessage } from '../../app/reducers/status';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
@@ -14,10 +14,22 @@ import { Logo } from '../../components/nav/style';
 import Image from 'next/image';
 import { useEffect } from 'react';
 import Loader from '../../components/loading'
+import Head from 'next/head';
+import ErrorPopup from 'components/error-popup/error-popup';
+import PasswordStrengthBar from 'react-password-strength-bar';
+import { colors } from 'styles/theme';
+import { CancelIcon, CheckIcon } from '../../assets/svgIcons';
 
 const Register = () => {
   const router = useRouter();
   const loadingStatus = useSelector(isLoading);
+  const errorStatus = useSelector(errorSelector);
+  const message = useSelector(getMessage);
+  const [oneLC, setOneLC] = useState(false);
+  const [oneUC, setOneUC] = useState(false);
+  const [oneNum, setOneNum] = useState(false);
+  const [isMinLen, setIsMinLen] = useState(false)
+  const [passwordMatch, setPasswordMatch] = useState(false);
   const [formVal, setFormVal] = useState({
     firstname: "",
     lastname: "",
@@ -47,11 +59,89 @@ const Register = () => {
     },
     onError(error) {
       const res = error.response.data;
+      if(res){
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: res.message}));
+        return;
+      }
       dispatch(setLoading(false));
-      dispatch(setError({error: true, message: res.message}));
+      dispatch(setError({error: true, message: "An error occured"}));
     }
   })
+   
+  const handlePasswordValidation = (type, value) => {
+    if (type === "password") {
+        if(!value) {
+            setIsMinLen(false);
+            setOneLC(false);
+            setOneUC(false);
+            setOneNum(false);
+            setPasswordMatch(false);
+            return;
+        }
+        const asciiList = value.split("").map(val => val.charCodeAt());
+        if (value.length >= 8 && value.length <= 60) {
+            setIsMinLen(true);
+        } else {
+            setIsMinLen(false);
+        }
+        // lowercase ascii 97 to 122
+        asciiList.every((val, i) => {
+            if (val >= 97 && val <= 122) {
+                setOneLC(true);
+                return false;
+            } else {
+                if (i === asciiList.length - 1) {
+                    setOneLC(false)
+                }
+                return true;
+            }
+        })
+        // uppercase ascii 65 to 90
+        asciiList.every((val, i) => {
+            if(val >= 65 && val <= 90) {
+                setOneUC(true);
+                return false;
+            } else {
+                if (i === asciiList.length - 1) {
+                    setOneUC(false)
+                }
+                return true
+            }
+        })
+        // number ascii 48 to 57
+        asciiList.every((val, i) => {
+            if(val >= 48 && val <= 57) {
+                setOneNum(true);
+                return false;
+            } else {
+                if (i === asciiList.length - 1) {
+                    setOneNum(false)
+                }
+                return true;
+            }
+        })
+        if (value === formVal.password_confirmation) {
+            setPasswordMatch(true)
+        } else {
+            setPasswordMatch(false)
+        }
+    } else {
+        if(!value) {
+            setPasswordMatch(false);
+            return;
+        }
+        if (value === formVal.password) {
+            setPasswordMatch(true)
+        } else {
+            setPasswordMatch(false)
+        }
+    }
+}
   const handleInputChange = (val, field) => {
+    if((field === "password") || (field === "password_confirmation")) {
+      handlePasswordValidation(field, val);
+    }
     setFormVal((prevVal) => {
       return {...prevVal, [field]: val};
     })
@@ -75,7 +165,6 @@ const Register = () => {
               dispatch(setBusinesses(bizRes.data.data))
               dispatch(updateUser(res.user));
               dispatch(setError({error: false, message: ""}));
-              localStorage.setItem("user-id", res.user.id);
               router.push("/dashboard");
             }
           }).catch( _ => {
@@ -87,7 +176,6 @@ const Register = () => {
           dispatch(updateUser(res.user));
           dispatch(setError({error: false, message: ""}));
           localStorage.setItem("token", res.token);
-          localStorage.setItem("user-id", res.user.id);
           
           if (is_influencer || is_creator) {
             is_influencer ? dispatch(setUserType("Influencer")) : (is_creator && dispatch(setUserType("Creator")))
@@ -109,6 +197,7 @@ const Register = () => {
       dispatch(setError({error: true, message: "An error occured"}));
     }
   })
+
 
   const handleFacebookLogin = (res) => {
     dispatch(setLoading(true));
@@ -133,9 +222,9 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsError(false);
-    if (formVal.password.length < 8) {
+    if (!(oneLC && oneNum && oneUC && isMinLen)) {
       setIsError(true);
-      setErrorMessage("Password must be greater than 8");
+      setErrorMessage("Enter a valid password");
       return
     } else if (formVal.password !== formVal.password_confirmation) {
       setIsError(true);
@@ -150,11 +239,11 @@ const Register = () => {
           password: formVal.password,
           password_confirmation: formVal.password_confirmation,
           account_type: formVal.account_type,
+          business_name: formVal.business_name,
           referral_code: formVal.referral_code
       })
     }
   }
-  if (mutation.isLoading) dispatch(setLoading(true));
   useEffect(() => {
     if(referral_code) {
       handleInputChange(referral_code, "referral_code");
@@ -162,9 +251,7 @@ const Register = () => {
   }, [referral_code])
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const id = localStorage.getItem("user-id");
-    console.log(token, id)
-    if(token && id) {
+    if(token) {
       router.push("/dashboard")
     }
   }, [router.pathname])
@@ -274,6 +361,10 @@ const Register = () => {
 
     <>
     <AuthFlex>
+    <Head>
+          <title>{"Influenzit Registration Page"}</title>
+          <meta name="description" content="INFLUENZIT  discovering the top influencers for your product. Efficiently identifying and engaging with the most relevant key creators for your brand, then start driving revenue from their audiences." />
+    </Head>
     <FormWrapper>
           <div style={{ margin: "20px 0 40px 0"}}>
             <Logo href="/">
@@ -351,6 +442,17 @@ const Register = () => {
                 required
                 />
               </InputContainer>
+              {
+                formVal.password ? (
+                  <PasswordStrengthBar
+                  password={formVal.password}
+                  barColors={['#ddd', '#ef4836', '#f6b44d', '#2b90ef', '#25c281']}
+                  scoreWords={ ['', '', '', '', '']}
+                  shortScoreWord={<p></p>}
+                  minLength={8}
+                  />
+                ): null
+              }
               <InputContainer hasContent={formVal.password_confirmation}>
                 <label>Confirm Password</label>
                 <Input
@@ -361,6 +463,16 @@ const Register = () => {
                 required
                 />
               </InputContainer>
+              {
+                formVal.password ? (
+                <div>
+                  <p className={`text-sm flex items-center gap-x-2 ${isMinLen ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{isMinLen ? <CheckIcon /> : <CancelIcon />}</span> <span>Length between 8 and 60 characters</span></p>
+                  <p className={`text-sm flex items-center gap-x-2 ${oneLC ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneLC ? <CheckIcon /> : <CancelIcon />} </span><span>At least one lowercase character</span></p>
+                  <p className={`text-sm flex items-center gap-x-2 ${oneUC ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneUC ? <CheckIcon /> : <CancelIcon />}</span> <span>At least one uppercase character</span></p>
+                  <p className={`text-sm flex items-center gap-x-2 ${oneNum ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneNum ? <CheckIcon /> : <CancelIcon />} </span><span>At least one number</span></p>
+                  <p className={`text-sm flex items-center gap-x-2 ${passwordMatch ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{passwordMatch ? <CheckIcon /> : <CancelIcon />}</span> <span>Password must match</span></p>
+                </div>) : null
+              }
               <InputContainer hasContent={formVal.email}>
                   <label>Referral Code (optional)</label>
                   <Input
@@ -412,6 +524,7 @@ const Register = () => {
         </BannerReg>
     </AuthFlex>
     {loadingStatus && <Loader />}
+    {errorStatus && <ErrorPopup message={message} />}
     </>
   )
 }

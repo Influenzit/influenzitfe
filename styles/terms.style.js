@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, sizes } from "./theme";
+import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.div`
     padding: 100px 0 40px 0;
@@ -25,5 +25,8 @@ export const Container = styled.div`
             color: ${colors.primaryColor} !important;
             text-decoration: none !important;
         }
+    }
+    ${breakpoints.md} {
+        padding: 100px 20px 40px 20px;
     }
 `;

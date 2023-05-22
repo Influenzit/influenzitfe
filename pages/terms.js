@@ -7,7 +7,7 @@ const Terms = () => {
     <Container>
        <h2>Introduction</h2>
        <p>These Terms and Conditions (&quot;Terms&quot;) govern the use of the Influenzit platform and services
-(&quot;Services&quot;) provided by Influenzit (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;). By using our Services, you (&quot;User&quot;,
+(&quot;Services&quot;) provided by ascend brand management (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;). By using our Services, you (&quot;User&quot;,
 &quot;you&quot;, or &quot;your&quot;) agree to be bound by these Terms</p>
         <h2>Acceptance of Terms</h2>
         <p>By accessing and using our Services, you acknowledge that you have read, understood, and

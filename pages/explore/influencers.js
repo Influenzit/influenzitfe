@@ -25,7 +25,7 @@ const Search = () => {
     const user = useSelector(getUser);
     const [currentIndustry, setCurrentIndustry] = useState("");
     const { data: influencersData, refetch: refetchInfluencerData } = useQuery(["get-influencers"], async () => {
-        return await getInfluencers(getQueryString(`${getUrl ? getUrl : firstLoad ? router.asPath : ""}${getQueryString(getUrl ? getUrl : router.asPath) && firstLoad ? `&industry=${currentIndustry}&platform=${nicheVal}` : `?industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}` }`));
+        return await getInfluencers(getQueryString(`${getUrl ? getUrl : firstLoad ? router.asPath : ""}${getQueryString(getUrl ? getUrl : router.asPath) && firstLoad ? `&platform=${nicheVal}` : `?industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}` }`));
     }, {
         enabled: false,
         staleTime: Infinity,
@@ -133,7 +133,7 @@ const Search = () => {
                                         handle={val.twitter}
                                         name={`${val.user.firstname} ${val.user.lastname}`}
                                         sex={val.gender}
-                                        rating={val.rating}
+                                        rating={val.rating.rating_count}
                                         skills={val.user.email}
                                         address={val.address}
                                     />

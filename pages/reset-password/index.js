@@ -20,6 +20,7 @@ const Update = () => {
   }
   const router = useRouter();
   const dispatch = useDispatch();
+  const { token } = router.query();
   const mutation = useMutation(pData => {
     return resetPassword(pData);
   }, {
@@ -43,7 +44,6 @@ const Update = () => {
       dispatch(setError({error: true, message: "Check your internet connection"}));
     }
   })
-
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(setLoading(true));
@@ -51,7 +51,7 @@ const Update = () => {
         email: "",
         password: formVal.password,
         password_confirmation: formVal.cpassword,
-        token: "",
+        token,
     })
   }
   return (

@@ -1,28 +1,30 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { getInfluencer, getInfluencers } from '../../api/influencer'
-import { startConversation } from '../../api/messaging'
-import { setLoading } from '../../app/reducers/status'
-import { getUser } from '../../app/reducers/user'
-import LandingLayout from '../../layouts/landing.layout'
-import { Controls, CreatorsCard, CreatorDetails, SocialHandle } from '../../styles/business-owner.style'
-import { BackImage, Bottom, BottomSection, Campaign, CollaborateBtn, Container, HeroSectionOne, ImageContainer, ImageContainerTwo, Info, LeftSection, Listing, RightSection, SkillCard, Social, SocialWrapper, Tag, Tags, Top, UserCardSection, WorkCard, Wrapper, UserDetails, UserImage } from '../../styles/creator-profile.style'
-import { AnalyticChart, AnalyticStats, AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, Stat, TabBtn, Tabs, TopImg, PerformanceCont, EngagementCard, StatsCard, Flex, AnalyticCard, MapWrapper, CountryList, CountrySection, Guage } from '../../styles/influencer-profile';
-import { Details, FormContainer, UpdateModal } from '../../styles/view.style'
-import { InputContainer } from '../../styles/profile.style'
-import { createDispute } from '../../api/support'
-import ServiceCard from '../../components/service-card'
-import ProfileCard from '../../components/profile-card'
-import { numberFormatter } from '../../helpers/helper'
+import { getInfluencer, getInfluencers } from '../../../../../../api/influencer'
+import { startConversation } from '../../../../../../api/messaging'
+import { setLoading } from '../../../../../../app/reducers/status'
+import { getUser } from '../../../../../../app/reducers/user'
+import LandingLayout from '../../../../../../layouts/landing.layout'
+import { Controls, CreatorsCard, CreatorDetails, SocialHandle } from '../../../../../../styles/business-owner.style'
+import { BackImage, Bottom, BottomSection, Campaign, CollaborateBtn, Container, HeroSectionOne, ImageContainer, ImageContainerTwo, Info, LeftSection, Listing, RightSection, SkillCard, Social, SocialWrapper, Tag, Tags, Top, UserCardSection, WorkCard, Wrapper, UserDetails, UserImage } from '../../../../../../styles/creator-profile.style'
+import { AnalyticChart, AnalyticStats, AwardCard, Content, DataSection, DataSectionTwo, EmptyWrapper, ExperienceWrapper, Left, PostLayer, PostStats, PostWrapper, Right, SectionTwo, ServRate, ServStats, ServUserCard, SkillGuage, SocialPost, SocialStats, Stat, TabBtn, Tabs, TopImg, PerformanceCont, EngagementCard, StatsCard, Flex, AnalyticCard, MapWrapper, CountryList, CountrySection, Guage } from '../../../../../../styles/influencer-profile';
+import { Details, FormContainer, UpdateModal } from '../../../../../../styles/view.style'
+import { InputContainer } from '../../../../../../styles/profile.style'
+import { createDispute } from '../../../../../../api/support'
+import ServiceCard from '../../../../../../components/service-card'
+import ProfileCard from '../../../../../../components/profile-card'
+import { numberFormatter } from '../../../../../../helpers/helper'
 import { Chart } from "react-google-charts"
 import { colors } from 'styles/theme'
 import { WorldMap } from 'react-svg-worldmap'
 import { Country } from 'country-state-city'
+import AdminLayout from 'layouts/admin.layout'
+import { getSingleUser } from 'api/admin'
+import { ProjectCard, ProjectDetails, UserMiniCard } from 'styles/dashboard'
 
 const CreatorProfile = () => {
     const router = useRouter();
@@ -114,25 +116,21 @@ const CreatorProfile = () => {
         return eData;
     }
     const [disputeMessage, setDisputeMessage] = useState("");
-    const { data: influencerData, refetch: refetchInfluencerData } = useQuery(["get-influencer"], async () => {
-        return await getInfluencer(id);
+    const { data: userData, refetch: refetchUserData } = useQuery(["get-single-account"], async () => {
+        return await getSingleUser(id);
     }, {
         enabled: false,
         staleTime: Infinity,
         retry: false,
-        onSuccess() {
+        onSuccess(res) {
             dispatch(setLoading(false));
+            if(res.data.data) {
+                setInData(res.data.data);
+            }
         },
-        onError(res) {
-            dispatch(setLoading(false));
+        onError() {
+            dispatch(setLoading(false))
         }
-    });
-    const { data: influencersData, refetch: refetchInfluencersData } = useQuery(["get-influencers"], async () => {
-        return await getInfluencers("");
-    }, {
-        enabled: false,
-        staleTime: Infinity,
-        retry: false
     });
     const startConversationMutation = useMutation((data) => {
         return startConversation(data);
@@ -155,12 +153,6 @@ const CreatorProfile = () => {
             dispatch(setError({ error: true, message: "An error occured" }));
         }
     });
-    const handleLinkCopy = () => {
-        navigator.clipboard.writeText(location.href);
-        toast.success("Profile URL copied to clipboard", {
-            position: toast.POSITION.TOP_RIGHT
-        });
-    }
     const createDisputeMutation = useMutation(disputeData => {
         return createDispute(disputeData);
     }, {
@@ -227,16 +219,15 @@ const CreatorProfile = () => {
     }
     useEffect(() => {
         dispatch(setLoading(true));
-        refetchInfluencersData();
         if (id) {
-            refetchInfluencerData();
+            refetchUserData();
         }
     }, [router.pathname, id]);
     useEffect(() => {
-        if (influencerData?.data?.data) {
-            setInData(influencerData?.data?.data);
+        if (userData?.data?.data) {
+            setInData(userData?.data?.data);
         }
-    }, [influencerData])
+    }, [userData])
     const generateRatingText = (num) => {
         console.log(num)
         if(num < 2) {
@@ -248,76 +239,8 @@ const CreatorProfile = () => {
         }
     }
     return (
-        <Container>
+        <Container style={{ padding: "20px" }}>
             <HeroSectionOne>
-                {/* <BackImage>
-                <UserCard>
-                    <ProfileStats>
-                        <ProfileImgCont>
-                            <Image src={inData?.media?.[0]?.url ? inData?.media?.[0]?.url : `https://ui-avatars.com/api/?name=${inData?.user?.firstname}+${inData?.user?.lastname}&color=FFFFFF&background=12544D`}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
-                        </ProfileImgCont>
-                        <ProfileData>
-                            <div>
-                                <Image src="/users.svg" height={20} width={20} />
-                                <span>{inData?.gender}</span>
-                            </div>
-                            <div>
-                                <Image src="/verified.svg" height={20} width={20} />
-                                <span>Verified</span>
-                            </div>
-                        </ProfileData>
-                        <p>0/5 (<span>0 Feedbacks</span>)</p>
-                        <p>Member since {(new Date(inData?.created_at).toDateString())}</p>
-                        <button onClick={handleLinkCopy}>Share Profile</button>
-                    </ProfileStats>
-                    <ProfileDetails>
-                        <h2>{inData?.user?.firstname} {inData?.user.lastname}</h2>
-                        <ProfileCategory>
-                            <div><Image src="/niche.svg" height={25} width={25}/><p>Influencer&apos;s Niche</p></div>
-                            <div><Image src="/flag.svg" height={25} width={25}/><p>Nigeria</p></div>
-                            <div><Image src="/instagram.svg" height={25} width={25}/><p>{inData?.instagram}</p> <span>0</span></div>
-                        </ProfileCategory>
-                        <p>{inData?.biography}</p>
-                        <SeeMoreCont>
-                            <button>Click to see more</button>
-                        </SeeMoreCont>
-                        
-                    </ProfileDetails>
-                    <Stats>
-                        <StatWrapper>
-                            <StatCard textColor='#2B368C' bgColor="#F9F9FC">
-                                <h3>{inData?.analytics?.influenzit?.ongoing_campaigns_count}</h3>
-                                <p>Ongoing Engagements</p>
-                            </StatCard>
-                            <StatCard textColor='#019B2C' bgColor="#F7FCF9">
-                                <h3>{inData?.analytics?.influenzit?.completed_campaigns_count}</h3>
-                                <p>Completed Campaigns</p>
-                            </StatCard>
-                            <StatCard textColor='#FF0000' bgColor="#FFF7F7">
-                                <h3>{inData?.analytics?.influenzit?.cancelled_campaigns_count}</h3>
-                                <p>Cancelled Engagements</p>
-                            </StatCard>
-                            <StatCard textColor='#000' bgColor="#F8F8F8">
-                                <h3>{inData?.analytics?.influenzit?.campaign_engagements}</h3>
-                                <p>Total Engagement</p>
-                            </StatCard> 
-                        </StatWrapper>
-                        <p>Send Offer to this creator by clicking on the button.</p>
-                        <button onClick={() => setShowEngagePopup(!showEngagePopup)}>
-                            <span>Engage Influencer</span> <Image src="/down-chev.svg" height={10} width={10} />
-                            <Popup show={showEngagePopup}>
-                                <button onClick={handleStartConversation}>
-                                    <span>Send a message</span><Image src="/arr-r.svg" height={10} width={10} />
-                                </button>
-                                <button onClick={handleReportAccount}>
-                                    <span>Report Account</span><Image src="/arr-r.svg" height={10} width={10} />
-                                </button>
-                            </Popup>
-                        </button>
-                    </Stats>
-                </UserCard>
-            </BackImage> */}
-
                 <Wrapper>
                     {
                         (getCoverImages(inData?.media)?.length === 1) && (
@@ -380,7 +303,7 @@ const CreatorProfile = () => {
                         )
                     }
                     <BottomSection>
-                        <LeftSection>
+                        <LeftSection style={{ width: "100%" }}>
                             <UserCardSection>
                                 <UserDetails>
                                     <h2>{inData?.user?.name}</h2>
@@ -423,6 +346,8 @@ const CreatorProfile = () => {
                                     <TabBtn isActive={currentTab === "facebook"} onClick={() => setCurrentTab("facebook")}>Facebook</TabBtn>
                                     <TabBtn isActive={currentTab === "twitter"} onClick={() => setCurrentTab("twitter")}>Twitter</TabBtn>
                                     <TabBtn isActive={currentTab === "tiktok"} onClick={() => setCurrentTab("tiktok")}>TikTok</TabBtn>
+                                    <TabBtn isActive={currentTab === "services"} onClick={() => setCurrentTab("services")}>Services</TabBtn>
+                                    <TabBtn isActive={currentTab === "businesses"} onClick={() => setCurrentTab("businesses")}>Businesses</TabBtn>
                                 </Tabs>
                                 {
                                     currentTab === "instagram" && inData?.instagram_verified ? (
@@ -430,7 +355,7 @@ const CreatorProfile = () => {
                                             <h3>Influencer Summary</h3>
                                             <AnalyticStats>
                                                 <Stat>
-                                                    <h1>{numberFormatter(Number(inData?.analytics?.instagram_insights?.followers_count))}</h1>
+                                                    <h1>{numberFormatter(Number(inData?.analytics?.instagram_insights?.follower_count))}</h1>
                                                     <p>Followers</p>
                                                 </Stat>
                                                 <Stat isCenter>
@@ -752,178 +677,82 @@ const CreatorProfile = () => {
                                         </Content>
                                     )
                                 }
+                                {
+                                    currentTab === "services" && (
+                                        inData?.services.length ?
+                                        <Listing>
+                                            <h3>Services</h3>
+                                            <Bottom style={{ columnGap: "15px" }}>
+                                                {
+                                                    inData?.services.map((val, i) => (
+                                                        <ServiceCard
+                                                            key={i}
+                                                            title={val.name}
+                                                            imgSrc={val.media[0]?.url ?? "/web-services.jpg"}
+                                                            userName={inData?.user?.name}
+                                                            price={`${val.currency} ${val.starting_from}`}
+                                                            serviceLink={`/services/${val.id}`}
+                                                            profileImg={inData?.user?.profile_pic}
+                                                        />
+                                                    ))
+                                                }
+                                            </Bottom>
+                                        </Listing> : (
+                                            <Content>
+                                                <EmptyWrapper>
+                                                    <Image src="/empty.png" alt="" height={120} width={120} />
+                                                    <h3>No Service</h3>
+                                                </EmptyWrapper>
+                                            </Content>
+                                        )
+                                        
+                                    )
+                                }
+                                {
+                                    currentTab === "businesses" && (
+                                        inData?.businesses.length ?
+                                        <Listing>
+                                            <h3>Businesses</h3>
+                                            <Bottom style={{ columnGap: "15px" }}>
+                                                {
+                                                    inData?.businesses.map((val, i) => (
+                                                        <div key={i}>
+                                                            <ProjectCard>
+                                                                <UserMiniCard>
+                                                                    <div>
+                                                                        <h4>{val.name}</h4>
+                                                                        <p>{val.email}</p>
+                                                                    </div>
+                                                                </UserMiniCard>
+                                                                <ProjectDetails style={{ borderRight: "0" }}>
+                                                                    <div id="img">
+                                                                        <Image src={val.media[0].url} layout="fill" objectFit="cover" objectPosition="center"/>
+                                                                    </div>
+                                                                    <div>
+                                                                        <h4>{val.website}</h4>
+                                                                        <p>{val.phone}</p>
+                                                                    </div>
+                                                                </ProjectDetails>
+                                                                
+                                                            </ProjectCard>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </Bottom>
+                                        </Listing> : (
+                                            <Content>
+                                                <EmptyWrapper>
+                                                    <Image src="/empty.png" alt="" height={120} width={120} />
+                                                    <h3>No Business</h3>
+                                                </EmptyWrapper>
+                                            </Content>
+                                        )
+                                        
+                                    )
+                                }
                             </DataSection>
                         </LeftSection>
-                        <RightSection>
-                            <h3>Social Media Handles</h3>
-                            <SocialWrapper>
-                                <Social>
-                                    <div>
-                                        <Image src="/instagram.png" alt="" height={32} width={32} />
-                                    </div>
-                                    <div>
-                                        <h4>INSTAGRAM</h4>
-                                        <p title={inData?.instagram}>@{inData?.instagram}</p>
-                                    </div>
-                                </Social>
-                                <Social>
-                                    <div>
-                                        <Image src="/youtube.svg" alt="" height={32} width={32} />
-                                    </div>
-                                    <div>
-                                        <h4>YOUTUBE</h4>
-                                        <p title={inData?.youtube}>@{inData?.youtube}</p>
-                                    </div>
-                                </Social>
-                            </SocialWrapper>
-                            <SocialWrapper>
-                                <Social>
-                                    <div>
-                                        <Image src="/tiktok.png" alt="" height={32} width={32} />
-                                    </div>
-                                    <div>
-                                        <h4>TIKTOK</h4>
-                                        <p title={inData?.tiktok}>@{inData?.tiktok}</p>
-                                    </div>
-                                </Social>
-                                <Social>
-                                    <div>
-                                        <Image src="/twitter.png" alt="" height={32} width={32} />
-                                    </div>
-                                    <div>
-                                        <h4>TWITTER</h4>
-                                        <p title={inData?.twitter}>@{inData?.twitter}</p>
-                                    </div>
-                                </Social>
-                            </SocialWrapper>
-                            <SocialWrapper>
-                                <Social style={{ minWidth: "100%" }}>
-                                    <div>
-                                        <Image src="/facebook.png" alt="" height={32} width={32} />
-                                    </div>
-                                    <div>
-                                        <h4>FACEBOOK</h4>
-                                        <p title={inData?.facebook}>@{inData?.facebook}</p>
-                                    </div>
-                                </Social>
-                            </SocialWrapper>
-                            <CollaborateBtn onClick={handleStartConversation}>
-                                <Image src="/envelope.svg" alt="" height={28} width={28} />
-                                <span>Collaborate with Influencer</span>
-                            </CollaborateBtn>
-                            <h3>Performance</h3>
-                            <Campaign>
-                                <div className='cont'>
-                                    <h1>{inData?.analytics.influenzit.completed_campaigns_count}</h1>
-                                    <p>Completed <br /> Campaigns</p>
-                                </div>
-                                <div className='cont'>
-                                    <h1>{inData?.rating.rating_count}</h1>
-                                    <div>
-                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
-                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
-                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
-                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
-                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
-                                    </div>
-                                    <p>{inData?.rating.reviews_count} ratings</p>
-                                </div>
-                            </Campaign>
-                        </RightSection>
                     </BottomSection>
-                    {inData?.services.length ?
-                        <Listing>
-                            <h3>Services</h3>
-                            <Bottom style={{ columnGap: "15px" }}>
-                                {
-                                    inData?.services.map((val, i) => (
-                                        <ServiceCard
-                                            key={i}
-                                            title={val.name}
-                                            imgSrc={val.media[0]?.url ?? "/web-services.jpg"}
-                                            userName={inData?.user?.name}
-                                            price={`${val.currency} ${val.starting_from}`}
-                                            serviceLink={`/services/${val.id}`}
-                                            profileImg={inData?.user?.profile_pic}
-                                        />
-                                    ))
-                                }
-                            </Bottom>
-                        </Listing> : null
-                    }
-                    {/* {inData?.services.length ?
-                    <Listing>
-                        <h3>Portfolio</h3>
-                        <Bottom style={{ columnGap: "15px"}}>
-                            {
-                            inData?.services.map((val, i) => (
-                                <ServiceCard
-                                    key={i}
-                                    title={val.name}
-                                    imgSrc={val.media[0]?.url ?? "/web-services.jpg"}
-                                    userName={inData?.user?.name}
-                                    price={`${val.currency} ${val.starting_from}`}
-                                    serviceLink={`/services/${val.id}`}
-                                    profileImg={inData?.user?.profile_pic}
-                                />
-                            )) 
-                            }
-                        </Bottom>
-                    </Listing> : null
-                } */}
-                    {/* {inData?.reviews.length ?
-                    <Listing>
-                        <h3>Reviews</h3>
-                        <Bottom style={{ columnGap: "15px"}}>
-                            {
-                                inData?.services.map((val, i) => (
-                                   <ReviewCard>
-                                        <h3>Testimonial Heading</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget leo rutrum, ullamcorper dolor eu, faucibus massa.</p>
-                                        <UserCard>
-                                            <UserImage>
-                                            <Image src="/review.png" alt="review-img" layout="fill" objectFit="cover" objectPosition="center"/>
-                                            </UserImage>
-                                            <UserDetails>
-                                            <h4>Aaron Musk</h4>
-                                            <p>CEO at Krystal Bag Palace</p>
-                                            </UserDetails>
-                                        </UserCard>
-                                    </ReviewCard>
-                                )) 
-                            }
-                        </Bottom>
-                    </Listing> : null
-                } */}
-                    <Listing>
-                        {inData?.similar.length ? <h3>Similar influencers</h3> : null}
-                        <Bottom>
-                            {
-                                inData?.similar.map((val, i) => {
-                                    let genSkills = "";
-                                    val?.skills?.forEach((val, i) => {
-                                        if (i < 5) {
-                                            if (i !== 0) {
-                                                genSkills += `| ${val.name} `
-                                            } else {
-                                                genSkills += `${val.name} `
-                                            }
-                                        }
-                                    })
-                                    return <ProfileCard
-                                        key={i}
-                                        profileLink={`/influencers/${val.id}`}
-                                        imgSrc={val?.media.filter(med => med.identifier === 'profile_pic')?.[0]?.url ?? '/niche8.png'}
-                                        handle={val.twitter}
-                                        name={`${val.user.firstname} ${val.user.lastname}`}
-                                        sex={val.gender}
-                                        skills={genSkills}
-                                        address={val.address}
-                                    />
-                                })
-                            }
-                        </Bottom>
-                    </Listing>
                 </Wrapper>
             </HeroSectionOne>
             {showDispute && (
@@ -954,9 +783,9 @@ const CreatorProfile = () => {
     )
 }
 CreatorProfile.getLayout = (page) => (
-    <LandingLayout>
+    <AdminLayout>
         {page}
-    </LandingLayout>
+    </AdminLayout>
 )
 
 export default CreatorProfile

@@ -482,6 +482,10 @@ export const NotificationCont = styled.div`
     #notify-pic {
         position: relative;
     }
+    ${breakpoints.md} {
+        width: 320px;
+        right: -40px;
+    }
 `;
 export const Qlinks = styled.div`
     display: flex;
@@ -495,7 +499,7 @@ export const Qlinks = styled.div`
             color: ${colors.primaryColor};
         }
     }
-    ${breakpoints.md} {
+    ${breakpoints.lg} {
         display: none;
     }
 `;
