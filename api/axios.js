@@ -7,7 +7,8 @@ export const axiosInstance = () => {
     return axios.create({
         baseURL: `${process.env.NEXT_PUBLIC_API_URI}/api/v1`,
         headers: {
-            Authorization: !!token ? `Bearer ${token}` : ""
+            Authorization: !!token ? `Bearer ${token}` : "",
+            
         }
     })
   };
