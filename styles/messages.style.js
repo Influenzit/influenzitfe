@@ -49,14 +49,18 @@ export const FilesList = styled.div`
 
 export const FileContainer = styled.div`
     position: relative;
-    height: 50px;
+    height: 55px;
     width: 100%;
+    min-width: 300px;
+    background: #fff;
+    padding: 0 10px;
+    border-radius: 8px;
     display: flex;
     justify-content: space-between !important;
     align-items: center;
     column-gap: 3px;
     padding-bottom: 0 !important;
-    margin-top: 0 !important;
+    margin-top: 4px !important;
     #icon {
         height: 40px;
         width: 40px;
@@ -96,12 +100,16 @@ export const PImageContainer = styled.div`
     height: 150px;
     min-height: 150px;
     width: 100%;
+    min-width: 150px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
     border-radius: 8px;
     padding-bottom: 0 !important;
     margin-top: 0 !important;
     #delete {
         position: absolute;
-        background: transparent;
+        background: #fff;
         color: #fff;
         font-size: 12px;
         top: 5px;
