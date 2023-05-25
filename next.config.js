@@ -30,12 +30,12 @@ const nextConfig = {
           headers: [
             {
               key: 'X-Frame-Options',
-              value: 'DENY',
+              value: 'SAMEORIGIN',
             },
             {
               key: 'Content-Security-Policy',
               value:
-                "image-src phplaravel-870335-3074787.cloudwaysapps.com api.influenzit.com ui-avatars.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' www.google-analytics.com accounts.google.com; font-src 'self' fonts.googleapis.com fonts.gstatic.com;",
+                "image-src phplaravel-870335-3074787.cloudwaysapps.com api.influenzit.com ui-avatars.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' www.google-analytics.com connect.facebook.net accounts.google.com js.paystack.co; font-src 'self' fonts.googleapis.com fonts.gstatic.com;",
             },
             {
               key: 'X-Content-Type-Options',

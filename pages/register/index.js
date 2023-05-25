@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useMutation } from "@tanstack/react-query"
-import { BannerReg, BanReg, Bottom, BottomP, Center, Container, FacebookBtn, FlexInput, FormFields, FormHeader, FormWrapper, GoogleBtn, Input, InputContainer, SocialIcon, SocialLogin, SubmitButton, Wrapper, AuthFlex, ErrorMessageCont } from '../../styles/auth.style'
+import { BannerReg, BanReg, Bottom, BottomP, Center, Container, FacebookBtn, FlexInput, FormFields, FormHeader, FormWrapper, GoogleBtn, Input, InputContainer, SocialIcon, SocialLogin, SubmitButton, Wrapper, AuthFlex, ErrorMessageCont, Terms } from '../../styles/auth.style'
 import { createAccount, socialLogin } from '../../api/auth';
 import { isLoading, setError, isError as errorSelector, setLoading, setUserType, getMessage } from '../../app/reducers/status';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,6 +30,7 @@ const Register = () => {
   const [oneNum, setOneNum] = useState(false);
   const [isMinLen, setIsMinLen] = useState(false)
   const [passwordMatch, setPasswordMatch] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
   const [formVal, setFormVal] = useState({
     firstname: "",
     lastname: "",
@@ -485,7 +486,17 @@ const Register = () => {
               {
                 isError && <ErrorMessageCont>{errorMessage}</ErrorMessageCont>
               }
-              <SubmitButton type="submit">Register</SubmitButton>
+              <Terms>
+                <button onClick={(e) => {e.preventDefault(); setIsEnabled(!isEnabled);}}> {isEnabled && <span></span>}</button>
+                <p>Agree to <Link href="/terms" passHref><a target='_blank'>Terms &amp; Conditions</a></Link> and <Link href="/privacy" passHref><a target='_blank'>Privacy Policy</a></Link></p>
+              </Terms>
+              {
+                isEnabled ? (
+                  <SubmitButton type="submit">Register</SubmitButton>
+                ) : (
+                  <SubmitButton onClick={(e) => e.preventDefault()} style={{ opacity: "0.7", cursor: "not-allowed" }}>Register</SubmitButton>
+                )
+              }
               <SocialLogin>
                 <GoogleBtn onClick={googleLogin}>
                   <SocialIcon>

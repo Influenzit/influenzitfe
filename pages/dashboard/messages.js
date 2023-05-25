@@ -17,6 +17,7 @@ import MobileChatbar from '../../components/mobile-chatbar';
 import { UpdateModal } from 'styles/view.style';
 import { WelcomeModal } from 'styles/connect-pages.style';
 import { InputContainer } from 'styles/auth.style';
+import Link from 'next/link'
 const Picker = dynamic(
   () => {
     return import('emoji-picker-react');
@@ -37,15 +38,24 @@ const Messages = () => {
   const conversationId = useSelector(getCurrentConversationId);
   const [filesToSend, setFilesToSend] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
-  const [comment, setComment] = useState([]);
+  const [comment, setComment] = useState("");
   const dispatch = useDispatch();
   const handleInput = (e) => {
     if(e.currentTarget.innerHTML === "<br>") {
         setMessageContent("");
         e.currentTarget.innerHTML = "";
-        return;
+        return; 
     }
     setMessageContent(e.currentTarget.innerHTML)
+  }
+  const download = (fileUrl, filename) => {
+    let anchor = document.createElement('a');
+	anchor.href = fileUrl;
+	anchor.download = filename;
+    anchor.target = "_blank";
+	document.body.appendChild(anchor);
+	anchor.click();
+    anchor.remove();
   }
   const handleBold = () => {
     const selection = window.getSelection();
@@ -202,7 +212,9 @@ const sendMessageMutation = useMutation((data) => {
         } else {
             setMessageContent("");
             messageBoxRef.current.innerHTML = "";
-            console.log("send",conversationId);
+            setShowPopup(false);
+            setComment("");
+            setFilesToSend([]);
         }
     },
     onError(error) {
@@ -228,6 +240,14 @@ const handleMessageSend = () => {
         text:  messageBoxRef.current.innerHTML
     })
 }
+const handleSendMessageWithMedia = () => {
+    const formData = new FormData();
+    formData.append("text", comment);
+    filesToSend.forEach((val, i) => {
+        formData.append(`img-${i + 1}`, val.file);
+    })
+    sendMessageMutation.mutate(formData);
+} 
 const handleFileChangeDrop = (e) => {
     e.preventDefault();
     const file = e.target.files[0];
@@ -242,11 +262,16 @@ const handleFileChangeDrop = (e) => {
     setShowPopup(true);
 }
 const handleImageRemove = (i) => {
-    setFilesToSend((prev) => {
-        let newList = [...prev];
-        newList.splice(i,1);
-        return newList;
-    })
+    if(filesToSend.length === 1) {
+        setFilesToSend([])
+        setShowPopup(false);
+    } else {
+        setFilesToSend((prev) => {
+            let newList = [...prev];
+            newList.splice(i,1);
+            return newList;
+        })
+    }
 }
 const handleConversation = (conversation) => {
     if(conversation){
@@ -356,7 +381,7 @@ useEffect(() => {
                         </InputContainer>
                         <BContainer>
                             <label htmlFor='attachment'>Add</label>
-                            <button onClick={() => {}}>Send Message</button>
+                            <button onClick={handleSendMessageWithMedia}>Send Message</button>
                         </BContainer>
                     </WelcomeModal>
                 </UpdateModal>
@@ -371,21 +396,78 @@ useEffect(() => {
                     (<ChatContainer>
                         <MessagesContB ref={messagesRef}>
                             {
-                               messages.map((val, i) => (
-                                    <MessageCard key={i} isOwn={val.is_own}>
-                                        <UserSect>
-                                            <ProfilePicWrapper>
-                                                <Image src={val.from_user.profile_pic} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
-                                            </ProfilePicWrapper>
-                                        </UserSect>
-                                        <MessageContent>
-                                            <h2>{val.from_user?.firstname} {val.from_user?.lastname} <span>{val.created_at}</span></h2>
-                                            <div>
-                                                {HTMLReactParser(val.text)}
-                                            </div>
-                                        </MessageContent>
-                                    </MessageCard>
-                                ))
+                               messages.map((val, i) => {
+                                
+                                        return (<React.Fragment key={i}>
+                                            {val.media.map((med, j) => (
+                                                 <MessageCard key={j} isOwn={val.is_own}>
+                                                    {
+                                                         j === 0 && (
+                                                             <UserSect>
+                                                                 <ProfilePicWrapper>
+                                                                     <Image src={val.from_user.profile_pic} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
+                                                                 </ProfilePicWrapper>
+                                                             </UserSect>
+                                                         )
+                                                     }
+                                                 <MessageContent>
+                                                    {
+                                                         j === 0 && (
+                                                            <h2>{val.from_user?.firstname} {val.from_user?.lastname} <span>{val.created_at}</span></h2>
+                                                         )
+                                                     }
+                                                     <div>
+                                                         {med.mime.includes("image") ? (
+                                                             <PImageContainer>
+                                                                 <Image src={med.url} alt="file" layout="fill" objectPosition="center" objectFit='contain'/>
+                                                                 <button id="delete" onClick={() => download(med.url, med.filename)}>
+                                                                    <Image src="/download.png" alt="del" height={20} width={20} />
+                                                                 </button>
+                                                             </PImageContainer>
+                                                         ) : (
+                                                             <FileContainer>
+                                                                 <div id="icon">
+                                                                     <Image src="/file.svg" alt="file_icon" height={25} width={25} />
+                                                                 </div>
+                                                                 <div id="details">
+                                                                     <p>{med.filename}</p>
+                                                                     <span>{(Number(med.size) / 1000).toFixed(1)} KB</span>
+                                                                 </div>
+                                                                 <button id="delete" onClick={() => download(med.url, med.filename)}>
+                                                                    <Image src="/download.png" alt="del" height={20} width={20} />
+                                                                 </button>
+                                                             </FileContainer>
+                                                         )}
+                                                     </div>
+                                                 </MessageContent>
+                                             </MessageCard>)
+                                            )}
+                                            {
+                                                val.text && (
+                                                    <MessageCard key={i} isOwn={val.is_own} style={{ margin: val.media.length ? "0 20px" : "10px 20px", padding: val.media.length ? "0 10px 12px 10px" : "12px 10px" }}>
+                                                        {
+                                                            val.media.length ? null : (
+                                                                <UserSect>
+                                                                    <ProfilePicWrapper>
+                                                                        <Image src={val.from_user.profile_pic} alt="profile-picture" layout='fill' objectPosition="center" objectFit="cover" />
+                                                                    </ProfilePicWrapper>
+                                                                </UserSect>)
+                                                        }
+                                                        <MessageContent>
+                                                            {
+                                                                val.media.length ? null : (
+                                                                    <h2>{val.from_user?.firstname} {val.from_user?.lastname} <span>{val.created_at}</span></h2>
+                                                                )
+                                                            }
+                                                            <div>
+                                                                {HTMLReactParser(val.text)}
+                                                            </div>
+                                                        </MessageContent>
+                                                    </MessageCard>
+                                                )
+                                            }
+                                        </React.Fragment>)
+                                    })
                             }
                         </MessagesContB>
                         <Editor>
@@ -403,7 +485,7 @@ useEffect(() => {
                                 </PickerContainer>
                             }
                             <div style={{ padding: "0 15px", height: "70%", maxHeight: "70%", borderBottom: "1px solid #EAEAEB" }}>
-                                <MessageInput data-placeholder="Write a message" contentEditable showPlaceholder={!!messageContent} onInput={handleInput} ref={messageBoxRef}>
+                                <MessageInput data-placeholder="Write a message" contentEditable showPlaceholder={!!messageContent} onDrop={(e) => e.preventDefault()} onInput={handleInput} ref={messageBoxRef}>
                                 </MessageInput>
                             </div>
                             <ChatControls>

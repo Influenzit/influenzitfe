@@ -383,3 +383,29 @@ export const ErrorMessageCont = styled.p`
     font-size: 14px;
     color: red !important;
 `;
+export const Terms = styled.div`
+    font-size: 14px;
+    font-weight: 500;
+    color: #667085;
+    display: flex;
+    align-items: center;
+    a {
+        color: ${colors.primaryColor};
+    }
+    button {
+        border-radius: 4px;
+        border: 1px solid #d0d5dd;
+        margin-right: 10px;
+        cursor: pointer;
+        height: 18px;
+        width: 18px;
+        padding: 2px;
+        span {
+            height: 12px;
+            width: 12px;
+            display: block;
+            border-radius: 2px;
+            background: ${colors.primaryColor};
+        }
+    }
+`;
