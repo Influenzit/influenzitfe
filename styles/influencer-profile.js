@@ -474,4 +474,43 @@ export const StatsCard = styled.div`
         }
     }
 `;
-
+export const Milestone = styled.div`
+    .top {
+        display: flex;
+        column-gap: 10px;
+        div {
+            width: calc(50% - 5px);
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    input {
+        outline: none;
+    }
+    .bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .ip {
+            font-size: 14px;
+            display: flex;
+             label {
+                border-radius: 4px;
+                border: 1px solid #d0d5dd;
+                margin-right: 10px;
+                cursor: pointer;
+                display: inline-block;
+                height: 18px;
+                width: 18px;
+                padding: 2px;
+                span {
+                    height: 12px;
+                    width: 12px;
+                    display: block;
+                    border-radius: 2px;
+                    background: ${colors.primaryColor};
+                }
+            }
+        }
+    }
+`;

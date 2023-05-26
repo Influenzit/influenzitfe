@@ -40,6 +40,7 @@ const Campaigns = () => {
       currency: "NGN",
       start_date: "2022/11/20",
       end_date: "",
+      include_price: false
     },
   ]);
 
@@ -61,6 +62,7 @@ const Campaigns = () => {
           currency: "NGN",
           start_date: "2022/11/20",
           end_date: "",
+          include_price: false,
         },
       ];
 
@@ -87,10 +89,12 @@ const Campaigns = () => {
   };
 
   const handleMilestoneinput = (e, mid) => {
-    const { name, value } = e.target;
+    const { name, value, checked } = e.target;
+    console.log(name, value, e)
     setmilestone((prevState) => {
-      const newState = [...prevState];
-      newState[mid][name] = value;
+      const newState = JSON.parse(JSON.stringify(prevState));
+      newState[mid][name] = name === "include_price" ? checked : value;
+      console.log(newState);
       return newState;
     });
   };
@@ -242,7 +246,7 @@ const Campaigns = () => {
 
       {newCamPaign && (
         <div className="fixed inset-0 bg-black/30 z-[999999] flex justify-center items-center">
-          <div className="bg-white w-[500px]  p-6 rounded-lg overflow-hidden">
+          <div className="bg-white w-[500px] max-h-screen overflow-y-scroll p-6 rounded-lg overflow-hidden">
             <div className="flex justify-between mb-6">
               <h1 className="text-xl">Create New Campaign</h1>
 
