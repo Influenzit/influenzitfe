@@ -5,7 +5,7 @@ import { calculateTotalPrice } from "paystack-transaction-charges-to-cus";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getCampaigns } from "../../api/campaigns";
 // import { setLoading } from "../../app/reducers/status";
@@ -14,6 +14,7 @@ import info from "../../assets/info.svg";
 import Deposit from "components/Wallet/Deposit";
 import Withdrawal from "components/Wallet/Withdrawal";
 import LandingLayout from "../../layouts/landing.layout";
+import Tooltip from "../../components/tooltip"
 import {
   ActionBtn,
   Checkbox,
@@ -71,6 +72,12 @@ const Campaigns = () => {
   const [paystackConfig, setPaystackConfig] = useState({});
   const [triggerPayment, settriggerPayment] = useState(false);
   const [makePayment, setmakePayment] = useState(false);
+  const [earningsRef, setEarningsRef] = useState(undefined);
+  const [depositRef, setDepositRef] = useState(undefined);
+  const [expensesRef, setExpensesRef] = useState(undefined);
+  const [escrowRef, setEscrowRef] = useState(undefined);
+  const [fundsRef, setFundsRef] = useState(undefined);
+  const [withdrawnRef, setWithdrawnRef] = useState(undefined);
 
   const user = useSelector(getUser);
 
@@ -255,7 +262,9 @@ const Campaigns = () => {
               <div className="border-b">
                 <div className="flex justify-between mb-6">
                   <p className="text-xs text-gray-500">Earnings</p>
-                  <Image src={info} alt="info" />
+                  <button className="bg-transparent outline-none" ref={setEarningsRef}>
+                    <Image src={info} alt="info"/>
+                  </button>
                 </div>
                 <h1 className="text-2xl font-medium">
                   ₦ {walledData?.total_earnings.NGN || "0"}
@@ -264,7 +273,9 @@ const Campaigns = () => {
               <div className="mt-2">
                 <div className="flex justify-between mb-6">
                   <p className="text-xs text-gray-500">Deposit</p>
-                  <Image src={info} alt="info" />
+                  <button className="bg-transparent outline-none" ref={setDepositRef}>
+                    <Image src={info} alt="info"/>
+                  </button>
                 </div>
                 <h1 className="text-2xl font-medium">
                   ₦{walledData?.deposit_balance.NGN || "0"}
@@ -275,7 +286,9 @@ const Campaigns = () => {
               <div className="border-b">
                 <div className="flex justify-between mb-6">
                   <p className="text-xs text-gray-500">Expenses</p>
-                  <Image src={info} alt="info" />
+                  <button className="bg-transparent outline-none" ref={setExpensesRef}>
+                    <Image src={info} alt="info"/>
+                  </button>
                 </div>
                 <h1 className="text-2xl font-medium">
                   ₦{walledData?.outgoing_escrow.NGN || "0"}
@@ -284,7 +297,9 @@ const Campaigns = () => {
               <div className="mt-2">
                 <div className="flex justify-between mb-6">
                   <p className="text-xs text-gray-500">Escrow</p>
-                  <Image src={info} alt="info" />
+                  <button className="bg-transparent outline-none" ref={setEscrowRef}>
+                    <Image src={info} alt="info"/>
+                  </button>
                 </div>
                 <h1 className="text-2xl font-medium">
                   ₦{walledData?.incomming_escrow.NGN || "0"}
@@ -295,7 +310,9 @@ const Campaigns = () => {
               <div className="border-b">
                 <div className="flex justify-between mb-6">
                   <p className="text-xs text-gray-500">Available Funds</p>
-                  <Image src={info} alt="info" />
+                  <button className="bg-transparent outline-none" ref={setFundsRef}>
+                    <Image src={info} alt="info"/>
+                  </button>
                 </div>
                 <h1 className="text-2xl font-medium">
                   ₦ {walledData?.available_balance.NGN || "0"}
@@ -306,7 +323,9 @@ const Campaigns = () => {
                   <p className="text-xs text-gray-500">
                     Withdrawn to date: ₦ 0
                   </p>
-                  <Image src={info} alt="info" />
+                  <button className="bg-transparent outline-none" ref={setWithdrawnRef}>
+                    <Image src={info} alt="info"/>
+                  </button>
                 </div>
                 <button
                   onClick={() => {
@@ -328,7 +347,7 @@ const Campaigns = () => {
               <input
                 type="text"
                 className="bg-transparent outline-none w-full flex-1"
-                placeholder="Search..."
+                placeholder="Search.."
               />
             </div> */}
             <div className="flex justify-end">
@@ -442,6 +461,18 @@ const Campaigns = () => {
           setAmount={setAmount}
         />
       )}
+      {
+        walledData ? (
+          <>
+            <Tooltip position="top" elementRef={earningsRef} gap={5} contents="This represents the total amount you have earned from all the completed campaigns on Influenzit. It includes all payments received from business owners for your influencer services." />
+            <Tooltip position="top" elementRef={escrowRef} gap={5} contents="This represents the total amount of money currently held in escrow. These are funds that have been deposited for a specific campaign but have not yet been released because the campaign is still ongoing or the completion of the campaign has not yet been confirmed by the business owner." />
+            <Tooltip position="top" elementRef={depositRef} gap={5} contents="This represents the total amount of money you have deposited into your Influenzit account. Deposits can come from various sources including bank transfers, credit/debit card payments, or from completed campaigns." />
+            <Tooltip position="left" elementRef={fundsRef} gap={5} contents="This represents the total amount of money currently available in your Influenzit account. It's the balance that you can use to fund campaigns or withdraw to your bank account." />
+            <Tooltip position="left" elementRef={withdrawnRef} gap={5} contents="This represents the total amount of money you have withdrawn from your Influenzit account to date. This includes all successful withdrawals to your linked bank account" />
+            <Tooltip position="top" elementRef={expensesRef} gap={5} contents="This represents the total amount you have spent on Influenzit. It includes any fees or charges incurred while using the platform for your campaigns." />
+          </>
+        ) : null
+      }
     </div>
   );
 };

@@ -12,40 +12,42 @@ export const Wrapper = styled.div`
     max-width: ${sizes.wrapperWidth};
 `;
 export const TableWrapper = styled.div`
-    background: #fff;
-    border-radius: 5px;
+    background: #FFFFFF;
+`;
+export const TableWrapped = styled.div`
+    background: #FFFFFF;
+    border: 1px solid #EAECF0;
+    overflow: hidden;
+    box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1), 0px 1px 2px rgba(16, 24, 40, 0.06);
+    border-radius: 8px;
 `;
 export const TableContent = styled.div`
-    padding: 10px 0;
     max-width: 95vw;
     overflow-x: scroll;
 `;
 export const TableHeader = styled.div`
-    padding: 20px;
-    border-bottom: 1px solid #D2D2D2;
-    color: #111;
+    padding: 15px 10px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     h2 {
-        font-size: 22px;
+        font-size: 16px;
+        color: #101828;
+    }
+    #left {
+        display: flex;
+        column-gap: 15px;
     }
     ${breakpoints.lg}{
+        flex-direction: column;
         h2 {
-            font-size: 17px;
+            font-size: 14px;
         }
     }
     display: flex;
     justify-content: space-between;
     align-items: center;
-    button {
-        font-weight: 500;
-        font-size: 14px;
-        border-radius: 8px;
-        background: ${colors.primaryColor};
-        color: #fff;
-        border: none;
-        outline: none;
-        padding: 12px 20px;
-        cursor: pointer;
-    }
 `;
 export const TableControls = styled.div`
     display: flex;
@@ -55,6 +57,10 @@ export const TableControls = styled.div`
         flex-direction: column;
         row-gap: 15px;
     }
+`;
+export const HTabs = styled.div`
+`;
+export const HTab = styled.div`
 `;
 export const SearchContainer = styled.div`
     height: 40px;
@@ -117,11 +123,14 @@ export const FilterContainer = styled.div`
 `;
 export const Table = styled.table`
     width: 100%;
+    color: ${colors.textColor};
 `;
 export const THead = styled.thead`
     width: 100%;
-    color: ${colors.textColor};
-    font-weight: 500;
+    font-weight: 400;
+    background: #F9FAFB;
+    border-bottom: 1px solid #EAECF0;
+    border-top: 1px solid #EAECF0;
 `;
 export const TBody = styled.tbody`
     width: 100%;
@@ -131,12 +140,14 @@ export const TrH = styled.tr`
     display: flex;
     align-items: center;
     padding: 15px 10px;
-    border-bottom: 1px solid #D2D2D2;
+    color: #667085;
+    font-size: 12px;
 `;
 export const Th = styled.th`
     flex-grow: 1;
     width: ${(props) => props.cellWidth && props.cellWidth};
     text-align: left;
+    font-weight: 500;
     ${breakpoints.lg}{
         font-size: 14px;
         width: ${(props) => props.cellWidth && `calc(${props.cellWidth} * 0.7)`};
@@ -159,8 +170,9 @@ export const Tr = styled.tr`
     display: flex;
     align-items: center;
     padding: 15px 10px;
-    border-bottom: 1px solid #D2D2D2;
+    border-bottom: 1px solid #EAECF0;
     font-size: 14px;
+    color: #667085;
     ${breakpoints.lg}{
         font-size: 14px;
         width: ${(props) => props.cellWidth && `calc(${props.cellWidth}*(95vw/1440px))`};

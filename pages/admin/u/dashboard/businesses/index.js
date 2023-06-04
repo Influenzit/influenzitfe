@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { setLoading } from '../../../../../app/reducers/status'
 import { ChevronLeft, ChevronRight } from '../../../../../assets/svgIcons'
 import LandingLayout from '../../../../../layouts/admin.layout'
-import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../../../../styles/connect-pages.style'
+import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapped, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../../../../styles/connect-pages.style'
 import { getAllBusinesses } from '../../../../../api/admin'
 import { getQueryString } from 'helpers/helper'
 import { toast } from 'react-toastify'
@@ -40,7 +40,7 @@ useEffect(() => {
   return (
     <Container>
         <Wrapper>
-            <TableWrapper>
+            <TableWrapped>
                 <TableHeader>
                     <h2>Businesses</h2>
                 </TableHeader>
@@ -104,7 +104,7 @@ useEffect(() => {
                         </NavBtn>
                     </Pagination>
                 </TableFooter>
-            </TableWrapper>
+            </TableWrapped>
         </Wrapper>
     </Container>
   )

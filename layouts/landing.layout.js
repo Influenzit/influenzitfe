@@ -6,7 +6,7 @@ import Loader from '../components/loading'
 import { Container, Content, Wrapper } from '../styles/landing.style'
 import DashboardFooter from '../components/dashboard-footer'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUser, updateUser } from '../app/reducers/user'
+import { clearUser, getUser, updateUser } from '../app/reducers/user'
 import { useRouter } from 'next/router'
 import { getLogoutModalStatus, getMessage, isError, isLoading, isSuccess, setLoading, setLogoutModal, setUserType } from '../app/reducers/status'
 import ErrorPopup from '../components/error-popup'
@@ -18,6 +18,7 @@ import AdminNav from '../components/admin-nav'
 import Sidebar from '../components/sidebar'
 import { toast } from 'react-toastify'
 import LogoutModal from '../components/logout-modal'
+import { clearBusiness } from 'app/reducers/business'
 
 const LandingLayout = ({children, title, description}) => {
   const user = useSelector(getUser);
@@ -45,6 +46,8 @@ const LandingLayout = ({children, title, description}) => {
           dispatch(setLoading(false));
           if(localStorage.getItem("token")) {
             localStorage.clear();
+            dispatch(clearUser());
+            dispatch(clearBusiness());
             router.replace("/login");
           } else {
             localStorage.clear();

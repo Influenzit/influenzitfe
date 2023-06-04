@@ -26,9 +26,10 @@ export const acceptCampaignMilestone = (id, milestoneId) => {
     `/campaigns/${id}/milestones/${milestoneId}/accept`
   );
 };
-export const rejectCampaignMilestone = (id, milestoneId) => {
+export const rejectCampaignMilestone = (id, milestoneId, data) => {
   return axiosInstance().post(
-    `/campaigns/${id}/milestones/${milestoneId}/reject`
+    `/campaigns/${id}/milestones/${milestoneId}/reject`,
+    data,
   );
 };
 export const updateCampaign = (id, data) => {

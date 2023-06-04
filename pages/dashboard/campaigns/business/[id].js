@@ -62,6 +62,12 @@ const Campaigns = () => {
   const [makePayment, setmakePayment] = useState(false);
   const [triggerPayment, settriggerPayment] = useState(false);
   const [amount, setamount] = useState(0);
+  const [message, setMessage] = useState("");
+  const [file, setFile] = useState(null);
+  const [updateStatus, setUpdateStatus] = useState("");
+  const [updateId, setUpdateId] = useState("");
+  const [updateIdx, setUpdateIdx] = useState(0);
+  const [requesting, setRequesting] = useState(false);
 
   const { id } = router.query;
   const user = useSelector(getUser);
@@ -92,8 +98,10 @@ const Campaigns = () => {
         console.log(res);
         setSingleCampaign(res.data.data);
         setconversationId(res.data.data.conversation.id);
+        setRequesting(false);
       })
       .catch((err) => {
+        setRequesting(false);
         console.log(err.response);
       });
   };
@@ -107,46 +115,62 @@ const Campaigns = () => {
         console.log(err.response);
       });
   };
-  const updateCampaignMilsestone = (status, campaignId, idx) => {
-    const payload = {
-      status: status,
-    };
+  const updateCampaignMilsestone = () => {
+    setRequesting(true);
+    const formData = new FormData();
+    formData.append("comment", message);
+    formData.append("attachment", file);
+    const status = updateStatus;
+    const campaignId = updateId;
+    const idx = updateIdx;
     if (status === "accept") {
       acceptCampaignMilestone(id, campaignId)
         .then((res) => {
-          console.log(res);
-          toast.success("Milestone updated succesfully", {
+          toast.success("Milestone accepted", {
             position: toast.POSITION.TOP_RIGHT,
           });
-
           handleGetSingleCampaign();
           if (singlecampaign.milestones.length - 1 === idx) {
             setisAccepted(true);
           }
         })
         .catch((err) => {
+          setRequesting(false);
           console.log(err.response);
           toast.error(err.response.data.message, {
             position: toast.POSITION.TOP_RIGHT,
           });
         });
     } else {
-      rejectCampaignMilestone(id, campaignId)
+      rejectCampaignMilestone(id, campaignId, formData)
         .then((res) => {
           console.log(res);
-          toast.success("Milestone updated succesfully", {
+          setFile(null);
+          setMessage("");
+          toast.success("Milestone rejected", {
             position: toast.POSITION.TOP_RIGHT,
           });
           handleGetSingleCampaign();
         })
         .catch((err) => {
           console.log(err.response);
+          setRequesting(false);
           toast.error(err.response.data.message, {
             position: toast.POSITION.TOP_RIGHT,
           });
         });
     }
   };
+  const triggerUpdateMilsestone = (status, campaignId, idx) => {
+    setUpdateStatus(status);
+    setUpdateId(campaignId);
+    setUpdateIdx(idx);
+    if(status === "dispute") {
+      setisRejected(true);
+      return;
+    }
+    updateCampaignMilsestone();
+  }
   const handleUpdateCampaignReview = (campaignId, idx) => {
     if (!comment || !rating) {
       toast.error("Comment is required", {
@@ -184,6 +208,7 @@ const Campaigns = () => {
 
   const handleClose = () => {
     setisRejected(false);
+    updateCampaignMilsestone();
   };
   const handleCloseReview = () => {
     setisAccepted(false);
@@ -389,8 +414,8 @@ const Campaigns = () => {
                             {item.status === "Reviewing" && (
                               <div className="flex items-center space-x-2">
                                 <button
-                                  onClick={() => {
-                                    updateCampaignMilsestone(
+                                  onClick={() => { !requesting &&
+                                    triggerUpdateMilsestone(
                                       "accept",
                                       item.id,
                                       idx
@@ -398,18 +423,18 @@ const Campaigns = () => {
                                   }}
                                   className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white"
                                 >
-                                  Accept
+                                  {requesting ? "Submitting..." : "Accept"}
                                 </button>
                                 <button
                                   onClick={() => {
-                                    updateCampaignMilsestone(
+                                    !requesting && triggerUpdateMilsestone(
                                       "dispute",
                                       item.id
                                     );
                                   }}
                                   className="mx-2 rounded-lg py-1 px-2  h-auto bg-primary-100 text-[10px] text-white"
                                 >
-                                  Reject
+                                  {requesting ? "Submitting..." : "Reject"}
                                 </button>
                               </div>
                             )}
@@ -501,7 +526,14 @@ const Campaigns = () => {
         />
       </div>
 
-      {isRejected && <RejectModal handleClose={handleClose} />}
+      {isRejected && 
+        <RejectModal
+          handleClose={handleClose}
+          file={file}
+          setFile={setFile}
+          message={message}
+          setMessage={setMessage}
+        />}
       {isAccepted && (
         <Review
           handleClose={handleCloseReview}

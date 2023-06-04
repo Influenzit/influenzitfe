@@ -23,6 +23,8 @@ import youtube from "assets/youtube.svg";
 import ReactStars from "react-rating-stars-component";
 import Link from "next/link";
 import Loader from "components/UI/Loader";
+import rightarrow from "assets/project/rightarrow.svg";
+import emptyicon from "assets/project/emptyicon.svg";
 
 const Campaigns = () => {
   const router = useRouter();

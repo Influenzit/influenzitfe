@@ -90,7 +90,7 @@ const Campaigns = () => {
 
   const handleMilestoneinput = (e, mid) => {
     const { name, value, checked } = e.target;
-    console.log(name, value, e)
+
     setmilestone((prevState) => {
       const newState = JSON.parse(JSON.stringify(prevState));
       newState[mid][name] = name === "include_price" ? checked : value;
@@ -98,6 +98,15 @@ const Campaigns = () => {
       return newState;
     });
   };
+  const filterMilestone = (milestoneI) => {
+    const newMilestone = milestoneI.map((m) => {
+      const nm = {...m, amount: m.include_price ? Number(m.amount) : 0}
+      delete nm["include_price"]
+      return nm;
+    })
+    console.log(newMilestone);
+    return newMilestone;
+  }
 
   const payload = {
     title: campaignName,
@@ -110,7 +119,7 @@ const Campaigns = () => {
     duration_type: "Month",
     duration_count: "1",
     client_business_id: +bId,
-    milestones: milestone,
+    milestones: filterMilestone(milestone),
   };
 
   const handleGetCampaign = (campaign) => {

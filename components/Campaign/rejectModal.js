@@ -6,9 +6,7 @@ import cancel from "./../../assets/close.svg";
 import attachment from "./../../assets/campaign/attachment.svg";
 import Image from "next/image";
 
-function RejectModal({ handleClose }) {
-  const [step, setstep] = useState(1);
-  const [file, setfile] = useState(true);
+function RejectModal({ handleClose, file, setFile, message, setMessage  }) {
 
   return (
     <div>
@@ -27,8 +25,10 @@ function RejectModal({ handleClose }) {
               name="chatbox"
               id="chatbox"
               rows="5"
+              value={message}
               className="resize-none text-sm w-full h-full rounded-lg  outline-none bg-transparent p-2"
               placeholder="Write your message"
+              onInput={(e) => setMessage(e.target.value)}
             ></textarea>
           </div>
           <input
@@ -36,7 +36,7 @@ function RejectModal({ handleClose }) {
             id="file"
             onChange={(e) => {
                 console.log(e.target.files);
-              setfile(e.target.files[0]);
+              setFile(e.target.files[0]);
             }}
             hidden
             accept=".jpg, .png, .jpeg"
@@ -55,7 +55,7 @@ function RejectModal({ handleClose }) {
                 <h1> {file?.name} </h1>
                 <button
                   onClick={() => {
-                    setfile(null);
+                    setFile(null);
                   }}
                   className="outline-none"
                 >

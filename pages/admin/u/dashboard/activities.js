@@ -7,7 +7,7 @@ import { getCampaigns } from '../../../../api/campaigns'
 import { setLoading } from '../../../../app/reducers/status'
 import { ChevronLeft, ChevronRight } from '../../../../assets/svgIcons'
 import LandingLayout from '../../../../layouts/admin.layout'
-import { ActionBtn, ActionBtnB, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../../../styles/connect-pages.style'
+import { ActionBtn, ActionBtnB, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapped, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../../../styles/connect-pages.style'
 import { getAllUsers, verifyUserAccount } from 'api/admin'
 import { getQueryString } from 'helpers/helper'
 import { toast } from 'react-toastify'
@@ -41,7 +41,7 @@ useEffect(() => {
   return (
     <Container>
         <Wrapper>
-            <TableWrapper>
+            <TableWrapped>
                 <TableHeader>
                     <h2>User Activities</h2>
                 </TableHeader>
@@ -83,7 +83,7 @@ useEffect(() => {
                         </NavBtn>
                     </Pagination>
                 </TableFooter>
-            </TableWrapper>
+            </TableWrapped>
         </Wrapper>
     </Container>
   )

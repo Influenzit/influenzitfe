@@ -45,7 +45,6 @@ const LogoutModal = ({message}) => {
       if(prevTime > 0) {
         return prevTime - 1;
       } else {
-        dispatch(setLoading(true));
         logout();
         return 0;
       }
