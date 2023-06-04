@@ -913,7 +913,7 @@ const CreatorProfile = () => {
                                     return <ProfileCard
                                         key={i}
                                         profileLink={`/influencers/${val.id}`}
-                                        imgSrc={val?.media.filter(med => med.identifier === 'profile_pic')?.[0]?.url ?? '/niche8.png'}
+                                        imgSrc={val?.media?.filter(med => med.identifier === 'profile_pic')?.[0]?.url ?? '/niche8.png'}
                                         handle={val.twitter}
                                         name={`${val.user.firstname} ${val.user.lastname}`}
                                         sex={val.gender}

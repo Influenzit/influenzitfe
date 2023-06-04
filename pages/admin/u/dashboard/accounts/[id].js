@@ -3,7 +3,7 @@ import info from "../../../../../assets/info.svg";
 import action from "../../../../../assets/action.svg";
 import AdminLayout from '../../../../../layouts/admin.layout'
 import Image from 'next/image';
-import { ActionBtn, Checkbox, Container, Table, TableContent, TableWrapper, TBody, Td, Th, THead, Tr, TrH, TabBtn, Tabs, TableFooter, Pagination, NavBtn, Pages, PageBtn, WelcomeModal } from '../../../../../styles/connect-pages.style'
+import { ActionBtn, Checkbox, Container, Table, TableContent, TableWrapper, TBody, Td, Th, THead, Tr, TrH, TabBtn, Tabs, TableFooter, Pagination, NavBtn, Pages, PageBtn, WelcomeModal, TableWrapped } from '../../../../../styles/connect-pages.style'
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '../../../../../app/reducers/status';
@@ -300,10 +300,10 @@ const SingleWallet = () => {
 
                 {
                     currentTab === "Transactions" ? (
-                        <TableWrapper style={{ marginTop: "20px" }}>
+                        <TableWrapped style={{ marginTop: "20px" }}>
                             <TableContent>
                                 <Table>
-                                    <THead>
+                                    <THead style={{ borderTop: "none" }}>
                                         <TrH>
                                             <Th cellWidth="120px">
                                                 Date
@@ -350,15 +350,15 @@ const SingleWallet = () => {
                                     </NavBtn>
                                 </Pagination>
                             </TableFooter>
-                        </TableWrapper>
+                        </TableWrapped>
                     ) : null
                 }
                 {
                     currentTab === "Requests" ? (
-                        <TableWrapper style={{ marginTop: "20px" }}>
+                        <TableWrapped style={{ marginTop: "20px" }}>
                         <TableContent>
                             <Table>
-                                <THead>
+                                <THead style={{ borderTop: "none" }}>
                                     <TrH>
                                         <Th cellWidth="120px">
                                             Date
@@ -407,7 +407,7 @@ const SingleWallet = () => {
                                 </NavBtn>
                             </Pagination>
                         </TableFooter>
-                    </TableWrapper>
+                    </TableWrapped>
                     ) : null 
                 }
             </div>

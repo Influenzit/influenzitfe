@@ -12,6 +12,8 @@ import { getUser, updateUser } from "../../app/reducers/user";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Loader from "../UI/Loader";
+import { getIndustries } from "api/influencer";
+import { useQuery } from "@tanstack/react-query";
 
 function Stage1({ user }) {
   const dispatch = useDispatch();
@@ -29,8 +31,18 @@ function Stage1({ user }) {
   const [twitter, setTwitter] = useState("");
   const [youtube, setYoutube] = useState("");
   const [loading, setLoading] = useState(false);
-  console.log(user);
+  const [industryList, setIndustryList] = useState([]);
 
+  const { data: industryData, refetch: refetchIndustryData } = useQuery(["get-industries"], async () => {
+      return await getIndustries();
+  }, {
+      enabled: false,
+      staleTime: Infinity,
+      retry: false,
+      onSuccess(data) {
+          setIndustryList(data.data.data);
+      }
+  });
   const handleAccountUpdate = () => {
     setLoading(true);
     const payload = {
@@ -84,6 +96,10 @@ function Stage1({ user }) {
       setIndustry(user.account.industry ?? "");
     }
   }, [user]);
+  useEffect(() => {
+    refetchIndustryData();
+  }, [])
+  
   return (
     <div>
       <div className="">
@@ -112,13 +128,11 @@ function Stage1({ user }) {
                 }}
               >
                 <option value="">-- Select --</option>
-
-                <option value="Technology">Technology</option>
-                <option value="Media">Media</option>
-                <option value="Science">Science</option>
-                <option value="Power">Power</option>
-                <option value="Politics">Politics</option>
-                <option value="other">Others</option>
+                {
+                    industryList.map((val, i) => (
+                        <option key={i} value={val}>{val}</option>
+                    ))
+                }
               </select>
             </div>
           </div>

@@ -220,7 +220,7 @@ const Login = () => {
           <Center>
             <FormFields onSubmit={handleSubmit}>
               <InputContainer hasContent={email}>
-                <label>Email</label>
+                <label>Email<span style={{ color:"red" }}>*</span></label>
                 <Input
                 type="email"
                 value={email}
@@ -230,7 +230,7 @@ const Login = () => {
                 />
               </InputContainer>
               <InputContainer hasContent={password}>
-                <label>Password</label>
+                <label>Password<span style={{ color:"red" }}>*</span></label>
                 <Input
                   type="password"
                   value={password}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import AdminLayout from '../../../../../layouts/admin.layout'
-import { ActionBtn, Checkbox, Container, Table, TableContent, TableWrapper, TBody, Td, Th, THead, Tr, TrH, TabBtn, Tabs, TableFooter, Pagination, NavBtn, Pages, PageBtn } from '../../../../../styles/connect-pages.style'
+import { ActionBtn, Checkbox, Container, Table, TableContent, TableWrapper, TBody, Td, Th, THead, Tr, TrH, TabBtn, Tabs, TableFooter, Pagination, NavBtn, Pages, PageBtn, TableWrapped } from '../../../../../styles/connect-pages.style'
 import { useDispatch } from 'react-redux';
 import { setLoading } from '../../../../../app/reducers/status';
 import info from "../../../../../assets/info.svg";
@@ -134,7 +134,7 @@ const SingleWallet = () => {
                     <TabBtn isActive={currentTab === "Cancelled"} onClick={() => setCurrentTab("Cancelled")}>Cancelled</TabBtn>
                     <TabBtn isActive={currentTab === "Completed"} onClick={() => setCurrentTab("Completed")}>Completed</TabBtn>
                 </Tabs>
-                    <TableWrapper style={{ marginTop: "20px" }}>
+                    <TableWrapped style={{ marginTop: "20px" }}>
                         <TableContent>
                             <Table>
                                 <THead>
@@ -161,7 +161,7 @@ const SingleWallet = () => {
                                                 <Td cellWidth="150px">{val.reference}</Td>
                                                 <Td cellWidth="150px">{val.remark}</Td>
                                                 <Td cellWidth="100px">{val.status}</Td>
-                                                <Td cellWidth="150px">
+                                                <Td cellWidth="150px" style={{ display: "flex", columnGap: "10px"}}>
                                                     {val.status === "Pending" ? <ActionBtn onClick={() => {}}>Approve</ActionBtn> : null }
                                                     <ActionBtn onClick={() => router.push(`/admin/u/dashboard/accounts/${val.user_id}`)}>View User</ActionBtn>
                                                 </Td>
@@ -186,7 +186,7 @@ const SingleWallet = () => {
                                 </NavBtn>
                             </Pagination>
                         </TableFooter>
-                    </TableWrapper>
+                    </TableWrapped>
             </div>
         </div>
     </Container>

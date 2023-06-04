@@ -127,6 +127,8 @@ export const InputContainer = styled.div`
     position: relative;
     margin-bottom: 15px;
     min-width: calc(50% - 12px);
+    display: flex;
+    flex-direction: column;
     label {
         display: inline-block;
         margin-bottom: 8px;
@@ -407,5 +409,28 @@ export const Terms = styled.div`
             border-radius: 2px;
             background: ${colors.primaryColor};
         }
+    }
+`;
+export const CapsuleWrapper = styled.div`
+    padding: 5px 14px;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 12px;
+    row-gap: 12px;
+`;
+export const Capsule = styled.div`
+    display: inline-flex;
+    align-items: center;
+    column-gap: 10px;
+    padding: 5px 15px;
+    border-radius: 99px;
+    background: #FCEDEF;
+    button {
+        display: inline-flex;
+        align-items: center;
+    }
+    svg {
+        height: 18px;
+        width: 18px;
     }
 `;

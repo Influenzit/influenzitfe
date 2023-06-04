@@ -13,6 +13,7 @@ import {
   MailIcon,
   ProjectIcon,
   SettingsIcon,
+  StarOutlineIcon,
   SupportIcon,
   UserIcon,
   WalletIcon,
@@ -121,6 +122,13 @@ const Sidebar = () => {
       >
         <SettingsIcon />
         <span>Account Settings</span>
+      </NavButton>
+      <NavButton
+        onClick={() => handleRouting("/dashboard/reviews")}
+        isActive={router.pathname === "/dashboard/reviews"}
+      >
+        <StarOutlineIcon />
+        <span>Reviews</span>
       </NavButton>
       {/* <NavButton onClick={() => router.push("/dashboard/profile/password")} isActive={router.pathname.includes("/dashboard/profile/password")}>
             <LockIcon />

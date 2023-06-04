@@ -274,7 +274,7 @@ const Register = () => {
     //         <FormFields onSubmit={handleSubmit}>
     //           <FlexInput>
     //             <InputContainer hasContent={formVal.firstname}>
-    //               <label>First Name</label>
+    //               <label>First Name<span style={{ color:"red" }}>*</span></label>
     //               <Input
     //               type="text"
     //               value={formVal.firstname}
@@ -284,7 +284,7 @@ const Register = () => {
     //               />
     //             </InputContainer>
     //             <InputContainer hasContent={formVal.lastname}>
-    //               <label>Last Name</label>
+    //               <label>Last Name<span style={{ color:"red" }}>*</span></label>
     //               <Input
     //               type="text"
     //               value={formVal.lastname}
@@ -295,7 +295,7 @@ const Register = () => {
     //             </InputContainer>
     //           </FlexInput>
     //           <InputContainer hasContent={formVal.email}>
-    //             <label>Email</label>
+    //             <label>Email<span style={{ color:"red" }}>*</span></label>
     //             <Input
     //             type="email"
     //             value={formVal.email}
@@ -305,7 +305,7 @@ const Register = () => {
     //             />
     //           </InputContainer>
     //           <InputContainer hasContent={formVal.password}>
-    //             <label>Password</label>
+    //             <label>Password<span style={{ color:"red" }}>*</span></label>
     //             <Input
     //             type="password"
     //             value={formVal.password}
@@ -315,7 +315,7 @@ const Register = () => {
     //             />
     //           </InputContainer>
     //           <InputContainer hasContent={formVal.password_confirmation}>
-    //             <label>Confirm Password</label>
+    //             <label>Confirm Password<span style={{ color:"red" }}>*</span></label>
     //             <Input
     //             type="password"
     //             value={formVal.password_confirmation}
@@ -379,7 +379,7 @@ const Register = () => {
             <FormFields onSubmit={handleSubmit}>
               <FlexInput>
                 <InputContainer hasContent={formVal.firstname}>
-                  <label>First Name</label>
+                  <label>First Name<span style={{ color:"red" }}>*</span></label>
                   <Input
                   type="text"
                   value={formVal.firstname}
@@ -389,7 +389,7 @@ const Register = () => {
                   />
                 </InputContainer>
                 <InputContainer hasContent={formVal.lastname}>
-                  <label>Last Name</label>
+                  <label>Last Name<span style={{ color:"red" }}>*</span></label>
                   <Input
                   type="text"
                   value={formVal.lastname}
@@ -401,7 +401,7 @@ const Register = () => {
               </FlexInput>
               <FlexInput>
                 <InputContainer hasContent={formVal.email}>
-                  <label>Email</label>
+                  <label>Email<span style={{ color:"red" }}>*</span></label>
                   <Input
                   type="email"
                   value={formVal.email}
@@ -411,7 +411,7 @@ const Register = () => {
                   />
                 </InputContainer> 
                 <InputContainer>
-                  <label>Category</label>
+                  <label>Category<span style={{ color:"red" }}>*</span></label>
                   <select value={formVal.account_type} onChange={(e) => handleInputChange(e.target.value, "account_type")}>
                     <option value="Business">Business Owner</option>
                     <option value="Influencer">Influencer</option>
@@ -422,7 +422,7 @@ const Register = () => {
               {
                 formVal.account_type === "Business" && (
                   <InputContainer hasContent={formVal.email}>
-                      <label>Business Name</label>
+                      <label>Business Name<span style={{ color:"red" }}>*</span></label>
                       <Input
                       type="text"
                       value={formVal.business_name}
@@ -434,7 +434,7 @@ const Register = () => {
                 )
               }
               <InputContainer hasContent={formVal.password}>
-                <label>Password</label>
+                <label>Password<span style={{ color:"red" }}>*</span></label>
                 <Input
                 type="password"
                 value={formVal.password}
@@ -455,7 +455,7 @@ const Register = () => {
                 ): null
               }
               <InputContainer hasContent={formVal.password_confirmation}>
-                <label>Confirm Password</label>
+                <label>Confirm Password<span style={{ color:"red" }}>*</span></label>
                 <Input
                 type="password"
                 value={formVal.password_confirmation}
@@ -475,7 +475,7 @@ const Register = () => {
                 </div>) : null
               }
               <InputContainer hasContent={formVal.email}>
-                  <label>Referral Code (optional)</label>
+                  <label>Referral Code</label>
                   <Input
                   type="text"
                   value={formVal.referral_code}
@@ -498,7 +498,7 @@ const Register = () => {
                 )
               }
               <SocialLogin>
-                <GoogleBtn onClick={googleLogin}>
+                <GoogleBtn onClick={!isEnabled ? ((e) => e.preventDefault()) : googleLogin} style={isEnabled ? {} : { opacity: "0.7", cursor: "not-allowed" }}>
                   <SocialIcon>
                     <Image src="/google-r.svg" alt="" height={22} width={22} />
                   </SocialIcon>
@@ -509,7 +509,7 @@ const Register = () => {
                   callback={handleFacebookLogin}
                   onFailure={handleFailure}
                   render={(renderProps) => (
-                    <FacebookBtn  onClick={renderProps.onClick}>
+                    <FacebookBtn style={isEnabled ? {} : { opacity: "0.7", cursor: "not-allowed" }} onClick={!isEnabled ? ((e) => e.preventDefault()) : renderProps.onClick}>
                       <SocialIcon>
                         <Image src="/facebook-r.svg" alt="" height={22} width={22} />
                       </SocialIcon>

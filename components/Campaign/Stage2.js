@@ -39,7 +39,7 @@ function Stage2({
             <Milestone key={id}>
               <div className="top">
                 <div>
-                  <label htmlFor="title">Milestone name</label>
+                  <label htmlFor="title">Milestone name<span style={{ color:"red" }}>*</span></label>
                   <input
                     type="text"
                     name="title"
@@ -52,7 +52,7 @@ function Stage2({
                   />
                 </div>
                 <div>
-                  <label htmlFor="end_date">Delivery Date</label>
+                  <label htmlFor="end_date">Delivery Date<span style={{ color:"red" }}>*</span></label>
                   <input
                     type="date"
                     name="end_date"
@@ -88,15 +88,17 @@ function Stage2({
 
                 milestone[id].include_price && (<div className="">
                 <div className="mb-2 flex flex-col space-y-2 ">
-                  <label htmlFor="amount">Price</label>
+                  <label htmlFor="amount">Price (₦)<span style={{ color:"red" }}>*</span></label>
                   <input
-                    type="number"
+                    type="text"
                     name="amount"
                     className="input p-3"
-                    placeholder="#20, 000"
-                    defaultValue={milestone[id].amount}
+                    placeholder="Enter amount"
+                    value={milestone[id].amount}
                     onChange={(e) => {
-                      handleMilestoneinput(e, id);
+                      if(e.target.value === "" || Number(e.target.value)) {
+                        handleMilestoneinput(e, id);
+                      }
                     }}
                   />
                 </div>

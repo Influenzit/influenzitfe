@@ -5,7 +5,7 @@ import { getUserType, setError, setLoading, setSuccess } from '../../../../app/r
 import { getUser } from '../../../../app/reducers/user'
 import { BagIcon, ChevronLeft, ChevronRight, HashTagIcon, SettingsIcon, UserIcon, WalletIcon } from '../../../../assets/svgIcons'
 import AdminLayout from '../../../../layouts/admin.layout'
-import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../../../styles/connect-pages.style'
+import { ActionBtn, Checkbox, Container, FilterContainer, NavBtn, PageBtn, Pages, Pagination, SearchContainer, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapped, TableWrapper, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../../../styles/connect-pages.style'
 import { Card, CardsWrapper, ChartContainer, WelcomeHeading } from '../../../../styles/dashboard'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -271,7 +271,7 @@ const Dashboard = () => {
                     <SettingsIcon />
                 </Card>
             </CardsWrapper>
-            <TableWrapper style={{ marginBottom: "15px" }}>
+            <TableWrapped style={{ marginBottom: "15px" }}>
                     <TableHeader>
                         <h2>Niches</h2>
                     </TableHeader>
@@ -310,8 +310,8 @@ const Dashboard = () => {
                     </Table>
                     <AddSocialBtn style={{ margin: "10px auto" }} onClick={() => setShowAddNiche(true)}><Image src="/plus.svg" alt="plus" height={22} width={22} /><span>Add Niche</span></AddSocialBtn>
                     </TableContent>
-                </TableWrapper>
-                 <TableWrapper style={{ marginBottom: "15px" }}>
+                </TableWrapped>
+                 <TableWrapped style={{ marginBottom: "15px" }}>
                     <TableHeader>
                         <h2>New Users</h2>
                     </TableHeader>
@@ -351,7 +351,7 @@ const Dashboard = () => {
                         </TBody>
                     </Table>
                     </TableContent>
-                </TableWrapper>
+                </TableWrapped>
                 {/* <TableWrapper>
                     <TableHeader>
                         <h2>Projects</h2>
@@ -393,7 +393,7 @@ const Dashboard = () => {
                     </Table>
                     </TableContent>
                 </TableWrapper> */}
-                <TableWrapper>
+                <TableWrapped>
                     <TableHeader>
                         <h2>Campaigns</h2>
                     </TableHeader>
@@ -433,7 +433,7 @@ const Dashboard = () => {
                         </TBody>
                     </Table>
                     </TableContent>
-                </TableWrapper>
+                </TableWrapped>
         </Wrapper>
         {showAddNiche &&(
         <UpdateModal>
