@@ -9,6 +9,7 @@ import {
   getCampaign,
   getCampaignMilestones,
   handleCreateCampaign,
+  updateCampaign,
   updateCampaignMilestone,
 } from "../../../../api/campaigns";
 import { setLoading } from "../../../../app/reducers/status";
@@ -33,6 +34,7 @@ import ReactStars from "react-rating-stars-component";
 import Review from "../../../../components/Campaign/Review";
 import moment from "moment";
 import { toast } from "react-toastify";
+import { SubmitButton } from "styles/auth.style";
 const Campaigns = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -84,6 +86,28 @@ const Campaigns = () => {
         console.log(err.response);
       });
   };
+  const handleCompleteCampaign = () => {
+    dispatch(setLoading(true));
+    updateCampaign(id, {
+      status: "Completed",
+      end_date: singlecampaign.end_date,
+      start_date: singlecampaign.start_date,
+    }).then((res) => {
+      toast.success("Campaign updated", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setisAccepted(true);
+      handleGetSingleCampaign();
+      dispatch(setLoading(false));
+    })
+    .catch((err) => {
+      dispatch(setLoading(false));
+      console.log(err.response);
+      toast.error(err.response.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    });
+  }
 
   const updateCampaignMilsestone = (status, campaignId) => {
     setclickedkMileStone(campaignId);
@@ -178,7 +202,9 @@ const Campaigns = () => {
                   </div>
                 </div>
                 <div className="mb-4">{singlecampaign.description}</div>
-
+                {
+                  singlecampaign?.status !== "Completed" ? (<SubmitButton style={{ width: "150px", fontSize: "14px", margin: "10px 0" }} onClick={handleCompleteCampaign}>Complete Campaign</SubmitButton>): null
+                }
                 <div className="flex space-x-4 w-full border-b mb-4">
                   <button
                     onClick={() => {

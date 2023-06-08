@@ -361,8 +361,8 @@ const handleRemoveIndustry = (val) => {
                         </InputContainer>
                         <CapsuleWrapper>
                             {
-                              industrySelected.map((ind) => (
-                                <Capsule>
+                              industrySelected.map((ind, i) => (
+                                <Capsule key={i}>
                                     {ind}
                                     <button onClick={() => handleRemoveIndustry(ind)}><Image src="/delete.svg" alt="del" height={18} width={18} /></button>
                                 </Capsule>

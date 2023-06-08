@@ -265,6 +265,7 @@ export const Status = styled.div`
     flex-direction: column;
     justify-content: center;
     padding: 0 20px;
+    min-width: 130px;
     h3 {
         font-weight: 600;
         font-size: 12px;

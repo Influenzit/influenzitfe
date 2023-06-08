@@ -41,8 +41,16 @@ function Stage1({ user }) {
         toast.success("Account updated successfully", {
           position: toast.POSITION.TOP_RIGHT,
         });
-
-        setloading(false);
+        getUserAccount()
+            .then((userRes) => {
+              if (userRes.data.data) {
+                dispatch(updateUser(userRes.data.data));
+                setloading(false);
+              }
+            })
+            .catch((err) => {
+              setloading(false);
+            });
       })
       .catch((err) => {
         toast.error("An error occured", {

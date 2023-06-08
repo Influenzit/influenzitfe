@@ -11,6 +11,7 @@ import {
   getCampaign,
   getCampaignInvoice,
   updateCampaignReview,
+  updateCampaign,
 } from "../../../../api/campaigns";
 import { setLoading } from "../../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../../assets/svgIcons";
@@ -40,6 +41,9 @@ import moment from "moment";
 import { usePaystackPayment } from "react-paystack";
 import { calculateTotalPrice } from "paystack-transaction-charges-to-cus";
 import { createPaymentLog, processPayment } from "api/payment";
+import { SubmitButton } from "styles/auth.style";
+import { UpdateModal } from "styles/view.style";
+import { WelcomeModal } from "styles/connect-pages.style";
 
 const Campaigns = () => {
   const router = useRouter();
@@ -58,6 +62,7 @@ const Campaigns = () => {
   const [rating, setrating] = useState("");
   const [loading, setloading] = useState(false);
   const [conversationId, setconversationId] = useState(null);
+  const [showPrompt, setShowPrompt] = useState(false);
 
   const [makePayment, setmakePayment] = useState(false);
   const [triggerPayment, settriggerPayment] = useState(false);
@@ -130,9 +135,6 @@ const Campaigns = () => {
             position: toast.POSITION.TOP_RIGHT,
           });
           handleGetSingleCampaign();
-          if (singlecampaign.milestones.length - 1 === idx) {
-            setisAccepted(true);
-          }
         })
         .catch((err) => {
           setRequesting(false);
@@ -222,7 +224,7 @@ const Campaigns = () => {
     // Implementation for whatever you want to do with reference and after success call.
     console.log(reference);
     handleProcessTransaction(reference);
-    window.location.reload();
+    // window.location.reload();
   };
 
   // you can call this function anything
@@ -261,6 +263,27 @@ const Campaigns = () => {
         console.log(err.response);
       });
   };
+  const handleAcceptCampaign = () => {
+    setShowPrompt(false);
+    dispatch(setLoading(true));
+    updateCampaign(id, {
+      is_user_accept: true,
+    }).then((res) => {
+      toast.success("Campaign Accepted", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      dispatch(setLoading(false));
+      setisAccepted(true);
+      handleGetSingleCampaign();
+    })
+    .catch((err) => {
+      dispatch(setLoading(false));
+      console.log(err.response);
+      toast.error(err.response.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    });
+  }
   const handleProcessTransaction = async (data) => {
     const payload = {
       channel: "paystack",
@@ -268,7 +291,7 @@ const Campaigns = () => {
     };
     await processPayment(payload)
       .then((res) => {
-        console.log(res);
+        handleGetSingleCampaignInvoice();
       })
       .catch((err) => {
         console.log(err.response);
@@ -290,6 +313,7 @@ const Campaigns = () => {
     // handleGetSingleCampaignMilestones();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
   return (
     <div className=" flex flex-col bg-gray-50 min-h-screen">
       <div className="grid grid-cols-2 md:hidden  px-4 pt-20 space-x-4 w-full border-b mb-4">
@@ -357,7 +381,9 @@ const Campaigns = () => {
                 </div>
               </div>
               <div className="mb-4">{singlecampaign.description}</div>
-
+              {
+                (!singlecampaign?.is_user_accept && (singlecampaign?.status === "Completed")) ? (<SubmitButton style={{ width: "150px", fontSize: "14px", margin: "10px 0" }} onClick={() => setShowPrompt(true)}>Accept Campaign</SubmitButton>): null
+              }
               <div className="flex space-x-4 w-full border-b mb-4">
                 <button
                   onClick={() => {
@@ -543,6 +569,21 @@ const Campaigns = () => {
           loading={loading}
         />
       )}
+       {
+            showPrompt && (
+                <UpdateModal>
+                    <WelcomeModal>
+                        <div>
+                            <button onClick={() => setShowPrompt(false)}><Image src="/cancel.svg" alt="" height={14} width={14} /></button>
+                        </div>
+                        <p>If this campaign is accepted fund in the escrow will be released to the influencer</p>
+                        <div>
+                            <button onClick={handleAcceptCampaign}>Accept</button>
+                        </div>
+                    </WelcomeModal>
+                </UpdateModal>
+            )
+        }
     </div>
   );
 };

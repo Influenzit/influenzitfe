@@ -178,18 +178,18 @@ const Campaigns = () => {
         <div className="w-full overflow-x-auto">
           <div className="table mt-10 campaign_table md:w-full min-w-[1200px] text-[#667085] ">
             <div className="grid grid-cols-12 gap-4 bg-[#F9FAFB] p-4 rounded-t-lg border-b">
-              <div className="col-span-5">Business</div>
+              <div className="col-span-5">Campaign Name</div>
               <div className="col-span-3">Channel</div>
               <div className="col-span-2">Delivery date</div>
               <div className="col-span-2">Status</div>
             </div>
             {campaignList.map((item, idx) => (
-              <div className="grid grid-cols-12 gap-4 p-4 border-b " key={idx}>
+              <div className="grid grid-cols-12 gap-4 p-4 border-b cursor-pointer" key={idx} onClick={() => router.push(`/dashboard/campaigns/influencer/${item.id}`)}>
                 <div className="col-span-5 text-sm truncate">
                   {" "}
-                  <Link href={`/dashboard/campaigns/influencer/${item.id}`}>
+                  <p>
                     {item.title}
-                  </Link>{" "}
+                  </p>{" "}
                 </div>
                 <div className="col-span-3 flex space-x-2 items-center">
                   {platform.map((img) => (

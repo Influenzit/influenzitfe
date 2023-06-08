@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../../../app/reducers/status";
+import { getUserType, setLoading } from "../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../assets/svgIcons";
 import Stage1 from "../../../components/profile/stage1";
 import Stage2 from "../../../components/profile/stage2";
@@ -30,6 +30,7 @@ const Profile = () => {
   const dispatch = useDispatch();
 
   const user = useSelector(getUser);
+  const currentAcctType = useSelector(getUserType);
 
   const router = useRouter();
   const [step, setstep] = useState(1);
@@ -76,7 +77,16 @@ const Profile = () => {
               "text-primary-100 border-b border-primary-100"
             } pb-4 text-sm md:text-base`}
           >
-            Influencer Details
+            {
+              ((currentAcctType === "Influencer")) && ("Influencer Details")
+            }
+             {
+              ((currentAcctType === "Business Owner")) && ("Business Owner Details")
+            }
+            {
+              ((currentAcctType === "Creator")) && ("Creator Details")
+            }
+
           </button>
           <button
             onClick={() => {
