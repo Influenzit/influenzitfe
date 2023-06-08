@@ -48,3 +48,6 @@ export const disconnectSocialMedia = (id) => {
 export const logoutUser = () => {
     return axiosInstance().post("/auth/logout");
 }
+export const getAllReviews = (url, id) => {
+    return axiosInstance().get(url ? url : `/accounts/${id}/reviews`);
+}

@@ -2,67 +2,42 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ChevronLeft, ChevronRight } from '../../assets/svgIcons'
 import LandingLayout from '../../layouts/landing.layout'
 import { ActionBtn, ActionBtnB, Checkbox, Container, FilterContainer, HTab, HTabs, NavBtn, PageBtn, Pages, Pagination, SearchContainer, TabBtn, Table, TableContent, TableControls, TableFooter, TableHeader, TableWrapped, TableWrapper, Tabs, TBody, Td, Th, THead, Tr, TrH, Wrapper } from '../../styles/connect-pages.style'
 import { getQueryString } from 'helpers/helper'
 import { toast } from 'react-toastify'
 import { InputContainer } from 'styles/auth.style'
+import { setLoading } from 'app/reducers/status'
+import { getAllReviews } from 'api/auth'
+import { getUser } from 'app/reducers/user'
 
 const Reviews = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [getUrl, setGetUrl] = useState("");
-  const [currentTab, setCurrentTab] = useState("");
+  const user = useSelector(getUser);
   const [reviewList, setReviewList] = useState({
     data: [],
   });
-//   const { data: reviewsData, refetch: refetchreviewsData } = useQuery(["get-reviews"], async () => {
-//     return await getAllreviews(getQueryString(getUrl));
-// }, {
-//     enabled: false,
-//     staleTime: Infinity,
-//     retry: false,
-//     onSuccess(res) {
-//         dispatch(setLoading(false));
-//         setreviewList(res.data.data);
-//     },
-//     onError(res) {
-//         dispatch(setLoading(false));
-//     } 
-// });
-// const updateAccountMutation = useMutation(
-//     (data) => {
-//       return verifyreviewAccount(data);
-//     },
-//     {
-//       onSuccess(successRes) {
-//         const res = successRes.data;
-//         toast.success("Account verified successfully", {
-//             position: toast.POSITION.TOP_RIGHT
-//           });
-//         refetchreviewsData();
-//         dispatch(setLoading(false));
-//       },
-//       onError(error) {
-//         const res = error.response.data;
-//         dispatch(setLoading(false));
-//         if (res) {
-//           dispatch(setError({ error: true, message: res.message }));
-//           return;
-//         }
-//         dispatch(setError({ error: true, message: "An error occured" }));
-//       },
-//     }
-//   );
-//   const verifyAcc = (id) => {
-//     dispatch(setLoading(true));
-//     updateAccountMutation.mutate(id);
-//   }
-// useEffect(() => {
-//   refetchreviewsData();
-// }, [getUrl])
+  const { data: reviewsData, refetch: refetchReviewsData } = useQuery(["get-reviews"], async () => {
+    return await getAllReviews(getQueryString(getUrl), user?.account?.id);
+}, {
+    enabled: false,
+    staleTime: Infinity,
+    retry: false,
+    onSuccess(res) {
+        dispatch(setLoading(false));
+        setReviewList(res.data);
+    },
+    onError(res) {
+        dispatch(setLoading(false));
+    } 
+});
+useEffect(() => {
+  refetchReviewsData();
+}, [getUrl])
 
   return (
     <Container>
@@ -71,7 +46,7 @@ const Reviews = () => {
                 <TableHeader>
                     <h2>Reviews</h2>
                     <div id="left">
-                        <InputContainer>
+                        {/* <InputContainer>
                             <label>Ratings</label>
                             <select>
                                 <option>1 star</option>
@@ -87,7 +62,7 @@ const Reviews = () => {
                                 <option>Latest</option>
                                 <option>Oldest</option>
                             </select>
-                        </InputContainer>
+                        </InputContainer> */}
                     </div>
                     {/* <Tabs style={{ fontSize: "14px", height: "40px" }}>
                         <TabBtn isActive={currentTab === ""} onClick={() => setCurrentTab("")}>
@@ -123,13 +98,13 @@ const Reviews = () => {
                             </THead>
                             <TBody>
                                 {
-                                    reviewList.data.map((val, i) => (
+                                    reviewList?.data.map((val, i) => (
                                         <Tr key={i}>
-                                            <Td cellWidth="400px"></Td>
-                                            <Td cellWidth="250px"></Td>
-                                            <Td cellWidth="140px"></Td>
+                                            <Td cellWidth="400px">{val.comment}</Td>
+                                            <Td cellWidth="250px">{val.name}</Td>
+                                            <Td cellWidth="140px">{val.rating}</Td>
                                             <Td cellWidth="150px">
-                                                <ActionBtnB onClick={() =>router.push(`/admin/u/dashboard/accounts/${val.id}`)}>Appeal</ActionBtnB>
+                                                <ActionBtnB onClick={() => {}}>Appeal</ActionBtnB>
                                             </Td>
                                         </Tr>
                                     ))

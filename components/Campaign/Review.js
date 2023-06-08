@@ -36,7 +36,7 @@ function Review({loading, handleClose, handleUpdateCampaignReview, setrating, se
             count={5}
             value={1}
             onChange={ratingChanged}
-            size={14}
+            size={30}
             activeColor="#DF475C"
           />
 
