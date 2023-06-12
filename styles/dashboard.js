@@ -289,3 +289,14 @@ export const Status = styled.div`
         padding: 0;
     }
 `;
+export const ReviewCard = styled.div`
+    h2 {
+        font-size: 16px;
+        font-weight: 500;
+        color: ${colors.textColor};
+    }
+    p {
+        font-size: 14px;
+        color: ${colors.textColor}99;
+    }
+`;

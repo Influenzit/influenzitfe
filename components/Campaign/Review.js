@@ -8,7 +8,7 @@ import Image from "next/image";
 import ReactStars from "react-rating-stars-component";
 import Loader from "components/UI/Loader";
 
-function Review({loading, handleClose, handleUpdateCampaignReview, setrating, setcomment }) {
+function Review({loading, handleClose, handleUpdateCampaignReview, setrating, setcomment, comment, rating }) {
   const ratingChanged = (newRating) => {
     console.log(newRating);
     setrating(newRating)
@@ -34,7 +34,7 @@ function Review({loading, handleClose, handleUpdateCampaignReview, setrating, se
           <ReactStars
             isHalf={true}
             count={5}
-            value={1}
+            value={Number(rating) ?? 1}
             onChange={ratingChanged}
             size={30}
             activeColor="#DF475C"
@@ -45,6 +45,7 @@ function Review({loading, handleClose, handleUpdateCampaignReview, setrating, se
               name="chatbox"
               id="chatbox"
               rows="5"
+              value={comment}
               className="resize-none text-sm w-full h-full rounded-lg  outline-none bg-transparent p-2"
               placeholder="Write your message"
               onChange={(e)=> {setcomment(e.target.value)}}

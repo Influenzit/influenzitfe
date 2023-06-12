@@ -113,7 +113,7 @@ const Campaigns = () => {
                             </div>
                           ))}
                         </div>
-                        <div className="flex items-center space-x-1">
+                        {/* <div className="flex items-center space-x-1">
                           <ReactStars
                             isHalf={true}
                             count={5}
@@ -123,7 +123,7 @@ const Campaigns = () => {
                             activeColor="#DF475C"
                           />
                           <p className="text-[10px]">4.0 </p>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <div className="md:col-span-7 py-5 md:border-x md:px-10 flex flex-col space-y-2 h-auto">
