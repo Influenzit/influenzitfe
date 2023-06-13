@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { getUser } from '../../app/reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from 'app/reducers/status';
+import Loader from 'components/UI/Loader';
 
 const Search = () => {
     const [getUrl, setGetUrl] = useState("");
@@ -24,6 +25,8 @@ const Search = () => {
     const [nicheVal, setNicheVal] = useState("");
     const [seeAll, setSeeAll] = useState(false);
     const [searchString, setSearchString] = useState("");
+    const [serviceList, setServiceList] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const [firstLoad, setFirstLoad] = useState(true);
     const { data: servicesData, refetch: refetchServicesData } = useQuery(["get-services"], async () => {
         return await exploreServices(getQueryString(`${getUrl ? getUrl : firstLoad ? router.asPath : ""}${getQueryString(getUrl ? getUrl : router.asPath) && firstLoad ? `&industry=${currentIndustry}&platform=${nicheVal}` : `?industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}` }`));
@@ -31,9 +34,18 @@ const Search = () => {
         enabled: false,
         staleTime: Infinity,
         retry: false,
-        onSuccess() {
+        onSuccess(res) {
             dispatch(setLoading(false));
             setFirstLoad(false);
+            setIsLoading(false);
+            sessionStorage.setItem("snp", res.data.data.next_page_url ? res.data.data.next_page_url : "");
+            setServiceList((prev) => {
+                if(isLoading) {
+                    return [...prev, ...res.data.data.data]
+                } else {
+                    return res.data.data.data;
+                }
+            })
         }
     });
     const { data, refetch } = useQuery(["get-niche"], async () => {
@@ -65,6 +77,24 @@ const Search = () => {
             setSearchString(search);
         }
     }, [router.asPath, currentIndustry, nicheVal, search])
+    const handleScroll = (e) => {
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight - 300;
+        if(window.scrollY >= scrollHeight) {
+            if(localStorage.getItem("token")) {
+                if(sessionStorage.getItem("inp")) {
+                    console.log("verified fetching next page...");
+                    setIsLoading(true);
+                    setGetUrl(sessionStorage.getItem("inp"));
+                }
+            }
+        }
+    }
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        }
+    }, [])
 
     return (
         <Container>
@@ -110,8 +140,8 @@ const Search = () => {
                         </Filter>
                         <ListWrapper>
                             {
-                                servicesData?.data?.data?.data.length > 0 ?
-                                servicesData?.data?.data?.data.map((val, i) => {
+                                serviceList.length > 0 ?
+                                serviceList.map((val, i) => {
                                     return (
                                         <ServiceCard
                                             key={i}
@@ -132,6 +162,9 @@ const Search = () => {
                                 )
                             }
                         </ListWrapper>
+                        {
+                            isLoading && <Loader />
+                        }
                         {!user && (
                             <ViewMore>
                                 <div>

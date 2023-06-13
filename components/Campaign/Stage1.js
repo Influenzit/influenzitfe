@@ -18,7 +18,7 @@ function Stage1({
       <p className="text-xs  text-primary-100">Step 1</p>
       <p className="text-xs ">Describe your Campaign</p>
       <div className="my-6 flex flex-col space-y-2 ">
-        <label htmlFor="b_id">Business ID</label>
+        <label htmlFor="b_id">Business ID<span style={{ color:"red" }}>*</span></label>
         <input
           type="number"
           id="b_id"
@@ -31,7 +31,7 @@ function Stage1({
         />
       </div>
       <div className="mb-6 flex flex-col space-y-2">
-        <label htmlFor="Campaign_name">Campaign Name</label>
+        <label htmlFor="Campaign_name">Campaign Name<span style={{ color:"red" }}>*</span></label>
         <input
           type="text"
           id="Campaign_name"
@@ -44,7 +44,7 @@ function Stage1({
         />
       </div>
       <div className="mb-6 flex flex-col space-y-2">
-        <label htmlFor="desc">Description</label>
+        <label htmlFor="desc">Description<span style={{ color:"red" }}>*</span></label>
         <textarea
           name="dex"
           id="desc"

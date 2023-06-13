@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import LandingLayout from '../../layouts/landing.layout'
-import { ErrorMessageCont, Input, InputContainer } from '../../styles/auth.style';
+import { Capsule, CapsuleWrapper, ErrorMessageCont, Input, InputContainer } from '../../styles/auth.style';
 import { Container, CoverImageContainer, CustomInput, HandleError, ImagePreview, ProfileForm, ProfileUploadCont, Step, StepContainer, StepControl, ToggleBtn, ToggleCont, UploadContainer, UploadHeader, UploadInfo } from '../../styles/complete.style'
 import { InputWrap } from '../../styles/messages.style';
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { CountryDropdown } from 'react-country-region-selector';
-import { TextAreaContainer } from '../../styles/contact.style';
 import Image from 'next/image';
 import { updateUser } from '../../app/reducers/user';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { accountMedia, getAccount, getUserAccount, updateAccount } from '../../api/auth';
 import { useRouter } from 'next/router';
@@ -45,6 +44,7 @@ const CompleteProfile = () => {
   const [industryList, setIndustryList] = useState([]);
   const [imgError, setImgError] = useState(false);
   const [imgMessage, setImgMessage] = useState("");
+  const [industrySelected, setIndustrySelected] = useState([]);
 
   // Update account mutation
 const { data: industryData, refetch: refetchIndustryData } = useQuery(["get-industries"], async () => {
@@ -67,6 +67,22 @@ const { data, refetch } = useQuery(["get-account"], async () => {
         setUser(res.data.data);
     }
 });
+const handleAddIndustry = (val) => {
+    setIndustrySelected((prev) => {
+        const copy = [...prev];
+        if(copy.indexOf(val) === -1) {
+            copy.push(val);
+        }
+        return copy;
+    })
+}
+const handleRemoveIndustry = (val) => {
+    setIndustrySelected((prev) => {
+        let copy = [...prev];
+        copy = copy.filter((curr) => curr !== val);
+        return copy;
+    })
+}
   const updateAccountMutation = useMutation((data) => {
         return updateAccount(user.id, data);
     }, {
@@ -161,7 +177,7 @@ const { data, refetch } = useQuery(["get-account"], async () => {
         setBioError(false);
         setPhoneError(false);
         setHeadlineError(false);
-        if((phone.length < 10) || !gender || !country || !headline || !biography || !industry) {
+        if((phone.length < 10) || !gender || !country || !headline || !biography || !industrySelected.length) {
             if(phone.length < 10) {
                 setPhoneError(true);
             }
@@ -179,7 +195,7 @@ const { data, refetch } = useQuery(["get-account"], async () => {
                 headline,
                 biography,
                 country,
-                industry
+                niches: industrySelected,
             });
         }
     }
@@ -258,7 +274,6 @@ const { data, refetch } = useQuery(["get-account"], async () => {
     }
     const handleFileChangeDrop = (e) => {
         e.preventDefault();
-        console.log(coverImages);
         if(coverImages.length < 4) {
             const file = e.target.files[0];
             if(file.size < 5000000) {
@@ -294,6 +309,7 @@ const { data, refetch } = useQuery(["get-account"], async () => {
     }
   useEffect(() => {
     if(user) {
+        let list = [];
         setPhone(user.phone1 ?? "");
         setGender(user.gender ?? "");
         setCountry(user.country ?? "");
@@ -304,7 +320,11 @@ const { data, refetch } = useQuery(["get-account"], async () => {
         setTwitter(user.twitter ?? "");
         setTiktok(user.tiktok ?? "");
         setYoutube(user.youtube ?? "");
-        setIndustry(user.industry ?? "");
+        user.niches.forEach((val) => {
+            list.push(val.name);
+        })
+        setIndustrySelected(list);
+        // setIndustry(user.industr ?? "");
     }
   }, [user])
   useEffect(() => {
@@ -328,8 +348,10 @@ const { data, refetch } = useQuery(["get-account"], async () => {
                         <h3>Influencer Information</h3>
                         <p>Update your profile</p>
                         <InputContainer style={{ marginTop: "20px" }}>
-                            <label>Industry</label>
-                            <select style={{ fontSize: "14px" }} value={industry} onChange={(e) => setIndustry(e.target.value)}>
+                            <label>Niche/Interest</label>
+                            
+                            <select style={{ fontSize: "14px" }} value={industry} onChange={(e) => handleAddIndustry(e.target.value)}>
+                                <option value="">Select Niche/Interest</option>
                                 {
                                     industryList.map((val, i) => (
                                         <option key={i} value={val}>{val}</option>
@@ -337,6 +359,16 @@ const { data, refetch } = useQuery(["get-account"], async () => {
                                 }
                             </select>
                         </InputContainer>
+                        <CapsuleWrapper>
+                            {
+                              industrySelected.map((ind, i) => (
+                                <Capsule key={i}>
+                                    {ind}
+                                    <button onClick={() => handleRemoveIndustry(ind)}><Image src="/delete.svg" alt="del" height={18} width={18} /></button>
+                                </Capsule>
+                              ))  
+                            }
+                        </CapsuleWrapper>
                         <InputWrap>
                             <InputContainer>
                                 <label>Country</label>
@@ -472,11 +504,11 @@ const { data, refetch } = useQuery(["get-account"], async () => {
                                     <Image src={imgSrc ? imgSrc : "/placeholder.png"} alt="" layout='fill' objectFit='cover' objectPosition="center" />
                                 </div>
                             </div>
-                            <input type="file" hidden id="upload-input" onChange={handleFileChange}/>
+                            <input type="file" hidden id="upload-input" accept='image/*' onChange={handleFileChange}/>
                             <label htmlFor='upload-input'>Upload Image</label>
                         </ProfileUploadCont>
                         <CoverImageContainer>
-                            <p id="head">Add cover images</p>
+                            <p id="head">Showcase who you are, add up to 2 or 3 pictures</p>
                             <UploadContainer onDrop={handleDrop} onDragLeave={handleDragLeave} onDragOver={handleDragOver} style={{ marginBottom: "20px" }}>
                                 <Image src="/image-p.svg" alt="" height={45} width={45} />
                                 <UploadHeader>
@@ -484,7 +516,7 @@ const { data, refetch } = useQuery(["get-account"], async () => {
                                     <label htmlFor="upload-cover">Upload</label>
                                 </UploadHeader>
                                 <UploadInfo>JPG or PNG, no larger than 5MB</UploadInfo>
-                                <input type="file" hidden id="upload-cover" onChange={handleFileChangeDrop}/>
+                                <input type="file" hidden id="upload-cover" accept='image/*' onChange={handleFileChangeDrop}/>
                             </UploadContainer>
                             <ImagePreview>
                                 {

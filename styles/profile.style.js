@@ -695,3 +695,8 @@ export const SocialCardList = styled.div`
     row-gap: 10px;
     flex-direction: column;
 `;
+export const BankWrapper = styled.div`
+    width: 100%;
+    max-width: 500px;
+    margin: 30px auto;
+`;

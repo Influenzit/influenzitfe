@@ -54,6 +54,9 @@ export const getAllNiches = () => {
 export const createNiche = (data) => {
     return axiosInstance().post("/admin/niches", data);
 }
+export const sendMail = (data) => {
+    return axiosInstance().post("/admin/mails", data);
+}
 export const deleteNiche = (id) => {
     return axiosInstance().delete(`/admin/niches/${id}`);
 }
@@ -62,4 +65,7 @@ export const getAllProjects = () => {
 }
 export const getWaitlist = () => {
     return axiosInstance().get("/admin/waitlist");
+}
+export const getAccountActivities = (query) => {
+    return axiosInstance().get(query ? query : "/admin/logs/activities?paginate=20")
 }

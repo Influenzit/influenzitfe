@@ -5,13 +5,14 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../../../app/reducers/status";
+import { getUserType, setLoading } from "../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../assets/svgIcons";
 import Stage1 from "../../../components/profile/stage1";
 import Stage2 from "../../../components/profile/stage2";
 import Stage3 from "../../../components/profile/stage3";
 import Stage4 from "../../../components/profile/stage4";
 import Stage5 from "../../../components/profile/stage5";
+import Stage6 from "../../../components/profile/stage6";
 import LandingLayout from "../../../layouts/landing.layout";
 
 import cancel from "./../../../assets/close.svg";
@@ -29,6 +30,7 @@ const Profile = () => {
   const dispatch = useDispatch();
 
   const user = useSelector(getUser);
+  const currentAcctType = useSelector(getUserType);
 
   const router = useRouter();
   const [step, setstep] = useState(1);
@@ -75,7 +77,16 @@ const Profile = () => {
               "text-primary-100 border-b border-primary-100"
             } pb-4 text-sm md:text-base`}
           >
-            Influencer Details
+            {
+              ((currentAcctType === "Influencer")) && ("Influencer Details")
+            }
+             {
+              ((currentAcctType === "Business Owner")) && ("Business Owner Details")
+            }
+            {
+              ((currentAcctType === "Creator")) && ("Creator Details")
+            }
+
           </button>
           <button
             onClick={() => {
@@ -110,6 +121,17 @@ const Profile = () => {
           >
             Connect Social Media
           </button>
+          <button
+            onClick={() => {
+              setactivetab("bank");
+            }}
+            className={`${
+              activetab === "bank" &&
+              "text-primary-100 border-b border-primary-100"
+            } pb-4 text-sm md:text-base`}
+          >
+            Bank Information
+          </button>
         </div>
       </div>
 
@@ -118,6 +140,7 @@ const Profile = () => {
       {activetab === "images" && <Stage3 user={user} />}
       {activetab === "change_password" && <Stage4 user={user} />}
       {activetab === "social" && <Stage5 user={user} />}
+      {activetab === "bank" && <Stage6 user={user} />}
     </Container>
   );
 };

@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { getUser } from 'app/reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from 'app/reducers/status';
+import Loader from 'components/UI/Loader';
 
 const Search = () => {
     const [getUrl, setGetUrl] = useState("");
@@ -19,6 +20,8 @@ const Search = () => {
     const [searchString, setSearchString] = useState("");
     const [seeAll, setSeeAll] = useState(false);
     const [firstLoad, setFirstLoad] = useState(true);
+    const [influencerList, setInfluencerList] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     const { search } = router.query;
     const dispatch = useDispatch();
@@ -30,9 +33,18 @@ const Search = () => {
         enabled: false,
         staleTime: Infinity,
         retry: false,
-        onSuccess() {
+        onSuccess(res) {
             dispatch(setLoading(false));
             setFirstLoad(false);
+            setIsLoading(false);
+            sessionStorage.setItem("inp", res.data.data.next_page_url ? res.data.data.next_page_url : "");
+            setInfluencerList((prev) => {
+                if(isLoading) {
+                    return [...prev, ...res.data.data.data]
+                } else {
+                    return res.data.data.data;
+                }
+            })
         }
     });
     const [category, setCategory] = useState([]);
@@ -54,6 +66,18 @@ const Search = () => {
         staleTime: Infinity,
         retry: false
     });
+    const handleScroll = (e) => {
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight - 300;
+        if(window.scrollY >= scrollHeight) {
+            if(localStorage.getItem("token")) {
+                if(sessionStorage.getItem("inp")) {
+                    console.log("verified fetching next page...");
+                    setIsLoading(true);
+                    setGetUrl(sessionStorage.getItem("inp"));
+                }
+            }
+        }
+    }
     useEffect(() => {
         refetchIndustryData();
         refetch();
@@ -64,7 +88,12 @@ const Search = () => {
             setSearchString(search);
         }
     }, [router.asPath, currentIndustry, nicheVal, search])
-    
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        }
+    }, [])
 
     return (
         <Container>
@@ -114,8 +143,8 @@ const Search = () => {
                         </Filter>
                         <ListWrapper>
                             {
-                                influencersData?.data?.data?.data?.length > 0 ?
-                                influencersData?.data?.data?.data?.map((val, i) => {
+                                influencerList.length > 0 ?
+                                influencerList.map((val, i) => {
                                     let genSkills = "";
                                     val.skills.forEach((val, i) => {
                                         if(i < 5){
@@ -146,6 +175,9 @@ const Search = () => {
                                 )
                             }
                         </ListWrapper>
+                        {
+                            isLoading && <Loader />
+                        }
                         {
                             !user && (<ViewMore>
                                 <div>

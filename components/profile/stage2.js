@@ -7,13 +7,17 @@ import email from "../../assets/profile/email.svg";
 import at from "../../assets/profile/at.svg";
 import { Country } from "country-state-city";
 
-import { getUserAccount, updateAccount } from "../../api/auth";
+import { getAccount, getUserAccount, updateAccount } from "../../api/auth";
 import { getUser, updateUser } from "../../app/reducers/user";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Loader from "../UI/Loader";
+import { getIndustries } from "api/influencer";
+import { useQuery } from "@tanstack/react-query";
+import { getUserType } from "app/reducers/status";
+import { Capsule, CapsuleWrapper, InputContainer } from "styles/auth.style";
 
-function Stage1({ user }) {
+function Stage1() {
   const dispatch = useDispatch();
 
   const [countries] = useState(Country.getAllCountries());
@@ -29,21 +33,60 @@ function Stage1({ user }) {
   const [twitter, setTwitter] = useState("");
   const [youtube, setYoutube] = useState("");
   const [loading, setLoading] = useState(false);
-  console.log(user);
+  const [industryList, setIndustryList] = useState([]);
+  const currentAcctType = useSelector(getUserType);
+  const [industrySelected, setIndustrySelected] = useState([]);
+  const [user, setUser] = useState(null)
 
+  const { data: industryData, refetch: refetchIndustryData } = useQuery(["get-industries"], async () => {
+      return await getIndustries();
+  }, {
+      enabled: false,
+      staleTime: Infinity,
+      retry: false,
+      onSuccess(data) {
+          setIndustryList(data.data.data);
+      }
+  });
+  const { data, refetch } = useQuery(["get-account"], async () => {
+    return await getAccount();
+}, {
+    staleTime: false,
+    enabled: false,
+    retry: false,
+    onSuccess(res) {
+        setUser(res.data.data);
+    }
+});
+const handleAddIndustry = (val) => {
+  setIndustrySelected((prev) => {
+    const copy = [...prev];
+    if(copy.indexOf(val) === -1) {
+        copy.push(val);
+    }
+    return copy;
+  })
+}
+const handleRemoveIndustry = (val) => {
+setIndustrySelected((prev) => {
+      let copy = [...prev];
+      copy = copy.filter((curr) => curr !== val);
+      return copy;
+  })
+}
   const handleAccountUpdate = () => {
     setLoading(true);
     const payload = {
       gender,
       country,
       headline,
-      industry,
       biography,
       instagram,
       tiktok,
       facebook,
       twitter,
       youtube,
+      niches: industrySelected,
     };
 
     for (let i in payload) {
@@ -52,15 +95,23 @@ function Stage1({ user }) {
       }
     }
     console.log(payload);
-
     updateAccount(user.id, payload)
       .then((res) => {
         toast.success("Account updated successfully", {
           position: toast.POSITION.TOP_RIGHT,
         });
 
-        setLoading(false);
-      })
+        getUserAccount()
+            .then((userRes) => {
+              if (userRes.data.data) {
+                dispatch(updateUser(userRes.data.data));
+                setLoading(false);
+              }
+            })
+            .catch((err) => {
+              setLoading(false);
+            });
+       })
       .catch((err) => {
         toast.error("An error occured", {
           position: toast.POSITION.TOP_RIGHT,
@@ -72,26 +123,54 @@ function Stage1({ user }) {
 
   useEffect(() => {
     if (user) {
-      setGender(user.account.gender ?? "");
-      setCountry(user.account.country ?? "");
-      setHeadline(user.account.headline ?? "");
-      setBiography(user.account.biography ?? "");
-      setFacebook(user.account.facebook ?? "");
-      setInstagram(user.account.instagram ?? "");
-      setTwitter(user.account.twitter ?? "");
-      setTiktok(user.account.tiktok ?? "");
-      setYoutube(user.account.youtube ?? "");
-      setIndustry(user.account.industry ?? "");
-    }
+      let list = [];
+      setGender(user.gender ?? "");
+      setCountry(user.country ?? "");
+      setHeadline(user.headline ?? "");
+      setBiography(user.biography ?? "");
+      setFacebook(user.facebook ?? "");
+      setInstagram(user.instagram ?? "");
+      setTwitter(user.twitter ?? "");
+      setTiktok(user.tiktok ?? "");
+      setYoutube(user.youtube ?? "");
+      user.niches.forEach((val) => {
+        list.push(val.name);
+      })
+        setIndustrySelected(list);
+      }
   }, [user]);
+  useEffect(() => {
+    refetchIndustryData();
+    refetch();
+  }, [])
+  
   return (
     <div>
       <div className="">
         <div className="flex items-center justify-between py-5 border-b">
           <div>
-            <h1 className="text-lg">Business Information </h1>
+            <h1 className="text-lg">
+              {
+                ((currentAcctType === "Influencer")) && ("Influencer Information")
+              }
+              {
+                ((currentAcctType === "Creator")) && ("Creator Information")
+              }
+              {
+                ((currentAcctType === "Business Owner")) && ("Business Information")
+              }
+            </h1>
             <p className="text-xs text-[#667085]">
-              Update your business innformation here{" "}
+              Update your  {
+                ((currentAcctType === "Influencer")) && ("influencer")
+              }
+              {
+                ((currentAcctType === "Business Owner")) && ("business")
+              }
+              {
+                ((currentAcctType === "Creator")) && ("creator")
+              } {" "}
+               information here
             </p>
           </div>
         </div>
@@ -101,26 +180,28 @@ function Stage1({ user }) {
             <h1 className="text-[#344054]">Industry</h1>
           </div>
           <div className="col-span-6">
-            <div className=" flex space-x-3 px-3 py-2 rounded-lg border  bg-transparent outline-none w-full">
-              <select
-                className="w-full bg-transparent outline-none"
-                name=""
-                id=""
-                value={industry}
-                onChange={(e) => {
-                  setIndustry(e.target.value);
-                }}
-              >
-                <option value="">-- Select --</option>
-
-                <option value="Technology">Technology</option>
-                <option value="Media">Media</option>
-                <option value="Science">Science</option>
-                <option value="Power">Power</option>
-                <option value="Politics">Politics</option>
-                <option value="other">Others</option>
-              </select>
-            </div>
+            <InputContainer style={{ marginTop: "20px" }}>
+                <label>Niche/Interest</label>
+                
+                <select style={{ fontSize: "14px" }} value={industry} onChange={(e) => handleAddIndustry(e.target.value)}>
+                    <option value="">Select Niche/Interest</option>
+                    {
+                        industryList.map((val, i) => (
+                            <option key={i} value={val}>{val}</option>
+                        ))
+                    }
+                </select>
+            </InputContainer>
+            <CapsuleWrapper>
+                {
+                  industrySelected.map((ind, i) => (
+                    <Capsule key={i}>
+                        {ind}
+                        <button onClick={() => handleRemoveIndustry(ind)}><Image src="/delete.svg" alt="del" height={18} width={18} /></button>
+                    </Capsule>
+                  ))  
+                }
+            </CapsuleWrapper>
           </div>
         </div>
 

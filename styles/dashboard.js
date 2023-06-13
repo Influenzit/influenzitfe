@@ -265,6 +265,7 @@ export const Status = styled.div`
     flex-direction: column;
     justify-content: center;
     padding: 0 20px;
+    min-width: 130px;
     h3 {
         font-weight: 600;
         font-size: 12px;
@@ -286,5 +287,16 @@ export const Status = styled.div`
     }
     ${breakpoints.md} {
         padding: 0;
+    }
+`;
+export const ReviewCard = styled.div`
+    h2 {
+        font-size: 16px;
+        font-weight: 500;
+        color: ${colors.textColor};
+    }
+    p {
+        font-size: 14px;
+        color: ${colors.textColor}99;
     }
 `;

@@ -40,6 +40,7 @@ const Campaigns = () => {
       currency: "NGN",
       start_date: "2022/11/20",
       end_date: "",
+      include_price: false
     },
   ]);
 
@@ -61,6 +62,7 @@ const Campaigns = () => {
           currency: "NGN",
           start_date: "2022/11/20",
           end_date: "",
+          include_price: false,
         },
       ];
 
@@ -87,13 +89,24 @@ const Campaigns = () => {
   };
 
   const handleMilestoneinput = (e, mid) => {
-    const { name, value } = e.target;
+    const { name, value, checked } = e.target;
+
     setmilestone((prevState) => {
-      const newState = [...prevState];
-      newState[mid][name] = value;
+      const newState = JSON.parse(JSON.stringify(prevState));
+      newState[mid][name] = name === "include_price" ? checked : value;
+      console.log(newState);
       return newState;
     });
   };
+  const filterMilestone = (milestoneI) => {
+    const newMilestone = milestoneI.map((m) => {
+      const nm = {...m, amount: m.include_price ? Number(m.amount) : 0}
+      delete nm["include_price"]
+      return nm;
+    })
+    console.log(newMilestone);
+    return newMilestone;
+  }
 
   const payload = {
     title: campaignName,
@@ -106,7 +119,7 @@ const Campaigns = () => {
     duration_type: "Month",
     duration_count: "1",
     client_business_id: +bId,
-    milestones: milestone,
+    milestones: filterMilestone(milestone),
   };
 
   const handleGetCampaign = (campaign) => {
@@ -165,18 +178,18 @@ const Campaigns = () => {
         <div className="w-full overflow-x-auto">
           <div className="table mt-10 campaign_table md:w-full min-w-[1200px] text-[#667085] ">
             <div className="grid grid-cols-12 gap-4 bg-[#F9FAFB] p-4 rounded-t-lg border-b">
-              <div className="col-span-5">Business</div>
+              <div className="col-span-5">Campaign Name</div>
               <div className="col-span-3">Channel</div>
               <div className="col-span-2">Delivery date</div>
               <div className="col-span-2">Status</div>
             </div>
             {campaignList.map((item, idx) => (
-              <div className="grid grid-cols-12 gap-4 p-4 border-b " key={idx}>
+              <div className="grid grid-cols-12 gap-4 p-4 border-b cursor-pointer" key={idx} onClick={() => router.push(`/dashboard/campaigns/influencer/${item.id}`)}>
                 <div className="col-span-5 text-sm truncate">
                   {" "}
-                  <Link href={`/dashboard/campaigns/influencer/${item.id}`}>
+                  <p>
                     {item.title}
-                  </Link>{" "}
+                  </p>{" "}
                 </div>
                 <div className="col-span-3 flex space-x-2 items-center">
                   {platform.map((img) => (
@@ -242,7 +255,7 @@ const Campaigns = () => {
 
       {newCamPaign && (
         <div className="fixed inset-0 bg-black/30 z-[999999] flex justify-center items-center">
-          <div className="bg-white w-[500px]  p-6 rounded-lg overflow-hidden">
+          <div className="bg-white w-[500px] max-h-screen overflow-y-scroll p-6 rounded-lg overflow-hidden">
             <div className="flex justify-between mb-6">
               <h1 className="text-xl">Create New Campaign</h1>
 

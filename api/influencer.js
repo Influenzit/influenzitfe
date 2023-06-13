@@ -95,7 +95,7 @@ export const deletePortfolio = (index) => {
     return axiosInstance().delete(`/accounts/portfolios/${index}`)
 }
 export const getInfluencers = (query) => {
-    return axiosInstance().get(`/explore/influencers${query}`);
+    return axiosInstance().get(`/explore/influencers${query}&paginate=10`);
 }
 export const getCreators = (query) => {
     return axiosInstance().get(`/explore/creators${query}`);

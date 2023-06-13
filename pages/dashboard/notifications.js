@@ -22,7 +22,7 @@ const Notifications = () => {
     });
     const readNotificationMutation = useMutation(() => {
         return markAllAsRead();
-    }, {
+    },{
         onSuccess(successRes) {
             const res = successRes.data;
             if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {

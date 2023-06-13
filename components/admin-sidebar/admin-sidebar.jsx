@@ -85,6 +85,13 @@ const Sidebar = () => {
           <HashTagIcon />
           <span>Campaigns</span>
       </NavButton>
+      <NavButton
+        onClick={() => handleRouting("/admin/u/dashboard/activities")}
+        isActive={router.pathname.includes("/admin/u/dashboard/activities")}
+      >
+        <UserIcon />
+        <span>Activities</span>
+      </NavButton>
     </Container>
   );
 };
