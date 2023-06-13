@@ -273,7 +273,7 @@ const Dashboard = () => {
             </CardsWrapper>
             <TableWrapped style={{ marginBottom: "15px" }}>
                     <TableHeader>
-                        <h2>Niches</h2>
+                        <h2>Add Ticket Option</h2>
                     </TableHeader>
                     <TableContent>
                     <Table>
@@ -308,7 +308,7 @@ const Dashboard = () => {
                             }
                         </TBody>
                     </Table>
-                    <AddSocialBtn style={{ margin: "10px auto" }} onClick={() => setShowAddNiche(true)}><Image src="/plus.svg" alt="plus" height={22} width={22} /><span>Add Niche</span></AddSocialBtn>
+                    <AddSocialBtn style={{ margin: "10px auto" }} onClick={() => setShowAddNiche(true)}><Image src="/plus.svg" alt="plus" height={22} width={22} /><span>Add Ticket Option</span></AddSocialBtn>
                     </TableContent>
                 </TableWrapped>
                  <TableWrapped style={{ marginBottom: "15px" }}>
@@ -438,7 +438,7 @@ const Dashboard = () => {
         {showAddNiche &&(
         <UpdateModal>
           <FormContainer>
-            <h3>Add Niche</h3>
+            <h3>Add Ticket Option</h3>
             <InputContainer>
               <label>Name</label>
               <input

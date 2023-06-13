@@ -12,6 +12,7 @@ import {
   getCampaignInvoice,
   updateCampaignReview,
   updateCampaign,
+  getCampaignReview,
 } from "../../../../api/campaigns";
 import { setLoading } from "../../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../../assets/svgIcons";
@@ -39,11 +40,12 @@ import Review from "../../../../components/Campaign/Review";
 import Chat from "../../../../components/Chat";
 import moment from "moment";
 import { usePaystackPayment } from "react-paystack";
-import { calculateTotalPrice } from "paystack-transaction-charges-to-cus";
+// import { calculateTotalPrice } from "paystack-transaction-charges-to-cus";
 import { createPaymentLog, processPayment } from "api/payment";
 import { SubmitButton } from "styles/auth.style";
 import { UpdateModal } from "styles/view.style";
 import { WelcomeModal } from "styles/connect-pages.style";
+import { ReviewCard } from "styles/dashboard";
 
 const Campaigns = () => {
   const router = useRouter();
@@ -63,6 +65,7 @@ const Campaigns = () => {
   const [loading, setloading] = useState(false);
   const [conversationId, setconversationId] = useState(null);
   const [showPrompt, setShowPrompt] = useState(false);
+  const [review, setReview] = useState(null);
 
   const [makePayment, setmakePayment] = useState(false);
   const [triggerPayment, settriggerPayment] = useState(false);
@@ -115,6 +118,20 @@ const Campaigns = () => {
       .then((res) => {
         console.log(res.data.data);
         setSingleCampaignInvoice(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+  const handleGetCampaignReview = () => {
+    getCampaignReview(id)
+      .then((res) => {
+        if(res.data.data.length) {
+          setReview(res.data.data[0])
+          setcomment(res.data.data[0].comment)
+          setrating(res.data.data[0].rating)
+        }
+        console.log(res.data.data);
       })
       .catch((err) => {
         console.log(err.response);
@@ -173,7 +190,7 @@ const Campaigns = () => {
     }
     updateCampaignMilsestone();
   }
-  const handleUpdateCampaignReview = (campaignId, idx) => {
+  const handleUpdateCampaignReview = () => {
     if (!comment || !rating) {
       toast.error("Comment is required", {
         position: toast.POSITION.TOP_RIGHT,
@@ -193,6 +210,7 @@ const Campaigns = () => {
         });
 
         handleCloseReview();
+        handleGetCampaignReview();
         setloading(false);
       })
       .catch((err) => {
@@ -253,7 +271,7 @@ const Campaigns = () => {
           currency: "NGN",
           reference: paymentReference,
           email: user.email,
-          amount: calculateTotalPrice(Number(amt * 100)), //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+          amount: Number(amt * 100), //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
           publicKey: "pk_test_9d97cf0be86b0758ece444694d57a8db41a4be59",
         });
         setmakePayment(true);
@@ -310,6 +328,7 @@ const Campaigns = () => {
   useEffect(() => {
     handleGetSingleCampaign();
     handleGetSingleCampaignInvoice();
+    handleGetCampaignReview();
     // handleGetSingleCampaignMilestones();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -406,6 +425,17 @@ const Campaigns = () => {
                   } pb-4`}
                 >
                   Invoice
+                </button>
+                <button
+                  onClick={() => {
+                    setactivetab("review");
+                  }}
+                  className={`${
+                    activetab == "review" &&
+                    "text-primary-100 border-b border-primary-100"
+                  } pb-4`}
+                >
+                  Review
                 </button>
               </div>
               {activetab == "milestone" && (
@@ -521,6 +551,29 @@ const Campaigns = () => {
                   </div>
                 </div>
               )}
+              {
+                activetab === "review" && (
+                  <div>
+                    {review ? (
+                      <ReviewCard>
+                        <h2 style={{ display: "flex",  columnGap: "7px" }}>{review.rating} <ReactStars
+                            isHalf={true}
+                            count={5}
+                            value={Number(review.rating) ?? 1}
+                            size={15}
+                            activeColor="#DF475C"
+                          /></h2>
+                        <p>{review.comment}</p>
+                        <SubmitButton style={{ width: "130px", fontSize: "14px", padding: "6px" }} onClick={() => setisAccepted(true)}>Update</SubmitButton>
+                      </ReviewCard>
+                    ): (
+                      <ReviewCard>
+                        <h2>No review</h2>
+                      </ReviewCard>
+                    )}
+                  </div>
+                )
+              }
 
               {/*    <div className="flex justify-end my-12">
             <button className="text-primary-100">Cancel Campaign</button>
@@ -565,7 +618,9 @@ const Campaigns = () => {
           handleClose={handleCloseReview}
           handleUpdateCampaignReview={handleUpdateCampaignReview}
           setrating={setrating}
+          comment={comment}
           setcomment={setcomment}
+          rating={rating}
           loading={loading}
         />
       )}

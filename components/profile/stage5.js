@@ -15,6 +15,7 @@ import { setError, setLoading } from 'app/reducers/status';
 import { UpdateModal } from 'styles/view.style';
 import { WelcomeModal } from 'styles/connect-pages.style';
 import { toast } from 'react-toastify'; 
+import { FacebookBtn, SocialIcon } from 'styles/auth.style';
 
 const Stage5 = ({user}) => {
     const dispatch = useDispatch();
@@ -175,17 +176,14 @@ const Stage5 = ({user}) => {
                     ): <p>No Facebook account connected</p>
                     }
                 </SocialCardList>
-                <Link href={`${process.env.NEXT_PUBLIC_API_URI}/connect?provider=facebook&user=${user?.id}`}>
-                    <a>
-                        <Image
-                            src={facebook}
-                            width={25}
-                            height={25}
 
-                            alt="social"
-                        />
-                        <span>Connect</span>
-                    </a>
+                <Link href={`${process.env.NEXT_PUBLIC_API_URI}/connect?provider=facebook&user=${user?.id}`}>
+                    <FacebookBtn style={{ width: "250px" }}>
+                        <SocialIcon>
+                        <Image src="/facebook-r.svg" alt="" height={22} width={22} />
+                        </SocialIcon>
+                        <span>Sign in with Facebook</span>
+                    </FacebookBtn>
                 </Link>
             </SocialMediaContainer>
             <SocialMediaContainer>

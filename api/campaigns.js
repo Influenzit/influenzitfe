@@ -38,6 +38,9 @@ export const updateCampaign = (id, data) => {
 export const updateCampaignReview = (id, data) => {
   return axiosInstance().post(`/campaigns/${id}/reviews`, data);
 };
+export const getCampaignReview = (id) => {
+  return axiosInstance().get(`/campaigns/${id}/reviews`);
+};
 export const handleCreateCampaign = (data) => {
   return axiosInstance().post(`/campaigns`, data);
 };

@@ -297,6 +297,8 @@ export const FacebookBtn = styled.button`
 `;
 export const SocialIcon = styled.div`
     margin-right: 15px;
+    display: flex;
+    align-items: center;
 `;
 export const GoogleBtn = styled.button`
     width: 100%;

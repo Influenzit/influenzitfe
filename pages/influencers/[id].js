@@ -831,7 +831,7 @@ const CreatorProfile = () => {
                             </Campaign>
                         </RightSection>
                     </BottomSection>
-                    {inData?.services.length ?
+                    {/* {inData?.services.length ?
                         <Listing>
                             <h3>Services</h3>
                             <Bottom style={{ columnGap: "15px" }}>
@@ -850,7 +850,7 @@ const CreatorProfile = () => {
                                 }
                             </Bottom>
                         </Listing> : null
-                    }
+                    } */}
                     {/* {inData?.services.length ?
                     <Listing>
                         <h3>Portfolio</h3>

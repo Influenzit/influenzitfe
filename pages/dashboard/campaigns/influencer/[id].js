@@ -8,9 +8,11 @@ import { useDispatch } from "react-redux";
 import {
   getCampaign,
   getCampaignMilestones,
+  getCampaignReview,
   handleCreateCampaign,
   updateCampaign,
   updateCampaignMilestone,
+  updateCampaignReview,
 } from "../../../../api/campaigns";
 import { setLoading } from "../../../../app/reducers/status";
 import bold from "../../../../assets/campaign/bold.svg";
@@ -35,6 +37,7 @@ import Review from "../../../../components/Campaign/Review";
 import moment from "moment";
 import { toast } from "react-toastify";
 import { SubmitButton } from "styles/auth.style";
+import { ReviewCard } from "styles/dashboard";
 const Campaigns = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -45,6 +48,7 @@ const Campaigns = () => {
   const [activeScreen, setactiveScreen] = useState("detail");
   const [isRejected, setisRejected] = useState(false);
   const [isAccepted, setisAccepted] = useState(false);
+  const [review, setReview] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [currentValue, setcurrentValue] = useState(4);
   const [clickedkMileStone, setclickedkMileStone] = useState(null);
@@ -93,7 +97,7 @@ const Campaigns = () => {
       end_date: singlecampaign.end_date,
       start_date: singlecampaign.start_date,
     }).then((res) => {
-      toast.success("Campaign updated", {
+      toast.success("Campaign submitted", {
         position: toast.POSITION.TOP_RIGHT,
       });
       setisAccepted(true);
@@ -108,8 +112,83 @@ const Campaigns = () => {
       });
     });
   }
+  const handleStartCampaign = () => {
+    dispatch(setLoading(true));
+    updateCampaign(id, {
+      status: "Ongoing",
+      end_date: singlecampaign.end_date,
+      start_date: singlecampaign.start_date,
+    }).then((res) => {
+      toast.success("Campaign started", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setisAccepted(true);
+      handleGetSingleCampaign();
+      dispatch(setLoading(false));
+    })
+    .catch((err) => {
+      dispatch(setLoading(false));
+      console.log(err.response);
+      toast.error(err.response.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    });
+  }
+  const handleGetCampaignReview = () => {
+    getCampaignReview(id)
+      .then((res) => {
+        if(res.data.data.length) {
+          setReview(res.data.data[0])
+          setcomment(res.data.data[0].comment)
+          setrating(res.data.data[0].rating)
+        }
+        console.log(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+  const handleUpdateCampaignReview = () => {
+    if (!comment || !rating) {
+      toast.error("Comment is required", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+    const payload = {
+      comment,
+      rating,
+    };
+    setloading(true);
+    updateCampaignReview(id, payload)
+      .then((res) => {
+        console.log(res);
+        toast.success("Rating updated succesfully", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+
+        handleCloseReview();
+        handleGetCampaignReview();
+        setloading(false);
+      })
+      .catch((err) => {
+        setloading(false);
+        if(err) {
+          console.log(err.response);
+          toast.error(err.response.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
+      });
+  };
 
   const updateCampaignMilsestone = (status, campaignId) => {
+    if(singlecampaign.status === "Pending") {
+      toast.success("Start campaign before updating the milestone", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return
+    };
     setclickedkMileStone(campaignId);
     const payload = {
       status: status,
@@ -126,12 +205,15 @@ const Campaigns = () => {
       })
       .catch((err) => {
         setIsUpdating(false);
-        console.log(err.response);
+        if(err) {
+          console.log(err.response);
+        }
       });
   };
 
   useEffect(() => {
     handleGetSingleCampaign();
+    handleGetCampaignReview();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -203,7 +285,10 @@ const Campaigns = () => {
                 </div>
                 <div className="mb-4">{singlecampaign.description}</div>
                 {
-                  singlecampaign?.status !== "Completed" ? (<SubmitButton style={{ width: "150px", fontSize: "14px", margin: "10px 0" }} onClick={handleCompleteCampaign}>Complete Campaign</SubmitButton>): null
+                  (singlecampaign?.status === "Pending") ? (<SubmitButton style={{ width: "150px", fontSize: "14px", margin: "10px 0" }} onClick={handleStartCampaign}>Start Campaign</SubmitButton>): null
+                }
+                {
+                  (singlecampaign?.status !== "Completed") && (singlecampaign?.status !== "Pending") ? (<SubmitButton style={{ width: "150px", fontSize: "14px", margin: "10px 0" }} onClick={handleCompleteCampaign}>Complete Campaign</SubmitButton>): null
                 }
                 <div className="flex space-x-4 w-full border-b mb-4">
                   <button
@@ -227,6 +312,17 @@ const Campaigns = () => {
                     } pb-4`}
                   >
                     Requirements
+                  </button>
+                  <button
+                    onClick={() => {
+                      setactivetab("review");
+                    }}
+                    className={`${
+                      activetab == "review" &&
+                      "text-primary-100 border-b border-primary-100"
+                    } pb-4`}
+                  >
+                    Review
                   </button>
                 </div>
                 {activetab == "milestone" && (
@@ -304,7 +400,29 @@ const Campaigns = () => {
                     </div>
                   </div>
                 )}
-                {activetab == "requirement" && (
+                 {
+                  activetab === "review" && (
+                    <div>
+                      {review ? (
+                        <ReviewCard>
+                          <h2 style={{ display: "flex", columnGap: "7px" }}>{review.rating} <ReactStars
+                            isHalf={true}
+                            count={5}
+                            value={Number(review.rating) ?? 1}
+                            size={15}
+                            activeColor="#DF475C"
+                          /></h2>
+                          <p>{review.comment}</p>
+                        </ReviewCard>
+                      ): (
+                        <ReviewCard>
+                          <h2>No review</h2>
+                        </ReviewCard>
+                      )}
+                    </div>
+                  )
+                }
+                  {activetab == "requirement" && (
                   <div className="">Requirement </div>
                 )}
 

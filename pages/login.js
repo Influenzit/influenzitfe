@@ -259,7 +259,7 @@ const Login = () => {
                 </SocialIcon>
                 <span>Sign in with Google</span>
               </GoogleBtn>
-              <FacebookLogin
+              {/* <FacebookLogin
                 appId="3349779741932998"
                 callback={handleFacebookLogin}
                 onFailure={handleFailure}
@@ -271,7 +271,7 @@ const Login = () => {
                     <span>Sign in with Facebook</span>
                   </FacebookBtn>
                 )}
-              />
+              /> */}
             </SocialLogin>
           </Center>
           <Bottom>
