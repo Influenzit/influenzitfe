@@ -3,22 +3,27 @@ import info from "../../../../../assets/info.svg";
 import action from "../../../../../assets/action.svg";
 import AdminLayout from '../../../../../layouts/admin.layout'
 import Image from 'next/image';
-import { ActionBtn, Checkbox, Container, Table, TableContent, TableWrapper, TBody, Td, Th, THead, Tr, TrH, TabBtn, Tabs, TableFooter, Pagination, NavBtn, Pages, PageBtn } from '../../../../../styles/connect-pages.style'
+import { ActionBtn, Checkbox, Container, Table, TableContent, TableWrapper, TBody, Td, Th, THead, Tr, TrH, TabBtn, Tabs, TableFooter, Pagination, NavBtn, Pages, PageBtn, WelcomeModal, TableWrapped } from '../../../../../styles/connect-pages.style'
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '../../../../../app/reducers/status';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getSingleUser, getWalletRequests, getWalletSummary, getWalletTransactions, verifyUserAccount } from '../../../../../api/admin'
+import { getSingleUser, getWalletRequests, getWalletSummary, getWalletTransactions, sendMail, verifyUserAccount } from '../../../../../api/admin'
 import { WelcomeHeading, ReferralCode } from '../../../../../styles/dashboard';
 import { ChevronLeft, ChevronRight } from '../../../../../assets/svgIcons';
 import { ActionBtnB } from '../../../../../styles/connect-pages.style';
 import { toast } from 'react-toastify'
+import { UpdateModal } from 'styles/view.style';
+import { Input, InputContainer } from 'styles/auth.style';
 
 
 const SingleWallet = () => {
   const [currentTab, setCurrentTab] = useState("Transactions");
   const [account, setAccount] = useState(null);
   const [pageUrl, setPageUrl] = useState("");
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
   const [walletTx, setWalletTx] = useState({
     data: []
   })
@@ -126,14 +131,82 @@ const SingleWallet = () => {
       },
     }
   );
+  const mailMutation = useMutation(
+    (data) => {
+      return sendMail(data);
+    },
+    {
+      onSuccess(successRes) {
+        const res = successRes.data;
+        toast.success("Mail sent successfully", {
+            position: toast.POSITION.TOP_RIGHT
+        });
+        setMessage("");
+        setSubject("");
+        setShowPrompt(false);
+        dispatch(setLoading(false));
+      },
+      onError(error) {
+        const res = error.response.data;
+        dispatch(setLoading(false));
+        if (res) {
+          dispatch(setError({ error: true, message: res.message }));
+          return;
+        }
+        dispatch(setError({ error: true, message: "An error occured" }));
+      },
+    }
+  );
   const verifyAcc = (id) => {
     dispatch(setLoading(true));
     updateAccountMutation.mutate(id);
   }
-  
+  const handleEmailSend = () => {
+    dispatch(setLoading(true));
+    mailMutation.mutate({
+        subject,
+        body: message,
+        to_user: userData?.data.data.user?.email,
+    });
+  }
   
   return (
     <Container>
+        {
+            showPrompt && (
+                <UpdateModal>
+                    <WelcomeModal>
+                        <div style={{ paddingBottom: "0" }}>
+                            <button onClick={() => setShowPrompt(false)}><Image src="/cancel.svg" alt="" height={14} width={14} /></button>
+                        </div>
+                        <h2>Mail User</h2>
+                        <InputContainer style={{ flexDirection: "column", alignItems: "start" }}>
+                            <label>Subject</label>
+                            <Input
+                                type="text"
+                                value={subject}
+                                placeholder="Enter Subject"
+                                onChange={(e) => setSubject(e.target.value)}
+                                required
+                            />
+                        </InputContainer>
+                        <InputContainer style={{ flexDirection: "column", alignItems: "start" }}>
+                            <label>Message</label>
+                            <textarea 
+                                placeholder='Enter Message...'
+                                value={message}
+                                onInput={(e) => setMessage(e.target.value)}
+                            >
+
+                            </textarea>
+                        </InputContainer>
+                        <div>
+                            <button onClick={handleEmailSend}>Send Email</button>
+                        </div>
+                    </WelcomeModal>
+                </UpdateModal>
+            )
+        }
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <div className="col-span-3 relative" style={{ height: "150px", width: "150px" }}>
                 <Image
@@ -154,6 +227,7 @@ const SingleWallet = () => {
             <div>
                 <ActionBtn onClick={() => verifyAcc(id)}>{userData?.data.data.influenzit_verified ? "Disapprove User" : "Approve User" }</ActionBtn>
                 <ActionBtnB onClick={() =>router.push(`/admin/u/dashboard/accounts/view/${id}`)}>More Info</ActionBtnB>
+                <ActionBtnB onClick={() => setShowPrompt(true)}>Mail User</ActionBtnB>
             </div>
          </div>
         <div>
@@ -226,10 +300,10 @@ const SingleWallet = () => {
 
                 {
                     currentTab === "Transactions" ? (
-                        <TableWrapper style={{ marginTop: "20px" }}>
+                        <TableWrapped style={{ marginTop: "20px" }}>
                             <TableContent>
                                 <Table>
-                                    <THead>
+                                    <THead style={{ borderTop: "none" }}>
                                         <TrH>
                                             <Th cellWidth="120px">
                                                 Date
@@ -276,15 +350,15 @@ const SingleWallet = () => {
                                     </NavBtn>
                                 </Pagination>
                             </TableFooter>
-                        </TableWrapper>
+                        </TableWrapped>
                     ) : null
                 }
                 {
                     currentTab === "Requests" ? (
-                        <TableWrapper style={{ marginTop: "20px" }}>
+                        <TableWrapped style={{ marginTop: "20px" }}>
                         <TableContent>
                             <Table>
-                                <THead>
+                                <THead style={{ borderTop: "none" }}>
                                     <TrH>
                                         <Th cellWidth="120px">
                                             Date
@@ -333,7 +407,7 @@ const SingleWallet = () => {
                                 </NavBtn>
                             </Pagination>
                         </TableFooter>
-                    </TableWrapper>
+                    </TableWrapped>
                     ) : null 
                 }
             </div>

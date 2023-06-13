@@ -8,6 +8,7 @@ const initialState =  {
     userType: "",
     currentConversation: 0,
     showSidebar: false,
+    showLogoutModal: false,
 }
 const statusSlice = createSlice({
     name: "status",
@@ -23,6 +24,9 @@ const statusSlice = createSlice({
         setSuccess(state, { payload }) {
             state.success = payload.success;
             state.message = payload.message;
+        },
+        setLogoutModal(state, { payload }) {
+            state.showLogoutModal = payload;
         },
         setUserType(state, { payload }) {
             state.userType = payload;
@@ -43,6 +47,7 @@ export const getMessage = (state) => state.status.message;
 export const getUserType = (state) => state.status.userType;
 export const getShowSidebar = (state) => state.status.showSidebar;
 export const isSuccess = (state) => state.status.success;
+export const getLogoutModalStatus = (state) => state.status.showLogoutModal;
 export const getCurrentConversationId = (state) => state.status.currentConversation;
-export const { setLoading, setError, setSuccess, setUserType, setCurrentConversation, setShowSidebar } = statusSlice.actions
+export const { setLoading, setError, setSuccess, setUserType, setCurrentConversation, setShowSidebar, setLogoutModal } = statusSlice.actions
 export default statusSlice.reducer

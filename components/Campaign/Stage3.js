@@ -32,7 +32,7 @@ function Stage3({
      
 
       <div className="mb-6 flex flex-col space-y-2">
-        <label htmlFor="desc">Delivery Date</label>
+        <label htmlFor="desc">Delivery Date<span style={{ color:"red" }}>*</span></label>
         <input
           type="date"
           id="Campaign_name"

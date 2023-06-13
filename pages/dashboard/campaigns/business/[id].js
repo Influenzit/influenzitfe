@@ -11,6 +11,8 @@ import {
   getCampaign,
   getCampaignInvoice,
   updateCampaignReview,
+  updateCampaign,
+  getCampaignReview,
 } from "../../../../api/campaigns";
 import { setLoading } from "../../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../../assets/svgIcons";
@@ -38,8 +40,12 @@ import Review from "../../../../components/Campaign/Review";
 import Chat from "../../../../components/Chat";
 import moment from "moment";
 import { usePaystackPayment } from "react-paystack";
-import { calculateTotalPrice } from "paystack-transaction-charges-to-cus";
+// import { calculateTotalPrice } from "paystack-transaction-charges-to-cus";
 import { createPaymentLog, processPayment } from "api/payment";
+import { SubmitButton } from "styles/auth.style";
+import { UpdateModal } from "styles/view.style";
+import { WelcomeModal } from "styles/connect-pages.style";
+import { ReviewCard } from "styles/dashboard";
 
 const Campaigns = () => {
   const router = useRouter();
@@ -58,10 +64,18 @@ const Campaigns = () => {
   const [rating, setrating] = useState("");
   const [loading, setloading] = useState(false);
   const [conversationId, setconversationId] = useState(null);
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [review, setReview] = useState(null);
 
   const [makePayment, setmakePayment] = useState(false);
   const [triggerPayment, settriggerPayment] = useState(false);
   const [amount, setamount] = useState(0);
+  const [message, setMessage] = useState("");
+  const [file, setFile] = useState(null);
+  const [updateStatus, setUpdateStatus] = useState("");
+  const [updateId, setUpdateId] = useState("");
+  const [updateIdx, setUpdateIdx] = useState(0);
+  const [requesting, setRequesting] = useState(false);
 
   const { id } = router.query;
   const user = useSelector(getUser);
@@ -92,8 +106,10 @@ const Campaigns = () => {
         console.log(res);
         setSingleCampaign(res.data.data);
         setconversationId(res.data.data.conversation.id);
+        setRequesting(false);
       })
       .catch((err) => {
+        setRequesting(false);
         console.log(err.response);
       });
   };
@@ -107,47 +123,74 @@ const Campaigns = () => {
         console.log(err.response);
       });
   };
-  const updateCampaignMilsestone = (status, campaignId, idx) => {
-    const payload = {
-      status: status,
-    };
+  const handleGetCampaignReview = () => {
+    getCampaignReview(id)
+      .then((res) => {
+        if(res.data.data.length) {
+          setReview(res.data.data[0])
+          setcomment(res.data.data[0].comment)
+          setrating(res.data.data[0].rating)
+        }
+        console.log(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+  const updateCampaignMilsestone = () => {
+    setRequesting(true);
+    const formData = new FormData();
+    formData.append("comment", message);
+    formData.append("attachment", file);
+    const status = updateStatus;
+    const campaignId = updateId;
+    const idx = updateIdx;
     if (status === "accept") {
       acceptCampaignMilestone(id, campaignId)
         .then((res) => {
-          console.log(res);
-          toast.success("Milestone updated succesfully", {
+          toast.success("Milestone accepted", {
             position: toast.POSITION.TOP_RIGHT,
           });
-
           handleGetSingleCampaign();
-          if (singlecampaign.milestones.length - 1 === idx) {
-            setisAccepted(true);
-          }
         })
         .catch((err) => {
+          setRequesting(false);
           console.log(err.response);
           toast.error(err.response.data.message, {
             position: toast.POSITION.TOP_RIGHT,
           });
         });
     } else {
-      rejectCampaignMilestone(id, campaignId)
+      rejectCampaignMilestone(id, campaignId, formData)
         .then((res) => {
           console.log(res);
-          toast.success("Milestone updated succesfully", {
+          setFile(null);
+          setMessage("");
+          toast.success("Milestone rejected", {
             position: toast.POSITION.TOP_RIGHT,
           });
           handleGetSingleCampaign();
         })
         .catch((err) => {
           console.log(err.response);
+          setRequesting(false);
           toast.error(err.response.data.message, {
             position: toast.POSITION.TOP_RIGHT,
           });
         });
     }
   };
-  const handleUpdateCampaignReview = (campaignId, idx) => {
+  const triggerUpdateMilsestone = (status, campaignId, idx) => {
+    setUpdateStatus(status);
+    setUpdateId(campaignId);
+    setUpdateIdx(idx);
+    if(status === "dispute") {
+      setisRejected(true);
+      return;
+    }
+    updateCampaignMilsestone();
+  }
+  const handleUpdateCampaignReview = () => {
     if (!comment || !rating) {
       toast.error("Comment is required", {
         position: toast.POSITION.TOP_RIGHT,
@@ -167,6 +210,7 @@ const Campaigns = () => {
         });
 
         handleCloseReview();
+        handleGetCampaignReview();
         setloading(false);
       })
       .catch((err) => {
@@ -184,6 +228,7 @@ const Campaigns = () => {
 
   const handleClose = () => {
     setisRejected(false);
+    updateCampaignMilsestone();
   };
   const handleCloseReview = () => {
     setisAccepted(false);
@@ -197,7 +242,7 @@ const Campaigns = () => {
     // Implementation for whatever you want to do with reference and after success call.
     console.log(reference);
     handleProcessTransaction(reference);
-    window.location.reload();
+    // window.location.reload();
   };
 
   // you can call this function anything
@@ -226,7 +271,7 @@ const Campaigns = () => {
           currency: "NGN",
           reference: paymentReference,
           email: user.email,
-          amount: calculateTotalPrice(Number(amt * 100)), //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+          amount: Number(amt * 100), //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
           publicKey: "pk_test_9d97cf0be86b0758ece444694d57a8db41a4be59",
         });
         setmakePayment(true);
@@ -236,6 +281,27 @@ const Campaigns = () => {
         console.log(err.response);
       });
   };
+  const handleAcceptCampaign = () => {
+    setShowPrompt(false);
+    dispatch(setLoading(true));
+    updateCampaign(id, {
+      is_user_accept: true,
+    }).then((res) => {
+      toast.success("Campaign Accepted", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      dispatch(setLoading(false));
+      setisAccepted(true);
+      handleGetSingleCampaign();
+    })
+    .catch((err) => {
+      dispatch(setLoading(false));
+      console.log(err.response);
+      toast.error(err.response.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    });
+  }
   const handleProcessTransaction = async (data) => {
     const payload = {
       channel: "paystack",
@@ -243,7 +309,7 @@ const Campaigns = () => {
     };
     await processPayment(payload)
       .then((res) => {
-        console.log(res);
+        handleGetSingleCampaignInvoice();
       })
       .catch((err) => {
         console.log(err.response);
@@ -262,9 +328,11 @@ const Campaigns = () => {
   useEffect(() => {
     handleGetSingleCampaign();
     handleGetSingleCampaignInvoice();
+    handleGetCampaignReview();
     // handleGetSingleCampaignMilestones();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
   return (
     <div className=" flex flex-col bg-gray-50 min-h-screen">
       <div className="grid grid-cols-2 md:hidden  px-4 pt-20 space-x-4 w-full border-b mb-4">
@@ -332,7 +400,9 @@ const Campaigns = () => {
                 </div>
               </div>
               <div className="mb-4">{singlecampaign.description}</div>
-
+              {
+                (!singlecampaign?.is_user_accept && (singlecampaign?.status === "Completed")) ? (<SubmitButton style={{ width: "150px", fontSize: "14px", margin: "10px 0" }} onClick={() => setShowPrompt(true)}>Accept Campaign</SubmitButton>): null
+              }
               <div className="flex space-x-4 w-full border-b mb-4">
                 <button
                   onClick={() => {
@@ -355,6 +425,17 @@ const Campaigns = () => {
                   } pb-4`}
                 >
                   Invoice
+                </button>
+                <button
+                  onClick={() => {
+                    setactivetab("review");
+                  }}
+                  className={`${
+                    activetab == "review" &&
+                    "text-primary-100 border-b border-primary-100"
+                  } pb-4`}
+                >
+                  Review
                 </button>
               </div>
               {activetab == "milestone" && (
@@ -389,8 +470,8 @@ const Campaigns = () => {
                             {item.status === "Reviewing" && (
                               <div className="flex items-center space-x-2">
                                 <button
-                                  onClick={() => {
-                                    updateCampaignMilsestone(
+                                  onClick={() => { !requesting &&
+                                    triggerUpdateMilsestone(
                                       "accept",
                                       item.id,
                                       idx
@@ -398,18 +479,18 @@ const Campaigns = () => {
                                   }}
                                   className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white"
                                 >
-                                  Accept
+                                  {requesting ? "Submitting..." : "Accept"}
                                 </button>
                                 <button
                                   onClick={() => {
-                                    updateCampaignMilsestone(
+                                    !requesting && triggerUpdateMilsestone(
                                       "dispute",
                                       item.id
                                     );
                                   }}
                                   className="mx-2 rounded-lg py-1 px-2  h-auto bg-primary-100 text-[10px] text-white"
                                 >
-                                  Reject
+                                  {requesting ? "Submitting..." : "Reject"}
                                 </button>
                               </div>
                             )}
@@ -470,6 +551,29 @@ const Campaigns = () => {
                   </div>
                 </div>
               )}
+              {
+                activetab === "review" && (
+                  <div>
+                    {review ? (
+                      <ReviewCard>
+                        <h2 style={{ display: "flex",  columnGap: "7px" }}>{review.rating} <ReactStars
+                            isHalf={true}
+                            count={5}
+                            value={Number(review.rating) ?? 1}
+                            size={15}
+                            activeColor="#DF475C"
+                          /></h2>
+                        <p>{review.comment}</p>
+                        <SubmitButton style={{ width: "130px", fontSize: "14px", padding: "6px" }} onClick={() => setisAccepted(true)}>Update</SubmitButton>
+                      </ReviewCard>
+                    ): (
+                      <ReviewCard>
+                        <h2>No review</h2>
+                      </ReviewCard>
+                    )}
+                  </div>
+                )
+              }
 
               {/*    <div className="flex justify-end my-12">
             <button className="text-primary-100">Cancel Campaign</button>
@@ -501,16 +605,40 @@ const Campaigns = () => {
         />
       </div>
 
-      {isRejected && <RejectModal handleClose={handleClose} />}
+      {isRejected && 
+        <RejectModal
+          handleClose={handleClose}
+          file={file}
+          setFile={setFile}
+          message={message}
+          setMessage={setMessage}
+        />}
       {isAccepted && (
         <Review
           handleClose={handleCloseReview}
           handleUpdateCampaignReview={handleUpdateCampaignReview}
           setrating={setrating}
+          comment={comment}
           setcomment={setcomment}
+          rating={rating}
           loading={loading}
         />
       )}
+       {
+            showPrompt && (
+                <UpdateModal>
+                    <WelcomeModal>
+                        <div>
+                            <button onClick={() => setShowPrompt(false)}><Image src="/cancel.svg" alt="" height={14} width={14} /></button>
+                        </div>
+                        <p>If this campaign is accepted fund in the escrow will be released to the influencer</p>
+                        <div>
+                            <button onClick={handleAcceptCampaign}>Accept</button>
+                        </div>
+                    </WelcomeModal>
+                </UpdateModal>
+            )
+        }
     </div>
   );
 };

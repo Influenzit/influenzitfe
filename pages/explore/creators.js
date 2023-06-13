@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import LandingLayout from '../../layouts/landing.layout';
 import { Bottom, Category, CategoryWrapper, Container, Content, EmptySearch, Filter, ListWrapper, PageBtn, Pages, Section, Tab, Tabs, Top, TopBanner, ViewMore, Wrapper } from '../../styles/search.style';
 import ProfileCard from '../../components/profile-card';
@@ -12,26 +12,38 @@ import Image from 'next/image';
 import { getUser } from 'app/reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from 'app/reducers/status';
+import Loader from 'components/UI/Loader';
 
 const Search = () => {
     const [getUrl, setGetUrl] = useState("");
     const [nicheVal, setNicheVal] = useState("");
     const [searchString, setSearchString] = useState("");
     const [seeAll, setSeeAll] = useState(false);
+    const [creatorList, setCreatorList] = useState([]);
     const dispatch = useDispatch();
     const router = useRouter();
     const { search } = router.query;
     const user = useSelector(getUser);
     const [firstLoad, setFirstLoad] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const { data: creatorsData, refetch: refetchCreatorData } = useQuery(["get-creators"], async () => {
         return await getCreators(getQueryString(`${getUrl ? getUrl : firstLoad ? router.asPath : ""}${getQueryString(getUrl ? getUrl : router.asPath) && firstLoad ? `&industry=${currentIndustry}&platform=${nicheVal}` : `?industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}` }`));
     }, {
         enabled: false,
         staleTime: Infinity,
         retry: false,
-        onSuccess() {
+        onSuccess(res) {
             dispatch(setLoading(false));
             setFirstLoad(false);
+            setIsLoading(false);
+            sessionStorage.setItem("cnp", res.data.data.next_page_url ? res.data.data.next_page_url : "");
+            setCreatorList((prev) => {
+                if(isLoading) {
+                    return [...prev, ...res.data.data.data]
+                } else {
+                    return res.data.data.data
+                }
+            })
         }
     });
     const { data, refetch } = useQuery(["get-niche"], async () => {
@@ -53,6 +65,18 @@ const Search = () => {
             setCategory(data.data.data);
         }
     });
+    const handleScroll = (e) => {
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight - 300;
+        if(window.scrollY >= scrollHeight) {
+            if(localStorage.getItem("token")) {
+                if(sessionStorage.getItem("cnp")) {
+                    console.log("verified fetching next page...");
+                    setIsLoading(true);
+                    setGetUrl(sessionStorage.getItem("cnp"));
+                }
+            }
+        }
+    }
     useEffect(() => {
         refetchIndustryData();
         refetch();
@@ -62,7 +86,14 @@ const Search = () => {
         if (search) {
             setSearchString(search);
         }
-    }, [router.asPath, currentIndustry, nicheVal, search])
+    }, [router.asPath, currentIndustry, nicheVal, search]);
+    useEffect(() => {
+      window.addEventListener("scroll", handleScroll);
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      }
+    }, [])
+    
 
     return (
         <Container>
@@ -113,8 +144,8 @@ const Search = () => {
                         </Filter>
                         <ListWrapper>
                             {
-                                creatorsData?.data?.data?.data.length > 0 ? (
-                                creatorsData?.data?.data?.data.map((val, i) => {
+                               creatorList.length > 0 ? (
+                                creatorList.map((val, i) => {
                                     let genSkills = "";
                                     val.skills.forEach((val, i) => {
                                         if(i < 5){
@@ -145,6 +176,7 @@ const Search = () => {
                                 )
                             }
                         </ListWrapper>
+                        {isLoading && <Loader />}
                         {
                             !user && (
                                 <ViewMore>
