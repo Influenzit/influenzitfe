@@ -504,7 +504,7 @@ const Register = () => {
                   </SocialIcon>
                   <span>Sign up with Google</span>
                 </GoogleBtn>
-                <FacebookLogin
+                {/* <FacebookLogin
                   appId="3349779741932998"
                   callback={handleFacebookLogin}
                   onFailure={handleFailure}
@@ -516,7 +516,7 @@ const Register = () => {
                       <span>Sign up with Facebook</span>
                     </FacebookBtn>
                   )}
-                />
+                /> */}
               </SocialLogin>
             </FormFields>
           </Center>

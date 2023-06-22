@@ -20,7 +20,7 @@ const Update = () => {
   }
   const router = useRouter();
   const dispatch = useDispatch();
-  const { token } = router.query();
+  const { token, email } = router.query;
   const mutation = useMutation(pData => {
     return resetPassword(pData);
   }, {
@@ -30,17 +30,17 @@ const Update = () => {
           dispatch(setLoading(false));
           dispatch(setError({error: true, message: res.message}));
         } else {
+            dispatch(setLoading(false));
             router.push("/login")
         }
     },
     onError() {
       const res = error.response.data;
+      dispatch(setLoading(false));
       if(res){
-        dispatch(setLoading(false));
         dispatch(setError({error: true, message: res.message}));
         return;
       }
-      dispatch(setLoading(false));
       dispatch(setError({error: true, message: "Check your internet connection"}));
     }
   })
@@ -48,7 +48,7 @@ const Update = () => {
     e.preventDefault();
     dispatch(setLoading(true));
     mutation.mutate({
-        email: "",
+        email,
         password: formVal.password,
         password_confirmation: formVal.cpassword,
         token,
