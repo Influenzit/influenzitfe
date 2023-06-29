@@ -12,7 +12,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { getCampaigns } from '../../../../api/campaigns'
 import { getServices } from '../../../../api/influencer'
 import { useRouter } from 'next/router'
-import { createNiche, deleteNiche, fetchDashboardStats, getAllCampaigns, getAllNiches, getAllUsers } from '../../../../api/admin'
+import { createNiche, createTicketCategory, deleteNiche, deleteTicketCategory, fetchDashboardStats, getAllCampaigns, getAllNiches, getAllUsers, getTicketCategories } from '../../../../api/admin'
 import { AddSocialBtn, InputContainer } from '../../../../styles/profile.style'
 import { FormContainer, UpdateModal } from '../../../../styles/view.style'
 
@@ -29,50 +29,6 @@ const Dashboard = () => {
         setUserDetails(user);
       }
     }, [user, currentAcctType]);
-    const data = [
-        {
-          name: 'Work A',
-          uv: 4000,
-          pv: 2400,
-          amt: 2400,
-        },
-        {
-          name: 'Work B',
-          uv: 3000,
-          pv: 1398,
-          amt: 2210,
-        },
-        {
-          name: 'Work C',
-          uv: 2000,
-          pv: 9800,
-          amt: 2290,
-        },
-        {
-          name: 'Work D',
-          uv: 2780,
-          pv: 3908,
-          amt: 2000,
-        },
-        {
-          name: 'Work E',
-          uv: 1890,
-          pv: 4800,
-          amt: 2181,
-        },
-        {
-          name: 'Work F',
-          uv: 2390,
-          pv: 3800,
-          amt: 2500,
-        },
-        {
-          name: 'Work G',
-          uv: 3490,
-          pv: 4300,
-          amt: 2100,
-        },
-      ];
       const [campaignList, setCampaignList] = useState({
         data: [],
       });
@@ -129,8 +85,8 @@ const Dashboard = () => {
                 dispatch(setLoading(false));
             } 
         });
-        const { data: nicheData, refetch: refetchNicheData } = useQuery(["get-admin-Niches"], async () => {
-            return await getAllNiches();
+        const { data: nicheData, refetch: refetchNicheData } = useQuery(["get-admin-ticket-cat"], async () => {
+            return await getTicketCategories();
         }, {
             enabled: false,
             staleTime: Infinity,
@@ -150,7 +106,7 @@ const Dashboard = () => {
             staleTime: Infinity
         });
         const createNicheMutation = useMutation( nicheData => {
-            return createNiche(nicheData);
+            return createTicketCategory(nicheData);
         }, {
             onSuccess(successRes) {
                 const res = successRes.data;
@@ -179,7 +135,7 @@ const Dashboard = () => {
             }
         });
         const deleteNicheMutation = useMutation( nicheData => {
-            return deleteNiche(nicheData.id);
+            return deleteTicketCategory(nicheData.id);
         }, {
             onSuccess(successRes) {
                 const res = successRes.data;
@@ -220,11 +176,10 @@ const Dashboard = () => {
             })
         }
         const handleNicheAdd = () => {
-            if(nicheName && nicheDescription){
+            if(nicheName){
                 dispatch(setLoading(true));
                 createNicheMutation.mutate({
                     name: nicheName,
-                    description: nicheDescription,
                 })
             } else {
                 dispatch(setError({error: true, message: "Enter required fields"}));
@@ -273,18 +228,13 @@ const Dashboard = () => {
             </CardsWrapper>
             <TableWrapped style={{ marginBottom: "15px" }}>
                     <TableHeader>
-                        <h2>Add Ticket Option</h2>
+                        <h2>Ticket Categories</h2>
                     </TableHeader>
                     <TableContent>
                     <Table>
                         <THead>
                             <TrH>
-                                <Th cellWidth="50px">
-                                    <Checkbox>
-                                    </Checkbox>
-                                </Th>
                                 <Th cellWidth="300px">Name</Th>
-                                <Th cellWidth="470px">Description</Th>
                                 <Th cellWidth="150px">Created</Th>
                                 <Th cellWidth="120px">Action</Th>
                             </TrH>
@@ -293,12 +243,7 @@ const Dashboard = () => {
                             {
                                 nicheList.data.map((val, i) => (
                                     <Tr key={i}>
-                                        <Td cellWidth="50px">
-                                            <Checkbox>
-                                            </Checkbox>
-                                        </Td>
                                         <Td cellWidth="300px">{val.name}</Td>
-                                        <Td cellWidth="470px">{val.description}</Td>
                                         <Td cellWidth="150px">{val.created_at ? (new Date(val.created_at)).toDateString() : "Not specified"}</Td>
                                         <Td cellWidth="120px">
                                             <ActionBtn onClick={() => handleNicheDelete(val.id)}>Delete</ActionBtn>
@@ -308,7 +253,7 @@ const Dashboard = () => {
                             }
                         </TBody>
                     </Table>
-                    <AddSocialBtn style={{ margin: "10px auto" }} onClick={() => setShowAddNiche(true)}><Image src="/plus.svg" alt="plus" height={22} width={22} /><span>Add Ticket Option</span></AddSocialBtn>
+                    <AddSocialBtn style={{ margin: "10px auto" }} onClick={() => setShowAddNiche(true)}><span>Add Ticket Category</span></AddSocialBtn>
                     </TableContent>
                 </TableWrapped>
                  <TableWrapped style={{ marginBottom: "15px" }}>
@@ -445,14 +390,6 @@ const Dashboard = () => {
                type="text"
                value={nicheName}
                onChange={(e) => setNicheName(e.target.value)}
-              />
-            </InputContainer>
-            <InputContainer>
-              <label>Description</label>
-              <input
-               type="text"
-               value={nicheDescription}
-               onChange={(e) => setNicheDescription(e.target.value)}
               />
             </InputContainer>
             <button onClick={() => setShowAddNiche(false)}>Go back</button>

@@ -163,8 +163,11 @@ export const CloseBtn = styled.button`
     background: transparent;
     outline: none;
     border: none;
-    color: red;
+    color: ${colors.primaryColor};
     cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+
 `;
 export const HLeft = styled.div`
     display: flex;
@@ -516,12 +519,14 @@ export const StatusC = styled.div`
     background: ${({isActive}) => isActive ? "#FCF5EB":"#12B76A"};
     font-weight: 500;
     font-size: 14px;
-    color: ${colors.textColor};
     padding: 12px 25px;
     border-radius: 99px;
     display: flex;
     column-gap: 15px;
     align-items: center;
+    #txt {
+        color: ${({isActive}) => isActive ? colors.textColor :"#ECFDF3"} !important;
+    }
     span:first-of-type {
         background: ${({isActive}) => isActive ? "#F79009":"#ECFDF3"};
         height: 6px;

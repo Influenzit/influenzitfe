@@ -363,7 +363,7 @@ const Campaigns = () => {
               </h1>
             </div>
             <div className="w-full overflow-x-auto">
-              <div className="table -mt-1  border  border-[#EAEAEB] md:w-full min-w-[1200px] text-[#667085]">
+              <div className="table -mt-1  border  border-[#EAEAEB] md:w-full min-w-[1000px] text-[#667085]">
                 <div className="grid grid-cols-12 gap-4 bg-[#F9FAFB] p-4 rounded-t-lg border-b w-full">
                   <div className="col-span-2">Date</div>
                   <div className="col-span-2">Amount</div>
@@ -464,12 +464,12 @@ const Campaigns = () => {
       {
         walledData ? (
           <>
-            <Tooltip position="top" elementRef={earningsRef} gap={5} contents="This represents the total amount you have earned from all the completed campaigns on Influenzit. It includes all payments received from business owners for your influencer services." />
-            <Tooltip position="top" elementRef={escrowRef} gap={5} contents="This represents the total amount of money currently held in escrow. These are funds that have been deposited for a specific campaign but have not yet been released because the campaign is still ongoing or the completion of the campaign has not yet been confirmed by the business owner." />
-            <Tooltip position="top" elementRef={depositRef} gap={5} contents="This represents the total amount of money you have deposited into your Influenzit account. Deposits can come from various sources including bank transfers, credit/debit card payments, or from completed campaigns." />
+            <Tooltip position="left" elementRef={earningsRef} gap={5} contents="This represents the total amount you have earned from all the completed campaigns on Influenzit. It includes all payments received from business owners for your influencer services." />
+            <Tooltip position="left" elementRef={escrowRef} gap={5} contents="This represents the total amount of money currently held in escrow. These are funds that have been deposited for a specific campaign but have not yet been released because the campaign is still ongoing or the completion of the campaign has not yet been confirmed by the business owner." />
+            <Tooltip position="left" elementRef={depositRef} gap={5} contents="This represents the total amount of money you have deposited into your Influenzit account. Deposits can come from various sources including bank transfers, credit/debit card payments, or from completed campaigns." />
             <Tooltip position="left" elementRef={fundsRef} gap={5} contents="This represents the total amount of money currently available in your Influenzit account. It's the balance that you can use to fund campaigns or withdraw to your bank account." />
             <Tooltip position="left" elementRef={withdrawnRef} gap={5} contents="This represents the total amount of money you have withdrawn from your Influenzit account to date. This includes all successful withdrawals to your linked bank account" />
-            <Tooltip position="top" elementRef={expensesRef} gap={5} contents="This represents the total amount you have spent on Influenzit. It includes any fees or charges incurred while using the platform for your campaigns." />
+            <Tooltip position="left" elementRef={expensesRef} gap={5} contents="This represents the total amount you have spent on Influenzit. It includes any fees or charges incurred while using the platform for your campaigns." />
           </>
         ) : null
       }

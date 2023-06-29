@@ -15,3 +15,6 @@ export const updateSupport = (id, body) => {
 export const createDispute = (data) => {
     return axiosInstance().post("/supports", data)
 }
+export const getTicketCategoriesUser = () => {
+    return axiosInstance().get("/support/options");
+}
