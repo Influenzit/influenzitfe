@@ -90,9 +90,13 @@ export const Card = styled.div`
         top: 18px;
         right: 18px;
         color: ${colors.primaryColor};
+        height: 20px;
+        width: 20px;
     }
     h1 {
         color: ${colors.primaryColor};
+        font-size: 22px;
+        font-weight: 600;
     }
 `;
 export const ListingWrapper = styled.div`

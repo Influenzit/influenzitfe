@@ -1,22 +1,23 @@
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react'
-import { AttachmentIcon, BoldIcon, EmojiIcon, ItalicIcon, MarkupIcon, SendIcon, UnderlineIcon } from '../../assets/svgIcons';
-import ChatSidebar from '../../components/support-sidebar';
-import LandingLayout from '../../layouts/landing.layout';
-import { ActionBtn, AttachBtn, ChatContainer, ChatControls, ChatHeader, CloseBtn, Container, ContextBtn, CreateTicketCont, CTop, Editor, EditorBtn, HLeft, ImageWrapper, InputContainer, InputWrap, LeftControls, MessageCard, MessageContent, MessageInput, MessagesCont, MessageSection, NonSelectedCont, PickerContainer, ProfilePicWrapper, RightControls, StatusC, SubmitSection, UserSect, Wrapper } from '../../styles/messages.style';
-import { colors } from '../../styles/theme';
+import { AttachmentIcon, BoldIcon, EmojiIcon, ItalicIcon, MarkupIcon, SendIcon, UnderlineIcon } from '../../../../assets/svgIcons';
+import ChatSidebar from '../../../../components/support-sidebar';
+import AdminLayout from '../../../../layouts/admin.layout';
+import { ActionBtn, AttachBtn, ChatContainer, ChatControls, ChatHeader, CloseBtn, Container, ContextBtn, CreateTicketCont, CTop, Editor, EditorBtn, HLeft, ImageWrapper, InputContainer, InputWrap, LeftControls, MessageCard, MessageContent, MessageInput, MessagesCont, MessageSection, NonSelectedCont, PickerContainer, ProfilePicWrapper, RightControls, StatusC, SubmitSection, UserSect, Wrapper } from '../../../../styles/messages.style';
+import { colors } from '../../../../styles/theme';
 import dynamic from 'next/dynamic';
-import { getConversationMessages, getConversations, sendConversationMessage } from '../../api/messaging';
+import { getConversationMessages, getConversations, sendConversationMessage } from '../../../../api/messaging';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import HTMLReactParser from 'html-react-parser';
-import { getSocketInstance } from '../../socket/instance';
+import { getSocketInstance } from '../../../../socket/instance';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from '../../app/reducers/user';
-import { getCurrentConversationId, setCurrentConversation, setError, setLoading } from '../../app/reducers/status';
-import MobileChatbar from '../../components/mobile-chatbar';
-import { createDispute, getMessages, getSupportConversations, getTicketCategoriesUser, postMessages, updateSupport } from '../../api/support';
+import { getUser } from '../../../../app/reducers/user';
+import { getCurrentConversationId, setCurrentConversation, setError, setLoading } from '../../../../app/reducers/status';
+import MobileChatbar from '../../../../components/mobile-chatbar';
+import { createDispute, getMessages, getSupportConversations, getTicketCategoriesUser, postMessages, updateSupport } from '../../../../api/support';
+import {getAdminMessages, getAdminSupportConversations, postAdminMessages, updateAdminSupport} from "../../../../api/admin"
 import { toast } from 'react-toastify';
-import { UpdateModal } from '../../styles/view.style';
+import { UpdateModal } from '../../../../styles/view.style';
 const Picker = dynamic(
   () => {
     return import('emoji-picker-react');
@@ -41,7 +42,10 @@ const Messages = () => {
   const [supportSubject, setSupportSubject] = useState("");
   const [supportMessage, setSupportMessage] = useState("");
   const [category, setCategory] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  
   const dispatch = useDispatch();
+  const [getUrl, setGetUrl] = useState("");
   const { data: categoryData, refetch: refetchCategoryData } = useQuery(["get-ticket-categories"], async () => {
         return await getTicketCategoriesUser();
     }, {
@@ -185,17 +189,30 @@ const Messages = () => {
     setMessageContent(messageBoxRef.current.innerHTML);
   }
 const { data: conversationData, refetch: refetchConversationData } = useQuery(["get-conversation"], async () => {
-    return await getSupportConversations();
+    return await getAdminSupportConversations(getUrl);
 }, {
     enabled: false,
     staleTime: Infinity,
     retry: false,
     onSuccess(successRes) {
-        setConversations(successRes.data.data)
+        setConversations(successRes.data.data.data);
+        setCurrentPage(successRes.data.data.current_page);
     }
 });
+const handleNext = () => {
+    if(conversationData.data.data.next_page_url) {
+        setGetUrl(conversationData.data.data.next_page_url.replace(process.env.NEXT_PUBLIC_API_URI + "/api/v1", ""))
+        refetchConversationData();
+    }
+}
+const handlePrev = () => {
+    if(conversationData.data.data.prev_page_url) {
+        setGetUrl(conversationData.data.data.prev_page_url.replace(process.env.NEXT_PUBLIC_API_URI + "/api/v1", ""))
+        refetchConversationData();
+    }
+}
 const { data: messagesData, refetch: refetchMessagesData } = useQuery(["get-messages"], async () => {
-    return await getMessages(supportId);
+    return await getAdminMessages(supportId);
 }, {
     enabled: false,
     staleTime: Infinity,
@@ -206,7 +223,7 @@ const { data: messagesData, refetch: refetchMessagesData } = useQuery(["get-mess
     }
 });
 const sendMessageMutation = useMutation((data) => {
-    return postMessages(supportId, data);
+    return postAdminMessages(supportId, data);
 }, {
     onSuccess(successRes) {
         const res = successRes.data;
@@ -216,7 +233,7 @@ const sendMessageMutation = useMutation((data) => {
         } else {
             setMessageContent("");
             messageBoxRef.current.innerHTML = "";
-            refetchMessagesData();
+            // refetchMessagesData();
         }
     },
     onError(error) {
@@ -229,7 +246,7 @@ const sendMessageMutation = useMutation((data) => {
     }
 });
 const updateSupportMutation = useMutation((data) => {
-    return updateSupport(supportId, data);
+    return updateAdminSupport(supportId, data);
 }, {
     onSuccess(successRes) {
         const res = successRes.data;
@@ -334,12 +351,10 @@ const handleCreateDispute = () => {
       return;
     } else {
       dispatch(setLoading(true));
-      console.log(user);
       createDisputeMutation.mutate({
         subject: supportSubject,
         message: supportMessage,
-        account_id: user.id,
-        type: category,
+        account_id: user.account.id,
       })
     }
   }
@@ -360,12 +375,13 @@ const handleCreateDispute = () => {
         }
     }
 }, [user])
+  
 
   return (
     <Container>
         <MobileChatbar setConversationId={handleSetConversationId} conversations={conversations} setSupportId={setSupportId}/>
         <Wrapper>
-            <ChatSidebar setConversationId={handleSetConversationId} conversations={conversations} setSupportId={setSupportId} supportId={supportId} setShowCreateTicket={setShowCreateTicket}/>
+            <ChatSidebar setConversationId={handleSetConversationId} conversations={conversations} setSupportId={setSupportId} supportId={supportId} setShowCreateTicket={setShowCreateTicket} hideAddTicket={true} handleNext={handleNext} handlePrev={handlePrev} currentPage={currentPage}/>
             <MessageSection>
                 {
                     supportId ? 
@@ -375,6 +391,7 @@ const handleCreateDispute = () => {
                                 <p><Image src={"/ticket.svg"} alt="rec" height={14} width={14}/> #{getCurrentConversation()?.id}</p>
                                 <h2>{getCurrentConversation()?.subject}</h2>
                             </HLeft>
+                            <div style={{ display: "flex", columnGap:"15px" }}>
                             {getCurrentConversation()?.status === "Open" ? (
                                     <StatusC isActive>
                                         <span></span>
@@ -387,16 +404,17 @@ const handleCreateDispute = () => {
                                     </StatusC>
                                 )
                             }
-                            {/* {getCurrentConversation()?.status === "Open" ? (
+                            {getCurrentConversation()?.status === "Open" ? (
                                     <CloseBtn onClick={handleCloseTicket}>
-                                        Close Tickect
+                                        Close Ticket
                                     </CloseBtn>
                                 ):(
                                     <CloseBtn>
-                                        Tickect Closed
+                                        Ticket Closed
                                     </CloseBtn>
                                 )
-                            } */}
+                            }
+                            </div>
                         </ChatHeader>
                         <MessagesCont ref={messagesRef}>
                             {
@@ -483,7 +501,7 @@ const handleCreateDispute = () => {
         {showCreateTicket && (
             <UpdateModal>
                 <CreateTicketCont>
-                    <CTop><h2>Create New Ticket</h2><button onClick={() => setShowCreateTicket(false)}><Image src={"/cancel.svg"} height={17} width={17}/></button></CTop>
+                    <CTop><h2>User Tickets</h2><button onClick={() => setShowCreateTicket(false)}><Image src={"/cancel.svg"} height={17} width={17}/></button></CTop>
                     <InputWrap>
                         <InputContainer>
                             <label>Ticket Issues</label>
@@ -521,9 +539,9 @@ const handleCreateDispute = () => {
   )
 }
 Messages.getLayout = (page) => (
-    <LandingLayout>
+    <AdminLayout>
         {page}
-    </LandingLayout>
+    </AdminLayout>
 )
 
 export default Messages;

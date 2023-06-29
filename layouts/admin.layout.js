@@ -82,7 +82,6 @@ const AdminLayout = ({ children, title, description }) => {
               {children}
             </Content>
           </Wrapper>
-        <DashboardFooter />
       </Container>
     )
   } else {

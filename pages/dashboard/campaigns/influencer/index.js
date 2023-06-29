@@ -176,7 +176,7 @@ const Campaigns = () => {
 
       {campaignList !== null ? (
         <div className="w-full overflow-x-auto">
-          <div className="table mt-10 campaign_table md:w-full min-w-[1200px] text-[#667085] ">
+          <div className="table mt-10 campaign_table md:w-full min-w-[1000px] text-[#667085] ">
             <div className="grid grid-cols-12 gap-4 bg-[#F9FAFB] p-4 rounded-t-lg border-b">
               <div className="col-span-5">Campaign Name</div>
               <div className="col-span-3">Channel</div>
