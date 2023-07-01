@@ -361,20 +361,20 @@ const handleCreateDispute = () => {
   useEffect(() => {
     refetchConversationData();
     const socketInstance = getSocketInstance();
-    if(!!user && !socketSet) {
-        socketInstance.channel(user.email).listen(".Conversation", (e) => {
+    if(!!supportId) {
+        socketInstance.channel(getCurrentConversation()?.reference).listen(".SupportConversation", (e) => {
             handleConversation(e.data);
         })
         setSocketSet(true);
     }
     return () => {
-        if(!!user) {
-            socketInstance.channel(user.email).stopListening(".Conversation", (e) => {
+        if(!!supportId) {
+            socketInstance.channel(getCurrentConversation()?.reference).stopListening(".SupportConversation", (e) => {
                 handleConversation(e.data);
             })
         }
     }
-}, [user])
+}, [supportId])
   
 
   return (

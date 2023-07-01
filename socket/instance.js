@@ -43,22 +43,12 @@ export const getSocketInstance = () => {
     })
 
     if(process.env.NEXT_PUBLIC_SOCKET_ENABLE_LOG){
-
-      socketInstance.channel('testchannel').listen(".Test", (e) => {
-        console.log('.TestEvent', e)
-      })
-
-      // The connection to Channels is open and authenticated with your app
       socketInstance.connector.pusher.connection.bind('connected', (payload) => {
           console.log('connected!', payload);
       });
-
-      // PING FROM SERVER
       socketInstance.connector.pusher.connection.bind('message', (payload) => {
           console.log('message', payload);
       });
-
-
     }
 
     return socketInstance
