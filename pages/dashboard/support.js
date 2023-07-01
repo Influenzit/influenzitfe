@@ -491,7 +491,7 @@ const handleCreateDispute = () => {
                                 <option value={""}>Select Ticket Category</option>
                                 {
                                     categoryList.map((val, i) => (
-                                        <option value={val}>{val}</option>
+                                        <option value={val} key={i}>{val}</option>
                                     ))
                                 }
                             </select>
