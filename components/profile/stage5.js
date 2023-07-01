@@ -182,7 +182,7 @@ const Stage5 = ({user}) => {
                         <SocialIcon>
                         <Image src="/facebook-r.svg" alt="" height={22} width={22} />
                         </SocialIcon>
-                        <span>Sign in with Facebook</span>
+                        <span>Connect to Facebook</span>
                     </FacebookBtn>
                 </Link>
             </SocialMediaContainer>

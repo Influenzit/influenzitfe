@@ -276,7 +276,6 @@ const handleImageRemove = (i) => {
 const handleConversation = (conversation) => {
     if(conversation){
         if(conversation.id === Number(sessionStorage.getItem("cid"))) {
-            console.log("ego")
             setMessages((oldMessages) => {
                 const copyOldMessages = JSON.parse(JSON.stringify(oldMessages));
                 copyOldMessages.push(conversation.recent_message);

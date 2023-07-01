@@ -86,6 +86,13 @@ const Sidebar = () => {
           <span>Campaigns</span>
       </NavButton>
       <NavButton
+        onClick={() => handleRouting("/admin/u/dashboard/support")}
+        isActive={router.pathname.includes("/admin/u/dashboard/support")}
+      >
+        <SupportIcon />
+        <span>Support</span>
+      </NavButton>
+      <NavButton
         onClick={() => handleRouting("/admin/u/dashboard/activities")}
         isActive={router.pathname.includes("/admin/u/dashboard/activities")}
       >

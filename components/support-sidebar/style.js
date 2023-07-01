@@ -177,3 +177,24 @@ export const OpenBtn = styled.button`
     padding: 12px 20px;
     cursor: pointer;
 `;
+export const Pagination = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 56px;
+    padding: 0 15px;
+    button {
+        border-radius: 8px;
+        padding: 4px 10px;
+        background: ${colors.primaryColor};
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        height: 35px;
+    }
+    span {
+        font-size: 14px;
+        font-weight: 500;
+        color: ${colors.textColor};
+    }
+`;
