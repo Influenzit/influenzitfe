@@ -102,8 +102,6 @@ const Stage5 = ({user}) => {
   return (
     <div>
         <div>
-            {currentAcctType === "Creator" && (<ViewProfileBtn onClick={() => router.push(`/creators/${user.account.slug}`)}><Image src="/eye.svg" alt="" height={12} width={18} /><span>View Public Profile</span></ViewProfileBtn>)}
-            {currentAcctType === "Influencer" && (<ViewProfileBtn onClick={() => router.push(`/influencers/${user.account.slug}`)}><Image src="/eye.svg" alt="" height={12} width={18} /><span>View Public Profile</span></ViewProfileBtn>)}
             <SocialMediaContainer>
                 <h1>Twitter</h1>
                 <SocialCardList>
@@ -112,6 +110,8 @@ const Stage5 = ({user}) => {
                             <SocialCard key={i}>
                                 <p>{account.profile_name}<br/><span>{account.profile_type}</span></p>
                                 <div>
+                                    {currentAcctType === "Creator" && (<button onClick={() => router.push(`/creators/${user.account.slug}`)}>View</button>)}
+                                    {currentAcctType === "Influencer" && (<button onClick={() => router.push(`/influencers/${user.account.slug}`)}>View</button>)}
                                     <button onClick={() => {
                                         disconnectSocialMediaFunc(account.id)
                                     }}>Disconnect</button>
@@ -142,6 +142,8 @@ const Stage5 = ({user}) => {
                             <SocialCard key={i}>
                                 <p>{account.profile_name}<br/><span>{account.profile_type}</span></p>
                                 <div>
+                                    {currentAcctType === "Creator" && (<button onClick={() => router.push(`/creators/${user.account.slug}`)}>View</button>)}
+                                    {currentAcctType === "Influencer" && (<button onClick={() => router.push(`/influencers/${user.account.slug}`)}>View</button>)}
                                     <button onClick={() => {
                                         disconnectSocialMediaFunc(account.id)
                                     }}>Disconnect</button>
@@ -172,6 +174,8 @@ const Stage5 = ({user}) => {
                             <SocialCard key={i}>
                                 <p>{account.profile_name}<br/><span>{account.profile_type}</span></p>
                                 <div>
+                                    {currentAcctType === "Creator" && (<button onClick={() => router.push(`/creators/${user.account.slug}`)}>View</button>)}
+                                    {currentAcctType === "Influencer" && (<button onClick={() => router.push(`/influencers/${user.account.slug}`)}>View</button>)}  
                                     <button onClick={() => {
                                         disconnectSocialMediaFunc(account.id)
                                     }}>Disconnect</button>
@@ -199,6 +203,8 @@ const Stage5 = ({user}) => {
                             <SocialCard key={i}>
                                 <p>{account.profile_name}<br/><span>{account.profile_type}</span></p>
                                 <div>
+                                    {currentAcctType === "Creator" && (<button onClick={() => router.push(`/creators/${user.account.slug}`)}>View</button>)}
+                                    {currentAcctType === "Influencer" && (<button onClick={() => router.push(`/influencers/${user.account.slug}`)}>View</button>)}   
                                     <button onClick={() => {
                                         disconnectSocialMediaFunc(account.id)
                                     }}>Disconnect</button>
