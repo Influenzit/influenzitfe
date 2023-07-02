@@ -338,7 +338,7 @@ const handleCreateDispute = () => {
       createDisputeMutation.mutate({
         subject: supportSubject,
         message: supportMessage,
-        account_id: user.id,
+        account_id: user.account.id,
         type: category,
       })
     }
