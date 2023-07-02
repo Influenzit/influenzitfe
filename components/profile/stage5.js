@@ -4,23 +4,26 @@ import twitter from "../../assets/twitter.svg";
 import tiktok from "../../assets/tiktok.svg";
 import facebook from "../../assets/facebook.svg";
 import youtube from "../../assets/youtube.svg";
-import { ConnectFlex, SocialCard, SocialCardList, SocialMediaContainer } from '../../styles/profile.style';
+import { ConnectFlex, SocialCard, SocialCardList, SocialMediaContainer, ViewProfileBtn } from '../../styles/profile.style';
 import Image from 'next/image';
 import Link from 'next/link';
 import { accountMedia, disconnectSocialMedia, getUserSocialMedia } from 'api/auth';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useDispatch } from 'react-redux';
-import { setError, setLoading } from 'app/reducers/status';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserType, setError, setLoading } from 'app/reducers/status';
 import { UpdateModal } from 'styles/view.style';
 import { WelcomeModal } from 'styles/connect-pages.style';
 import { toast } from 'react-toastify'; 
 import { FacebookBtn, SocialIcon } from 'styles/auth.style';
+import { useRouter } from 'next/router'
 
 const Stage5 = ({user}) => {
     const dispatch = useDispatch();
     const [listD, setListD] = useState([]);
     const [showNotifyModal, setShowNotifyModal] = useState(false);
+    const currentAcctType = useSelector(getUserType);
+    const router = useRouter()
     const { data: socialData, refetch: refetchSocialData } = useQuery(["get-social-media"], async () => {
         return await getUserSocialMedia();
     }, {
@@ -99,6 +102,8 @@ const Stage5 = ({user}) => {
   return (
     <div>
         <div>
+            {currentAcctType === "Creator" && (<ViewProfileBtn onClick={() => router.push(`/creators/${user.account.slug}`)}><Image src="/eye.svg" alt="" height={12} width={18} /><span>View Public Profile</span></ViewProfileBtn>)}
+            {currentAcctType === "Influencer" && (<ViewProfileBtn onClick={() => router.push(`/influencers/${user.account.slug}`)}><Image src="/eye.svg" alt="" height={12} width={18} /><span>View Public Profile</span></ViewProfileBtn>)}
             <SocialMediaContainer>
                 <h1>Twitter</h1>
                 <SocialCardList>
