@@ -334,7 +334,7 @@ const Stage5 = ({user}) => {
             </ConnectFlex> */}
         </div>
         {showNotifyModal && (
-             <UpdateModal>
+            <UpdateModal>
                 <WelcomeModal>
                     <div>
                         <button onClick={() => setShowNotifyModal(false)}><Image src="/cancel.svg" alt="" height={14} width={14} /></button>
