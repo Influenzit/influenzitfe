@@ -636,7 +636,7 @@ export const UserDropdown = styled.div`
             padding-bottom: 6px;
         }
     }
-    #logout {
+    .logout {
         padding: 12px 16px;
     }
     /* button {

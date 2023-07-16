@@ -500,11 +500,21 @@ const Nav = () => {
                       </button>
                     )}
                   </div>
-                  {/* <button onClick={() => router.push("/dashboard")}><DashboardIcon /><span>Dashboard</span></button>
-                                    <button onClick={() => router.push(currentAcctType === "Influencer" ? `/influencer/${userDetails.account.id}` : currentAcctType === "Creator" ? "/creators/profile" : "/business-owner/profile")}><UserIcon /><span>Profile</span></button> */}
-                  {/* <button onClick={() => router.push("/dashboard/profile/billing")}><WalletIcon /><span>Wallet</span></button>
-                                    <button onClick={() => router.push("/dashboard/profile")}><SettingsIcon /><span>Settings</span></button> */}
-                  <button onClick={logout} id="logout">
+                  {currentAcctType === "Influencer" && (
+                      <button className="logout"
+                        onClick={() => router.push(`/influencers/${user.account.slug}`)}
+                      >
+                        <span>View Public Profile</span>
+                      </button>
+                    )}
+                    {currentAcctType === "Creator" && (
+                      <button className="logout"
+                        onClick={() => router.push(`/creators/${user.account.slug}`)}
+                      >
+                        <span>View Public Profile</span>
+                      </button>
+                    )}
+                  <button onClick={logout} className="logout">
                     <span>Logout</span>
                   </button>
                 </UserDropdown>

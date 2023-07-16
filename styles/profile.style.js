@@ -700,3 +700,15 @@ export const BankWrapper = styled.div`
     max-width: 500px;
     margin: 30px auto;
 `;
+export const ViewProfileBtn = styled.button`
+    outline: none;
+    border: none;
+    background: transparent;
+    color: ${colors.primaryColor};
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+`;

@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Nav from '../components/nav'
 import Footer from '../components/footer'
 import Loader from '../components/loading'
-import { Container, Content, Wrapper } from '../styles/landing.style'
+import { Container, Content, NetworkModal, Wrapper } from '../styles/landing.style'
 import DashboardFooter from '../components/dashboard-footer'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearUser, getUser, updateUser } from '../app/reducers/user'
@@ -26,6 +26,9 @@ const LandingLayout = ({children, title, description}) => {
   const errorStatus = useSelector(isError);
   const successStatus = useSelector(isSuccess);
   const showLogoutModal = useSelector(getLogoutModalStatus);
+  const [showNetworkStatusModal, setShowNetworkStatusModal] = useState(false);
+  const [isOnline, setIsOnline] = useState(false);
+  const [networkMessage, setNetworkMessage] = useState("");
   const message = useSelector(getMessage);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -61,14 +64,20 @@ const LandingLayout = ({children, title, description}) => {
     setIsLoggedIn(!!user);
   }, [user]);
   const offlineFunc = () => {
-    toast.error("You are offline", {
-      position: toast.POSITION.TOP_RIGHT
-    });
+    setShowNetworkStatusModal(true);
+    setNetworkMessage("You are offline");
+    setIsOnline(false);
+    setTimeout(() => {
+      setShowNetworkStatusModal(false);
+    }, 10000);
   }
   const onlineFunc = () => {
-    toast.success("You are back online", {
-      position: toast.POSITION.TOP_RIGHT
-    });
+    setShowNetworkStatusModal(true);
+    setNetworkMessage("You are back online");
+    setIsOnline(true);
+    setTimeout(() => {
+      setShowNetworkStatusModal(false);
+    }, 10000);
   }
   const updateActivity = () => {
     localStorage.setItem("last-activity", `${Date.now()}`);
@@ -175,6 +184,9 @@ const LandingLayout = ({children, title, description}) => {
               {isLoggedIn && router.pathname.includes("/dashboard")? null : (<Footer />)}
             </Content>
           </Wrapper>
+          {
+            showNetworkStatusModal ? <NetworkModal status={isOnline}><span>{networkMessage}</span></NetworkModal> : null
+          }
       </Container>
     )
   } else {

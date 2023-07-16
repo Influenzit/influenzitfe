@@ -57,6 +57,15 @@ export const getAllNiches = () => {
 export const createNiche = (data) => {
     return axiosInstance().post("/admin/niches", data);
 }
+export const getTicketCategories = () => {
+    return axiosInstance().get("/admin/supports/ticket-categories");
+}
+export const createTicketCategory = (data) => {
+    return axiosInstance().post("/admin/supports/ticket-categories", data);
+}
+export const deleteTicketCategory = (id) => {
+    return axiosInstance().delete(`/admin/supports/ticket-categories/${id}`);
+}
 export const sendMail = (data) => {
     return axiosInstance().post("/admin/mails", data);
 }
@@ -71,4 +80,19 @@ export const getWaitlist = () => {
 }
 export const getAccountActivities = (query) => {
     return axiosInstance().get(query ? query : "/admin/logs/activities?paginate=20")
+}
+export const getAdminSupportConversations = () => {
+    return axiosInstance().get("/admin/supports");
+}
+export const getAdminMessages = (id) => {
+    return axiosInstance().get("/admin/supports/" + id + "/messages");
+}
+export const postAdminMessages = (id, body) => {
+    return axiosInstance().post("/admin/supports/" + id + "/messages", body);
+}
+export const updateAdminSupport = (id, body) => {
+    return axiosInstance().patch("/admin/supports/" + id, body);
+}
+export const getAdminTicketCategoriesUser = () => {
+    return axiosInstance().get("/admin/support/options");
 }

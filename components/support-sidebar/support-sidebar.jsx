@@ -1,14 +1,16 @@
 import Image from 'next/image'
 import React from 'react'
 import HTMLReactParser from 'html-react-parser';
-import { Bottom, ChatBottom, ChatDetails, ChatTop, Container, OpenBtn, ProfilePicWrapper, SearchContainer, Top, UserCard, UserSect } from './style'
+import { Bottom, ChatBottom, ChatDetails, ChatTop, Container, OpenBtn, Pagination, ProfilePicWrapper, SearchContainer, Top, UserCard, UserSect } from './style'
 
-const ChatSidebar = ({ setConversationId, conversations, setSupportId, supportId, setShowCreateTicket }) => {
+const ChatSidebar = ({ setConversationId, conversations, setSupportId, supportId, setShowCreateTicket, hideAddTicket, currentPage, handleNext, handlePrev }) => {
   return (
     <Container>
         <Top>
             <h2>Tickets ({conversations.length}) </h2>
-            <OpenBtn onClick={() => setShowCreateTicket(true)}>Open Ticket</OpenBtn>
+            {
+                !hideAddTicket && (<OpenBtn onClick={() => setShowCreateTicket(true)}>Open Ticket</OpenBtn>)
+            }
             {/* <SearchContainer>
                 <input type="text" placeholder="Search by Ticket ID"/>
                 <button>
@@ -39,6 +41,13 @@ const ChatSidebar = ({ setConversationId, conversations, setSupportId, supportId
                 ))
             }
         </Bottom>
+        {
+            hideAddTicket ? ( <Pagination>
+                <button onClick={handlePrev}>Prev</button>
+                <span>{currentPage}</span>
+                <button onClick={handleNext}>Next</button>
+            </Pagination>) : null
+        }
     </Container>
   )
 }

@@ -66,6 +66,7 @@ const Campaigns = () => {
   const [conversationId, setconversationId] = useState(null);
   const [showPrompt, setShowPrompt] = useState(false);
   const [review, setReview] = useState(null);
+  const [showPayment, setShowPayment] = useState(false);
 
   const [makePayment, setmakePayment] = useState(false);
   const [triggerPayment, settriggerPayment] = useState(false);
@@ -76,6 +77,8 @@ const Campaigns = () => {
   const [updateId, setUpdateId] = useState("");
   const [updateIdx, setUpdateIdx] = useState(0);
   const [requesting, setRequesting] = useState(false);
+  const [invoiceId, setInvoiceId] = useState("");
+  const [invoiceAmount, setInvoiceAmount] = useState("");
 
   const { id } = router.query;
   const user = useSelector(getUser);
@@ -215,8 +218,6 @@ const Campaigns = () => {
       })
       .catch((err) => {
         setloading(false);
-
-        console.log(err.response);
         toast.error(err.response.data.message, {
           position: toast.POSITION.TOP_RIGHT,
         });
@@ -241,7 +242,7 @@ const Campaigns = () => {
   const onSuccess = (reference) => {
     // Implementation for whatever you want to do with reference and after success call.
     console.log(reference);
-    handleProcessTransaction(reference);
+    handleProcessTransaction(reference.reference, "paystack");
     // window.location.reload();
   };
 
@@ -253,10 +254,11 @@ const Campaigns = () => {
 
   const initializePayment = usePaystackPayment(paystackConfig);
 
-  const handleCreateTransaction = async (invoiceId, amt) => {
+  const handleCreateTransaction = async (invoiceId, amt, channel) => {
     setLoading(true);
+    dispatch(setLoading(true));
     const payload = {
-      channel: "paystack",
+      channel,
       amount: +amt,
       currency: "NGN",
       invoice_id: invoiceId,
@@ -267,18 +269,25 @@ const Campaigns = () => {
         console.log(res);
         console.log(res.data.data.payment_reference);
         paymentReference = res.data.data.payment_reference.toString();
-        setPaystackConfig({
-          currency: "NGN",
-          reference: paymentReference,
-          email: user.email,
-          amount: Number(amt * 100), //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
-          publicKey: "pk_test_9d97cf0be86b0758ece444694d57a8db41a4be59",
-        });
-        setmakePayment(true);
-        settriggerPayment(true);
+        dispatch(setLoading(false));
+        if(channel === "paystack") {
+          setPaystackConfig({
+            currency: "NGN",
+            reference: paymentReference,
+            email: user.email,
+            amount: Number(amt * 100), //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+            publicKey: "pk_test_9d97cf0be86b0758ece444694d57a8db41a4be59",
+          });
+          setmakePayment(true);
+          settriggerPayment(true);
+        }
+       
       })
       .catch((err) => {
-        console.log(err.response);
+        dispatch(setLoading(false));
+        toast.error(err.response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       });
   };
   const handleAcceptCampaign = () => {
@@ -302,22 +311,27 @@ const Campaigns = () => {
       });
     });
   }
-  const handleProcessTransaction = async (data) => {
+  const handleProcessTransaction = async (data, channel) => {
     const payload = {
-      channel: "paystack",
-      payment_reference: data.reference,
+      channel,
+      payment_reference: data,
     };
+    dispatch(setLoading(true));
     await processPayment(payload)
       .then((res) => {
         handleGetSingleCampaignInvoice();
+        dispatch(setLoading(false));
       })
       .catch((err) => {
-        console.log(err.response);
+        dispatch(setLoading(false));
+        toast.error(err.response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       });
   };
-  const PayInvoice = (invoiceId, amt) => {
-    console.log(amt);
-    handleCreateTransaction(invoiceId, amt);
+  const PayInvoice = (invoiceId, amt, channel) => {
+    setShowPayment(false);
+    handleCreateTransaction(invoiceId, amt, channel);
     setamount(amt);
   };
   useEffect(() => {
@@ -531,7 +545,9 @@ const Campaigns = () => {
                                 {item.status === "Unpaid" ? (
                                   <button
                                     onClick={() => {
-                                      PayInvoice(item.id, item.amount);
+                                      setShowPayment(true);
+                                      setInvoiceId(item.id);
+                                      setInvoiceAmount(item.amount);
                                     }}
                                     className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-sm  text-white"
                                   >
@@ -634,6 +650,22 @@ const Campaigns = () => {
                         <p>If this campaign is accepted fund in the escrow will be released to the influencer</p>
                         <div>
                             <button onClick={handleAcceptCampaign}>Accept</button>
+                        </div>
+                    </WelcomeModal>
+                </UpdateModal>
+            )
+        }
+         {
+            showPayment && (
+                <UpdateModal>
+                    <WelcomeModal>
+                        <div>
+                            <button onClick={() => setShowPayment(false)}><Image src="/cancel.svg" alt="" height={14} width={14} /></button>
+                        </div>
+                        <p>Select Payment Channel</p>
+                        <div style={{ display: "flex", justifyContent: "center", columnGap: "20px" }}>
+                            <button onClick={() => PayInvoice(invoiceId, invoiceAmount, "wallet")}>Wallet</button>
+                            <button onClick={() => PayInvoice(invoiceId, invoiceAmount, "paystack")}>Paystack</button>
                         </div>
                     </WelcomeModal>
                 </UpdateModal>
