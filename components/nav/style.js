@@ -77,6 +77,22 @@ export const NavLinks = styled.div`
 export const Controls = styled.div`
     display: flex;
     align-items: center;
+    .explore {
+        display: none;
+        color: ${colors.textColor};
+        min-width: 30px;
+        padding: 0;
+        width: 30px;
+        svg {
+            height: 24px;
+            width: 24px;
+        }
+    }
+    ${breakpoints.lg} {
+        .explore {
+            display: flex;
+        }
+    }
 `;
 export const SearchBtn = styled.button`
     padding: 7px 15px;
@@ -299,6 +315,9 @@ export const ConnectDropdownCont = styled.div`
             font-size: 12px;
         }
     }
+    ${breakpoints.sm} {
+        min-width: 130px;
+    }
 `;
 export const SwitchDropdownCont = styled.div`
     position: absolute;
@@ -373,6 +392,7 @@ export const ControlsA = styled.div`
     border-left: 1px solid #EAEAEB;
     column-gap: 5px;
     padding: 0 10px;
+    margin-left: 10px;
     a {
         padding: 0 10px;
         position: relative;
@@ -394,6 +414,11 @@ export const ControlsA = styled.div`
             svg {
                 height: 22px;
             }
+        }
+    }
+    .explore {
+        a::after {
+            display: none;
         }
     }
     #notify-cont {
@@ -421,6 +446,22 @@ export const ControlsA = styled.div`
     #mail-icon {
         ::after {
             display: ${(props) => props.showMessage ? "block" : "none"};
+        }
+    }
+    .explore {
+        display: none;
+        color: ${colors.textColor};
+        min-width: 30px;
+        padding: 0;
+        width: 30px;
+        svg {
+            height: 24px;
+            width: 24px;
+        }
+    }
+    ${breakpoints.lg} {
+        .explore {
+            display: flex;
         }
     }
 `;

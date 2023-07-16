@@ -37,6 +37,7 @@ import {
   BoxIcon,
   CollaborationIcon,
   DashboardIcon,
+  ExploreIcon,
   HamburgerIcon,
   HashTagIcon,
   LogoutIcon,
@@ -75,6 +76,8 @@ const Nav = () => {
   const showLogoutModal = useSelector(getLogoutModalStatus);
   const switchRef = useRef(null);
   const connectRef = useRef(null);
+  const connectMRef = useRef(null);
+  const connectM2Ref = useRef(null);
   const profileRef = useRef(null);
   const notifyRef = useRef(null);
   const notifyBtn = useRef(null);
@@ -82,6 +85,8 @@ const Nav = () => {
   const dispatch = useDispatch();
   const [showSearchOption, setShowSearchOption] = useState(false);
   const [showConnect, setShowConnect] = useState(false);
+  const [showMConnect, setShowMConnect] = useState(false);
+  const [showM2Connect, setShowM2Connect] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showSwitchAccount, setShowSwitchAccount] = useState(false);
   const [showSearchRes, setShowSearchRes] = useState(false);
@@ -136,6 +141,8 @@ const Nav = () => {
   );
   const handleProfileOpen = () => {
     setShowConnect(false);
+    setShowM2Connect(false);
+    setShowMConnect(false);
     setShowSwitchAccount(false);
     setShowSearchRes(false);
     setShowNotification(false);
@@ -143,6 +150,8 @@ const Nav = () => {
   };
   const handleNotification = () => {
     setShowConnect(false);
+    setShowM2Connect(false);
+    setShowMConnect(false);
     setShowSwitchAccount(false);
     setShowSearchRes(false);
     // setShowSidebar(false);
@@ -154,6 +163,8 @@ const Nav = () => {
   };
   const handleConnectOpen = () => {
     setShowConnect(!showConnect);
+    setShowM2Connect(!showM2Connect);
+    setShowMConnect(!showMConnect);
     setShowNotification(false);
     setShowDropdown(false);
     setShowSwitchAccount(false);
@@ -256,33 +267,26 @@ const Nav = () => {
     }
   }, [user, router.pathname, showLogoutModal]);
   const handleClosing = (e) => {
-    if (
-      connectRef.current &&
-      !connectRef.current.innerHTML.includes(e.target.innerHTML)
-    ) {
+    if (connectRef.current && !connectRef.current.innerHTML.includes(e.target.innerHTML)) {
       setShowConnect(false);
     }
-    if (
-      profileRef.current &&
-      !profileRef.current.innerHTML.includes(e.target.innerHTML)
-    ) {
+    if (connectMRef.current && !connectMRef.current.innerHTML.includes(e.target.innerHTML)) {
+      setShowMConnect(false);
+    }
+    if (connectM2Ref.current && !connectM2Ref.current.innerHTML.includes(e.target.innerHTML)) {
+      setShowM2Connect(false);
+    }
+    if (profileRef.current && !profileRef.current.innerHTML.includes(e.target.innerHTML)) {
       setShowDropdown(false);
     }
-    if (
-      switchRef.current &&
-      !switchRef.current.innerHTML.includes(e.target.innerHTML)
+    if (switchRef.current && !switchRef.current.innerHTML.includes(e.target.innerHTML)
     ) {
       setShowSwitchAccount(false);
     }
     // if(sidebarRef.current && sidebarBtn.current && !sidebarRef.current.innerHTML.includes(e.target.innerHTML) && !sidebarBtn.current.innerHTML.includes(e.target.innerHTML)) {
     //     setShowSidebar(false);
     // }
-    if (
-      notifyRef.current &&
-      notifyBtn.current &&
-      !notifyRef.current.innerHTML.includes(e.target.innerHTML) &&
-      !notifyBtn.current.innerHTML.includes(e.target.innerHTML)
-    ) {
+    if (notifyRef.current && notifyBtn.current && !notifyRef.current.innerHTML.includes(e.target.innerHTML) && !notifyBtn.current.innerHTML.includes(e.target.innerHTML)) {
       setShowNotification(false);
     }
   };
@@ -384,8 +388,42 @@ const Nav = () => {
               <Link href="/explore/services" passHref>
                 <a>Find Services</a>
               </Link>
+              <Link href="/explore/campaign-requests">
+                <a>Find Requests</a>
+              </Link>
             </Qlinks>
             <ControlsA showNotify={notificationAvailable} showMessage={false}>
+              <ConnectDropdown 
+                className="explore"
+                onClick={() => handleConnectOpen()}
+                ref={connectM2Ref}
+              >
+                <ExploreIcon />
+                {showM2Connect && (
+                  <ConnectDropdownCont>
+                    <Link href="/explore/influencers">
+                      <a>
+                        <span>Influencers</span>
+                      </a>
+                    </Link>
+                    <Link href="/explore/creators">
+                      <a>
+                        <span>Creators</span>
+                      </a>
+                    </Link>
+                    <Link href="/explore/services">
+                      <a>
+                        <span>Services</span>
+                      </a>
+                    </Link>
+                    <Link href="/explore/campaign-requests">
+                      <a>
+                        <span>Requests</span>
+                      </a>
+                    </Link>
+                  </ConnectDropdownCont>
+                )}
+              </ConnectDropdown>
               <Link href="/dashboard/messages">
                 <a id="mail-icon">
                   <MailIcon />
@@ -515,6 +553,11 @@ const Nav = () => {
                         <span>Services</span>
                       </a>
                     </Link>
+                    <Link href="/explore/campaign-requests">
+                      <a>
+                        <span>Requests</span>
+                      </a>
+                    </Link>
                   </ConnectDropdownCont>
                 )}
               </ConnectDropdown>
@@ -523,6 +566,38 @@ const Nav = () => {
               </NavLinks> */}
             </Center>
             <Controls>
+            <ConnectDropdown 
+                className="explore"
+                onClick={() => handleConnectOpen()}
+                ref={connectMRef}
+                show={true}
+              >
+                <ExploreIcon />
+                {showMConnect && (
+                  <ConnectDropdownCont>
+                    <Link href="/explore/influencers">
+                      <a>
+                        <span>Influencers</span>
+                      </a>
+                    </Link>
+                    <Link href="/explore/creators">
+                      <a>
+                        <span>Creators</span>
+                      </a>
+                    </Link>
+                    <Link href="/explore/services">
+                      <a>
+                        <span>Services</span>
+                      </a>
+                    </Link>
+                    <Link href="/explore/campaign-requests">
+                      <a>
+                        <span>Requests</span>
+                      </a>
+                    </Link>
+                  </ConnectDropdownCont>
+                )}
+              </ConnectDropdown>
               <Link href="/login" passHref>
                 <LoginBtn>Login</LoginBtn>
               </Link>

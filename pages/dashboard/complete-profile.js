@@ -349,7 +349,6 @@ const handleRemoveIndustry = (val) => {
                         <p>Update your profile</p>
                         <InputContainer style={{ marginTop: "20px" }}>
                             <label>Niche/Interest</label>
-                            
                             <select style={{ fontSize: "14px" }} value={industry} onChange={(e) => handleAddIndustry(e.target.value)}>
                                 <option value="">Select Niche/Interest</option>
                                 {

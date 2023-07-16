@@ -44,3 +44,24 @@ export const getCampaignReview = (id) => {
 export const handleCreateCampaign = (data) => {
   return axiosInstance().post(`/campaigns`, data);
 };
+export const createCampaignRequest = (data) => {
+  return axiosInstance().post(`/campaigns/requests`, data);
+};
+export const updateCampaignRequest = (data, id) => {
+  return axiosInstance().patch(`/campaigns/requests/${id}`, data);
+}
+export const getCampaignRequests = (url) => {
+  return axiosInstance().get(url ? url.includes("/") ? url : `/campaigns/requests${url}` : `/campaigns/requests`);
+}
+export const getSingleCampaignRequest = (id) => {
+  return axiosInstance().get(`/campaigns/requests/${id}`);
+}
+export const createProposal = (data, id) => {
+  return axiosInstance().post(`/explore/campaign-requests/${id}/propose`, data)
+}
+export const getCampaignRequestSubmissions = (id, url) => {
+  return axiosInstance().get(url ? url.includes("/") ? url : `/campaigns/requests/${id}/submissions${url}` : `/campaigns/requests/${id}/submissions`);
+}
+export const deleteCampaignRequest = (id) => {
+  return axiosInstance().delete(`/campaigns/requests/${id}`);
+}

@@ -46,7 +46,10 @@ export const updateWithdrawalReq = (id, data) => {
     return axiosInstance().post(`/admin/wallets/withdrawal-requests/${id}`, data);
 }
 export const verifyUserAccount = (userId) => {
-    return axiosInstance().patch(`admin/accounts/${userId}/verify-account`)
+    return axiosInstance().patch(`/admin/accounts/${userId}/verify-account`)
+}
+export const updateAccountAdmin = (userId, data) => {
+    return axiosInstance().patch(`/admin/accounts/${userId}`, data)
 }
 export const getAllNiches = () => {
     return axiosInstance().get("/admin/niches");
