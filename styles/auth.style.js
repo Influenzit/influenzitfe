@@ -403,6 +403,7 @@ export const Terms = styled.div`
         cursor: pointer;
         height: 18px;
         width: 18px;
+        min-width: 18px;
         padding: 2px;
         span {
             height: 12px;

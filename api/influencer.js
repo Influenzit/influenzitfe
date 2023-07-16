@@ -106,6 +106,12 @@ export const getCreator = (id) => {
 export const exploreServices = (query) => {
     return axiosInstance().get(`/explore/services${query}`);
 }
+export const exploreCampaignRequests = (query) => {
+    return axiosInstance().get(`/explore/campaign-requests${query}`);
+}
+export const getCampaignRequest = (id) => {
+    return axiosInstance().get(`/explore/campaign-requests/${id}`)
+}
 export const exploreAll = (query) => {
     return axiosInstance().get(`/explore${query}`);
 }

@@ -22,6 +22,7 @@ import {
   Container,
   InnerWrapper,
   NavButton,
+  NavButtonD,
   ProfileImageCont,
   Status,
 } from "./style";
@@ -33,6 +34,7 @@ const Sidebar = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [userData, setUserData] = useState({});
+  const [showCampaignDropdown, setShowCampaignDropdown] = useState(false);
   useEffect(() => {
     if (user) {
       setUserData(user);
@@ -40,6 +42,7 @@ const Sidebar = () => {
   }, [user]);
   const handleRouting = (link) => {
     dispatch(setShowSidebar(false));
+    setShowCampaignDropdown(false);
     router.push(link);
   }
   return (
@@ -64,6 +67,16 @@ const Sidebar = () => {
       {(currentUserType === "Business Owner" ||
         currentUserType === "Influencer") && (
         <NavButton
+          onClick={() => setShowCampaignDropdown(!showCampaignDropdown)}
+          isActive={router.pathname.includes("campaigns")}
+        >
+          <HashTagIcon />
+          <span>My Campaigns</span>
+        </NavButton>
+      )}
+      {
+        showCampaignDropdown ? <>
+          <NavButtonD
           onClick={() =>
             handleRouting(
               currentUserType === "Business Owner"
@@ -73,10 +86,18 @@ const Sidebar = () => {
           }
           isActive={router.pathname.includes("campaigns")}
         >
-          <HashTagIcon />
           <span>Campaigns</span>
-        </NavButton>
-      )}
+        </NavButtonD>
+        <NavButtonD
+          onClick={() =>
+            handleRouting("/dashboard/campaigns/requests")
+          }
+          isActive={router.pathname.includes("campaigns")}
+        >
+          <span>Campaign Requests</span>
+        </NavButtonD>
+        </> : null
+      }
       {/* {
             currentUserType === "Business Owner" && (
                 <NavButton onClick={() => router.push("/dashboard/profile/information")} isActive={router.pathname === "/dashboard/profile/information"}>
