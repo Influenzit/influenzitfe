@@ -371,6 +371,12 @@ export const PerformanceCont = styled.div`
     display: flex;
     flex-direction: column;
     row-gap: 18px;
+    ${breakpoints.sm} {
+        .flex {
+            flex-direction: column;
+            row-gap: 10px;
+        }
+    }
 `;
 export const Flex = styled.div`
     display: flex;
@@ -420,6 +426,8 @@ export const EngagementCard = styled.div`
         }
     }
     ${breakpoints.md} {
+        max-width: 100% !important;
+        min-width: 100% !important;
          h3 {
             font-size: 16px;
         }
@@ -466,7 +474,9 @@ export const StatsCard = styled.div`
         }
     }
     ${breakpoints.md} {
-         h3 {
+        max-width: 100% !important;
+        min-width: 100% !important;
+        h3 {
             font-size: 16px;
         }
         h1 {

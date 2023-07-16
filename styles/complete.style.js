@@ -1,6 +1,7 @@
 import { colors } from "./theme";
 
 const { default: styled } = require("styled-components");
+import ReactSlider from "react-slider";
 
 export const Container = styled.div`
     position: fixed;
@@ -46,9 +47,26 @@ export const StepContainer = styled.div`
     display: flex;
     margin: 30px 0;
 `;
+export const StepWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: calc((100% - 32px)/5);
+    row-gap: 5px;
+    span {
+        color: ${({isActive}) => isActive ? colors.textColor : "#94949C"};
+        font-size: 14px;
+    }
+`;
 export const Step = styled.div`
     height: 100%;
     width: calc((100% - 16px)/3);
+    border-radius: 10px;
+    background: ${({isActive}) => isActive ? colors.primaryColor : "#EAEAEB"};
+`
+export const StepB = styled.div`
+    height: 100%;
+    width: 100%;
+    min-height: 4px;
     border-radius: 10px;
     background: ${({isActive}) => isActive ? colors.primaryColor : "#EAEAEB"};
 `
@@ -234,3 +252,45 @@ export const ImagePreview = styled.div`
         border-radius: 8px;
     }
 `;
+export const RangeSlider = styled(ReactSlider)`
+    height: 16px;
+    width: 100%;
+    position: relative;
+`;
+export const SliderThumb = styled.div`
+    height: 16px;
+    width: 16px;
+    border: 2px solid ${colors.primaryColor};
+    text-align: center;
+    background-color: #fff;
+    border-radius: 50%;
+    cursor: grab;
+    position: absolute;
+    top: -5px;
+`;
+export const SliderTrack = styled.div`
+    top: 0;
+    bottom: 0;
+    height: 6px;
+    background: ${props => (props.index === 2 ? "#EAEAEB" : props.index === 1 ? colors.primaryColor : "#EAEAEB")};
+    border-radius: 999px;
+`;
+export const Header = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    button {
+        outline: none;
+        background: transparent;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        column-gap: 10px;
+        font-weight: 500;
+        font-size: 14px;
+        color: ${colors.primaryColor};
+    }
+`;
+export const Thumb = (props) => <SliderThumb {...props} />;
+export const Track = (props, state) => <SliderTrack {...props} index={state.index} />;

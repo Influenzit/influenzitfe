@@ -264,6 +264,55 @@ export const PackageCard = styled.div`
     border-radius: 16px;
     overflow: hidden;
 `;
+export const RWrapper = styled.div`
+    position: sticky;
+    top: 100px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+`;
+export const RCard = styled.div`
+    background: #fff;
+    border: 1px solid #EAEAEB;
+    border-radius: 16px;
+    padding: 24px;
+    h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: ${colors.textColor};
+    }
+    .seperator {
+        height: 1px;
+        background: #EAEAEB;
+        margin: 10px 0px;
+    }
+    p {
+        font-size: 18px;
+        color: #555461;
+        font-weight: 500;
+    }
+    #requirements {
+        padding: 15px 0;
+        div {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #EAEAEB;
+            div {
+                padding: 0;
+                display: flex;
+                column-gap: 5px;
+                border: none;
+            }
+            p {
+                font-size: 14px;
+                font-weight: 500;
+                color: #000;
+                min-width: 50%;
+            }
+        }
+    }
+`;
 export const PackageTabs = styled.div`
     display: flex;
     column-gap: 5px;
@@ -336,7 +385,7 @@ export const ContinueBtn = styled.button`
     background: ${colors.primaryColor};
     border: none;
     color: #fff;
-    padding: 16px 0;
+    padding: 12px 0;
     width: 100%;
     font-weight: 600;
     font-size: 15px;
@@ -380,4 +429,20 @@ export const QAction = styled.div`
         cursor: pointer;
     }
 `;
-
+export const Deliverables = styled.div`
+    margin: 15px 0;
+    div {
+        display: flex;
+        column-gap: 10px;
+        align-items: center;
+        span {
+            height: 6px;
+            width: 6px;
+            border-radius: 50%;
+            background: ${colors.primaryColor};
+        }
+        p {
+            color: #555461;
+        }
+    }
+`;

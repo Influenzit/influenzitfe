@@ -52,3 +52,4 @@ export const getTooltipPosition = (el, tooltip, position, gap) => {
         top: correctedTop,
     };
  }
+ export const formatDate = (date) => (new Date(date)).toISOString().replace(/T.*/, "");

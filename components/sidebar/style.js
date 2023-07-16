@@ -83,6 +83,30 @@ export const NavButton = styled.button`
         background: ${colors.primaryColor};
     } */
 `;
+export const NavButtonD = styled.button`
+    width: 90%;
+    height: 40px;
+    min-height: 40px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0 15px 0 40px;
+    column-gap: 10px;
+    position: relative;
+    font-weight: 500;
+    background: transparent;
+    span {
+        color: ${colors.textColor};
+        font-size: 14px;
+    }
+    :hover {
+        span {
+            color: ${colors.primaryColor};
+        }
+    }
+`;
 export const ProfileImageCont = styled.div`
     margin-bottom: 5px;
     height: 50px;

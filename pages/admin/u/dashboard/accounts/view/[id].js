@@ -23,8 +23,9 @@ import { colors } from 'styles/theme'
 import { WorldMap } from 'react-svg-worldmap'
 import { Country } from 'country-state-city'
 import AdminLayout from 'layouts/admin.layout'
-import { getSingleUser } from 'api/admin'
+import { getSingleUser, updateAccountAdmin } from 'api/admin'
 import { ProjectCard, ProjectDetails, UserMiniCard } from 'styles/dashboard'
+import { ActionBtn, TBody, THead, Table, TableContent, TableHeader, TableWrapped, TableWrapper, Td, Th, Tr, TrH } from 'styles/connect-pages.style'
 
 const CreatorProfile = () => {
     const router = useRouter();
@@ -217,6 +218,36 @@ const CreatorProfile = () => {
         const checker = ["cover_img_1", "cover_img_2", "cover_img_3", "cover_img_4"]
         return list?.filter((val) => checker.includes(val.identifier))
     }
+    const updateAccountMutation = useMutation(
+        (data) => {
+          return updateAccountAdmin(id, data);
+        },
+        {
+          onSuccess(successRes) {
+            const res = successRes.data;
+            toast.success("Account verified successfully", {
+                position: toast.POSITION.TOP_RIGHT
+              });
+            dispatch(setLoading(false));
+            refetchUserData();
+          },
+          onError(error) {
+            const res = error.response.data;
+            dispatch(setLoading(false));
+            if (res) {
+              dispatch(setError({ error: true, message: res.message }));
+              return;
+            }
+            dispatch(setError({ error: true, message: "An error occured" }));
+          },
+        }
+      );
+      const handleSocialToggle = (key, value) => {
+        dispatch(setLoading(true));
+        updateAccountMutation.mutate({
+            [key]: value
+        });
+      }
     useEffect(() => {
         dispatch(setLoading(true));
         if (id) {
@@ -328,6 +359,44 @@ const CreatorProfile = () => {
                                     <Image src={inData?.user?.profile_pic} alt="" layout='fill' objectPosition="center" objectFit="cover" />
                                 </UserImage>
                             </UserCardSection>
+                            <TableWrapped style={{ marginTop: "50px" }}>
+                                <TableHeader>
+                                    <h2>Social Handles</h2>
+                                </TableHeader>
+                                <TableWrapper style={{ marginBottom: "15px" }}>
+                                    <TableContent>
+                                    <Table>
+                                        <THead>
+                                            <TrH>
+                                                <Th cellWidth="370px">Social Media</Th>
+                                                <Th cellWidth="250px">Handle</Th>
+                                                <Th cellWidth="120px">Status</Th>
+                                                <Th cellWidth="200px">Action</Th>
+                                            </TrH>
+                                        </THead>
+                                        <TBody>
+                                            <Tr>
+                                                <Td
+                                                cellWidth="370px">Instagram</Td>
+                                                <Td cellWidth="250px">@{inData?.instagram}</Td>
+                                                <Td cellWidth="120px">{inData?.instagram_verified ? "Verified" : "Not Verified"}</Td>
+                                                <Td cellWidth="200px" style={{ display: "flex",  justifyContent: "space-between", paddingRight: "20px" }}>
+                                                    <ActionBtn onClick={() => handleSocialToggle("instagram_verified", !inData?.instagram_verified)}>{inData?.instagram_verified ? "Disapprove" : "Approve"}</ActionBtn>
+                                                </Td>
+                                            </Tr>
+                                            <Tr>
+                                                <Td cellWidth="370px">Facebook</Td>
+                                                <Td cellWidth="250px">@{inData?.facebook}</Td>
+                                                <Td cellWidth="120px">{inData?.facebook_verified ? "Verified" : "Not Verified"}</Td>
+                                                <Td cellWidth="200px" style={{ display: "flex",  justifyContent: "space-between", paddingRight: "20px" }}>
+                                                    <ActionBtn onClick={() => handleSocialToggle("facebook_verified", !inData?.facebook_verified)}>{inData?.facebook_verified ? "Disapprove" : "Approve"}</ActionBtn>
+                                                </Td>
+                                            </Tr>
+                                        </TBody>
+                                    </Table>
+                                    </TableContent>
+                                </TableWrapper>
+                            </TableWrapped>
                             <Info>
                                 <h3>{inData?.headline}</h3>
                                 <p>{inData?.biography}</p>

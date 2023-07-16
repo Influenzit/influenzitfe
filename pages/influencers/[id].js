@@ -420,11 +420,11 @@ const CreatorProfile = () => {
                                 <Tabs>
                                     <TabBtn isActive={currentTab === "instagram"} onClick={() => setCurrentTab("instagram")}>Instagram</TabBtn>
                                     <TabBtn isActive={currentTab === "youtube"} onClick={() => setCurrentTab("youtube")}>Youtube</TabBtn>
-                                    <TabBtn isActive={currentTab === "facebook"} onClick={() => setCurrentTab("facebook")}>Facebook</TabBtn>
+                                    {/* <TabBtn isActive={currentTab === "facebook"} onClick={() => setCurrentTab("facebook")}>Facebook</TabBtn> */}
                                     <TabBtn isActive={currentTab === "twitter"} onClick={() => setCurrentTab("twitter")}>Twitter</TabBtn>
                                     <TabBtn isActive={currentTab === "tiktok"} onClick={() => setCurrentTab("tiktok")}>TikTok</TabBtn>
                                 </Tabs>
-                                {
+                                {/* {
                                     currentTab === "instagram" && inData?.instagram_verified ? (
                                         <Content>
                                             <h3>Influencer Summary</h3>
@@ -472,7 +472,6 @@ const CreatorProfile = () => {
                                                             <h1>{inData?.analytics?.instagram_insights?.engagement_rate ?? 0}%</h1>
                                                             <div>
                                                                 <p>{generateRatingText(Number(inData?.analytics?.instagram_insights?.engagement_rate ?? "0"))}</p>
-                                                                {/* <span>Higher than 60% of influencers</span> */}
                                                             </div>
                                                         </div>
                                                     </EngagementCard>
@@ -516,8 +515,8 @@ const CreatorProfile = () => {
                                             </EmptyWrapper>
                                         </Content>
                                     )
-                                }
-                                {
+                                } */}
+                                {/* {
                                     currentTab === "facebook" && inData?.facebook_verified ? (
                                         <Content>
                                             <h3>Influencer Summary</h3>
@@ -585,6 +584,78 @@ const CreatorProfile = () => {
                                             <EmptyWrapper>
                                                 <Image src="/empty.png" alt="" height={120} width={120} />
                                                 <h3>Facebook not connected yet</h3>
+                                            </EmptyWrapper>
+                                        </Content>
+                                    )
+                                } */}
+                                {
+                                    currentTab === "instagram" && inData?.instagram_verified ? (
+                                        <Content>
+                                            <h3>Influencer Summary</h3>
+                                            <AnalyticStats style={{ marginBottom: "20px" }}>
+                                                <Stat>
+                                                    <h1>{numberFormatter(Number(inData?.analytics?.instagram_ensemble?.followers_count))}</h1>
+                                                    <p>Followers</p>
+                                                </Stat>
+                                                <Stat isCenter>
+                                                    <h1>{numberFormatter(inData?.analytics?.instagram_ensemble?.follows_count)}</h1>
+                                                    <p>Follow</p>
+                                                </Stat>
+                                                <Stat>
+                                                    <h1>{Number(inData?.analytics?.instagram_ensemble?.engagement_rate ?? "0").toFixed(2)}%</h1>
+                                                    <p>Engagement</p>
+                                                </Stat>
+                                            </AnalyticStats>
+
+                                            <PerformanceCont>
+                                                <Flex className='flex'>
+                                                    <EngagementCard>
+                                                        <h3>Engagement Rate</h3>
+                                                        <div id="wrapper">
+                                                            <h1>{Number(inData?.analytics?.instagram_ensemble?.engagement_rate ?? "0").toFixed(2)}%</h1>
+                                                            <div>
+                                                                <p>{generateRatingText(Number(inData?.analytics?.instagram_ensemble?.engagement_rate ?? "0"))}</p>
+                                                                {/* <span>Higher than 60% of influencers</span> */}
+                                                            </div>
+                                                        </div>
+                                                    </EngagementCard>
+                                                    <StatsCard>
+                                                        <h3>Avg. likes per post</h3>
+                                                        <div>
+                                                            <span>
+                                                                <Image src="/heart-p.svg" alt="heart" height={25} width={25} />
+                                                            </span>
+                                                            <h1>{numberFormatter(Number(inData?.analytics?.instagram_ensemble?.average_likes))}</h1>
+                                                        </div>
+                                                    </StatsCard>
+                                                </Flex>
+                                                <Flex className='flex'>
+                                                    <StatsCard>
+                                                        <h3>Avg. comments per post</h3>
+                                                        <div>
+                                                            <span>
+                                                                <Image src="/comment.svg" alt="heart" height={25} width={25} />
+                                                            </span>
+                                                            <h1>{numberFormatter(Number(inData?.analytics?.instagram_ensemble?.average_comments))}</h1>
+                                                        </div>
+                                                    </StatsCard>
+                                                    {/* <StatsCard>
+                                                        <h3>Profile views</h3>
+                                                        <div>
+                                                            <span>
+                                                                <Image src="/eye.svg" alt="heart" height={25} width={25} />
+                                                            </span>
+                                                            <h1>{numberFormatter(inData?.analytics?.facebook?.page_views_total)}</h1>
+                                                        </div>
+                                                    </StatsCard> */}
+                                                </Flex>
+                                            </PerformanceCont>
+                                        </Content>
+                                    ) : (currentTab === "instagram") && (
+                                        <Content>
+                                            <EmptyWrapper>
+                                                <Image src="/empty.png" alt="" height={120} width={120} />
+                                                <h3>Instagram not connected yet</h3>
                                             </EmptyWrapper>
                                         </Content>
                                     )

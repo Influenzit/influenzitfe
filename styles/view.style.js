@@ -241,6 +241,13 @@ export const ShareContainer = styled.div`
         align-items: center;
         justify-content: space-between;
         margin-top: 20px;
+        input {
+            background: transparent;
+            height: 100%;
+            border: none;
+            outline: none;
+            width: 100%;
+        }
         button {
             outline: none;
             background: transparent;

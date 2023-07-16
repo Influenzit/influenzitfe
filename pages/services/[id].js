@@ -84,6 +84,7 @@ import { Answer, Faq, Question } from "../../styles/home.style";
 import { Listing, Bottom } from "../../styles/creator-profile.style";
 import ServiceCard from "../../components/service-card";
 import { ShareContainer, UpdateModal } from "styles/view.style";
+import { WelcomeModal } from "styles/connect-pages.style";
 
 function NextArrow(props) {
   const { className, style, onClick } = props;
@@ -119,6 +120,7 @@ const ServiceView = () => {
   const { id } = router.query;
   const [linkCopied, setLinkCopied] = useState(false);
   const [showShare, setShowShare] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
   const { data: serviceData, refetch: refetchServiceData } = useQuery(
     ["get-service"],
     async () => {
@@ -197,11 +199,11 @@ const ServiceView = () => {
       setPackageType(formattedPackages[0]);
     }
   }, [serviceData]);
-  const onPaymentSuccess = (res) => {
+  const onPaymentSuccess = (reference, channel) => {
     dispatch(setLoading(true));
     processPayment({
-      channel: "paystack",
-      payment_reference: res.reference,
+      channel,
+      payment_reference: reference,
     })
       .then((successRes) => {
         dispatch(setLoading(false));
@@ -237,21 +239,25 @@ const ServiceView = () => {
           dispatch(setError({ error: true, message: res.message }));
         } else {
           dispatch(setLoading(false));
-          setPaystackConfig({
-            reference: res.data.payment_reference,
-            email: user.email,
-            amount: Number(res.data.amount) * 100,
-            publicKey: "pk_test_9d97cf0be86b0758ece444694d57a8db41a4be59",
-          });
-          setTriggerPayment(!triggerPayment);
-          setMakePayment(true);
+          if(res.data.channel === "paystack") {
+            setPaystackConfig({
+              reference: res.data.payment_reference,
+              email: user.email,
+              amount: Number(res.data.amount) * 100,
+              publicKey: "pk_test_9d97cf0be86b0758ece444694d57a8db41a4be59",
+            });
+            setTriggerPayment(!triggerPayment);
+            setMakePayment(true);
+          }
         }
       },
       onError(error) {
         const res = error.response.data;
         if (res) {
           dispatch(setLoading(false));
-          dispatch(setError({ error: true, message: res.message }));
+          toast.error(res.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
           return;
         }
         dispatch(setLoading(false));
@@ -260,13 +266,14 @@ const ServiceView = () => {
     }
   );
   // handles create Service
-  const handleCreatePaymentLog = () => {
+  const handleCreatePaymentLog = (channel) => {
+    setShowPayment(false);
     if (!!user) {
       if (accountType === "Business Owner") {
         if (inData?.user?.id !== user.id) {
           dispatch(setLoading(true));
           createPaymentLogMutation.mutate({
-            channel: "paystack",
+            channel,
             payment_type: "service_payment",
             amount: getCurrentPackage()?.amount,
             currency: getCurrentPackage()?.currency,
@@ -295,7 +302,7 @@ const ServiceView = () => {
   };
   useEffect(() => {
     if (makePayment) {
-      initializePayment(onPaymentSuccess, onPaymentClose);
+      initializePayment((res) => {onPaymentSuccess(res.reference, "paystack")}, onPaymentClose);
       setMakePayment(false);
     }
   }, [triggerPayment]);
@@ -474,11 +481,11 @@ const ServiceView = () => {
                     </Feature>
                   ))}
                 </PFeatures>
-                <ContinueBtn onClick={handleCreatePaymentLog}>
+                <ContinueBtn onClick={() => setShowPayment(true)}>
                   <span>Continue</span>{" "}
                   <Image src="/arrow-w.svg" alt="" width={12} height={11} />
                 </ContinueBtn>
-                <MessageBtn onClick={handleCreatePaymentLog}>
+                <MessageBtn onClick={() => {}}>
                   <Image src="/envelope-p.svg" alt="" width={18} height={15} />{" "}
                   <span>Message</span>
                 </MessageBtn>
@@ -529,6 +536,21 @@ const ServiceView = () => {
           </ShareContainer>
         </UpdateModal>
       )}
+       {
+          showPayment && (
+              <UpdateModal>
+                  <WelcomeModal>
+                      <div>
+                          <button onClick={() => setShowPayment(false)}><Image src="/cancel.svg" alt="" height={14} width={14} /></button>
+                      </div>
+                      <p>Select Payment Channel</p>
+                      <div style={{ display: "flex", justifyContent: "center", columnGap: "20px" }}>
+                          <button onClick={() => handleCreatePaymentLog("wallet")}>Wallet</button>
+                          <button onClick={() => handleCreatePaymentLog("paystack")}>Paystack</button>
+                      </div>
+                  </WelcomeModal>
+              </UpdateModal>
+        )}
     </Container>
   );
 };
