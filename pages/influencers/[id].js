@@ -425,7 +425,7 @@ const CreatorProfile = () => {
                                     <TabBtn isActive={currentTab === "tiktok"} onClick={() => setCurrentTab("tiktok")}>TikTok</TabBtn>
                                 </Tabs>
                                 {
-                                    currentTab === "instagram" && inData?.instagram_verified && inData.analytics.instagram.type !== "ENSEMBLE_INSTAGRAM_USER" ? (
+                                    currentTab === "instagram" && inData?.instagram_verified && inData?.analytics?.options?.instagram_source === "facebook" ? (
                                         <Content>
                                             <h3>Influencer Summary</h3>
                                             <AnalyticStats>
@@ -507,7 +507,7 @@ const CreatorProfile = () => {
                                                 </Flex>
                                             </PerformanceCont>
                                         </Content>
-                                    ) : (currentTab === "instagram") && inData.analytics.instagram.type !== "ENSEMBLE_INSTAGRAM_USER" && (
+                                    ) : (currentTab === "instagram") && inData?.analytics?.options?.instagram_source === "facebook" && (
                                         <Content>
                                             <EmptyWrapper>
                                                 <Image src="/empty.png" alt="" height={120} width={120} />
@@ -589,20 +589,20 @@ const CreatorProfile = () => {
                                     )
                                 }
                                 {
-                                    currentTab === "instagram" && inData?.instagram_verified && inData.analytics.instagram.type === "ENSEMBLE_INSTAGRAM_USER" ? (
+                                    currentTab === "instagram" && inData?.instagram_verified && inData?.analytics?.options?.instagram_source === "ensemble" ? (
                                         <Content>
                                             <h3>Influencer Summary</h3>
                                             <AnalyticStats style={{ marginBottom: "20px" }}>
                                                 <Stat>
-                                                    <h1>{numberFormatter(Number(inData?.analytics?.instagram?.followers_count))}</h1>
+                                                    <h1>{numberFormatter(Number(inData?.analytics?.instagram_ensemble?.followers_count))}</h1>
                                                     <p>Followers</p>
                                                 </Stat>
                                                 <Stat isCenter>
-                                                    <h1>{numberFormatter(inData?.analytics?.instagram?.follows_count)}</h1>
+                                                    <h1>{numberFormatter(inData?.analytics?.instagram_ensemble?.follows_count)}</h1>
                                                     <p>Follow</p>
                                                 </Stat>
                                                 <Stat>
-                                                    <h1>{Number(inData?.analytics?.instagram?.engagement_rate ?? "0").toFixed(2)}%</h1>
+                                                    <h1>{Number(inData?.analytics?.instagram_ensemble?.engagement_rate ?? "0").toFixed(2)}%</h1>
                                                     <p>Engagement</p>
                                                 </Stat>
                                             </AnalyticStats>
@@ -612,9 +612,9 @@ const CreatorProfile = () => {
                                                     <EngagementCard>
                                                         <h3>Engagement Rate</h3>
                                                         <div id="wrapper">
-                                                            <h1>{Number(inData?.analytics?.instagram?.engagement_rate ?? "0").toFixed(2)}%</h1>
+                                                            <h1>{Number(inData?.analytics?.instagram_ensemble?.engagement_rate ?? "0").toFixed(2)}%</h1>
                                                             <div>
-                                                                <p>{generateRatingText(Number(inData?.analytics?.instagram?.engagement_rate ?? "0"))}</p>
+                                                                <p>{generateRatingText(Number(inData?.analytics?.instagram_ensemble?.engagement_rate ?? "0"))}</p>
                                                                 {/* <span>Higher than 60% of influencers</span> */}
                                                             </div>
                                                         </div>
@@ -625,7 +625,7 @@ const CreatorProfile = () => {
                                                             <span>
                                                                 <Image src="/heart-p.svg" alt="heart" height={25} width={25} />
                                                             </span>
-                                                            <h1>{numberFormatter(Number(inData?.analytics?.instagram?.average_likes))}</h1>
+                                                            <h1>{numberFormatter(Number(inData?.analytics?.instagram_ensemble?.average_likes))}</h1>
                                                         </div>
                                                     </StatsCard>
                                                 </Flex>
@@ -636,7 +636,7 @@ const CreatorProfile = () => {
                                                             <span>
                                                                 <Image src="/comment.svg" alt="heart" height={25} width={25} />
                                                             </span>
-                                                            <h1>{numberFormatter(Number(inData?.analytics?.instagram?.average_comments))}</h1>
+                                                            <h1>{numberFormatter(Number(inData?.analytics?.instagram_ensemble?.average_comments))}</h1>
                                                         </div>
                                                     </StatsCard>
                                                     {/* <StatsCard>
