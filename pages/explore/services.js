@@ -140,7 +140,7 @@ const Search = () => {
                         </Filter>
                         <ListWrapper>
                             {
-                                serviceList.length > 0 ?
+                                serviceList.length > 0 &&
                                 serviceList.map((val, i) => {
                                     return (
                                         <ServiceCard
@@ -153,15 +153,18 @@ const Search = () => {
                                             profileImg={val.user.profile_pic}
                                         />
                                     )
-                                }) : (
-                                    <EmptySearch>
-                                        <Image src="/i-empty.svg" alt="" height={150} width={150} />
-                                        <h1>No services found</h1>
-                                        <p>We have no services that match your search terms</p>
-                                    </EmptySearch>
-                                )
+                                })
                             }
                         </ListWrapper>
+                        {
+                            (
+                                firstLoad ? <Loader /> : serviceList.length === 0 ? ( <EmptySearch>
+                                    <Image src="/i-empty.svg" alt="" height={150} width={150} />
+                                    <h1>No services found</h1>
+                                    <p>We have no services that match your search terms</p>
+                                </EmptySearch>) : null
+                            )
+                        }
                         {
                             isLoading && <Loader />
                         }

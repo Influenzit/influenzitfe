@@ -141,7 +141,7 @@ const Search = () => {
                         </Filter>
                         <ListWrapper>
                             {
-                                requestList.length > 0 ?
+                                requestList.length > 0 &&
                                 requestList.map((req, i) => {
                                     return (
                                         <CampaignCard
@@ -155,15 +155,18 @@ const Search = () => {
                                             reqPlatform={JSON.parse(req.requirements.filter((val) => val.name === "platforms")[0]?.value ?? "[]")}
                                         />
                                     )
-                                }) : (
-                                    <EmptySearch>
-                                        <Image src="/i-empty.svg" alt="" height={150} width={150} />
-                                        <h1>No campaign requests found</h1>
-                                        <p>We have no services that match your search terms</p>
-                                    </EmptySearch>
-                                )
+                                })
                             }
                         </ListWrapper>
+                        {
+                            (
+                                firstLoad ? <Loader /> : requestList.length === 0 ? (<EmptySearch>
+                                    <Image src="/i-empty.svg" alt="" height={150} width={150} />
+                                    <h1>No campaign requests found</h1>
+                                    <p>We have no services that match your search terms</p>
+                                </EmptySearch>) : null
+                            )
+                        }
                         {
                             isLoading && <Loader />
                         }
