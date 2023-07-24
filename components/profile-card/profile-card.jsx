@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { Container, Controls, CreatorDetails, SocialHandle, Stats, TopImg } from './style'
 
-const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink, skills, rating}) => {
+const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink, skills, rating, platforms}) => {
     const router = useRouter();
     return (
     <Container>
@@ -17,11 +17,11 @@ const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink, skills, r
         <CreatorDetails onClick={() => router.push(profileLink)}>
             <Stats>
                 <div>
-                    <Image src="/facebook-icon.svg" alt="" height={12} width={12}/>
-                    <Image src="/instagram-icon.svg" alt="" height={12} width={12}/>
-                    <Image src="/twitter-icon.svg" alt="" height={12} width={12}/>
-                    <Image src="/tiktok-icon.svg" alt="" height={12} width={12}/>
-                    <Image src="/youtube-icon.svg" alt="" height={12} width={12}/>
+                    { platforms.facebook_verified && <Image src="/facebook-icon.svg" alt="" height={12} width={12}/> }
+                    { platforms.instagram_verified && <Image src="/instagram-icon.svg" alt="" height={12} width={12}/> }
+                    { platforms.twitter_verified && <Image src="/twitter-icon.svg" alt="" height={12} width={12}/> }
+                    { platforms.tiktok_verified && <Image src="/tiktok-icon.svg" alt="" height={12} width={12}/> }
+                    { platforms.youtube_verified && <Image src="/youtube-icon.svg" alt="" height={12} width={12}/> }
                 </div>
                 <div>
                     <Image src="/star-p.svg" alt="" height={15} width={15}/>
