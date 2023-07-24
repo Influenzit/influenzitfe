@@ -160,11 +160,12 @@ const Search = () => {
                                         profileLink={`/influencers/${val.slug}`}
                                         imgSrc={val?.user.profile_pic ?? '/niche8.png'  }
                                         handle={val.twitter}
-                                        name={`${val.user.firstname} ${val.user.lastname}`}
+                                        name={val.user.display_name ?? ""}
                                         sex={val.gender}
                                         rating={val.rating.rating_count}
-                                        skills={val.user.email}
+                                        skills={genSkills}
                                         address={val.address}
+                                        platforms={val}
                                     />
                                 })
                             }

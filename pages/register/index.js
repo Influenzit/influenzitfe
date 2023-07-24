@@ -28,6 +28,7 @@ const Register = () => {
   const [oneLC, setOneLC] = useState(false);
   const [oneUC, setOneUC] = useState(false);
   const [oneNum, setOneNum] = useState(false);
+  const [oneSpecial, setOneSpecial] = useState(false);
   const [isMinLen, setIsMinLen] = useState(false)
   const [passwordMatch, setPasswordMatch] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
@@ -39,7 +40,8 @@ const Register = () => {
     password_confirmation: "",
     account_type: "Business",
     business_name: "",
-    referral_code: ""
+    referral_code: "",
+    display_name: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
@@ -78,6 +80,7 @@ const Register = () => {
             setOneUC(false);
             setOneNum(false);
             setPasswordMatch(false);
+            setOneSpecial(false);
             return;
         }
         const asciiList = value.split("").map(val => val.charCodeAt());
@@ -122,6 +125,18 @@ const Register = () => {
                 return true;
             }
         })
+        // special characters 33 to 47 | 58 to 64 | 91 to 96 | 123 to 126
+        asciiList.every((val, i) => {
+          if((val >= 33 && val <= 47) || (val >= 58 && val <= 64) || (val >= 91 && val <= 96) || (val >= 123 && val <= 126)){
+              setOneSpecial(true);
+              return false;
+          } else {
+              if (i === asciiList.length - 1) {
+                  setOneSpecial(false)
+              }
+              return true;
+          }
+      })
         if (value === formVal.password_confirmation) {
             setPasswordMatch(true)
         } else {
@@ -241,7 +256,8 @@ const Register = () => {
           password_confirmation: formVal.password_confirmation,
           account_type: formVal.account_type,
           business_name: formVal.business_name,
-          referral_code: formVal.referral_code
+          referral_code: formVal.referral_code,
+          display_name: formVal.display_name
       })
     }
   }
@@ -419,6 +435,16 @@ const Register = () => {
                   </select>
                 </InputContainer>
               </FlexInput>
+              <InputContainer hasContent={formVal.display_name}>
+                  <label>Brand Name<span style={{ color:"red" }}>*</span></label>
+                  <Input
+                  type="text"
+                  value={formVal.display_name}
+                  placeholder="Enter your brand name"
+                  onChange={(e) => handleInputChange(e.target.value, "display_name")}
+                  required
+                  />
+                </InputContainer>
               {
                 formVal.account_type === "Business" && (
                   <InputContainer hasContent={formVal.email}>
@@ -470,6 +496,7 @@ const Register = () => {
                   <p className={`text-sm flex items-center gap-x-2 ${isMinLen ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{isMinLen ? <CheckIcon /> : <CancelIcon />}</span> <span>Length between 8 and 60 characters</span></p>
                   <p className={`text-sm flex items-center gap-x-2 ${oneLC ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneLC ? <CheckIcon /> : <CancelIcon />} </span><span>At least one lowercase character</span></p>
                   <p className={`text-sm flex items-center gap-x-2 ${oneUC ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneUC ? <CheckIcon /> : <CancelIcon />}</span> <span>At least one uppercase character</span></p>
+                  <p className={`text-sm flex items-center gap-x-2 ${oneSpecial ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneSpecial ? <CheckIcon /> : <CancelIcon />}</span> <span>At least one special character</span></p>
                   <p className={`text-sm flex items-center gap-x-2 ${oneNum ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneNum ? <CheckIcon /> : <CancelIcon />} </span><span>At least one number</span></p>
                   <p className={`text-sm flex items-center gap-x-2 ${passwordMatch ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{passwordMatch ? <CheckIcon /> : <CancelIcon />}</span> <span>Password must match</span></p>
                 </div>) : null
