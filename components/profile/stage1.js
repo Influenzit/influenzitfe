@@ -19,6 +19,7 @@ function Stage1({ user }) {
   const [email, setemail] = useState(null);
   const [phone, setphone] = useState(null);
   const [phoneCode, setPhoneCode] = useState(+234);
+  const [displayName, setDisplayName] = useState("");
   const [loading, setloading] = useState(null);
 
   const handleAccountUpdate = () => {
@@ -34,6 +35,7 @@ function Stage1({ user }) {
       lastname,
       phone1: phone,
       email,
+      display_name: displayName,
     };
 
     updateAccount(user.id, payload)
@@ -68,6 +70,7 @@ function Stage1({ user }) {
       setemail(user?.email ?? "");
       setfirstname(user?.firstname ?? "");
       setlastname(user?.lastname ?? "");
+      setDisplayName(user?.display_name ?? "");
     }
   }, [user]);
   return (
@@ -134,10 +137,30 @@ function Stage1({ user }) {
                 <input
                   type="text"
                   className="bg-transparent outline-none w-full flex-1"
-                  placeholder="olivia@untitledui.com"
+                  placeholder="Enter email"
                   value={email}
                   onChange={(e) => {
                     setemail(e.target.value);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
+          <div className="col-span-3 py-5">
+            <h1 className="text-[#344054]">Brand Name</h1>
+          </div>
+          <div className="col-span-6">
+            <div className="col-span-6">
+              <div className=" flex space-x-3 px-3 py-2 rounded-lg border  bg-transparent outline-none w-full">
+                <input
+                  type="text"
+                  className="bg-transparent outline-none w-full flex-1"
+                  placeholder="Enter brand name"
+                  value={displayName}
+                  onChange={(e) => {
+                    setDisplayName(e.target.value);
                   }}
                 />
               </div>

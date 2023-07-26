@@ -144,7 +144,7 @@ const Search = () => {
                         </Filter>
                         <ListWrapper>
                             {
-                               creatorList.length > 0 ? (
+                               creatorList.length > 0 && (
                                 creatorList.map((val, i) => {
                                     let genSkills = "";
                                     val.skills.forEach((val, i) => {
@@ -167,15 +167,18 @@ const Search = () => {
                                         skills={val.user.email}
                                         address={val.address}
                                     />
-                                })) : (
-                                    <EmptySearch>
-                                        <Image src="/i-empty.svg" alt="" height={150} width={150} />
-                                        <h1>No creators found</h1>
-                                        <p>We have no creators that match your search terms</p>
-                                    </EmptySearch>
-                                )
+                                }))
                             }
                         </ListWrapper>
+                        {
+                            (
+                                firstLoad ? <Loader /> : creatorList.length === 0 ? ( <EmptySearch>
+                                    <Image src="/i-empty.svg" alt="" height={150} width={150} />
+                                    <h1>No creators found</h1>
+                                    <p>We have no creators that match your search terms</p>
+                                </EmptySearch>) : null
+                            )
+                        }
                         {isLoading && <Loader />}
                         {
                             !user && (

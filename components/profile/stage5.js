@@ -104,7 +104,7 @@ const Stage5 = ({user}) => {
         <div>
             <SocialMediaContainer>
                 <h1>Twitter</h1>
-                <SocialCardList>
+                {/* <SocialCardList>
                     {getTwitterList()?.length ? (
                         getTwitterList()?.map((account, i) => (
                             <SocialCard key={i}>
@@ -120,8 +120,9 @@ const Stage5 = ({user}) => {
                         ))
                     ): <p>No Twitter account connected</p>
                     }
-                </SocialCardList>
-                <Link href={`${process.env.NEXT_PUBLIC_API_URI}/connect?provider=twitter&user=${user?.id}`}>
+                </SocialCardList> */}
+                <p>Connection of Twitter is coming soon</p>
+                {/* <Link href={`${process.env.NEXT_PUBLIC_API_URI}/connect?provider=twitter&user=${user?.id}`}>
                     <a>
                         <Image
                             src={twitter}
@@ -132,7 +133,7 @@ const Stage5 = ({user}) => {
                         />
                         <span>Connect</span>
                     </a>
-                </Link>
+                </Link> */}
             </SocialMediaContainer>
             <SocialMediaContainer>
                 <h1>TikTok</h1>
