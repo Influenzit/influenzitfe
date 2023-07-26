@@ -191,7 +191,7 @@ const CreatorProfile = () => {
     const handleStartConversation = () => {
         if (user?.id) {
             startConversationMutation.mutate({
-                to_user_id: inData.user_id,
+                to_user_id: inData?.user_id,
                 text: "Hi " + inData?.user?.firstname,
             })
         } else {
@@ -421,7 +421,7 @@ const CreatorProfile = () => {
                                     <TabBtn isActive={currentTab === "instagram"} onClick={() => setCurrentTab("instagram")}>Instagram</TabBtn>
                                     <TabBtn isActive={currentTab === "youtube"} onClick={() => setCurrentTab("youtube")}>Youtube</TabBtn>
                                     <TabBtn isActive={currentTab === "facebook"} onClick={() => setCurrentTab("facebook")}>Facebook</TabBtn>
-                                    <TabBtn isActive={currentTab === "twitter"} onClick={() => setCurrentTab("twitter")}>Twitter</TabBtn>
+                                    {/* <TabBtn isActive={currentTab === "twitter"} onClick={() => setCurrentTab("twitter")}>Twitter</TabBtn> */}
                                     <TabBtn isActive={currentTab === "tiktok"} onClick={() => setCurrentTab("tiktok")}>TikTok</TabBtn>
                                 </Tabs>
                                 {
@@ -536,7 +536,7 @@ const CreatorProfile = () => {
                                             </AnalyticStats>
 
                                             <PerformanceCont>
-                                                <Flex>
+                                                <Flex className='flex'>
                                                     <EngagementCard>
                                                         <h3>Engagement Rate</h3>
                                                         <div id="wrapper">
@@ -557,7 +557,7 @@ const CreatorProfile = () => {
                                                         </div>
                                                     </StatsCard>
                                                 </Flex>
-                                                <Flex>
+                                                <Flex className='flex'>
                                                     <StatsCard>
                                                         <h3>Impressions</h3>
                                                         <div>
