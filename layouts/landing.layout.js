@@ -146,7 +146,20 @@ const LandingLayout = ({children, title, description}) => {
   if ((isLoggedIn || !router.pathname.includes("/dashboard")) && show) {
     return (
       <Container>
+          <noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K5F8M5ZL"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+          </noscript>
          <Head>
+          <script>
+            {
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-K5F8M5ZL')
+            }
+          </script>
           <title>{title ? title : "INFLUENZIT  - The Number One Influencer Marketing Platform In Nigeria."}</title>
           <meta name="description" content={description} />
           <meta name="facebook-domain-verification" content="yaoox27tyrn1d5eslbbvp1d9w4lwnj" />
@@ -168,11 +181,11 @@ const LandingLayout = ({children, title, description}) => {
           <meta http-equiv="Permissions-Policy" content="camera=(); battery=(self); geolocation=(); microphone=(self)" />
           <meta http-equiv="Referrer-Policy" content="origin-when-cross-origin" />
         </Head>
-        {(!!user && user?.is_admin) ? (
-           <AdminNav />
-        ): (
-          <Nav />
-        )}
+          {(!!user && user?.is_admin) ? (
+            <AdminNav />
+          ): (
+            <Nav />
+          )}
           {loadingStatus && <Loader />}
           {errorStatus && <ErrorPopup message={message} />}
           {successStatus && <SuccessPopup message={message} />}
