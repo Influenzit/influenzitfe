@@ -29,7 +29,7 @@ const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink, skills, r
                 </div>
             </Stats>
             <h4>{name}</h4>
-            <p>{skills ? skills : "No skills"}</p>
+            <p>{skills ? skills : "No industry"}</p>
         </CreatorDetails>
     </Container>
   )

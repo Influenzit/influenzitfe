@@ -226,7 +226,6 @@ const CreatorProfile = () => {
         return list?.filter((val) => checker.includes(val.identifier))
     }
     useEffect(() => {
-        dispatch(setLoading(true));
         refetchInfluencersData();
         if (id) {
             refetchInfluencerData();
@@ -248,7 +247,10 @@ const CreatorProfile = () => {
         }
     }
     return (
+
         <Container>
+            {inData ? 
+            <>
             <HeroSectionOne>
                 {/* <BackImage>
                 <UserCard>
@@ -885,7 +887,7 @@ const CreatorProfile = () => {
                             <h3>Performance</h3>
                             <Campaign>
                                 <div className='cont'>
-                                    <h1>{inData?.analytics.influenzit.completed_campaigns_count}</h1>
+                                    <h1>{inData?.analytics?.influenzit.completed_campaigns_count}</h1>
                                     <p>Completed <br /> Campaigns</p>
                                 </div>
                                 <div className='cont'>
@@ -984,12 +986,13 @@ const CreatorProfile = () => {
                                     return <ProfileCard
                                         key={i}
                                         profileLink={`/influencers/${val.id}`}
-                                        imgSrc={val?.media?.filter(med => med.identifier === 'profile_pic')?.[0]?.url ?? '/niche8.png'}
+                                        imgSrc={val?.user?.profile_pic}
                                         handle={val.twitter}
                                         name={`${val.user.firstname} ${val.user.lastname}`}
                                         sex={val.gender}
                                         skills={genSkills}
                                         address={val.address}
+                                        platforms={val}
                                     />
                                 })
                             }
@@ -1021,6 +1024,8 @@ const CreatorProfile = () => {
                     </FormContainer>
                 </UpdateModal>
             )}
+            </> : <div style={{ minHeight: "50vh", display: "flex", alignItems: 'center', justifyContent: "center" }}><p style={{ textAlign: 'center' }}>Fetching Influencer...</p></div>
+            }
         </Container>
     )
 }
