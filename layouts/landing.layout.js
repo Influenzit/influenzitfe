@@ -51,7 +51,9 @@ const LandingLayout = ({children, title, description}) => {
             localStorage.clear();
             dispatch(clearUser());
             dispatch(clearBusiness());
-            router.replace("/login");
+            if(router.pathname.includes("/dashboard")) {
+              router.replace("/login");
+            }
           } else {
             localStorage.clear();
             if(router.pathname.includes("/dashboard")) {
@@ -87,7 +89,7 @@ const LandingLayout = ({children, title, description}) => {
       const lastTime = Number(localStorage.getItem("last-activity") ?? "0");
       const allowedTime = Number(process.env.NEXT_PUBLIC_ALLOWED_INACTIVITY_TIME ?? "5000");
       if((Date.now() - lastTime) > allowedTime) {
-       if(localStorage.getItem("token")) {
+       if(localStorage.getItem("token") && user) {
         dispatch(setLogoutModal(true));
        }
       }

@@ -14,13 +14,14 @@ const LogoutModal = ({message}) => {
   const dispatch = useDispatch();
   const [timeRemaining, setTimeRemaining] = useState(30);
   const router = useRouter();
+  const [logging, setLogging] = useState(false);
   const logoutMutation = useMutation(
     () => {
       return logoutUser();
     },
     {
       onSuccess(successRes) {
-        dispatch(setLoading(false));
+        setLogging(false);
         localStorage.clear();
         dispatch(clearUser());
         dispatch(clearBusiness());
@@ -29,12 +30,14 @@ const LogoutModal = ({message}) => {
       },
       onError(error) {
         const res = error.response.data;
-        dispatch(setLoading(false));
+        setLogging(false);
+        dispatch(setLogoutModal(false));
       },
     }
   );
   const logout = () => {
-    dispatch(setLoading(true));
+    // dispatch(setLoading(true));
+    setLogging(true);
     logoutMutation.mutate();
   }
   const handleClose = () => {
@@ -67,7 +70,7 @@ const LogoutModal = ({message}) => {
           <p>You will be logged out because of inactivity in ...</p>
           <h2>{timeRemaining} secs</h2>
           <div>
-              <button onClick={() => setTimeRemaining(0)}>Logout</button>
+              <button onClick={() => setTimeRemaining(0)}>{logging ? "Logging out..." : "Logout"}</button>
           </div>
       </WelcomeModal>
     </UpdateModal>
