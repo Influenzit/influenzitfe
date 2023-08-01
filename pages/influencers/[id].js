@@ -427,7 +427,7 @@ const CreatorProfile = () => {
                                     <TabBtn isActive={currentTab === "tiktok"} onClick={() => setCurrentTab("tiktok")}>TikTok</TabBtn>
                                 </Tabs>
                                 {
-                                    currentTab === "instagram" && inData?.instagram_verified && inData?.analytics?.options?.instagram_source === "facebook" ? (
+                                    currentTab === "instagram" && inData?.analytics?.instagram && inData?.analytics?.options?.instagram_source === "facebook" ? (
                                         <Content>
                                             <h3>Influencer Summary</h3>
                                             <AnalyticStats>
@@ -519,7 +519,7 @@ const CreatorProfile = () => {
                                     )
                                 }
                                 {
-                                    currentTab === "facebook" && inData?.facebook_verified ? (
+                                    currentTab === "facebook" && inData?.analytics?.facebook ? (
                                         <Content>
                                             <h3>Influencer Summary</h3>
                                             <AnalyticStats style={{ marginBottom: "20px" }}>
@@ -591,7 +591,7 @@ const CreatorProfile = () => {
                                     )
                                 }
                                 {
-                                    currentTab === "instagram" && inData?.instagram_verified && inData?.analytics?.options?.instagram_source === "ensemble" ? (
+                                    currentTab === "instagram" && inData?.analytics?.instagram_ensemble && inData?.analytics?.options?.instagram_source === "ensemble" ? (
                                         <Content>
                                             <h3>Influencer Summary</h3>
                                             <AnalyticStats style={{ marginBottom: "20px" }}>
@@ -663,7 +663,7 @@ const CreatorProfile = () => {
                                     )
                                 }
                                 {
-                                    currentTab === "twitter" && inData?.twitter_verified ? (
+                                    currentTab === "twitter" && inData?.analytics?.twitter ? (
                                         <Content>
                                             <h3>Influencer Summary</h3>
                                             <AnalyticStats style={{ marginBottom: "20px" }}>
@@ -691,7 +691,7 @@ const CreatorProfile = () => {
                                     )
                                 }
                                 {
-                                    currentTab === "tiktok" && inData?.tiktok_verified ? (
+                                    currentTab === "tiktok" && inData?.analytics?.tiktok ? (
                                         <Content>
                                             <h3>Influencer Summary</h3>
                                             <AnalyticStats style={{ marginBottom: "20px" }}>
@@ -719,7 +719,7 @@ const CreatorProfile = () => {
                                     )
                                 }
                                 {
-                                    currentTab === "youtube" && inData?.youtube_verified ? (
+                                    currentTab === "youtube" && inData?.analytics?.youtube ? (
                                         <Content>
                                             <h3>Influencer Summary</h3>
                                             <AnalyticStats>
