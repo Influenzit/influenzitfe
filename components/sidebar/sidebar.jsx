@@ -151,6 +151,13 @@ const Sidebar = () => {
         <StarOutlineIcon />
         <span>Reviews</span>
       </NavButton>
+      <NavButton
+        onClick={() => handleRouting("/dashboard/referrals")}
+        isActive={router.pathname === "/dashboard/referrals"}
+      >
+        <UserIcon />
+        <span>Referrals</span>
+      </NavButton>
       {/* <NavButton onClick={() => router.push("/dashboard/profile/password")} isActive={router.pathname.includes("/dashboard/profile/password")}>
             <LockIcon />
             <span>Security</span>

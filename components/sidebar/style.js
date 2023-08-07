@@ -18,19 +18,7 @@ export const Container = styled.div`
     overflow-y: scroll;
     top: 70px;
     border-right: 1px solid #EAEAEB;
-    :hover {
-        scrollbar-color: ${colors.primaryColor} ${colors.primaryColor}11;
-
-        ::-webkit-scrollbar-thumb {
-            background-color: ${colors.primaryColor};
-        }
-        ::-webkit-scrollbar {
-            background-color: ${colors.primaryColor}11;
-            width: 3px;
-        }
-    }
-    scrollbar-color: transparent transparent;
-
+    scrollbar-color: ${colors.primaryColor} ${colors.primaryColor}11;
     ::-webkit-scrollbar-thumb {
         background-color: transparent;
     }

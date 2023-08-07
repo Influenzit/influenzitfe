@@ -405,13 +405,16 @@ const Campaigns = () => {
                     <div>
                       {review ? (
                         <ReviewCard>
-                          <h2 style={{ display: "flex", columnGap: "7px" }}>{review.rating} <ReactStars
-                            isHalf={true}
-                            count={5}
-                            value={Number(review.rating) ?? 1}
-                            size={15}
-                            activeColor="#DF475C"
-                          /></h2>
+                          <h2 style={{ display: "flex", columnGap: "7px" }}>
+                          <ReactStars
+                                isHalf={true}
+                                count={5}
+                                value={Number(review.rating) ?? 0}
+                                size={20}
+                                edit={false}
+                                activeColor="#DF475C"
+                            />
+                          </h2>
                           <p>{review.comment}</p>
                         </ReviewCard>
                       ): (

@@ -17,6 +17,8 @@ import { useSelector } from 'react-redux';
 import { getUserType } from 'app/reducers/status';
 import { getUser } from 'app/reducers/user';
 import { toast } from 'react-toastify';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function NextArrow(props) {
     const { className, style, onClick } = props;

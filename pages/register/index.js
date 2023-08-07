@@ -383,177 +383,177 @@ const Register = () => {
           <meta name="description" content="INFLUENZIT  discovering the top influencers for your product. Efficiently identifying and engaging with the most relevant key creators for your brand, then start driving revenue from their audiences." />
     </Head>
     <FormWrapper>
-          <div style={{ margin: "20px 0 40px 0"}}>
-            <Logo href="/">
-                <Image src="/influenzit_logo.png" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
-            </Logo>
-          </div>
-          <FormHeader style={{ alignItems: "flex-start" }}>
-            <h2>Sign up</h2>
-          </FormHeader>
-          <Center>
-            <FormFields onSubmit={handleSubmit}>
-              <FlexInput>
-                <InputContainer hasContent={formVal.firstname}>
-                  <label>First Name<span style={{ color:"red" }}>*</span></label>
-                  <Input
-                  type="text"
-                  value={formVal.firstname}
-                  onChange={(e) => handleInputChange(e.target.value, "firstname")}
-                  placeholder="Enter your firstname"
-                  required
-                  />
-                </InputContainer>
-                <InputContainer hasContent={formVal.lastname}>
-                  <label>Last Name<span style={{ color:"red" }}>*</span></label>
-                  <Input
-                  type="text"
-                  value={formVal.lastname}
-                  placeholder="Enter your lastname"
-                  onChange={(e) => handleInputChange(e.target.value, "lastname")}
-                  required
-                  />
-                </InputContainer>
-              </FlexInput>
-              <FlexInput>
-                <InputContainer hasContent={formVal.email}>
-                  <label>Email<span style={{ color:"red" }}>*</span></label>
-                  <Input
-                  type="email"
-                  value={formVal.email}
-                  placeholder="Enter your email"
-                  onChange={(e) => handleInputChange(e.target.value, "email")}
-                  required
-                  />
-                </InputContainer> 
-                <InputContainer>
-                  <label>Category<span style={{ color:"red" }}>*</span></label>
-                  <select value={formVal.account_type} onChange={(e) => handleInputChange(e.target.value, "account_type")}>
-                    <option value="Business">Business Owner</option>
-                    <option value="Influencer">Influencer</option>
-                    <option value="Creator">Creator</option>
-                  </select>
-                </InputContainer>
-              </FlexInput>
-              <InputContainer hasContent={formVal.display_name}>
-                  <label>Brand Name<span style={{ color:"red" }}>*</span></label>
-                  <Input
-                  type="text"
-                  value={formVal.display_name}
-                  placeholder="Enter your brand name"
-                  onChange={(e) => handleInputChange(e.target.value, "display_name")}
-                  required
-                  />
-                </InputContainer>
-              {
-                formVal.account_type === "Business" && (
-                  <InputContainer hasContent={formVal.email}>
-                      <label>Business Name<span style={{ color:"red" }}>*</span></label>
-                      <Input
-                      type="text"
-                      value={formVal.business_name}
-                      placeholder="Enter business name"
-                      onChange={(e) => handleInputChange(e.target.value, "business_name")}
-                      required
-                      />
-                  </InputContainer> 
-                )
-              }
-              <InputContainer hasContent={formVal.password}>
-                <label>Password<span style={{ color:"red" }}>*</span></label>
-                <Input
-                type="password"
-                value={formVal.password}
-                placeholder="Enter your password"
-                onChange={(e) => handleInputChange(e.target.value, "password")}
-                required
-                />
-              </InputContainer>
-              {
-                formVal.password ? (
-                  <PasswordStrengthBar
-                  password={formVal.password}
-                  barColors={['#ddd', '#ef4836', '#f6b44d', '#2b90ef', '#25c281']}
-                  scoreWords={ ['', '', '', '', '']}
-                  shortScoreWord={<p></p>}
-                  minLength={8}
-                  />
-                ): null
-              }
-              <InputContainer hasContent={formVal.password_confirmation}>
-                <label>Confirm Password<span style={{ color:"red" }}>*</span></label>
-                <Input
-                type="password"
-                value={formVal.password_confirmation}
-                placeholder="Confirm your password"
-                onChange={(e) => handleInputChange(e.target.value, "password_confirmation")}
-                required
-                />
-              </InputContainer>
-              {
-                formVal.password ? (
-                <div>
-                  <p className={`text-sm flex items-center gap-x-2 ${isMinLen ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{isMinLen ? <CheckIcon /> : <CancelIcon />}</span> <span>Length between 8 and 60 characters</span></p>
-                  <p className={`text-sm flex items-center gap-x-2 ${oneLC ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneLC ? <CheckIcon /> : <CancelIcon />} </span><span>At least one lowercase character</span></p>
-                  <p className={`text-sm flex items-center gap-x-2 ${oneUC ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneUC ? <CheckIcon /> : <CancelIcon />}</span> <span>At least one uppercase character</span></p>
-                  <p className={`text-sm flex items-center gap-x-2 ${oneSpecial ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneSpecial ? <CheckIcon /> : <CancelIcon />}</span> <span>At least one special character</span></p>
-                  <p className={`text-sm flex items-center gap-x-2 ${oneNum ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneNum ? <CheckIcon /> : <CancelIcon />} </span><span>At least one number</span></p>
-                  <p className={`text-sm flex items-center gap-x-2 ${passwordMatch ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{passwordMatch ? <CheckIcon /> : <CancelIcon />}</span> <span>Password must match</span></p>
-                </div>) : null
-              }
+      <div style={{ margin: "20px 0 40px 0"}}>
+        <Logo href="/">
+            <Image src="/influenzit_logo.png" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
+        </Logo>
+      </div>
+      <FormHeader style={{ alignItems: "flex-start" }}>
+        <h2>Sign up</h2>
+      </FormHeader>
+      <Center>
+        <FormFields onSubmit={handleSubmit}>
+          <FlexInput>
+            <InputContainer hasContent={formVal.firstname}>
+              <label>First Name<span style={{ color:"red" }}>*</span></label>
+              <Input
+              type="text"
+              value={formVal.firstname}
+              onChange={(e) => handleInputChange(e.target.value, "firstname")}
+              placeholder="Enter your firstname"
+              required
+              />
+            </InputContainer>
+            <InputContainer hasContent={formVal.lastname}>
+              <label>Last Name<span style={{ color:"red" }}>*</span></label>
+              <Input
+              type="text"
+              value={formVal.lastname}
+              placeholder="Enter your lastname"
+              onChange={(e) => handleInputChange(e.target.value, "lastname")}
+              required
+              />
+            </InputContainer>
+          </FlexInput>
+          <FlexInput>
+            <InputContainer hasContent={formVal.email}>
+              <label>Email<span style={{ color:"red" }}>*</span></label>
+              <Input
+              type="email"
+              value={formVal.email}
+              placeholder="Enter your email"
+              onChange={(e) => handleInputChange(e.target.value, "email")}
+              required
+              />
+            </InputContainer> 
+            <InputContainer>
+              <label>Category<span style={{ color:"red" }}>*</span></label>
+              <select value={formVal.account_type} onChange={(e) => handleInputChange(e.target.value, "account_type")}>
+                <option value="Business">Business Owner</option>
+                <option value="Influencer">Influencer</option>
+                <option value="Creator">Creator</option>
+              </select>
+            </InputContainer>
+          </FlexInput>
+          <InputContainer hasContent={formVal.display_name}>
+              <label>Brand Name<span style={{ color:"red" }}>*</span></label>
+              <Input
+              type="text"
+              value={formVal.display_name}
+              placeholder="Enter your brand name"
+              onChange={(e) => handleInputChange(e.target.value, "display_name")}
+              required
+              />
+            </InputContainer>
+          {
+            formVal.account_type === "Business" && (
               <InputContainer hasContent={formVal.email}>
-                  <label>Referral Code</label>
+                  <label>Business Name<span style={{ color:"red" }}>*</span></label>
                   <Input
                   type="text"
-                  value={formVal.referral_code}
-                  placeholder="Enter referral code"
-                  onChange={(e) => handleInputChange(e.target.value, "referral_code")}
+                  value={formVal.business_name}
+                  placeholder="Enter business name"
+                  onChange={(e) => handleInputChange(e.target.value, "business_name")}
+                  required
                   />
               </InputContainer> 
-              {
-                isError && <ErrorMessageCont>{errorMessage}</ErrorMessageCont>
-              }
-              <Terms>
-                <button onClick={(e) => {e.preventDefault(); setIsEnabled(!isEnabled);}}> {isEnabled && <span></span>}</button>
-                <p>Agree to <Link href="/terms" passHref><a target='_blank'>Terms &amp; Conditions</a></Link> and <Link href="/privacy" passHref><a target='_blank'>Privacy Policy</a></Link></p>
-              </Terms>
-              {
-                isEnabled ? (
-                  <SubmitButton type="submit">Register</SubmitButton>
-                ) : (
-                  <SubmitButton onClick={(e) => e.preventDefault()} style={{ opacity: "0.7", cursor: "not-allowed" }}>Register</SubmitButton>
-                )
-              }
-              <SocialLogin>
-                <GoogleBtn onClick={!isEnabled ? ((e) => e.preventDefault()) : googleLogin} style={isEnabled ? {} : { opacity: "0.7", cursor: "not-allowed" }}>
+            )
+          }
+          <InputContainer hasContent={formVal.password}>
+            <label>Password<span style={{ color:"red" }}>*</span></label>
+            <Input
+            type="password"
+            value={formVal.password}
+            placeholder="Enter your password"
+            onChange={(e) => handleInputChange(e.target.value, "password")}
+            required
+            />
+          </InputContainer>
+          {
+            formVal.password ? (
+              <PasswordStrengthBar
+              password={formVal.password}
+              barColors={['#ddd', '#ef4836', '#f6b44d', '#2b90ef', '#25c281']}
+              scoreWords={ ['', '', '', '', '']}
+              shortScoreWord={<p></p>}
+              minLength={8}
+              />
+            ): null
+          }
+          <InputContainer hasContent={formVal.password_confirmation}>
+            <label>Confirm Password<span style={{ color:"red" }}>*</span></label>
+            <Input
+            type="password"
+            value={formVal.password_confirmation}
+            placeholder="Confirm your password"
+            onChange={(e) => handleInputChange(e.target.value, "password_confirmation")}
+            required
+            />
+          </InputContainer>
+          {
+            formVal.password ? (
+            <div>
+              <p className={`text-sm flex items-center gap-x-2 ${isMinLen ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{isMinLen ? <CheckIcon /> : <CancelIcon />}</span> <span>Length between 8 and 60 characters</span></p>
+              <p className={`text-sm flex items-center gap-x-2 ${oneLC ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneLC ? <CheckIcon /> : <CancelIcon />} </span><span>At least one lowercase character</span></p>
+              <p className={`text-sm flex items-center gap-x-2 ${oneUC ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneUC ? <CheckIcon /> : <CancelIcon />}</span> <span>At least one uppercase character</span></p>
+              <p className={`text-sm flex items-center gap-x-2 ${oneSpecial ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneSpecial ? <CheckIcon /> : <CancelIcon />}</span> <span>At least one special character</span></p>
+              <p className={`text-sm flex items-center gap-x-2 ${oneNum ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{oneNum ? <CheckIcon /> : <CancelIcon />} </span><span>At least one number</span></p>
+              <p className={`text-sm flex items-center gap-x-2 ${passwordMatch ? `text-green-900` : "text-red-900"}`}><span className="inline-flex h-[24px] w-[24px] items-center justify-center">{passwordMatch ? <CheckIcon /> : <CancelIcon />}</span> <span>Password must match</span></p>
+            </div>) : null
+          }
+          <InputContainer hasContent={formVal.email}>
+              <label>Referral Code</label>
+              <Input
+              type="text"
+              value={formVal.referral_code}
+              placeholder="Enter referral code"
+              onChange={(e) => handleInputChange(e.target.value, "referral_code")}
+              />
+          </InputContainer> 
+          {
+            isError && <ErrorMessageCont>{errorMessage}</ErrorMessageCont>
+          }
+          <Terms>
+            <button onClick={(e) => {e.preventDefault(); setIsEnabled(!isEnabled);}}> {isEnabled && <span></span>}</button>
+            <p>Agree to <Link href="/terms" passHref><a target='_blank'>Terms &amp; Conditions</a></Link> and <Link href="/privacy" passHref><a target='_blank'>Privacy Policy</a></Link></p>
+          </Terms>
+          {
+            isEnabled ? (
+              <SubmitButton type="submit">Register</SubmitButton>
+            ) : (
+              <SubmitButton onClick={(e) => e.preventDefault()} style={{ opacity: "0.7", cursor: "not-allowed" }}>Register</SubmitButton>
+            )
+          }
+          <SocialLogin>
+            <GoogleBtn onClick={!isEnabled ? ((e) => e.preventDefault()) : googleLogin} style={isEnabled ? {} : { opacity: "0.7", cursor: "not-allowed" }}>
+              <SocialIcon>
+                <Image src="/google-r.svg" alt="" height={22} width={22} />
+              </SocialIcon>
+              <span>Sign up with Google</span>
+            </GoogleBtn>
+            {/* <FacebookLogin
+              appId="3349779741932998"
+              callback={handleFacebookLogin}
+              onFailure={handleFailure}
+              render={(renderProps) => (
+                <FacebookBtn style={isEnabled ? {} : { opacity: "0.7", cursor: "not-allowed" }} onClick={!isEnabled ? ((e) => e.preventDefault()) : renderProps.onClick}>
                   <SocialIcon>
-                    <Image src="/google-r.svg" alt="" height={22} width={22} />
+                    <Image src="/facebook-r.svg" alt="" height={22} width={22} />
                   </SocialIcon>
-                  <span>Sign up with Google</span>
-                </GoogleBtn>
-                {/* <FacebookLogin
-                  appId="3349779741932998"
-                  callback={handleFacebookLogin}
-                  onFailure={handleFailure}
-                  render={(renderProps) => (
-                    <FacebookBtn style={isEnabled ? {} : { opacity: "0.7", cursor: "not-allowed" }} onClick={!isEnabled ? ((e) => e.preventDefault()) : renderProps.onClick}>
-                      <SocialIcon>
-                        <Image src="/facebook-r.svg" alt="" height={22} width={22} />
-                      </SocialIcon>
-                      <span>Sign up with Facebook</span>
-                    </FacebookBtn>
-                  )}
-                /> */}
-              </SocialLogin>
-            </FormFields>
-          </Center>
-          <Bottom>
-            <p>Already have an account? <Link href="/login"><a>Login Here</a></Link></p>
-          </Bottom>
-          <BottomP>
-            <p>© 2023. Influenzit. All rights reserved.</p>
-          </BottomP>
-        </FormWrapper>
+                  <span>Sign up with Facebook</span>
+                </FacebookBtn>
+              )}
+            /> */}
+          </SocialLogin>
+        </FormFields>
+      </Center>
+      <Bottom>
+        <p>Already have an account? <Link href="/login"><a>Login Here</a></Link></p>
+      </Bottom>
+      <BottomP>
+        <p>© 2023. Influenzit. All rights reserved.</p>
+      </BottomP>
+    </FormWrapper>
         <BanReg>
 
         </BanReg>

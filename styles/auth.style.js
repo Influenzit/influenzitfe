@@ -93,6 +93,7 @@ export const BannerReg = styled.div`
     background-repeat: no-repeat;
     display: flex;
     height: 800px;
+    min-height: 100vh;
     z-index: -10;
     ${breakpoints.lg}{
         min-width: 90%;

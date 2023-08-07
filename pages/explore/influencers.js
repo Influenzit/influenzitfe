@@ -163,7 +163,7 @@ const Search = () => {
                                         name={val.user.display_name ?? ""}
                                         sex={val.gender}
                                         rating={val.rating.rating_count}
-                                        skills={genSkills}
+                                        skills={val.niche}
                                         address={val.address}
                                         platforms={val}
                                     />
