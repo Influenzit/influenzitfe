@@ -8,6 +8,7 @@ export const Container = styled.div`
     border-radius: 16px;
     overflow: hidden;
     position: relative;
+    background: #fff;
     :hover {
         box-shadow: 0px 16px 24px 0px #2A29391A;
     }

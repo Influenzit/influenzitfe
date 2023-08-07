@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { Container, Controls, CreatorDetails, SocialHandle, Stats, TopImg } from './style'
+import ReactStars from "react-rating-stars-component";
 
 const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink, skills, rating, platforms}) => {
     const router = useRouter();
@@ -24,8 +25,14 @@ const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink, skills, r
                     { platforms.youtube_verified && <Image src="/youtube-icon.svg" alt="" height={12} width={12}/> }
                 </div>
                 <div>
-                    <Image src="/star-p.svg" alt="" height={15} width={15}/>
-                    <span>{rating}</span>
+                    <ReactStars
+                        isHalf={true}
+                        count={5}
+                        value={Number(rating) ?? 0}
+                        size={20}
+                        edit={false}
+                        activeColor="#DF475C"
+                    />
                 </div>
             </Stats>
             <h4>{name}</h4>

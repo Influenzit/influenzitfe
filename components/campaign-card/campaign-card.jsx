@@ -48,8 +48,8 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
                 <Popup ref={popupRef}>
                     <button onClick={() => router.push(`/dashboard/campaigns/request-preview/${reqId}`)}>Preview</button>
                     <button onClick={() => router.push(`/dashboard/campaigns/request-submissions/${reqId}`)}>View Submission</button>
-                    <button>Edit</button>
-                    <button onClick={handlePause}>Pause</button>
+                    {/* <button>Edit</button> */}
+                    {/* <button onClick={handlePause}>Pause</button> */}
                     <button onClick={handleDelete}>Delete</button>
                 </Popup>
             ):null

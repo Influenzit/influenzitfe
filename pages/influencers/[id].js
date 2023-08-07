@@ -23,6 +23,7 @@ import { Chart } from "react-google-charts"
 import { colors } from 'styles/theme'
 import { WorldMap } from 'react-svg-worldmap'
 import { Country } from 'country-state-city'
+import ReactStars from "react-rating-stars-component";
 
 const CreatorProfile = () => {
     const router = useRouter();
@@ -770,7 +771,7 @@ const CreatorProfile = () => {
                                             </AnalyticChart>
                                             <h3>Performance</h3>
                                             <PerformanceCont>
-                                                <Flex>
+                                                <Flex className='flex'>
                                                     <EngagementCard>
                                                         <h3>Avg. view percentage</h3>
                                                         <div id="wrapper">
@@ -791,7 +792,7 @@ const CreatorProfile = () => {
                                                         </div>
                                                     </StatsCard>
                                                 </Flex>
-                                                <Flex>
+                                                <Flex className='flex'>
                                                     <StatsCard>
                                                         <h3>Avg. comments per video</h3>
                                                         <div>
@@ -893,11 +894,14 @@ const CreatorProfile = () => {
                                 <div className='cont'>
                                     <h1>{inData?.rating.rating_count}</h1>
                                     <div>
-                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
-                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
-                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
-                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
-                                        <Image src="/star-p.svg" alt="" height={15} width={15} />
+                                    <ReactStars
+                                        isHalf={true}
+                                        count={5}
+                                        value={Number(inData?.rating.rating_count) ?? 0}
+                                        size={20}
+                                        edit={false}
+                                        activeColor="#DF475C"
+                                    /> 
                                     </div>
                                     <p>{inData?.rating.reviews_count} ratings</p>
                                 </div>

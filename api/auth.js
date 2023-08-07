@@ -45,6 +45,9 @@ export const getUserSocialMedia = () => {
 export const disconnectSocialMedia = (id) => {
     return axiosInstance().delete(`/accounts/social-profiles/${id}`);
 }
+export const getReferrals = () => {
+    return axiosInstance().get(`/referrals/get/for_user`);
+}
 export const logoutUser = () => {
     return axiosInstance().post("/auth/logout");
 }

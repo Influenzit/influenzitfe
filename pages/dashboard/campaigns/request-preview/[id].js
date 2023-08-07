@@ -7,6 +7,8 @@ import { Container } from '../../../../styles/campaign.style'
 import { ContainerB, ContinueBtn, CtrlBtn, Deliverables, Desc, ImageSlides, Images, Left, RCard, RWrapper, Section, Wrapper,  } from '../../../../styles/service.style'
 import { useRouter } from 'next/router'
 import Slider from 'react-slick'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Right } from '../../../../styles/service.style'
 import { getSingleCampaignRequest } from '../../../../api/campaigns'
 import { useQuery } from '@tanstack/react-query';
@@ -56,7 +58,7 @@ const Requests = () => {
 }, [router.pathname, id]);
   return (
     <Container>
-       <Wrapper>
+       <Wrapper style={{ paddingTop: "20px" }}>
         <ContainerB>
           <Left>
             <ImageSlides>
@@ -166,10 +168,14 @@ const Requests = () => {
                             })}</p>
                         </div>
                     </div>
-                    <ContinueBtn onClick={() => router.push(`/dashboard/create-request?id=${id}`)}>
-                    <span>Submit Request</span>{" "}
-                    <Image src="/arrow-w.svg" alt="" width={12} height={11} />
-                    </ContinueBtn>
+                    {
+                      !request?.accept_terms ? (
+                        <ContinueBtn onClick={() => router.push(`/dashboard/create-request?id=${id}`)}>
+                          <span>Submit Request</span>{" "}
+                          <Image src="/arrow-w.svg" alt="" width={12} height={11} />
+                        </ContinueBtn>
+                      ) : null
+                    }
                 </RCard>
             </RWrapper>
           </Right>

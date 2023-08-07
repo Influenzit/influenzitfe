@@ -572,13 +572,16 @@ const Campaigns = () => {
                   <div>
                     {review ? (
                       <ReviewCard>
-                        <h2 style={{ display: "flex",  columnGap: "7px" }}>{review.rating} <ReactStars
+                        <h2 style={{ display: "flex",  columnGap: "7px" }}>
+                        <ReactStars
                             isHalf={true}
                             count={5}
-                            value={Number(review.rating) ?? 1}
-                            size={15}
+                            value={Number(rating) ?? 0}
+                            size={20}
+                            edit={false}
                             activeColor="#DF475C"
-                          /></h2>
+                        />
+                        </h2>
                         <p>{review.comment}</p>
                         <SubmitButton style={{ width: "130px", fontSize: "14px", padding: "6px" }} onClick={() => setisAccepted(true)}>Update</SubmitButton>
                       </ReviewCard>
