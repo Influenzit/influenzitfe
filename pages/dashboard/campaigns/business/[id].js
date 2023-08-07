@@ -140,15 +140,13 @@ const Campaigns = () => {
         console.log(err.response);
       });
   };
-  const updateCampaignMilsestone = () => {
+  const updateCampaignMilsestone = (status, campaignId) => {
     setRequesting(true);
     const formData = new FormData();
     formData.append("comment", message);
     formData.append("attachment", file);
-    const status = updateStatus;
-    const campaignId = updateId;
-    const idx = updateIdx;
-    if (status === "accept") {
+    console.log(status, campaignId);
+    if ((status === "accept") && campaignId ) {
       acceptCampaignMilestone(id, campaignId)
         .then((res) => {
           toast.success("Milestone accepted", {
@@ -163,7 +161,7 @@ const Campaigns = () => {
             position: toast.POSITION.TOP_RIGHT,
           });
         });
-    } else {
+    } else if (status === "dispute") {
       rejectCampaignMilestone(id, campaignId, formData)
         .then((res) => {
           console.log(res);
@@ -186,12 +184,11 @@ const Campaigns = () => {
   const triggerUpdateMilsestone = (status, campaignId, idx) => {
     setUpdateStatus(status);
     setUpdateId(campaignId);
-    setUpdateIdx(idx);
     if(status === "dispute") {
       setisRejected(true);
       return;
     }
-    updateCampaignMilsestone();
+    updateCampaignMilsestone(status, campaignId);
   }
   const handleUpdateCampaignReview = () => {
     if (!comment || !rating) {
@@ -229,7 +226,7 @@ const Campaigns = () => {
 
   const handleClose = () => {
     setisRejected(false);
-    updateCampaignMilsestone();
+    updateCampaignMilsestone(updateStatus, updateId);
   };
   const handleCloseReview = () => {
     setisAccepted(false);
@@ -487,8 +484,7 @@ const Campaigns = () => {
                                   onClick={() => { !requesting &&
                                     triggerUpdateMilsestone(
                                       "accept",
-                                      item.id,
-                                      idx
+                                      item.id
                                     );
                                   }}
                                   className="mx-2 rounded-lg py-1 px-2  h-auto bg-[#27C281] text-[10px] text-white"
