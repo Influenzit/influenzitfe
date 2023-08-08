@@ -472,7 +472,7 @@ const CreatorProfile = () => {
                                                     <EngagementCard>
                                                         <h3>Engagement Rate</h3>
                                                         <div id="wrapper">
-                                                            <h1>{inData?.analytics?.instagram?.engagement_rate ?? 0}%</h1>
+                                                            <h1>{Number(inData?.analytics?.instagram?.engagement_rate ?? "0").toFixed(2)}%</h1>
                                                             <div>
                                                                 <p>{generateRatingText(Number(inData?.analytics?.instagram?.engagement_rate ?? "0"))}</p>
                                                             </div>
@@ -654,7 +654,7 @@ const CreatorProfile = () => {
                                                 </Flex>
                                             </PerformanceCont>
                                         </Content>
-                                    ) : (currentTab === "instagram") && (
+                                    ) : (currentTab === "instagram") && inData?.analytics?.options?.instagram_source !== "facebook" && (
                                         <Content>
                                             <EmptyWrapper>
                                                 <Image src="/empty.png" alt="" height={120} width={120} />
