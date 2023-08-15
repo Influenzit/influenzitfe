@@ -4,18 +4,14 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { getExploreNiches } from "../api/influencer"
 import LandingLayout from "../layouts/landing.layout"
-import { Answer, Banner, BannerImg, CustomSelect, Faq, FaqWrapper, HeroSectionFive, HeroSectionFour, HeroSectionOne, HeroSectionSix, HeroSectionThree, HeroSectionTwo, ImageWrapper, ImgSlider, ImgW1, ImgWrapper, Info, Infos, InfoCard, InfoCardM, InfoCardMob, InfoDetails, InfoList, InfoSectOne, ListItem, NicheCard, NicheWrapper, Question, ReviewCard, ReviewWrapper, SlideBtn, SlideControl, UserCard, UserDetails, UserImage, WrapperFive, WrapperFour, WrapperOne, WrapperSix, WrapperThree, WrapperTwo, FormDivide, WrapperFourD } from "../styles/home.style"
+import { Answer, Banner, BannerImg, CustomSelect, Faq, FaqWrapper, HeroSectionFive, HeroSectionFour, HeroSectionOne, HeroSectionSix, HeroSectionThree, HeroSectionTwo, ImageWrapper, ImgSlider, ImgW1, ImgWrapper, Info, Infos, InfoCard, InfoCardM, InfoCardMob, InfoDetails, InfoList, InfoSectOne, ListItem, NicheCard, NicheWrapper, Question, ReviewCard, ReviewWrapper, SlideBtn, SlideControl, UserCard, UserDetails, UserImage, WrapperFive, WrapperFour, WrapperOne, WrapperSix, WrapperThree, WrapperTwo, FormDivide } from "../styles/home.style"
 import { useRouter } from "next/router"
-import { ListWrapper } from "styles/search.style"
-import CampaignCard from '../components/campaign-req-card/campaign-req-card';
-import { getTopCampaigns } from "api/business"
 
 const Home = () => {
   const [faq, setFaq] = useState({});
   const [nicheVal, setNicheVal] = useState("Influencer");
   const [searchString, setSearchString] = useState("");
   const [platform, setPlatform] = useState("");
-  const [requestList, setRequestList] = useState([]);
   const router = useRouter();
   const handleFaqToggle = (index) => {
     console.log(index)
@@ -30,16 +26,6 @@ const Home = () => {
       return copyOfPrev;
     })
   }
-  const { data: topCampaignsData, refetch: refetchTopCampaignsData } = useQuery(["get-services"], async () => {
-    return await getTopCampaigns();
-  }, {
-      enabled: false,
-      staleTime: Infinity,
-      retry: false,
-      onSuccess(res) {
-          setRequestList(res.data.data);
-      }
-  });
   const faqs = [
     {
       question: "How do I sign up for early access to Influenzit?",
@@ -73,7 +59,6 @@ const Home = () => {
   }
   useEffect(() => {
     refetch();
-    refetchTopCampaignsData();
   }, [])
   
   return (
@@ -130,9 +115,9 @@ const Home = () => {
         <WrapperThree>
           <InfoCardM>
               <Info>
-                <span>For Influencers and Creators</span>
-                <h1>Find Exciting Campaign Opportunities</h1>
-                <p>Discover and apply for unique product seeding campaigns tailored to your interests and expertise. Gain exposure, collaborate with amazing brands, and take your content creation to the next level with Influenzit.</p>
+                <span>Connect With Influencers</span>
+                <h1>Find the perfect influencer for your marketing campaign</h1>
+                <p>Unlock the power of influencer marketing, and take your brand to new heights. We have result-driven and perfect influencers to promote your products and services to drive actual results. </p>
                 <Link href="/explore/influencers" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -146,9 +131,10 @@ const Home = () => {
                 <Image src="/hero2.png" alt='' layout='fill' objectFit='contain' objectPosition="left" />
               </ImageWrapper>
               <Info leftP>
-                <span>For Business Owners:</span>
-                <h1>Connect with the best Influencers</h1>
-                <p>Efficiently identify and engage with the most relevant influencers for your brand. Drive massive sales and revenue through authentic collaborations. We make finding the perfect influencer for your marketing campaigns easy and effective with our product seeding campaign setup. </p>
+                <span>Advanced Analytics</span>
+                <h1>Make informed decisions with our advanced analytics</h1>
+                <p>Leverage the power of comprehensive data to make smarter choices for your influencer marketing campaigns. Influenzit provides in-depth analytics, allowing you to track the performance and impact of your collaborations.
+ Gain valuable insights into engagement, reach, and ROI, ensuring that you&apos;re always making informed decisions for your brand&apos;s growth. </p>
                 <Link href="/explore/influencers" passHref>
                   <a>Find Influencers</a>
                 </Link>
@@ -240,30 +226,6 @@ const Home = () => {
 
         </WrapperThree>
       </HeroSectionThree>
-      <HeroSectionFour>
-        <WrapperFourD>
-          <h1><span>Featured Campaign Requests</span></h1>
-          <ListWrapper>
-            {
-                requestList.length > 0 &&
-                requestList.map((req, i) => {
-                    return (
-                        <CampaignCard
-                            content={req.description}
-                            price={`${req?.amount_start} - ${req?.amount_end}`}
-                            status={req.status}
-                            imgSrc={req.media[0]?.url ?? "/camp.png"}
-                            reqId={req.id}
-                            refetch={refetch}
-                            key={i}
-                            reqPlatform={JSON.parse(req.requirements.filter((val) => val.name === "platforms")[0]?.value ?? "[]")}
-                        />
-                    )
-                })
-            }
-          </ListWrapper>
-        </WrapperFourD>
-      </HeroSectionFour>
       <HeroSectionFour>
         <WrapperFour>
           <h1>A whole world of <span>results-focused</span> influencers at your fingertips.</h1>

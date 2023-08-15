@@ -166,6 +166,7 @@ const Search = () => {
                                         rating={val.rating.rating_count}
                                         skills={val.user.email}
                                         address={val.address}
+                                        platforms={val}
                                     />
                                 }))
                             }

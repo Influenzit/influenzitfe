@@ -15,7 +15,7 @@ import { getUser } from '../../app/reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from 'app/reducers/status';
 import Loader from 'components/UI/Loader';
-import CampaignCard from '../../components/campaign-req-card /campaign-req-card';
+import CampaignCard from '../../components/campaign-req-card/campaign-req-card';
 
 const Search = () => {
     const [getUrl, setGetUrl] = useState("");

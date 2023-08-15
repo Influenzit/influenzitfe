@@ -148,7 +148,7 @@ useEffect(() => {
         <HeroSectionOne>
             <Wrapper>
                 {
-                    (inData?.media.length <= 1) && (
+                    (inData?.media?.length <= 1) && (
                         <ImageContainer>
                             <div id="img">
                                 <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
@@ -157,7 +157,7 @@ useEffect(() => {
                     )
                 }
                 {
-                    (inData?.media.length === 2) && (
+                    (inData?.media?.length === 2) && (
                         <ImageContainerTwo>
                             <div className='wrap'>
                                 <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
@@ -169,7 +169,7 @@ useEffect(() => {
                     )
                 }
                 {
-                    (inData?.media.length === 3) && (
+                    (inData?.media?.length === 3) && (
                         <ImageContainerTwo>
                             <div className='wrap'>
                                 <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
@@ -186,7 +186,7 @@ useEffect(() => {
                     )
                 }
                 {
-                    (inData?.media.length === 4) && (
+                    (inData?.media?.length === 4) && (
                         <ImageContainerTwo>
                             <div className='wrap'>
                                 <Image src={inData?.user?.profile_pic}  alt="" layout='fill' objectPosition="center" objectFit="cover"/>
@@ -409,7 +409,7 @@ useEffect(() => {
                                 <ServiceCard
                                     key={i}
                                     title={val.name}
-                                    imgSrc={val.media[0]?.url ?? "/web-services.jpg"}
+                                    imgSrc={val?.media[0]?.url ?? "/web-services.jpg"}
                                     userName={inData?.user?.name}
                                     price={`${val.currency} ${val.starting_from}`}
                                     serviceLink={`/services/${val.id}`}
@@ -438,12 +438,13 @@ useEffect(() => {
                                 return <ProfileCard
                                     key={i}
                                     profileLink={`/influencers/${val.id}`}
-                                    imgSrc={val?.media.filter(med => med.identifier === 'profile_pic')?.[0]?.url ?? '/niche8.png'  }
+                                    imgSrc={val?.media ? val?.media.filter(med => med.identifier === 'profile_pic')?.[0]?.url : '/niche8.png' }
                                     handle={val.twitter}
                                     name={`${val.user.firstname} ${val.user.lastname}`}
                                     sex={val.gender}
                                     skills={genSkills}
                                     address={val.address}
+                                    platforms={val}
                                 />
                             })
                         }

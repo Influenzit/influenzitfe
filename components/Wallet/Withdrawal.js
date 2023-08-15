@@ -48,7 +48,7 @@ function Withdrawal({
         </div>
         <input
           type="number"
-          placeholder="NGN 20,000"
+          placeholder="Enter Amount"
           className="p-2 mt-4 border outline-none rounded-md w-full"
           value={amount}
           onChange={(e) => {
