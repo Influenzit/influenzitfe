@@ -537,6 +537,28 @@ export const WrapperFour = styled.div`
         }
     }
 `;
+export const WrapperFourD = styled.div`
+    width: 98%;
+    max-width: ${sizes.wrapperWidth};
+    margin: 0 auto;
+    text-align: center;
+    h1 {
+        font-weight: 700;
+        font-size: 40px;
+        span {
+            color: ${colors.primaryColor};
+        }
+    }
+    ${breakpoints.md}{
+        h1{
+            font-size: 28px;
+            line-height: 42px;
+        }
+        p{
+            width: 98%;
+        }
+    }
+`;
 export const InfoSectOne = styled.div`
     display: flex;
     width: 100%;

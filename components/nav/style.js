@@ -43,7 +43,7 @@ export const Logo = styled(Link)`
 export const Right = styled.div`
     display: flex;
     align-items: center;
-    width: calc(200% / 3);
+    width: calc(200% / 2.5);
     justify-content: ${({isLoggedIn}) => isLoggedIn ? "flex-end" : "space-between"};
 `;
 export const Center = styled.div`

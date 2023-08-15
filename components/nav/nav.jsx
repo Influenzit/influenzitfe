@@ -538,9 +538,18 @@ const Nav = () => {
                 <Link href="/">Home</Link>
               </NavLinks>
               <NavLinks>
-                <Link href="/register">Join Influencers</Link>
+                <Link href="/explore/influencers">Influencers</Link>
               </NavLinks>
-              <ConnectDropdown
+              <NavLinks>
+                <Link href="/explore/campaign-requests">Campaign Requests</Link>
+              </NavLinks>
+              <NavLinks>
+                <Link href="/explore/creators">Creators</Link>
+              </NavLinks>
+              <NavLinks>
+                <Link href="/explore/services">Services</Link>
+              </NavLinks>
+              {/* <ConnectDropdown
                 onClick={() => handleConnectOpen()}
                 ref={connectRef}
               >
@@ -570,7 +579,7 @@ const Nav = () => {
                     </Link>
                   </ConnectDropdownCont>
                 )}
-              </ConnectDropdown>
+              </ConnectDropdown> */}
               {/* <NavLinks>
                 <Link href="/pricing">Pricing</Link>
               </NavLinks> */}
