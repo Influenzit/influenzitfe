@@ -67,6 +67,7 @@ export const CreatorDetails = styled.div`
         color: #1F2024;
         font-size: 14px;
         padding-top: 5px;
+        text-align: left;
     }
 `;
 export const Stats = styled.div`

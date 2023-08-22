@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const LSStatus = typeof window !== "undefined" && localStorage.getItem("verify-status")
+
 const initialState =  {
     loading: false,
     success: false,
@@ -9,6 +11,7 @@ const initialState =  {
     currentConversation: 0,
     showSidebar: false,
     showLogoutModal: false,
+    verifyStatus: LSStatus ? JSON.parse(LSStatus) : {},
 }
 const statusSlice = createSlice({
     name: "status",
@@ -39,15 +42,20 @@ const statusSlice = createSlice({
         setShowSidebar(state, { payload }) {
             state.showSidebar = payload;
         },
+        updateVerifyStatus(state, { payload }) {
+            state.verifyStatus = payload;
+            localStorage.setItem("verify-status", JSON.stringify(payload))
+        },
     }
 });
 export const isLoading = (state) => state.status.loading;
 export const isError = (state) => state.status.error;
 export const getMessage = (state) => state.status.message;
 export const getUserType = (state) => state.status.userType;
+export const getVerifyStatus = (state) => state.status.verifyStatus;
 export const getShowSidebar = (state) => state.status.showSidebar;
 export const isSuccess = (state) => state.status.success;
 export const getLogoutModalStatus = (state) => state.status.showLogoutModal;
 export const getCurrentConversationId = (state) => state.status.currentConversation;
-export const { setLoading, setError, setSuccess, setUserType, setCurrentConversation, setShowSidebar, setLogoutModal } = statusSlice.actions
+export const { setLoading, setError, setSuccess, setUserType, setCurrentConversation, setShowSidebar, setLogoutModal, updateVerifyStatus } = statusSlice.actions
 export default statusSlice.reducer
