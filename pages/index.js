@@ -87,9 +87,7 @@ const Home = () => {
             <CustomSelect borderLeft>
               <label>Category</label>
               <select val={nicheVal} onChange={(e) => setNicheVal(e.target.value)}>
-                <option value="Influencer">Influencer</option>
-                <option value="Creator">Creator</option>
-                <option value="Service">Service</option>
+                <option value="campaign">Campaign Request</option>
               </select>
             </CustomSelect>
             <CustomSelect borderLeft>
@@ -115,17 +113,17 @@ const Home = () => {
             </CustomSelect>
             <button onClick={(e) => {
               e.preventDefault();
-              router.push(`/explore/${getCategoryRoute()}?search=${searchString}`);
+              router.push(`/explore/campaign-requests?search=${searchString}`);
             }}><span>Search</span> <Image src="/search.svg" height={15} width={15}/></button>
           </form>
           <BannerImg>
           </BannerImg>
         </WrapperOne>
       </HeroSectionOne>
-      <HeroSectionTwo>
+      {/* <HeroSectionTwo>
         <h1>Find Influencers, Connect with Businesses, <br />Generate <span>Massive Sales</span> and Revenue</h1>
         <p>Discover the top influencers for your product. Efficiently identify and engage with the most relevant key creators for your brand, then start driving revenue from their audiences. We are here to make collaborations between businesses and influencers seamless</p>
-      </HeroSectionTwo>
+      </HeroSectionTwo> */}
       <HeroSectionThree>
         <WrapperThree>
           <InfoCardM>
@@ -133,14 +131,36 @@ const Home = () => {
                 <span>For Influencers and Creators</span>
                 <h1>Find Exciting Campaign Opportunities</h1>
                 <p>Discover and apply for unique product seeding campaigns tailored to your interests and expertise. Gain exposure, collaborate with amazing brands, and take your content creation to the next level with Influenzit.</p>
-                <Link href="/explore/influencers" passHref>
-                  <a>Find Influencers</a>
+                <Link href="/explore/campaign-requests" passHref>
+                  <a>Find Campaigns</a>
                 </Link>
               </Info>
               <ImageWrapper>
                 <Image src="/hero1.png" alt='' layout='fill' objectFit='contain' objectPosition="right" />
               </ImageWrapper>
             </InfoCardM>
+            <WrapperFourD $top>
+              <h1><span>Featured Campaign Requests</span></h1>
+              <ListWrapper>
+                {
+                    requestList.length > 0 &&
+                    requestList.map((req, i) => {
+                        return (
+                            <CampaignCard
+                                content={req.description}
+                                price={`${req?.amount_start} - ${req?.amount_end}`}
+                                status={req.status}
+                                imgSrc={req.media[0]?.url ?? "/camp.png"}
+                                reqId={req.id}
+                                refetch={refetch}
+                                key={i}
+                                reqPlatform={JSON.parse(req.requirements.filter((val) => val.name === "platforms")[0]?.value ?? "[]")}
+                            />
+                        )
+                    })
+                }
+              </ListWrapper>
+            </WrapperFourD>
             <InfoCardM>
               <ImageWrapper>
                 <Image src="/hero2.png" alt='' layout='fill' objectFit='contain' objectPosition="left" />
@@ -149,8 +169,8 @@ const Home = () => {
                 <span>For Business Owners:</span>
                 <h1>Connect with the best Influencers</h1>
                 <p>Efficiently identify and engage with the most relevant influencers for your brand. Drive massive sales and revenue through authentic collaborations. We make finding the perfect influencer for your marketing campaigns easy and effective with our product seeding campaign setup. </p>
-                <Link href="/explore/influencers" passHref>
-                  <a>Find Influencers</a>
+                <Link href="/product-seeding" passHref>
+                  <a>Create A Product Seeding Campaign</a>
                 </Link>
               </Info>
             </InfoCardM>
@@ -159,8 +179,8 @@ const Home = () => {
                 <span>PROJECT MANAGEMENT</span>
                 <h1>Manage campaigns and projects seamlessly</h1>
                 <p>Streamline your influencer marketing campaigns with Influenzit&apos;s intuitive project management tools. Effortlessly plan, execute, and monitor your campaigns, keeping all your collaborations organized and on track. Our user-friendly interface allows you to manage multiple projects simultaneously, ensuring clear communication and timely progress.</p>
-                <Link href="/explore/influencers" passHref>
-                  <a>Find Influencers</a>
+                <Link href="/product-seeding" passHref>
+                  <a>Get Started</a>
                 </Link>
               </Info>
               <ImageWrapper>
@@ -176,7 +196,7 @@ const Home = () => {
                 <h1>Safe , Secure & Seamless Payments</h1>
                 <p>Simplify your influencer payment process with Influenzit&apos;s secure and efficient escrow system. Our platform enables you to manage payments effortlessly, ensuring timely compensation for the influencers you collaborate with. Funds are securely held in escrow until the campaign has been marked and accepted as completed by the business owner. This added layer of protection fosters trust between both parties and helps to prevent payment disputes.</p>
                 <Link href="/explore/influencers" passHref>
-                  <a>Find Influencers</a>
+                  <a>Get Started</a>
                 </Link>
               </Info>
             </InfoCardM>
@@ -188,25 +208,46 @@ const Home = () => {
                 <Image src="/hero1.png" alt='' layout='fill' objectFit='contain' objectPosition="center" />
               </ImageWrapper>
               <Infos>
-                <span>Connect With Influencers</span>
-                <h1>Find the perfect influencer for your marketing campaign</h1>
-                <p>Unlock the power of influencer marketing, and take your brand to new heights. We have result-driven and perfect influencers to promote your products and services to drive actual results. </p>
-                <Link href="/explore/influencers" passHref>
-                  <a>Find Influencers</a>
+                <span>For Influencers and Creators</span>
+                <h1>Find Exciting Campaign Opportunities</h1>
+                <p>Discover and apply for unique product seeding campaigns tailored to your interests and expertise. Gain exposure, collaborate with amazing brands, and take your content creation to the next level with Influenzit.</p>
+                <Link href="/explore/campaign-requests" passHref>
+                  <a>Find Campaigns</a>
                 </Link>
               </Infos>
             </InfoCardMob>
+            <WrapperFourD>
+              <h1><span>Featured Campaign Requests</span></h1>
+              <ListWrapper>
+                {
+                    requestList.length > 0 &&
+                    requestList.map((req, i) => {
+                        return (
+                            <CampaignCard
+                                content={req.description}
+                                price={`${req?.amount_start} - ${req?.amount_end}`}
+                                status={req.status}
+                                imgSrc={req.media[0]?.url ?? "/camp.png"}
+                                reqId={req.id}
+                                refetch={refetch}
+                                key={i}
+                                reqPlatform={JSON.parse(req.requirements.filter((val) => val.name === "platforms")[0]?.value ?? "[]")}
+                            />
+                        )
+                    })
+                }
+              </ListWrapper>
+            </WrapperFourD>
             <InfoCardMob>
               <ImageWrapper>
                 <Image src="/hero2.png" alt='' layout='fill' objectFit='contain' objectPosition="center" />
               </ImageWrapper>
               <Infos>
-              <span>Advanced Analytics</span>
-                <h1>Make informed decisions with our advanced analytics</h1>
-                <p>Leverage the power of comprehensive data to make smarter choices for your influencer marketing campaigns. Influenzit provides in-depth analytics, allowing you to track the performance and impact of your collaborations.
- Gain valuable insights into engagement, reach, and ROI, ensuring that you&apos;re always making informed decisions for your brand&apos;s growth. </p>
-                <Link href="/explore/influencers" passHref>
-                  <a>Find Influencers</a>
+                <span>For Business Owners:</span>
+                <h1>Connect with the best Influencers</h1>
+                <p>Efficiently identify and engage with the most relevant influencers for your brand. Drive massive sales and revenue through authentic collaborations. We make finding the perfect influencer for your marketing campaigns easy and effective with our product seeding campaign setup. </p>
+                <Link href="/product-seeding" passHref>
+                  <a>Create A Product Seeding Campaign</a>
                 </Link>
               </Infos>
             </InfoCardMob>
@@ -218,8 +259,8 @@ const Home = () => {
                 <span>PROJECT MANAGEMENT</span>
                 <h1>Manage campaigns and projects seamlessly</h1>
                 <p>Streamline your influencer marketing campaigns with Influenzit&apos;s intuitive project management tools. Effortlessly plan, execute, and monitor your campaigns, keeping all your collaborations organized and on track. Our user-friendly interface allows you to manage multiple projects simultaneously, ensuring clear communication and timely progress.</p>
-                <Link href="/explore/influencers" passHref>
-                  <a>Find Influencers</a>
+                <Link href="/product-seeding" passHref>
+                  <a>Get Started</a>
                 </Link>
               </Infos>
             </InfoCardMob>
@@ -231,8 +272,8 @@ const Home = () => {
                 <span>SECURE PAYMENTS</span>
                 <h1>Safe , Secure & Seamless Payments</h1>
                 <p>Simplify your influencer payment process with Influenzit&apos;s secure and efficient escrow system. Our platform enables you to manage payments effortlessly, ensuring timely compensation for the influencers you collaborate with. Funds are securely held in escrow until the campaign has been marked and accepted as completed by the business owner. This added layer of protection fosters trust between both parties and helps to prevent payment disputes.</p>
-                <Link href="/explore/influencers" passHref>
-                  <a>Find Influencers</a>
+                <Link href="/product-seeding" passHref>
+                  <a>Get Started</a>
                 </Link>
               </Infos>
             </InfoCardMob>
@@ -240,30 +281,6 @@ const Home = () => {
 
         </WrapperThree>
       </HeroSectionThree>
-      <HeroSectionFour>
-        <WrapperFourD>
-          <h1><span>Featured Campaign Requests</span></h1>
-          <ListWrapper>
-            {
-                requestList.length > 0 &&
-                requestList.map((req, i) => {
-                    return (
-                        <CampaignCard
-                            content={req.description}
-                            price={`${req?.amount_start} - ${req?.amount_end}`}
-                            status={req.status}
-                            imgSrc={req.media[0]?.url ?? "/camp.png"}
-                            reqId={req.id}
-                            refetch={refetch}
-                            key={i}
-                            reqPlatform={JSON.parse(req.requirements.filter((val) => val.name === "platforms")[0]?.value ?? "[]")}
-                        />
-                    )
-                })
-            }
-          </ListWrapper>
-        </WrapperFourD>
-      </HeroSectionFour>
       <HeroSectionFour>
         <WrapperFour>
           <h1>A whole world of <span>results-focused</span> influencers at your fingertips.</h1>

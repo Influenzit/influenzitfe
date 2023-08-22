@@ -8,7 +8,7 @@ import DashboardFooter from '../components/dashboard-footer'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearUser, getUser, updateUser } from '../app/reducers/user'
 import { useRouter } from 'next/router'
-import { getLogoutModalStatus, getMessage, isError, isLoading, isSuccess, setLoading, setLogoutModal, setUserType } from '../app/reducers/status'
+import { getLogoutModalStatus, getMessage, getUserType, getVerifyStatus, isError, isLoading, isSuccess, setLoading, setLogoutModal, setUserType } from '../app/reducers/status'
 import ErrorPopup from '../components/error-popup'
 import SuccessPopup from '../components/success-popup'
 import { hasAValidAccount } from '../helpers/helper'
@@ -18,6 +18,7 @@ import AdminNav from '../components/admin-nav'
 import Sidebar from '../components/sidebar'
 import { toast } from 'react-toastify'
 import LogoutModal from '../components/logout-modal'
+import VerifyEmail from '../components/verify-email'
 import { clearBusiness } from 'app/reducers/business'
 
 const LandingLayout = ({children, title, description}) => {
@@ -25,6 +26,8 @@ const LandingLayout = ({children, title, description}) => {
   const loadingStatus = useSelector(isLoading);
   const errorStatus = useSelector(isError);
   const successStatus = useSelector(isSuccess);
+  const verifyStatus = useSelector(getVerifyStatus);
+  const currentAcctType = useSelector(getUserType);
   const showLogoutModal = useSelector(getLogoutModalStatus);
   const [showNetworkStatusModal, setShowNetworkStatusModal] = useState(false);
   const [isOnline, setIsOnline] = useState(false);
@@ -195,7 +198,7 @@ const LandingLayout = ({children, title, description}) => {
           <Wrapper>
             {router.pathname.includes("/dashboard") && <Sidebar />}
             <Content isPadded={router.pathname.includes("/dashboard")}>
-              {children}
+              {!router.pathname.includes("/dashboard") ? children : (verifyStatus?.emailVerified || router.pathname.includes("/dashboard/create-request") || router.pathname.includes("/dashboard/campaigns/request-preview/")) ? children : <VerifyEmail />}
               {isLoggedIn && router.pathname.includes("/dashboard")? null : (<Footer />)}
             </Content>
           </Wrapper>

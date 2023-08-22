@@ -3,11 +3,12 @@ import React, { useState } from 'react'
 import { useMutation } from "@tanstack/react-query"
 import { BannerReg, BanReg, Bottom, BottomP, Center, Container, FacebookBtn, FlexInput, FormFields, FormHeader, FormWrapper, GoogleBtn, Input, InputContainer, SocialIcon, SocialLogin, SubmitButton, Wrapper, AuthFlex, ErrorMessageCont, Terms } from '../../styles/auth.style'
 import { createAccount, socialLogin } from '../../api/auth';
-import { isLoading, setError, isError as errorSelector, setLoading, setUserType, getMessage } from '../../app/reducers/status';
+import { isLoading, setError, isError as errorSelector, setLoading, setUserType, getMessage, updateVerifyStatus } from '../../app/reducers/status';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { setBusinesses } from '../../app/reducers/business';
+import { getBusinesses } from '../../api/business'
 import { updateUser } from '../../app/reducers/user';
 import { useGoogleLogin } from '@react-oauth/google';
 import { Logo } from '../../components/nav/style';
@@ -51,13 +52,36 @@ const Register = () => {
     return createAccount(userData);
   }, {
     onSuccess(successRes) {
-      const res = successRes.data;
-      if(res.errors) {
+      const resE = successRes.data;
+      const res = successRes.data.token_data;
+      if(resE.errors) {
         dispatch(setLoading(false));
         dispatch(setError({error: true, message: res.message}));
       } else {
-        dispatch(setLoading(false));
-        router.push(`/register/email-sent?email=${formVal.email}&time=${Date.now()}`);
+        localStorage.setItem("token", res.token);
+        const { is_businessowner } = res.user.account;
+        if (is_businessowner) {
+          dispatch(setUserType("Business Owner"));
+          getBusinesses(res.token).then((bizRes) => {
+            if (bizRes.data && res) {
+              dispatch(setLoading(false));
+              dispatch(setBusinesses(bizRes.data.data))
+              dispatch(updateUser(res.user));
+              dispatch(updateVerifyStatus({
+                campaignCount: res.campaign_request_counts,
+                emailVerified: res.email_is_verified,
+              }))
+              dispatch(setError({error: false, message: ""}));
+              router.push("/dashboard");
+            }
+          }).catch( _ => {
+            dispatch(setLoading(false));
+            dispatch(setError({error: true, message: "An error occured"}))
+          })
+        } else {
+          dispatch(setLoading(false));
+          router.push(`/register/email-sent?email=${formVal.email}&time=${Date.now()}`);
+        }
       }
     },
     onError(error) {
@@ -373,8 +397,6 @@ const Register = () => {
     //     </BannerReg>
     //   </Wrapper>
     // </Container>
-
-    // Femi's Version
 
     <>
     <AuthFlex>

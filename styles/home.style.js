@@ -335,6 +335,20 @@ export const InfoCardM = styled.div`
         padding: 30px 0;
     }
 `;
+export const InfoCardD = styled.div`
+    display: flex;
+    align-items: center;
+    padding: 60px 0;
+    overflow: hidden;
+    ${breakpoints.lg}{
+        padding: 30px 15px; 
+    }
+    ${breakpoints.md} {
+        flex-direction: ${({$reverseColumn}) => $reverseColumn ? "column" : "column-reverse"};
+        align-items: center;
+        padding: 30px 0;
+    }
+`;
 export const InfoCardMob = styled.div`
     display: none;
     align-items: center;
@@ -378,6 +392,19 @@ export const Info = styled.div`
         color: #fff;
         font-weight: 600;
     }
+    ul {
+        list-style: disc;
+        margin-left: 20px;
+        p {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        li {
+            span {
+                font-weight: 600;
+            }
+        }
+    }
     ${breakpoints.md} {
         display: none;
         text-align: left;
@@ -385,6 +412,60 @@ export const Info = styled.div`
         max-width: 98%;
         padding: 10px;
         ${props => props.leftP ? "text-align: center;" : ""}
+        h1 {
+            font-size: 32px;
+            margin-top: 15px;
+        }
+    }
+`;
+export const InfoD = styled.div`
+    width: 50%;
+    max-width: 50%;
+    ${props => props.leftP ? "padding-left: 50px;" : " padding-right: 50px;"}
+    span {
+        color: ${colors.primaryColor};
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+    h1 {
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 48px;
+        margin-top: 15px;
+        color: ${colors.textColor};
+    }
+    p {
+        margin-top: 15px;
+        color: ${colors.textColor};
+    }
+    a {
+        margin-top: 25px;
+        display: inline-block;
+        padding: 14px 30px;
+        border-radius: 8px;
+        background: ${colors.primaryColor};
+        color: #fff;
+        font-weight: 600;
+    }
+    ul {
+        list-style: disc;
+        margin-left: 20px;
+        p {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        li {
+            span {
+                font-weight: 600;
+            }
+        }
+    }
+    ${breakpoints.md} {
+        text-align: left;
+        width: 100%;
+        max-width: 98%;
+        padding: 10px;
         h1 {
             font-size: 32px;
             margin-top: 15px;
@@ -468,7 +549,7 @@ export const NicheCard = styled.div`
     }
     ${breakpoints.sm}{
         min-width: 145px;
-        max-width: 155px;
+        width: 90%;
         height: 200px;
     }
 `;
@@ -538,7 +619,7 @@ export const WrapperFour = styled.div`
     }
 `;
 export const WrapperFourD = styled.div`
-    width: 98%;
+    width: 100%;
     max-width: ${sizes.wrapperWidth};
     margin: 0 auto;
     text-align: center;
@@ -550,6 +631,7 @@ export const WrapperFourD = styled.div`
         }
     }
     ${breakpoints.md}{
+        display: ${(props) => props.$top ? "none" : "block"};
         h1{
             font-size: 28px;
             line-height: 42px;
@@ -928,14 +1010,14 @@ export const Banner = styled.div`
             font-weight: 600;
         }
     }
-    ${breakpoints.sm}{
+    ${breakpoints.md}{
         div{
             padding: 0;
             text-align: center;
             align-items: center;
             h2{
                 text-align: center;
-                font-size: 28px;
+                font-size: 18px;
                 width: 100%;
             }
             a{

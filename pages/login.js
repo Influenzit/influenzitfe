@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux'
 import { loginUser, resendEmail, socialLogin } from '../api/auth'
 import { getBusinesses } from '../api/business'
 import { setBusinesses } from '../app/reducers/business'
-import { setError, setLoading, setUserType } from '../app/reducers/status'
+import { setError, setLoading, setUserType, updateVerifyStatus } from '../app/reducers/status'
 import { updateUser } from '../app/reducers/user'
 import LandingLayout from '../layouts/landing.layout'
 import { Bottom, Center, CheckContainer, Container, FacebookBtn, FormFields, FormHeader, FormWrapper, FrameContainer, GoogleBtn, HelpSection, Input, InputContainer, OrContainer, RememberMe, SocialIcon, SocialLogin, SubmitButton, Wrapper } from '../styles/auth.style'
@@ -46,6 +46,10 @@ const Login = () => {
               dispatch(setLoading(false));
               dispatch(setBusinesses(bizRes.data.data))
               dispatch(updateUser(res.user));
+              dispatch(updateVerifyStatus({
+                campaignCount: res.campaign_request_counts,
+                emailVerified: res.email_is_verified,
+              }))
               dispatch(setError({error: false, message: ""}));
               router.push("/dashboard");
             }
@@ -102,8 +106,16 @@ const Login = () => {
               dispatch(setLoading(false));
               dispatch(setBusinesses(bizRes.data.data))
               dispatch(updateUser(res.user));
+              dispatch(updateVerifyStatus({
+                campaignCount: res.campaign_request_counts,
+                emailVerified: res.email_is_verified,
+              }))
               dispatch(setError({error: false, message: ""}));
-              router.push("/dashboard");
+              if(res.campaign_request_counts) {
+                router.push("/dashboard");
+              } else {
+                router.push("/dashboard/create-request");
+              }
             }
           }).catch( _ => {
             dispatch(setLoading(false));
