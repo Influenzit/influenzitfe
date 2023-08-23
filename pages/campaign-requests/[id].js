@@ -136,7 +136,7 @@ const handleCreateProposal = () => {
 }, [router.pathname, id]);
   return (
     <Container>
-       <Wrapper>
+       <Wrapper style={{ paddingTop: "10px" }}>
         <ContainerB>
           <Left>
             <ImageSlides>

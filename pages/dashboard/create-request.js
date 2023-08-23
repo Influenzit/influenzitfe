@@ -11,13 +11,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { accountMedia, getAccount, getUserAccount, updateAccount } from '../../api/auth';
 import { useRouter } from 'next/router';
-import { getUserType, setError, setLoading } from '../../app/reducers/status';
+import { getUserType, setError, setLoading, updateVerifyStatus } from '../../app/reducers/status';
 import { colors } from '../../styles/theme';
 import { toast } from 'react-toastify';
 import { getIndustries } from 'api/influencer';
 import { Country } from 'country-state-city';
 import Link from 'next/link';
-import { createCampaignRequest, updateCampaignRequest } from 'api/campaigns';
+import { createCampaignRequest, updateCampaignRequest, getUserStatus } from 'api/campaigns';
 import { formatDate } from 'helpers/helper';
 
 const CreateRequest = () => {
@@ -91,7 +91,13 @@ const CreateRequest = () => {
                     dispatch(setLoading(false));
                     dispatch(setError({error: true, message: res.message}));
                 } else { 
-                   router.push("/dashboard/campaigns/requests");
+                   getUserStatus().then((statusRes) => {
+                    dispatch(updateVerifyStatus({
+                        campaignCount: statusRes.data.data.campaignRequestCounts,
+                        emailVerified: statusRes.data.data.email_is_verified,
+                    }))
+                    router.push("/dashboard/campaigns/requests");
+                   }); 
                 }
             },
             onError(error) {
