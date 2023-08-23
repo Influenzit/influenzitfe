@@ -8,7 +8,7 @@ import DashboardFooter from '../components/dashboard-footer'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearUser, getUser, updateUser } from '../app/reducers/user'
 import { useRouter } from 'next/router'
-import { getLogoutModalStatus, getMessage, getUserType, getVerifyStatus, isError, isLoading, isSuccess, setLoading, setLogoutModal, setUserType } from '../app/reducers/status'
+import { getLogoutModalStatus, getMessage, getUserType, getVerifyStatus, isError, isLoading, isSuccess, setLoading, setLogoutModal, setUserType, updateVerifyStatus } from '../app/reducers/status'
 import ErrorPopup from '../components/error-popup'
 import SuccessPopup from '../components/success-popup'
 import { hasAValidAccount } from '../helpers/helper'
@@ -20,6 +20,7 @@ import { toast } from 'react-toastify'
 import LogoutModal from '../components/logout-modal'
 import VerifyEmail from '../components/verify-email'
 import { clearBusiness } from 'app/reducers/business'
+import { getUserStatus } from 'api/campaigns'
 
 const LandingLayout = ({children, title, description}) => {
   const user = useSelector(getUser);
@@ -141,6 +142,12 @@ const LandingLayout = ({children, title, description}) => {
       if (!!user && authRoutes.includes(router.pathname)) {
           router.push("/dashboard")
       }
+      getUserStatus().then((statusRes) => {
+        dispatch(updateVerifyStatus({
+            campaignCount: statusRes.data.data.campaignRequestCounts,
+            emailVerified: statusRes.data.data.email_is_verified,
+        }))
+       });
     }
     if(authRoutes.includes(router.pathname) && token) {
       setShow(false);

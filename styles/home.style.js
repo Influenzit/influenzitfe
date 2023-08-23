@@ -621,7 +621,7 @@ export const WrapperFour = styled.div`
 export const WrapperFourD = styled.div`
     width: 100%;
     max-width: ${sizes.wrapperWidth};
-    margin: 0 auto;
+    margin: 60px auto;
     text-align: center;
     h1 {
         font-weight: 700;

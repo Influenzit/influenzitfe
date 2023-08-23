@@ -65,3 +65,6 @@ export const getCampaignRequestSubmissions = (id, url) => {
 export const deleteCampaignRequest = (id) => {
   return axiosInstance().delete(`/campaigns/requests/${id}`);
 }
+export const getUserStatus = () => {
+  return axiosInstance().get(`/get-user-email-status`);
+}
