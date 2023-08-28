@@ -42,7 +42,7 @@ const Footer = () => {
                 </Section>
             </Top>
             <Bottom>
-                <p>&copy; 2023. Influenzit. All rights reserved.</p>
+                <p>&copy; 2023. Influenzit is owned and operated by ASCEND BRAND MANAGEMENT LIMITED. All rights reserved.</p>
                 <BottomLinks>
                     <Link href="/terms">Terms &amp; Conditions</Link>
                     <Link href="/privacy">Privacy Policy</Link>
