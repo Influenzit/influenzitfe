@@ -13,13 +13,11 @@ function Withdrawal({
   setWalletAddress,
   handleContinueWithdrawal,
 }) {
-  console.log(user.wallets);
   return (
     <div className="fixed inset-0 bg-black/30 z-[999999] flex justify-center items-center">
       <div className="bg-white w-[500px]  p-6 rounded-lg overflow-hidden">
         <div className="flex justify-between mb-6">
-          <h1 className="text-xl">Fund your wallet</h1>
-
+          <h1 className="text-xl">Withdrawal</h1>
           <button
             onClick={() => {
               setisWithdrawalOpen(false);
@@ -35,15 +33,14 @@ function Withdrawal({
             onChange={(e) => {
               setWalletAddress(e.target.value);
             }}
-            className="border-none outline-none w-full"
+            className="border-none outline-none w-full bg-transparent"
           >
             <option value="">-Select withdrawal wallet-</option>
-            {user.wallets.map((wallet, id) => (
+            {user?.wallets.filter((wallet) => wallet.type === "Earning").map((wallet, id) => (
               <option value={wallet.type} key={id}>
                 {wallet.type}
               </option>
             ))}
-            )
           </select>
         </div>
         <input
