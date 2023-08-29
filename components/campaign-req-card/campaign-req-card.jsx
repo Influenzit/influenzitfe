@@ -67,7 +67,7 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
                         })}
                 </div>
             </Stats>
-            <p>{content}</p>
+            <p>{(content ?? "").slice(0, 40)}{content.length > 40 && "..."}</p>
             <PriceSection>from {price}</PriceSection>
         </CreatorDetails>
     </Container>
