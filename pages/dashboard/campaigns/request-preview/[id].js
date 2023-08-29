@@ -119,7 +119,7 @@ const Requests = () => {
           <Right>
             <RWrapper>
                 <RCard>
-                    <h3>Pricing</h3>
+                    <h3>Compensation</h3>
                     <div className='seperator'></div>
                     <p>₦ {request?.amount_start} - ₦ {request?.amount_end}</p>
                 </RCard>
@@ -153,7 +153,7 @@ const Requests = () => {
                         </div>
                         <div>
                             <p>Engagement</p>
-                            <p>{getRequirement("engagement_rate")[0]} - {getRequirement("engagement_rate")[1]}</p>
+                            <p>{getRequirement("engagement_rate")[0]}% - {getRequirement("engagement_rate")[1]}%</p>
                         </div>
                         <div>
                             <p>Audience Country</p>
