@@ -450,7 +450,7 @@ const Campaigns = () => {
           handleContinue={handleContinue}
         />
       )}
-      {isWithdrawalOpen && (
+      {isWithdrawalOpen && user && (
         <Withdrawal
           handleContinueWithdrawal={handleContinueWithdrawal}
           setWalletAddress={setWalletAddress}
