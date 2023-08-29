@@ -14,7 +14,8 @@ const VerifyEmail = () => {
     <Container>
          <UpdateModal>
             <WelcomeModal>
-                <div>
+                <div style={{ justifyContent: "left" }}>
+                  <button onClick={() => router.push(`/`)}><Image src={"/arrow-left.svg"} alt="arrow_back" height={20} width={20} /></button>
                 </div>
                 <h2>{verifyStatus.campaignCount ? "Verify Email" : "Give your product the visibility it deserves!"}</h2>
                 <p>{ verifyStatus.campaignCount ? "Please verify your email address to gain access to other pages on our website and unlock exciting features!"

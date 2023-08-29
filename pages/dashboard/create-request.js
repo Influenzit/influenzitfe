@@ -616,7 +616,7 @@ const CreateRequest = () => {
                             <button onClick={() => router.push(`/dashboard/campaigns/request-preview/${requestId}`)}><Image src="/eye.svg" alt="" height={16} width={16} /><span>Preview campaign</span></button>
                         </Header>
                         <h4>Copyright Notice</h4>
-                        <p>By submitting your project, you declare that you either own or have rights to the material posted and that posting these materials does not infringe on any third party&apos;s rights. You also acknowledge that you understand your project will be reviewed and evaluated by Upwork to ensure it meets Upwork&apos;s requirements.</p>
+                        <p>By submitting your project, you declare that you either own or have rights to the material posted and that posting these materials does not infringe on any third party&apos;s rights. You also acknowledge that you understand your project will be reviewed and evaluated by Influenzit to ensure it meets Influenzit&apos;s requirements.</p>
                         <h4 style={{ marginTop: "20px" }}>Terms of Service</h4>
                         <Terms style={{ marginTop: "15px" }}>
                             <button onClick={(e) => {e.preventDefault(); setIsEnabledO(!isEnabledO);}}> {isEnabledO && <span></span>}</button>
@@ -624,7 +624,7 @@ const CreateRequest = () => {
                         </Terms>
                         <Terms style={{ margin: "15px 0" }}>
                             <button onClick={(e) => {e.preventDefault(); setIsEnabledT(!isEnabledT);}}> {isEnabledT && <span></span>}</button>
-                            <p>By submitting this project and activating it, I understand that it will appear in Upwork search results visible to the general public and will show up in search engine results, even if my profile visibility is set to Private or Upwork Users Only.</p>
+                            <p>By submitting this project and activating it, I understand that it will appear in Influenzit search results visible to the general public and will show up in search engine results, even if my profile visibility is set to Private or Influenzit Users Only.</p>
                         </Terms>
                         <StepControl>
                             <button id="right" onClick={handlePublish}><span>Publish</span><Image src="/arrow-w.svg" alt="" height={12} width={12} /> </button>
