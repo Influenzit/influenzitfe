@@ -49,13 +49,12 @@ const Requests = () => {
   });
   const getRequirement = (name) => {
     return JSON.parse(request?.requirements.filter((val) => val.name === name)[0]?.value ?? "[]");
-
   }
   useEffect(() => {
     if (id) {
-        refetchRequestData();
+      refetchRequestData();
     }
-}, [router.pathname, id]);
+  }, [router.pathname, id]);
   return (
     <Container>
        <Wrapper style={{ paddingTop: "20px" }}>
@@ -170,7 +169,7 @@ const Requests = () => {
                     </div>
                     {
                       !request?.accept_terms ? (
-                        <ContinueBtn onClick={() => router.push(`/dashboard/create-request?id=${id}`)}>
+                        <ContinueBtn onClick={() => router.push(`/dashboard/create-request?id=${id}&preview=true`)}>
                           <span>Submit Request</span>{" "}
                           <Image src="/arrow-w.svg" alt="" width={12} height={11} />
                         </ContinueBtn>

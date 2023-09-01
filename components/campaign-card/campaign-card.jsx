@@ -48,7 +48,7 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
                 <Popup ref={popupRef}>
                     <button onClick={() => router.push(`/dashboard/campaigns/request-preview/${reqId}`)}>Preview</button>
                     <button onClick={() => router.push(`/dashboard/campaigns/request-submissions/${reqId}`)}>View Submission</button>
-                    {/* <button>Edit</button> */}
+                    <button onClick={() => router.push(`/dashboard/create-request?id=${reqId}`)}>Edit</button>
                     {/* <button onClick={handlePause}>Pause</button> */}
                     <button onClick={handleDelete}>Delete</button>
                 </Popup>
@@ -82,7 +82,7 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
                     <Image src="/3-dots.svg" alt="" height={24} width={24}/>
                 </button>
             </Stats>
-            <p>{content}</p>
+            <p>{(content ?? "").slice(0, 31)}{content.length > 31 && "..."}</p>
             <PriceSection>from {price}</PriceSection>
         </CreatorDetails>
     </Container>

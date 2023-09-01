@@ -227,7 +227,7 @@ export const ImagePreview = styled.div`
     padding: 20px 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    column-gap: 30px;
     row-gap: 20px;
     div {
         position: relative;

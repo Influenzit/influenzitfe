@@ -145,7 +145,7 @@ const Search = () => {
                                 requestList.map((req, i) => {
                                     return (
                                         <CampaignCard
-                                            content={req.description}
+                                            content={req.title}
                                             price={`${req?.amount_start} - ${req?.amount_end}`}
                                             status={req.status}
                                             imgSrc={req.media[0]?.url ?? "/camp.png"}

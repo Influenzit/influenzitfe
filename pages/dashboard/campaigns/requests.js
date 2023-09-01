@@ -53,7 +53,7 @@ const Requests = () => {
             {
                 requestList.data.map((req, i) => (
                     <CampaignCard
-                        content={req.description}
+                        content={req.title}
                         price={`${req?.amount_start} - ${req?.amount_end}`}
                         status={req.status}
                         imgSrc={req.media[0]?.url ?? "/camp.png"}
@@ -64,7 +64,6 @@ const Requests = () => {
                     />
                 ))
             }
-            
         </CampaignList>
     </Container>
   )

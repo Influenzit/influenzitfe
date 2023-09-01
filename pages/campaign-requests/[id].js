@@ -247,7 +247,7 @@ const handleCreateProposal = () => {
                         </div>
                     </div>
                     <ContinueBtn onClick={handleSubmitRequest}>
-                    <span>Submit Proposal</span>{" "}
+                    <span>Apply</span>{" "}
                     <Image src="/arrow-w.svg" alt="" width={12} height={11} />
                     </ContinueBtn>
                 </RCard>

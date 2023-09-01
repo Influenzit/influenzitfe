@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }) {
             )
           }
         </GoogleOAuthProvider>
-      <ToastContainer style={{ zIndex: "99999999"}}/>
+      <ToastContainer style={{ zIndex: "9999999999"}}/>
       </QueryClientProvider>
     </Provider>
     )

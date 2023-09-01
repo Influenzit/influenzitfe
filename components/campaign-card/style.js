@@ -107,8 +107,8 @@ export const StatusCapsule = styled.span`
 `;
 export const Popup = styled.div`
     position: absolute;
-    top: 75px;
-    right: 15px;
+    top: 45px;
+    right: 10px;
     display: flex;
     flex-direction: column;
     background: #fff;
