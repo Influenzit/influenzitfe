@@ -17,7 +17,7 @@ import { toast } from 'react-toastify';
 import { getIndustries } from 'api/influencer';
 import { Country } from 'country-state-city';
 import Link from 'next/link';
-import { createCampaignRequest, updateCampaignRequest, getUserStatus } from 'api/campaigns';
+import { createCampaignRequest, updateCampaignRequest, getUserStatus, getSingleCampaignRequest } from 'api/campaigns';
 import { formatDate } from 'helpers/helper';
 
 const CreateRequest = () => {
@@ -53,7 +53,9 @@ const CreateRequest = () => {
   const [selectedCountry, setSelectedCountry] = useState([]);
   const [requestId, setRequestId] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  const { id } = router.query;
+  const [uploadImage, setUploadImage] = useState(true);
+  const [previewCoverImages, setPreviewCoverImages] = useState([]);
+  const { id, preview } = router.query;
 
   const createRequestMutation = useMutation((data) => {
     return createCampaignRequest(data);
@@ -81,6 +83,31 @@ const CreateRequest = () => {
             dispatch(setError({error: true, message: "An error occured"}));
         }
     });
+    const updateCRequestMutation = useMutation((data) => {
+        return updateCampaignRequest(data, requestId);
+        }, {
+            onSuccess(successRes) {
+                const res = successRes.data;
+                setIsSaving(false);
+                if(res.errors || res.status === "error" || res.message === "Unauthenticated.") {
+                    dispatch(setLoading(false));
+                    dispatch(setError({error: true, message: res.message}));
+                } else { 
+                    setStep(5);
+                }
+            },
+            onError(error) {
+                const res = error.response.data;
+                setIsSaving(false);
+                if(res){
+                    dispatch(setLoading(false));
+                    dispatch(setError({error: true, message: res.message}));
+                    return;
+                }
+                dispatch(setLoading(false));
+                dispatch(setError({error: true, message: "An error occured"}));
+            }
+        });
     const updateRequestMutation = useMutation((data) => {
         return updateCampaignRequest(data, requestId);
         }, {
@@ -97,6 +124,8 @@ const CreateRequest = () => {
                         emailVerified: statusRes.data.data.email_is_verified,
                     }))
                     router.push("/dashboard/campaigns/requests");
+                   }).catch(e => {
+                        console.log(e);
                    }); 
                 }
             },
@@ -122,6 +151,34 @@ const CreateRequest = () => {
         onSuccess(res) {
             setIndustryList(res.data.data);
         }
+    });
+    const getRequirement = (requirements, name) => {
+        return JSON.parse(requirements.filter((val) => val.name === name)[0]?.value ?? "[]");
+    }
+    const { data: requestData, refetch: refetchRequestData } = useQuery(["get-request"], async () => {
+        return await getSingleCampaignRequest(id);
+      }, {
+          enabled: false,
+          staleTime: Infinity,
+          retry: false,
+          onSuccess(res) {
+            const requestResponse = res.data.data;
+            setTitle(requestResponse.title);
+            setDescription(requestResponse.description);
+            setIndustry(requestResponse.industry);
+            setStartPrice(requestResponse.amount_start);
+            setEndPrice(requestResponse.amount_end);
+            setStartDate(requestResponse.start_date);
+            setEndDate(requestResponse.end_date);
+            setHighEngagement(getRequirement(requestResponse.requirements, "engagement_rate")[1]);
+            setLowEngagement(getRequirement(requestResponse.requirements, "engagement_rate")[0]);
+            setSelectedPlatform(getRequirement(requestResponse.requirements, "platforms"));
+            setSelectedAge(getRequirement(requestResponse.requirements, "age"));
+            setSelectedCountry(getRequirement(requestResponse.requirements, "country"));
+            setHighFollow(getRequirement(requestResponse.requirements, "followers")[1]);
+            setLowFollow(getRequirement(requestResponse.requirements, "followers")[0]);
+            setPreviewCoverImages(requestResponse.media);
+          }
     });
     const { data, refetch } = useQuery(["get-account"], async () => {
         return await getAccount();
@@ -241,6 +298,55 @@ const CreateRequest = () => {
         })
         createRequestMutation.mutate(formData);
     }
+    const handleUpdateRequest = () => {
+        if(isSaving) return;
+        setIsSaving(true);
+
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("currency", "NGN");
+        formData.append("amount_start", Number(startPrice))
+        formData.append("amount_end", endPrice);
+        formData.append("start_date", formatDate(startDate));
+        formData.append("end_date", formatDate(endDate));
+        formData.append("accept_terms", 0);
+        formData.append("status", "Pending");
+        formData.append("industry", industry)
+        formData.append("requirements", JSON.stringify([
+            {
+                name: "platforms",
+                value: selectedPlatform,
+                valuetype: "list",
+            },
+            {
+                name: "followers",
+                value: [lowFollow, highFollow],
+                valuetype: "range"
+            },
+            {
+                name: "engagement_rate",
+                value: [lowEngagement, highEngagement],
+                valuetype: "range"
+            },
+            {
+                name: "age",
+                value: selectedAge,
+                valuetype: "list"
+            },
+            {
+                name: "country",
+                value: selectedCountry,
+                valuetype: "list"
+            }
+        ]))
+        if(uploadImage) {
+            coverImages.forEach((val,i) => {
+                formData.append("campaign_img_" +(i + 1), val.image); 
+            })
+        }
+        updateCRequestMutation.mutate(formData);
+    }
  
     const handleSetFiles = (file) => {
             if(file.size < 5000000){
@@ -324,11 +430,18 @@ const CreateRequest = () => {
     refetch();
   }, [])
   useEffect(() => {
-    if(id) {
+    if(id && preview) {
         setRequestId(id);
+        refetchRequestData();
+        setUploadImage(false);
         setStep(5);
+    } else if (id) {
+        setRequestId(id);
+        setUploadImage(false);
+        refetchRequestData();
     }
-  }, [id])
+  }, [id, preview, router.pathname])
+
   if (currentAccountType !== "Business Owner") return null;
   
   return (
@@ -572,7 +685,7 @@ const CreateRequest = () => {
                 )
             }
             {
-                step === 4 && (
+                (step === 4) && uploadImage && (
                     <>
                         <h3>Gallery</h3>
                         <h4>Cover Images</h4>
@@ -603,7 +716,36 @@ const CreateRequest = () => {
                         </CoverImageContainer>
                         <StepControl>
                             <button id="left" onClick={() => setStep(3)}><Image src="/arrow-left.svg" alt="" height={15} width={15} /> <span>Back</span></button>
-                            <button id="right" onClick={() => handleCreateRequest()}><span>{isSaving ? "Saving..." : "Continue"}</span><Image src="/arrow-w.svg" alt="" height={12} width={12} /> </button>
+                            <button id="right" onClick={() => requestId ? handleUpdateRequest() : handleCreateRequest()}><span>{isSaving ? "Saving..." : "Continue"}</span><Image src="/arrow-w.svg" alt="" height={12} width={12} /> </button>
+                        </StepControl>
+                    </>
+                )
+            }
+            {
+                (step === 4) && !uploadImage && (
+                    <>
+                        <h3>Gallery</h3>
+                        <h4>Cover Images</h4>
+                        {
+                            imgError && <ErrorMessageCont>{imgMessage}</ErrorMessageCont>
+                        }
+                         <StepControl style={{ marginTop: "20px" }}>
+                            <button id="left" onClick={() => setUploadImage(true)}><span>Replace Images</span></button>
+                        </StepControl>
+                        <CoverImageContainer>
+                            <ImagePreview>
+                                {
+                                    previewCoverImages.map((val, i) => (
+                                        <div key={i}>
+                                            <Image src={val.url} alt="" layout='fill' objectFit='cover' objectPosition="center" />
+                                        </div>
+                                    ))
+                                }
+                            </ImagePreview>
+                        </CoverImageContainer>
+                        <StepControl>
+                            <button id="left" onClick={() => setStep(3)}><Image src="/arrow-left.svg" alt="" height={15} width={15} /> <span>Back</span></button>
+                            <button id="right" onClick={() => requestId ? handleUpdateRequest() : handleCreateRequest()}><span>{isSaving ? "Saving..." : "Continue"}</span><Image src="/arrow-w.svg" alt="" height={12} width={12} /> </button>
                         </StepControl>
                     </>
                 )

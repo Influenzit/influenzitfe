@@ -3,13 +3,50 @@ import { Container } from './style'
 import { UpdateModal } from '../../styles/view.style'
 import { WelcomeModal } from '../../styles/connect-pages.style'
 import Image from 'next/image'
-import { useSelector } from 'react-redux'
-import { getVerifyStatus } from '../../app/reducers/status'
+import { useDispatch, useSelector } from 'react-redux'
+import { getVerifyStatus, setLoading } from '../../app/reducers/status'
 import { useRouter } from 'next/router'
+import { useMutation } from '@tanstack/react-query'
+import { resendEmail } from 'api/auth'
+import { toast } from 'react-toastify'
+import { getUser } from 'app/reducers/user'
 
 const VerifyEmail = () => {
   const verifyStatus = useSelector(getVerifyStatus);
   const router = useRouter();
+  const dispatch = useDispatch();
+  const user = useSelector(getUser);
+  const mailMutation = useMutation(
+    (data) => {
+      return resendEmail(data);
+    },
+    {
+      onSuccess(successRes) {
+        const res = successRes.data;
+        toast.success("Verification mail sent successfully. Check your inbox.", {
+            position: toast.POSITION.TOP_RIGHT
+        });
+        dispatch(setLoading(false));
+      },
+      onError(error) {
+        const res = error.response.data;
+        dispatch(setLoading(false));
+        if (res) {
+          dispatch(setError({ error: true, message: res.message }));
+          return;
+        }
+        dispatch(setError({ error: true, message: "An error occured" }));
+      },
+    }
+  );
+  const handleResendEmail = (e) => {
+    e.preventDefault();
+    dispatch(setLoading(true));
+    mailMutation.mutate({
+        email: user.email,
+    })
+  }
+
   return (
     <Container>
          <UpdateModal>
@@ -23,7 +60,7 @@ const VerifyEmail = () => {
                 </p>
                 <div>
                     {
-                      verifyStatus.campaignCount ? <button onClick={() => router.push("/")}>Go Home</button> : <button onClick={() => router.push("/dashboard/create-request")}>Create Campaign Request</button>
+                      verifyStatus.campaignCount ? <button onClick={handleResendEmail}>Resend Email</button> : <button onClick={() => router.push("/dashboard/create-request")}>Create Campaign Request</button>
                     }
                 </div>
             </WelcomeModal>

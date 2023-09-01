@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import LandingLayout from '../../../../layouts/landing.layout'
 import { CampaignList, Container, Heading, RequestCard } from '../../../../styles/campaign.style'
 import { useRouter } from 'next/router'
-import ProfileCard from '../../../../components/profile-card'
+import SubmissionCard from '../../../../components/submission-card'
 import { getCampaignRequestSubmissions } from '../../../../api/campaigns'
 import { useQuery } from '@tanstack/react-query'
 
@@ -37,7 +37,7 @@ const Requests = () => {
         <CampaignList>
             {
                 requestList.data.map((req, i) => (
-                    <ProfileCard
+                    <SubmissionCard
                         profileLink={`/influencers/${req.user_id}`}
                         imgSrc={req.user.profile_pic}
                         handle={'me'}
@@ -45,8 +45,10 @@ const Requests = () => {
                         sex={"Male"}
                         rating={5}
                         key={i}
+                        id={req.user_id}
                         skills={req.user.name}
                         address={"Yaba"}
+                        platforms={req}
                     />
                 ))
             }
