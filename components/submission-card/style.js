@@ -17,18 +17,27 @@ export const Container = styled.div`
         color:#555461;
     }
     cursor: pointer;
-    button {
-        border: none;
-        outline: none;
+    .btn-wrapper {
         position: absolute;
-        padding: 8px 20px;
-        color: #fff;
-        border-radius: 8px;
+        padding: 8px 8px;
+        display: flex;
         top: 15px;
-        right: 15px;
+        left: 0px;
+        justify-content: space-between;
+        width: 100%;
         z-index: 999;
-        font-weight: 500;
-        background: #27C281;
+        button {
+            border: none;
+            outline: none;
+            padding: 8px 20px;
+            color: #fff;
+            border-radius: 8px;
+            font-weight: 500;
+            background: #27C281;
+        }
+        .reject-btn {
+            background: red;
+        }
     }
     ${breakpoints.lg} {
         margin: 0 auto;
