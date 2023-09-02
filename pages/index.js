@@ -9,6 +9,7 @@ import { useRouter } from "next/router"
 import { ListWrapper } from "styles/search.style"
 import CampaignCard from '../components/campaign-req-card/campaign-req-card';
 import { getTopCampaigns } from "api/business"
+import { ImgContainer } from "styles/waitlist.style"
 
 const Home = () => {
   const [faq, setFaq] = useState({});
@@ -135,9 +136,9 @@ const Home = () => {
                   <a>Find Campaigns</a>
                 </Link>
               </Info>
-              <ImageWrapper>
-                <Image src="/hero1.png" alt='' layout='fill' objectFit='contain' objectPosition="right" />
-              </ImageWrapper>
+              <ImgContainer>
+                <Image src="/l-image-2.jpg" alt='' layout='fill' objectFit='contain' objectPosition="right" />
+              </ImgContainer>
             </InfoCardM>
             <WrapperFourD $top>
               <h1><span>Featured Campaign Requests</span></h1>

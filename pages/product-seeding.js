@@ -88,7 +88,7 @@ const Home = () => {
               </InfoD>
               <ImgContainer>
                 <Image
-                  src="/w-banner-2.png"
+                  src="/l-image-2.jpg"
                   alt="banner"
                   layout="fill"
                   loading="lazy"
@@ -100,7 +100,7 @@ const Home = () => {
             <InfoCardD $reverseColumn>
               <ImgContainer>
                 <Image
-                  src="/w-banner-3.png"
+                  src="/l-image-1.jpg"
                   alt="banner"
                   layout="fill"
                   loading="lazy"
@@ -139,7 +139,7 @@ const Home = () => {
               </InfoD>
               <ImgContainer>
                 <Image
-                  src="/w-banner-4.png"
+                  src="/l-image-3.jpg"
                   alt="banner"
                   layout="fill"
                   loading="lazy"
