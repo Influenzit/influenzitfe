@@ -30,17 +30,22 @@ const SubmissionCard = ({imgSrc, name, id, profileLink, skills, rating, platform
             dispatch(setError({ error: true, message: "An error occured" }));
         }
     });
-    const handleStartConversation = () => {
+    const handleStartConversation = (text) => {
         startConversationMutation.mutate({
             to_user_id: id,
-            text: "The campaign with id: " + id + " was accepted",
+            text,
         })
     }
     return (
     <Container>
-        <button onClick={() => handleStartConversation()}>
-            Accept
-        </button>
+        <div className='btn-wrapper'>
+            <button onClick={() => handleStartConversation("The proposal of "+ name + " to the campaign request with id: " + id + " was accepted")}>
+                Accept
+            </button>
+            <button className="reject-btn" onClick={() => handleStartConversation("The proposal of "+ name + " to the campaign request with id: " + id + " was rejected")}>
+                Reject
+            </button>
+        </div>
         <TopImg onClick={() => router.push(profileLink)}>
             <Image src={imgSrc} alt="" layout="fill" objectPosition="center" objectFit='cover'/>
         </TopImg>
