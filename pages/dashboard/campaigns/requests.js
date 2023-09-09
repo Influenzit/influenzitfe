@@ -15,7 +15,7 @@ const Requests = () => {
   const [requestList, setRequestList] = useState({
     data: [],
   });
-  const { data, refetch } = useQuery(["get-requests"], async () => {
+  const { data, refetch } = useQuery(["get-campaigin-requests"], async () => {
     return await getCampaignRequests(`${getUrl}?status=${status}`);
     }, {
         enabled: false,

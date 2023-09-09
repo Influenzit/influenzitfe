@@ -54,3 +54,6 @@ export const logoutUser = () => {
 export const getAllReviews = (url, id) => {
     return axiosInstance().get(url ? url : `/accounts/${id}/reviews`);
 }
+export const verifyEmail = (query) => {
+    return axiosInstance().get(`/auth/email/verify${query}`);
+}

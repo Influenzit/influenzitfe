@@ -116,7 +116,9 @@ export const Popup = styled.div`
     border-radius: 8px;
     overflow: hidden;
     z-index: 9999;
-    button {
+    a, button {
+        display: inline-flex;
+        justify-content: center;
         padding: 10px 16px;
         background: transparent;
         cursor: pointer;

@@ -48,7 +48,7 @@ export const createCampaignRequest = (data) => {
   return axiosInstance().post(`/campaigns/requests`, data);
 };
 export const updateCampaignRequest = (data, id) => {
-  return axiosInstance().patch(`/campaigns/requests/${id}`, data);
+  return axiosInstance().post(`/campaigns/requests/${id}?_method=patch`, data);
 }
 export const getCampaignRequests = (url) => {
   return axiosInstance().get(url ? url.includes("/") ? url : `/campaigns/requests${url}` : `/campaigns/requests`);

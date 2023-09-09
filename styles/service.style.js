@@ -310,6 +310,9 @@ export const RCard = styled.div`
                 color: #000;
                 min-width: 50%;
             }
+            p:nth-child(2) {
+                text-align: right;
+            }
         }
     }
 `;
