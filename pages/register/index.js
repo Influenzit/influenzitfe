@@ -58,26 +58,28 @@ const Register = () => {
         dispatch(setLoading(false));
         dispatch(setError({error: true, message: res.message}));
       } else {
-        localStorage.setItem("token", res.token);
-        const { is_businessowner } = res.user.account;
-        if (is_businessowner) {
-          dispatch(setUserType("Business Owner"));
-          getBusinesses(res.token).then((bizRes) => {
-            if (bizRes.data && res) {
+        if(res) {
+          localStorage.setItem("token", res.token);
+          const { is_businessowner } = res.user.account;
+          if (is_businessowner) {
+            dispatch(setUserType("Business Owner"));
+            getBusinesses(res.token).then((bizRes) => {
+              if (bizRes.data && res) {
+                dispatch(setLoading(false));
+                dispatch(setBusinesses(bizRes.data.data))
+                dispatch(updateUser(res.user));
+                dispatch(updateVerifyStatus({
+                  campaignCount: res.campaign_request_counts,
+                  emailVerified: res.email_is_verified,
+                }))
+                dispatch(setError({error: false, message: ""}));
+                router.push("/dashboard");
+              }
+            }).catch( _ => {
               dispatch(setLoading(false));
-              dispatch(setBusinesses(bizRes.data.data))
-              dispatch(updateUser(res.user));
-              dispatch(updateVerifyStatus({
-                campaignCount: res.campaign_request_counts,
-                emailVerified: res.email_is_verified,
-              }))
-              dispatch(setError({error: false, message: ""}));
-              router.push("/dashboard");
-            }
-          }).catch( _ => {
-            dispatch(setLoading(false));
-            dispatch(setError({error: true, message: "An error occured"}))
-          })
+              dispatch(setError({error: true, message: "An error occured"}))
+            })
+          } 
         } else {
           dispatch(setLoading(false));
           router.push(`/register/email-sent?email=${formVal.email}&time=${Date.now()}`);
