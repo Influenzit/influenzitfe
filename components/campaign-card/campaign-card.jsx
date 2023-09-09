@@ -42,11 +42,11 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
     
     return (
     <Container>
-        <StatusCapsule toShow={status}>{status}</StatusCapsule>
+        {/* <StatusCapsule toShow={status}>{status}</StatusCapsule> */}
         {
             showPopup ? (
                 <Popup ref={popupRef}>
-                    <button onClick={() => router.push(`/dashboard/campaigns/request-preview/${reqId}`)}>Preview</button>
+                    <Link href={`/dashboard/campaigns/request-preview/${reqId}`} passHref><a target='_blank'>Preview</a></Link>
                     <button onClick={() => router.push(`/dashboard/campaigns/request-submissions/${reqId}`)}>View Submission</button>
                     <button onClick={() => router.push(`/dashboard/create-request?id=${reqId}`)}>Edit</button>
                     {/* <button onClick={handlePause}>Pause</button> */}

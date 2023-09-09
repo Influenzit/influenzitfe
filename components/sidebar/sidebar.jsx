@@ -55,16 +55,6 @@ const Sidebar = () => {
         <span>Home</span>
       </NavButton>
       {(currentUserType === "Business Owner" ||
-        currentUserType === "Creator") && (
-        <NavButton
-          onClick={() => handleRouting("/dashboard/projects")}
-          isActive={router.pathname === "/dashboard/projects"}
-        >
-          <ProjectIcon />
-          <span>Projects</span>
-        </NavButton>
-      )}
-      {(currentUserType === "Business Owner" ||
         currentUserType === "Influencer") && (
         <NavButton
           onClick={() => setShowCampaignDropdown(!showCampaignDropdown)}
@@ -144,6 +134,16 @@ const Sidebar = () => {
         <SettingsIcon />
         <span>Account Settings</span>
       </NavButton>
+      {(currentUserType === "Business Owner" ||
+        currentUserType === "Creator") && (
+        <NavButton
+          onClick={() => handleRouting("/dashboard/projects")}
+          isActive={router.pathname === "/dashboard/projects"}
+        >
+          <ProjectIcon />
+          <span>Projects</span>
+        </NavButton>
+      )}
       <NavButton
         onClick={() => handleRouting("/dashboard/reviews")}
         isActive={router.pathname === "/dashboard/reviews"}

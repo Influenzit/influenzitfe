@@ -335,9 +335,9 @@ const Dashboard = () => {
                                 <div>
                                     <h2>Launch your first Campaign</h2>
                                     <p>Create your own &quot;Spotlight&quot; campaign and put your product in the hands of the right influencers. This feature allows you to select the ideal metrics for your campaign, attach a product, and invite influencers that best fit your target audience to apply. Harness the power of word-of-mouth marketing and watch your brand awareness grow with &quot;Spotlight&quot;.</p>
-                                    <Link href="/explore/influencers" passHref>
+                                    <Link href="/dashboard/create-request" passHref>
                                         <a>
-                                            <span>Find influencers</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
+                                            <span>Create Campaign Request</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
                                         </a>
                                     </Link>
                                 </div>
@@ -449,7 +449,7 @@ const Dashboard = () => {
                                 <div>
                                     <h2>Launch your first project</h2>
                                     <p>Find the right influencers with correct metrics, keep track of your campaign performance and complete payments seamlessly.</p>
-                                    <Link href="/" passHref>
+                                    <Link href="/explore/creators" passHref>
                                         <a>
                                             <span>Find Creators</span> <Image src="/arrow-w.svg" alt="arrow" height={14} width={14}/>
                                         </a>
