@@ -179,13 +179,16 @@ const handleCreateProposal = () => {
               <h2>{request?.title}</h2>
               <Desc>{request?.description}</Desc>
             </Section>
-            {/* <Section>
+            <Section style={{ borderTop: "1px solid rgba(42, 41, 57, 0.20)" }}>
               <h3>Deliverables</h3>
               <Deliverables>
-                <div><span></span><p>1 Instagram post and story</p></div>
-                <div><span></span><p>2 tiktok videos</p></div>
+                {
+                  request?.deliverables?.split("|").map((val, i) => (
+                    <div key={i}><span></span><p>{val}</p></div>
+                  ))
+                }
               </Deliverables>
-            </Section> */}
+            </Section>
             {/* <Section>
               <h3>Visuals and Theme</h3>
               <Desc>We would love to see selfies of you using the products, reel trends, testimonials, or product pics from out and about!

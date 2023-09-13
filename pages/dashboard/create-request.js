@@ -19,6 +19,7 @@ import { Country } from 'country-state-city';
 import Link from 'next/link';
 import { createCampaignRequest, updateCampaignRequest, getUserStatus, getSingleCampaignRequest } from 'api/campaigns';
 import { formatDate } from 'helpers/helper';
+import { DeleteIcon } from 'assets/svgIcons';
 
 const CreateRequest = () => {
   const [step, setStep] = useState(1);
@@ -56,6 +57,7 @@ const CreateRequest = () => {
   const [uploadImage, setUploadImage] = useState(true);
   const [previewCoverImages, setPreviewCoverImages] = useState([]);
   const { id, preview } = router.query;
+  const [deliverables, setDeliverables] = useState([""]);
 
   const createRequestMutation = useMutation((data) => {
     return createCampaignRequest(data);
@@ -155,6 +157,27 @@ const CreateRequest = () => {
     const getRequirement = (requirements, name) => {
         return JSON.parse(requirements.filter((val) => val.name === name)[0]?.value ?? "[]");
     }
+    const handleDeliverableChange = (i, val) => {
+        setDeliverables((prev) => {
+            const copyOfPrev = [...prev];
+            copyOfPrev[i] = val;
+            return copyOfPrev;
+        })
+    }
+    const handleAddDeliverable = () => {
+        setDeliverables((prev) => {
+            const copyOfPrev = [...prev];
+            copyOfPrev.push("");
+            return copyOfPrev;
+        })
+    }
+    const handleRemoveDeliverale = (i) => {
+        setDeliverables((prev) => {
+            const copyOfPrev = [...prev];
+            copyOfPrev.splice(i, 1);
+            return copyOfPrev;
+        })
+    }
     const { data: requestData, refetch: refetchRequestData } = useQuery(["get-request"], async () => {
         return await getSingleCampaignRequest(id);
       }, {
@@ -178,6 +201,7 @@ const CreateRequest = () => {
             setHighFollow(getRequirement(requestResponse.requirements, "followers")[1]);
             setLowFollow(getRequirement(requestResponse.requirements, "followers")[0]);
             setPreviewCoverImages(requestResponse.media);
+            setDeliverables(requestResponse.deliverables?.split("|"));
           }
     });
     const { data, refetch } = useQuery(["get-account"], async () => {
@@ -265,7 +289,8 @@ const CreateRequest = () => {
         formData.append("end_date", formatDate(endDate));
         formData.append("accept_terms", 0);
         formData.append("status", "Pending");
-        formData.append("industry", industry)
+        formData.append("industry", industry);
+        formData.append("deliverables", deliverables.filter((val) => val !== "").join("|"));
         formData.append("requirements", JSON.stringify([
             {
                 name: "platforms",
@@ -312,7 +337,8 @@ const CreateRequest = () => {
         formData.append("end_date", formatDate(endDate));
         formData.append("accept_terms", 0);
         formData.append("status", "Pending");
-        formData.append("industry", industry)
+        formData.append("industry", industry);
+        formData.append("deliverables", deliverables.filter((val) => val !== "").join("|"));
         formData.append("requirements", JSON.stringify([
             {
                 name: "platforms",
@@ -524,6 +550,19 @@ const CreateRequest = () => {
                                 bioError && <span id='error'>Enter your introduction</span>
                             }
                         </InputContainer> */}
+                        <h4>What are your deliverables</h4>
+                        <p>Let us know your deliverables</p>
+                        {
+                            deliverables.map((_, i) => (
+                                <InputContainer style={{ marginTop: "10px", display: "flex", flexDirection: "row", columnGap: "15px" }} key={i}>
+                                    <Input style={{ fontSize: "14px", borderColor: "#D0D5DD" }} value={deliverables[i]} onChange={(e) => handleDeliverableChange(i, e.target.value)} type="text" placeholder='Deliverable' />
+                                    <button onClick={() => handleRemoveDeliverale(i)}><Image src="/delete.svg" alt="del" height={28} width={28} /></button>
+                                </InputContainer>
+                            ))
+                        }
+                        <StepControl style={{ margin: "10px 0" }}>
+                            <button id="right" onClick={handleAddDeliverable}><span>Add Deliverable</span></button>
+                        </StepControl>
                         <h4>When do you need the project?</h4>
                         <p>Let us know if your have deadlines</p>
                         <div style={{ display: "flex", columnGap: "10px", alignItems: "center" }}>
