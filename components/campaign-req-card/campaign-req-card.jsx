@@ -7,7 +7,7 @@ import { useRef } from 'react'
 import { deleteCampaignRequest } from 'api/campaigns'
 import { useMutation } from '@tanstack/react-query'
 
-const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refetch }) => {
+const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refetch, followers, engagements }) => {
     const router = useRouter();
     const [showPopup, setShowPopup] = useState(false);
     const controlRef = useRef(null);
@@ -47,7 +47,8 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
         </TopImg>
         <CreatorDetails>
             <Stats>
-                <div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <p style={{ paddingTop: "0" }}>Platforms: </p>
                     {
                         reqPlatform.map((val) => {
                             switch (val) {
@@ -67,8 +68,14 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
                         })}
                 </div>
             </Stats>
-            <p>{(content ?? "").slice(0, 31)}{content.length > 31 && "..."}</p>
-            <PriceSection>from {price}</PriceSection>
+            <div>
+                <p>Followers: {followers}</p>
+            </div>
+            <div>
+                <p>Engagement: {engagements}</p>
+            </div>
+            {/* <p>{(content ?? "").slice(0, 31)}{content.length > 31 && "..."}</p> */}
+            <PriceSection>Payment: {price}</PriceSection>
         </CreatorDetails>
     </Container>
   )

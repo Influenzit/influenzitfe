@@ -13,6 +13,7 @@ import { Right } from '../../../../styles/service.style'
 import { getSingleCampaignRequest } from '../../../../api/campaigns'
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import parse from "html-react-parser"
 
 function NextArrow(props) {
     const { className, style, onClick } = props;
@@ -98,7 +99,7 @@ const Requests = () => {
             </ImageSlides>
             <Section>
               <h2>{request?.title}</h2>
-              <Desc>{request?.description}</Desc>
+              <Desc>{parse(request?.description ?? "")}</Desc>
             </Section>
             <Section style={{ borderTop: "1px solid rgba(42, 41, 57, 0.20)" }}>
               <h3>Deliverables</h3>

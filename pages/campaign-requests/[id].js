@@ -17,6 +17,7 @@ import { useSelector } from 'react-redux';
 import { getUserType } from 'app/reducers/status';
 import { getUser } from 'app/reducers/user';
 import { toast } from 'react-toastify';
+import parse from 'html-react-parser';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -177,7 +178,7 @@ const handleCreateProposal = () => {
             </ImageSlides>
             <Section>
               <h2>{request?.title}</h2>
-              <Desc>{request?.description}</Desc>
+              <Desc>{parse(request?.description ?? "")}</Desc>
             </Section>
             <Section style={{ borderTop: "1px solid rgba(42, 41, 57, 0.20)" }}>
               <h3>Deliverables</h3>

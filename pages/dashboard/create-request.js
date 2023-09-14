@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useState } from 'react';
 import LandingLayout from '../../layouts/landing.layout'
 import { Capsule, CapsuleWrapper, ErrorMessageCont, Input, InputContainer, Terms } from '../../styles/auth.style';
@@ -19,7 +19,7 @@ import { Country } from 'country-state-city';
 import Link from 'next/link';
 import { createCampaignRequest, updateCampaignRequest, getUserStatus, getSingleCampaignRequest } from 'api/campaigns';
 import { formatDate } from 'helpers/helper';
-import { DeleteIcon } from 'assets/svgIcons';
+import { Editor } from '@tinymce/tinymce-react';
 
 const CreateRequest = () => {
   const [step, setStep] = useState(1);
@@ -58,6 +58,8 @@ const CreateRequest = () => {
   const [previewCoverImages, setPreviewCoverImages] = useState([]);
   const { id, preview } = router.query;
   const [deliverables, setDeliverables] = useState([""]);
+  const [showEditor, setShowEditor] = useState(false);
+  const editorRef = useRef(null);
 
   const createRequestMutation = useMutation((data) => {
     return createCampaignRequest(data);
@@ -452,6 +454,7 @@ const CreateRequest = () => {
     }
   }, [currentAccountType])
   useEffect(() => {
+    setShowEditor(true);
     refetchIndustryData();
     refetch();
   }, [])
@@ -505,11 +508,31 @@ const CreateRequest = () => {
                             <Input style={{ fontSize: "14px", borderColor: titleError ? colors.primaryColor : "#D0D5DD" }} value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder='Campaign Title' />
                         </InputContainer>
                         <h4>Description</h4>
-                        <p>Write a detailed description of what you need</p>
-                        <InputContainer style={{ marginTop: "10px" }}>
+                        <p style={{ marginBottom: "15px" }}>Write a detailed description of what you need</p>
+                        {showEditor && <Editor
+                            onInit={(evt, editor) => editorRef.current = editor}
+                            initialValue={description}
+                            apiKey='uxnau7otzh0wddqctwllaa833wa4bmzw0cn6hu84u7mx5uiv'
+                            init={{
+                                selector: 'textarea#basic-example',
+                                height: 500,
+                                plugins: [
+                                  'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                                  'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                                  'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                                ],
+                                toolbar: 'undo redo | blocks | ' +
+                                'bold italic backcolor | alignleft aligncenter ' +
+                                'alignright alignjustify | bullist numlist outdent indent | ' +
+                                'removeformat | help',
+                                content_style: 'body { font-family: "Figtree",sans-serif; font-size:14px, z-index: "999999999" }'
+                            }}
+                        />
+                        }
+                        {/* <InputContainer style={{ marginTop: "10px" }}>
                             <textarea value={description} onChange={(e) => setDescription(e.target.value)} style={{ borderColor: bioError ? colors.primaryColor : "#D0D5DD" }}/>
-                        </InputContainer>
-                        <InputWrap>
+                        </InputContainer> */}
+                        <InputWrap style={{ marginTop: "15px" }}>
                             <div style={{ display: "flex", flexDirection: "column", minWidth: "calc(50% - 10px)" }}>
                                 <h4>Category</h4>
                                 <p>Select the category of your campaign</p>
@@ -533,7 +556,10 @@ const CreateRequest = () => {
                             <Input style={{ fontSize: "14px", borderColor: headlineError ? colors.primaryColor : "#D0D5DD" }} value={headline} onChange={(e) => setHeadline(e.target.value)} type="text" placeholder='Start typing to select and view options.' />
                         </InputContainer> */}
                         <StepControl style={{ justifyContent: "right" }}>
-                            <button id="right" onClick={() => setStep(2)}><span>Continue</span><Image src="/arrow-w.svg" alt="" height={12} width={12} /> </button>
+                            <button id="right" onClick={() => {
+                                setDescription(editorRef.current.getContent())
+                                setStep(2)
+                            }}><span>Continue</span><Image src="/arrow-w.svg" alt="" height={12} width={12} /> </button>
                         </StepControl>
                     </>
                 )

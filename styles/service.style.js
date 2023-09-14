@@ -132,6 +132,12 @@ export const Header = styled.div`
 export const Desc = styled.p`
     color: #555461;
     padding-top: 15px;
+    ul {
+        list-style: disc;
+    }
+    ol {
+        list-style: decimal;
+    }
 `;
 export const SectionM = styled.div`
     border-bottom: 1px solid rgba(42, 41, 57, 0.2);

@@ -7,7 +7,7 @@ import { useRef } from 'react'
 import { deleteCampaignRequest } from 'api/campaigns'
 import { useMutation } from '@tanstack/react-query'
 
-const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refetch }) => {
+const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refetch, followers, engagements }) => {
     const router = useRouter();
     const [showPopup, setShowPopup] = useState(false);
     const controlRef = useRef(null);
@@ -82,7 +82,13 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
                     <Image src="/3-dots.svg" alt="" height={24} width={24}/>
                 </button>
             </Stats>
-            <p>{(content ?? "").slice(0, 31)}{content.length > 31 && "..."}</p>
+            <div>
+                <p>Followers: {followers}</p>
+            </div>
+            <div>
+                <p>Engagement: {engagements}</p>
+            </div>
+            {/* <p>{(content ?? "").slice(0, 31)}{content.length > 31 && "..."}</p> */}
             <PriceSection>from {price}</PriceSection>
         </CreatorDetails>
     </Container>

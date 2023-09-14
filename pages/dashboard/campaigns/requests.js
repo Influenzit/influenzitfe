@@ -25,6 +25,9 @@ const Requests = () => {
             setRequestList(res.data.data);
         }
     });
+    const getRequirement = (req, name) => {
+        return JSON.parse(req?.requirements.filter((val) => val.name === name)[0]?.value ?? "[]");
+    }
   useEffect(() => {
     refetch();
   }, [status])
@@ -59,6 +62,8 @@ const Requests = () => {
                         imgSrc={req.media[0]?.url ?? "/camp.png"}
                         reqId={req.id}
                         refetch={refetch}
+                        followers={`${getRequirement(req, "followers")[0] ?? ""} - ${getRequirement(req, "followers")[1] ?? ""}`}
+                        engagements={`${getRequirement(req, "engagement_rate")[0] ?? ""} - ${getRequirement(req, "engagement_rate")[1] ?? ""}`}
                         key={i}
                         reqPlatform={JSON.parse(req.requirements.filter((val) => val.name === "platforms")[0]?.value ?? "[]")}
                     />
