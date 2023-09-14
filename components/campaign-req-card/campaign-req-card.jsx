@@ -46,6 +46,7 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
             <Image src={imgSrc} alt="" layout="fill" objectPosition="center" objectFit='cover'/>
         </TopImg>
         <CreatorDetails>
+            <p>Title: {(content ?? "").slice(0, 31)}{content.length > 31 && "..."}</p>
             <Stats>
                 <div style={{ display: "flex", alignItems: "center" }}>
                     <p style={{ paddingTop: "0" }}>Platforms: </p>
@@ -68,7 +69,6 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
                         })}
                 </div>
             </Stats>
-            <p>Title: {(content ?? "").slice(0, 31)}{content.length > 31 && "..."}</p>
             <div>
                 <p>Followers: {followers}</p>
             </div>

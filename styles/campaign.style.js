@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from "./theme";
+import { breakpoints, colors } from "./theme";
 
 export const Container = styled.div`
     background: #fff;
@@ -32,6 +32,11 @@ export const Heading = styled.div`
             background: transparent;
         }
     }
+    ${breakpoints.md} {
+        h2 {
+            font-size: 18px;
+        }
+    }
 `;
 export const CampaignList = styled.div`
     padding: 10px 0px;
@@ -59,5 +64,8 @@ export const RequestCard = styled.div`
         font-size: 16px;
         font-weight: 500;
         margin-top: 10px;
+    }
+    ${breakpoints.md} {
+        margin: 0 auto;
     }
 `;
