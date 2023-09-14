@@ -59,7 +59,8 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
         </TopImg>
         <CreatorDetails>
             <Stats>
-                <div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <p style={{ paddingTop: "0" }}>Platforms: </p>
                     {
                         reqPlatform.map((val) => {
                             switch (val) {
@@ -89,7 +90,7 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
                 <p>Engagement: {engagements}</p>
             </div>
             {/* <p>{(content ?? "").slice(0, 31)}{content.length > 31 && "..."}</p> */}
-            <PriceSection>from {price}</PriceSection>
+            <PriceSection>Payment: {price}</PriceSection>
         </CreatorDetails>
     </Container>
   )

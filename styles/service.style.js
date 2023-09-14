@@ -134,9 +134,11 @@ export const Desc = styled.p`
     padding-top: 15px;
     ul {
         list-style: disc;
+        padding-left: 15px;
     }
     ol {
         list-style: decimal;
+        padding-left: 15px;
     }
 `;
 export const SectionM = styled.div`
