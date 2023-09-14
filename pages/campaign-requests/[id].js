@@ -180,16 +180,6 @@ const handleCreateProposal = () => {
               <h2>{request?.title}</h2>
               <Desc>{parse(request?.description ?? "")}</Desc>
             </Section>
-            <Section style={{ borderTop: "1px solid rgba(42, 41, 57, 0.20)" }}>
-              <h3>Deliverables</h3>
-              <Deliverables>
-                {
-                  request?.deliverables?.split("|").map((val, i) => (
-                    <div key={i}><span></span><p>{val}</p></div>
-                  ))
-                }
-              </Deliverables>
-            </Section>
             {/* <Section>
               <h3>Visuals and Theme</h3>
               <Desc>We would love to see selfies of you using the products, reel trends, testimonials, or product pics from out and about!
@@ -254,6 +244,18 @@ const handleCreateProposal = () => {
                     <span>Apply</span>{" "}
                     <Image src="/arrow-w.svg" alt="" width={12} height={11} />
                     </ContinueBtn>
+                </RCard>
+                <RCard>
+                  <Section>
+                    <h3>Deliverables</h3>
+                    <Deliverables>
+                      {
+                        request?.deliverables?.split("|").map((val, i) => (
+                          <div key={i}><span></span><p>{val}</p></div>
+                        ))
+                      }
+                    </Deliverables>
+                  </Section>
                 </RCard>
             </RWrapper>
           </Right>
