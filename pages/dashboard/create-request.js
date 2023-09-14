@@ -203,7 +203,7 @@ const CreateRequest = () => {
             setHighFollow(getRequirement(requestResponse.requirements, "followers")[1]);
             setLowFollow(getRequirement(requestResponse.requirements, "followers")[0]);
             setPreviewCoverImages(requestResponse.media);
-            setDeliverables(requestResponse.deliverables?.split("|"));
+            setDeliverables(requestResponse.deliverables?.split("|") ?? []);
           }
     });
     const { data, refetch } = useQuery(["get-account"], async () => {
@@ -579,7 +579,7 @@ const CreateRequest = () => {
                         <h4>What are your deliverables</h4>
                         <p>Let us know your deliverables</p>
                         {
-                            deliverables.map((_, i) => (
+                            deliverables?.map((_, i) => (
                                 <InputContainer style={{ marginTop: "10px", display: "flex", flexDirection: "row", columnGap: "15px" }} key={i}>
                                     <Input style={{ fontSize: "14px", borderColor: "#D0D5DD" }} value={deliverables[i]} onChange={(e) => handleDeliverableChange(i, e.target.value)} type="text" placeholder='Deliverable' />
                                     <button onClick={() => handleRemoveDeliverale(i)}><Image src="/delete.svg" alt="del" height={28} width={28} /></button>
