@@ -68,14 +68,14 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
                         })}
                 </div>
             </Stats>
+            <p>Title: {(content ?? "").slice(0, 31)}{content.length > 31 && "..."}</p>
             <div>
                 <p>Followers: {followers}</p>
             </div>
             <div>
                 <p>Engagement: {engagements}</p>
             </div>
-            {/* <p>{(content ?? "").slice(0, 31)}{content.length > 31 && "..."}</p> */}
-            <PriceSection>Payment: {price}</PriceSection>
+            <PriceSection>Budget: {price}</PriceSection>
         </CreatorDetails>
     </Container>
   )

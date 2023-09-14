@@ -149,12 +149,12 @@ const Search = () => {
                                     return (
                                         <CampaignCard
                                             content={req.title}
-                                            price={`${req?.amount_start} - ${req?.amount_end}`}
+                                            price={`₦${req?.amount_start} - ₦${req?.amount_end}`}
                                             status={req.status}
                                             imgSrc={req.media[0]?.url ?? "/camp.png"}
                                             reqId={req.id}
                                             followers={`${getRequirement(req, "followers")[0] ?? ""} - ${getRequirement(req, "followers")[1] ?? ""}`}
-                                            engagements={`${getRequirement(req, "engagement_rate")[0] ?? ""} - ${getRequirement(req, "engagement_rate")[1] ?? ""}`}
+                                            engagements={`${getRequirement(req, "engagement_rate")[0] ?? ""}% - ${getRequirement(req, "engagement_rate")[1] ?? ""}%`}
                                             refetch={refetch}
                                             key={i}
                                             reqPlatform={JSON.parse(req.requirements.filter((val) => val.name === "platforms")[0]?.value ?? "[]")}

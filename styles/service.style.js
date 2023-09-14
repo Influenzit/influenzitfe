@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, sizes } from "./theme";
+import { breakpoints, colors, sizes } from "./theme";
 
 export const Container = styled.div`
      background: #FAFBFC;
@@ -68,6 +68,9 @@ export const ContainerB = styled.div`
     display: flex;
     column-gap: 30px;
     padding-bottom: 30px;
+    ${breakpoints.md} {
+        flex-direction: column;
+    }
 `;
 export const Left = styled.div`
     display: flex;
@@ -75,6 +78,11 @@ export const Left = styled.div`
     row-gap: 20px;
     max-width: calc(100% - 380px);
     min-width: calc(100% - 380px);
+    ${breakpoints.md} {
+        max-width: 100%;
+        min-width: 100%;
+    }
+
 `;
 export const Section = styled.div`
     padding-top: 10px;
@@ -263,6 +271,11 @@ export const ReviewMsg = styled.p`
 export const Right = styled.div`
     width: 350px;
     min-width: 350px;
+    ${breakpoints.md} {
+        min-width: 100%;
+        width: 100%;
+        margin-top: 15px;
+    }
 `;
 export const PackageCard = styled.div`
     position: sticky;
