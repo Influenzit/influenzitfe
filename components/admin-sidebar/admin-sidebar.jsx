@@ -24,6 +24,7 @@ import {
   ProfileImageCont,
   Status,
 } from "./style";
+import { NavButtonD } from "components/sidebar/style";
 
 const Sidebar = () => {
   const user = useSelector(getUser);
@@ -37,8 +38,10 @@ const Sidebar = () => {
       setUserData(user);
     }
   }, [user]);
+  const [showCampaignDropdown, setShowCampaignDropdown] = useState(false);
   const handleRouting = (link) => {
     dispatch(setShowSidebar(false));
+    setShowCampaignDropdown(false);
     router.push(link);
   }
   return (
@@ -79,12 +82,32 @@ const Sidebar = () => {
         <span>Wallets</span>
       </NavButton>
       <NavButton
-         onClick={() => handleRouting("/admin/u/dashboard/campaigns")}
+         onClick={() => setShowCampaignDropdown(!showCampaignDropdown)}
          isActive={router.pathname === "/admin/u/dashboard/campaigns"}
         >
           <HashTagIcon />
           <span>Campaigns</span>
       </NavButton>
+      {
+        showCampaignDropdown ? <>
+          <NavButtonD
+          onClick={() =>
+            handleRouting("/admin/u/dashboard/campaigns")
+          }
+          isActive={router.pathname === "/admin/u/dashboard/campaigns"}
+        >
+          <span>Campaigns</span>
+        </NavButtonD>
+        <NavButtonD
+          onClick={() =>
+            handleRouting("/admin/u/dashboard/campaigns/requests")
+          }
+          isActive={router.pathname.includes("campaigns")}
+        >
+          <span>Campaign Requests</span>
+        </NavButtonD>
+        </> : null
+      }
       <NavButton
         onClick={() => handleRouting("/admin/u/dashboard/support")}
         isActive={router.pathname.includes("/admin/u/dashboard/support")}
