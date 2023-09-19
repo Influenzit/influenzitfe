@@ -1,4 +1,4 @@
-import { colors } from "./theme";
+import { breakpoints, colors } from "./theme";
 
 const { default: styled } = require("styled-components");
 import ReactSlider from "react-slider";
@@ -46,6 +46,20 @@ export const StepContainer = styled.div`
     column-gap: 8px;
     display: flex;
     margin: 30px 0;
+    ${breakpoints.md} {
+        display: none;
+    }
+`;
+export const MStepContainer = styled.div`
+    height: 4px;
+    width: 100%;
+    column-gap: 8px;
+    display: flex;
+    margin: 30px 0;
+    display: none;
+    ${breakpoints.md} {
+        display: flex;
+    }
 `;
 export const StepWrapper = styled.div`
     display: flex;

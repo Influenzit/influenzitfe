@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { useState } from 'react';
 import LandingLayout from '../../layouts/landing.layout'
 import { Capsule, CapsuleWrapper, ErrorMessageCont, Input, InputContainer, Terms } from '../../styles/auth.style';
-import { Container, CoverImageContainer, CustomInput, HandleError, Header, ImagePreview, ProfileForm, ProfileUploadCont, RangeSlider, Step, StepB, StepContainer, StepControl, StepWrapper, Thumb, ToggleBtn, ToggleCont, Track, UploadContainer, UploadHeader, UploadInfo } from '../../styles/complete.style'
+import { Container, CoverImageContainer, CustomInput, HandleError, Header, ImagePreview, MStepContainer, ProfileForm, ProfileUploadCont, RangeSlider, Step, StepB, StepContainer, StepControl, StepWrapper, Thumb, ToggleBtn, ToggleCont, Track, UploadContainer, UploadHeader, UploadInfo } from '../../styles/complete.style'
 import { InputWrap } from '../../styles/messages.style';
 import "react-phone-input-2/lib/style.css";
 import Image from 'next/image';
@@ -499,6 +499,33 @@ const CreateRequest = () => {
                     <StepB style={{ width: "100%" }} isActive={step === 5}></StepB>
                 </StepWrapper>
             </StepContainer>
+            <MStepContainer style={{ marginBottom: "50px" }}>
+                {(step >= 1) && <StepWrapper isActive={step >= 1}>
+                    <span>Description</span>
+                    <StepB style={{ width: "100%" }} isActive={step >= 1}></StepB>
+                </StepWrapper>
+                }
+                {(step >= 2) && <StepWrapper isActive={step >= 2}>
+                    <span>Deliverables &amp; Pricing </span>
+                    <StepB style={{ width: "100%" }} isActive={step >= 2}></StepB>
+                </StepWrapper>
+                }
+                {(step >= 3) && <StepWrapper isActive={step >= 3}>
+                    <span>Requirements</span>
+                    <StepB style={{ width: "100%" }} isActive={step >= 3}></StepB>
+                </StepWrapper>
+                }
+               {(step >= 4) && <StepWrapper isActive={step >= 4}>
+                    <span>Gallery</span>
+                    <StepB style={{ width: "100%" }} isActive={step >= 4}></StepB>
+                </StepWrapper>
+                }
+                {(step === 5) && <StepWrapper isActive={step === 5}>
+                    <span>Publish</span>
+                    <StepB style={{ width: "100%" }} isActive={step === 5}></StepB>
+                </StepWrapper>
+                }
+            </MStepContainer>
             {
                 step === 1 && (
                     <>
