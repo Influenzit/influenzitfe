@@ -9,12 +9,11 @@ import Slider from 'react-slick'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Right } from '../../../../../../styles/service.style'
-import { getSingleCampaignRequest } from '../../../../../../api/campaigns'
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import parse from "html-react-parser"
 import AdminLayout from '../../../../../../layouts/admin.layout';
-import { sendMail, updateAdminCampaignRequestStatus } from '../../../../../../api/admin';
+import { getAdminSingleCampaignRequest, sendMail, updateAdminCampaignRequestStatus } from '../../../../../../api/admin';
 import { toast } from 'react-toastify';
 import { UpdateModal } from 'styles/view.style';
 import { WelcomeModal } from '../../../../../../styles/connect-pages.style';
@@ -88,7 +87,7 @@ const Requests = () => {
   }
 
   const { data: requestData, refetch: refetchRequestData } = useQuery(["get-request"], async () => {
-    return await getSingleCampaignRequest(id);
+    return await getAdminSingleCampaignRequest(id);
   }, {
       enabled: false,
       staleTime: Infinity,

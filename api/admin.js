@@ -105,3 +105,6 @@ export const deleteAdminCampaignRequests = (id) => {
 export const updateAdminCampaignRequestStatus = (body) => {
     return axiosInstance().post("admin/campaign/requests/update/status", body)
 }
+export const getAdminSingleCampaignRequest = (id) => {
+    return axiosInstance().get(`/admin/campaign/requests/show/${id}`);
+}
