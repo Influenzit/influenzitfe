@@ -7,6 +7,7 @@ import { useRef } from 'react'
 import { deleteCampaignRequest } from 'api/campaigns'
 import { useMutation } from '@tanstack/react-query'
 import { deleteAdminCampaignRequests, updateAdminCampaignRequestStatus } from '../../api/admin'
+import { toast } from 'react-toastify'
 
 const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refetch, followers, engagements, isAdmin }) => {
     const router = useRouter();
@@ -26,6 +27,9 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
     }, {
         onSuccess(successRes) {
             refetch();
+            toast.success("Campaign request approved.", {
+                position: toast.POSITION.TOP_RIGHT
+            });
         },
     });
 
@@ -64,7 +68,7 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
                     <Link href={isAdmin ? `/admin/u/dashboard/campaigns/campaign-requests/${reqId}` : `/dashboard/campaigns/request-preview/${reqId}`} passHref><a target='_blank'>Preview</a></Link>
                     {!isAdmin && <button onClick={() => router.push(`/dashboard/campaigns/request-submissions/${reqId}`)}>View Submission</button>}
                     {!isAdmin && <button onClick={() => router.push(`/dashboard/create-request?id=${reqId}`)}>Edit</button>}
-                    <button onClick={handleApprove}>Approve</button>
+                    {isAdmin && <button onClick={handleApprove}>Approve</button>}
                     {/* <button onClick={handlePause}>Pause</button> */}
                     <button onClick={handleDelete}>Delete</button>
                 </Popup>

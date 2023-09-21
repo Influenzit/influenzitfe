@@ -10,10 +10,17 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Right } from '../../../../../../styles/service.style'
 import { getSingleCampaignRequest } from '../../../../../../api/campaigns'
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import parse from "html-react-parser"
 import AdminLayout from '../../../../../../layouts/admin.layout';
+import { sendMail, updateAdminCampaignRequestStatus } from '../../../../../../api/admin';
+import { toast } from 'react-toastify';
+import { UpdateModal } from 'styles/view.style';
+import { WelcomeModal } from '../../../../../../styles/connect-pages.style';
+import { Input, InputContainer } from 'styles/auth.style';
+import { useDispatch } from 'react-redux';
+import { setLoading } from '../../../../../../app/reducers/status';
 
 function NextArrow(props) {
     const { className, style, onClick } = props;
@@ -37,6 +44,48 @@ const Requests = () => {
   const router = useRouter();
   const { id } = router.query;
   const [request, setRequest] = useState();
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const dispatch = useDispatch();
+  const mailMutation = useMutation(
+    (data) => {
+      return sendMail(data);
+    },
+    {
+      onSuccess(successRes) {
+        const res = successRes.data;
+        toast.success("Mail sent successfully", {
+            position: toast.POSITION.TOP_RIGHT
+        });
+        setMessage("");
+        setSubject("");
+        setShowPrompt(false);
+        dispatch(setLoading(false));
+      },
+      onError(error) {
+        const res = error.response.data;
+        dispatch(setLoading(false));
+        if (res) {
+          toast.error(res.message, {
+            position: toast.POSITION.TOP_RIGHT
+          });
+          return;
+        }
+        toast.error("An error occured", {
+          position: toast.POSITION.TOP_RIGHT
+        });
+      },
+    }
+  );
+  const handleEmailSend = () => {
+    dispatch(setLoading(true));
+    mailMutation.mutate({
+        subject,
+        body: message,
+        to_user: request?.email,
+    });
+  }
 
   const { data: requestData, refetch: refetchRequestData } = useQuery(["get-request"], async () => {
     return await getSingleCampaignRequest(id);
@@ -51,6 +100,22 @@ const Requests = () => {
   const getRequirement = (name) => {
     return JSON.parse(request?.requirements.filter((val) => val.name === name)[0]?.value ?? "[]");
   }
+  const approveMutation = useMutation(data => {
+      return updateAdminCampaignRequestStatus(data);
+  }, {
+      onSuccess(successRes) {
+        toast.success("Campaign request approved.", {
+          position: toast.POSITION.TOP_RIGHT
+        });
+        refetchRequestData();
+      },
+  });
+  const handleApprove = () => {
+      approveMutation.mutate({
+          status: "approve",
+          request_id: id
+      });
+  }
   useEffect(() => {
     if (id) {
       refetchRequestData();
@@ -58,6 +123,41 @@ const Requests = () => {
   }, [router.pathname, id]);
   return (
     <Container>
+      {
+            showPrompt && (
+                <UpdateModal>
+                    <WelcomeModal>
+                        <div style={{ paddingBottom: "0" }}>
+                            <button onClick={() => setShowPrompt(false)}><Image src="/cancel.svg" alt="" height={14} width={14} /></button>
+                        </div>
+                        <h2>Mail User</h2>
+                        <InputContainer style={{ flexDirection: "column", alignItems: "start" }}>
+                            <label>Subject</label>
+                            <Input
+                                type="text"
+                                value={subject}
+                                placeholder="Enter Subject"
+                                onChange={(e) => setSubject(e.target.value)}
+                                required
+                            />
+                        </InputContainer>
+                        <InputContainer style={{ flexDirection: "column", alignItems: "start" }}>
+                            <label>Message</label>
+                            <textarea 
+                                placeholder='Enter Message...'
+                                value={message}
+                                onInput={(e) => setMessage(e.target.value)}
+                            >
+
+                            </textarea>
+                        </InputContainer>
+                        <div>
+                            <button onClick={handleEmailSend}>Send Email</button>
+                        </div>
+                    </WelcomeModal>
+                </UpdateModal>
+            )
+        }
        <Wrapper style={{ paddingTop: "20px" }}>
         <ContainerB>
           <Left>
@@ -161,14 +261,12 @@ const Requests = () => {
                             })}</p>
                         </div>
                     </div>
-                    {
-                      !request?.accept_terms ? (
-                        <ContinueBtn onClick={() => router.push(`/dashboard/create-request?id=${id}&preview=true`)}>
-                          <span>Submit Request</span>{" "}
-                          <Image src="/arrow-w.svg" alt="" width={12} height={11} />
-                        </ContinueBtn>
-                      ) : null
-                    }
+                    {request?.status !== "approve" && <ContinueBtn onClick={handleApprove}>
+                      <span>Approve</span>
+                    </ContinueBtn>}
+                    <ContinueBtn style={{ marginTop: "10px" }} onClick={() => setShowPrompt(true)}>
+                      <span>Mail User</span>
+                    </ContinueBtn>
                 </RCard>
                 <RCard>
                   <Section>

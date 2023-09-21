@@ -7,6 +7,7 @@ import { CampaignList, Container, Heading, RequestCard } from '../../../../../st
 import { useRouter } from 'next/router'
 import { getCampaignRequests } from 'api/campaigns'
 import { useQuery } from '@tanstack/react-query'
+import { getAdminCampaignRequests } from '../../../../../api/admin'
 
 const Requests = () => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const Requests = () => {
     data: [],
   });
   const { data, refetch } = useQuery(["get-campaigin-requests"], async () => {
-    return await getCampaignRequests(`${getUrl}?status=${status}`);
+    return await getAdminCampaignRequests(`${getUrl}?status=${status}`);
     }, {
         enabled: false,
         staleTime: Infinity,
@@ -61,6 +62,7 @@ const Requests = () => {
                         followers={`${getRequirement(req, "followers")[0] ?? ""} - ${getRequirement(req, "followers")[1] ?? ""}`}
                         engagements={`${getRequirement(req, "engagement_rate")[0] ?? ""}% - ${getRequirement(req, "engagement_rate")[1] ?? ""}%`}
                         key={i}
+                        isAdmin={true}
                         reqPlatform={JSON.parse(req.requirements.filter((val) => val.name === "platforms")[0]?.value ?? "[]")}
                     />
                 ))

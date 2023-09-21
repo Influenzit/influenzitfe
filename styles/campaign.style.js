@@ -41,7 +41,7 @@ export const Heading = styled.div`
 export const CampaignList = styled.div`
     padding: 10px 0px;
     display: flex;
-    column-gap: 30px;
+    column-gap: 25px;
     row-gap: 30px;
     flex-wrap: wrap;
 `;
