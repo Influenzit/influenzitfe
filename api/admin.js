@@ -96,3 +96,12 @@ export const updateAdminSupport = (id, body) => {
 export const getAdminTicketCategoriesUser = () => {
     return axiosInstance().get("/admin/support/options");
 }
+export const getAdminCampaignRequests = (url) => {
+return axiosInstance().get(url ? url.includes("/") ? url : `/admin/campaign/requests/pendings${url}` : `/admin/campaign/requests/pendings`);
+}
+export const deleteAdminCampaignRequests = (id) => {
+    return axiosInstance().delete(`/admin/campaigns/requests/${id}/delete`);
+}
+export const updateAdminCampaignRequestStatus = (body) => {
+    return axiosInstance().post("admin/campaign/requests/update/status", body)
+}

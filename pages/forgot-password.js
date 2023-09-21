@@ -19,6 +19,17 @@ const Login = () => {
   const dispatch = useDispatch();
   const mutation = useMutation(emailData => {
     return forgotPassword(emailData);
+  }, {
+    onError(error) {
+      const res = error.response.data;
+      if(res){
+        dispatch(setLoading(false));
+        dispatch(setError({error: true, message: res.message}));
+        return;
+      }
+      dispatch(setLoading(false));
+      dispatch(setError({error: true, message: "An error occured"}));
+    }
   })
 
   const handleSubmit = (e) => {

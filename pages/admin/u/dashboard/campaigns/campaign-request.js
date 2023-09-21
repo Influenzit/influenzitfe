@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import LandingLayout from '../../../../../layouts/landing.layout'
+import AdminLayout from '../../../../../layouts/admin.layout'
 import Image from 'next/image'
 import CampaignCard from '../../../../../components/campaign-card/campaign-card'
 import addImg from '../../../../../assets/addservice.svg'
@@ -49,10 +49,6 @@ const Requests = () => {
             </button>
         </Heading>
         <CampaignList>
-            <RequestCard onClick={() => router.push("/dashboard/create-request")}>
-                <Image src={addImg} alt="" height={80} width={80}/>
-                <p>Create campaign request</p>
-            </RequestCard>
             {
                 requestList.data.map((req, i) => (
                     <CampaignCard
@@ -75,9 +71,9 @@ const Requests = () => {
 }
 
 Requests.getLayout = (page) => (
-    <LandingLayout>
+    <AdminLayout>
         {page}
-    </LandingLayout>
+    </AdminLayout>
 )
 
 export default Requests
