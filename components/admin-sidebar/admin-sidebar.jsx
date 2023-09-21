@@ -100,7 +100,7 @@ const Sidebar = () => {
         </NavButtonD>
         <NavButtonD
           onClick={() =>
-            handleRouting("/admin/u/dashboard/campaigns/requests")
+            handleRouting("/admin/u/dashboard/campaigns/campaign-request")
           }
           isActive={router.pathname.includes("campaigns")}
         >

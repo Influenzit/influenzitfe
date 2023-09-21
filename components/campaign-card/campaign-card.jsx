@@ -6,15 +6,23 @@ import { Container, CreatorDetails, Stats, TopImg, PriceSection, StatusCapsule, 
 import { useRef } from 'react'
 import { deleteCampaignRequest } from 'api/campaigns'
 import { useMutation } from '@tanstack/react-query'
+import { deleteAdminCampaignRequests, updateAdminCampaignRequestStatus } from '../../api/admin'
 
-const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refetch, followers, engagements }) => {
+const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refetch, followers, engagements, isAdmin }) => {
     const router = useRouter();
     const [showPopup, setShowPopup] = useState(false);
     const controlRef = useRef(null);
     const popupRef = useRef(null);
 
     const deleteMutation = useMutation( _ => {
-        return deleteCampaignRequest(reqId);
+        return !isAdmin ? deleteCampaignRequest(reqId) : deleteAdminCampaignRequests(reqId);
+    }, {
+        onSuccess(successRes) {
+            refetch();
+        },
+    });
+    const approveMutation = useMutation(data => {
+        return updateAdminCampaignRequestStatus(data);
     }, {
         onSuccess(successRes) {
             refetch();
@@ -29,6 +37,13 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
     const handleDelete = () => {
         setShowPopup(false);
         deleteMutation.mutate();
+    }
+    const handleApprove = () => {
+        setShowPopup(false);
+        approveMutation.mutate({
+            status: "approve",
+            request_id: reqId
+        });
     }
     const handlePause = () => {
 
@@ -46,9 +61,10 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
         {
             showPopup ? (
                 <Popup ref={popupRef}>
-                    <Link href={`/dashboard/campaigns/request-preview/${reqId}`} passHref><a target='_blank'>Preview</a></Link>
-                    <button onClick={() => router.push(`/dashboard/campaigns/request-submissions/${reqId}`)}>View Submission</button>
-                    <button onClick={() => router.push(`/dashboard/create-request?id=${reqId}`)}>Edit</button>
+                    <Link href={isAdmin ? `/admin/u/dashboard/campaigns/campaign-requests/${reqId}` : `/dashboard/campaigns/request-preview/${reqId}`} passHref><a target='_blank'>Preview</a></Link>
+                    {!isAdmin && <button onClick={() => router.push(`/dashboard/campaigns/request-submissions/${reqId}`)}>View Submission</button>}
+                    {!isAdmin && <button onClick={() => router.push(`/dashboard/create-request?id=${reqId}`)}>Edit</button>}
+                    <button onClick={handleApprove}>Approve</button>
                     {/* <button onClick={handlePause}>Pause</button> */}
                     <button onClick={handleDelete}>Delete</button>
                 </Popup>
