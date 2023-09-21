@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
-import LandingLayout from '../../../../layouts/landing.layout'
 import Image from 'next/image'
-import chevLeftIcon from "../../../../assets/chev-left.svg";
-import chevRightIcon from "../../../../assets/chev-right.svg";
-import { Container } from '../../../../styles/campaign.style'
+import chevLeftIcon from "../../../../../../assets/chev-left.svg";
+import chevRightIcon from "../../../../../../assets/chev-right.svg";
+import { Container } from '../../../../../../styles/campaign.style'
 import { ContainerB, ContinueBtn, CtrlBtn, Deliverables, Desc, ImageSlides, Images, Left, RCard, RWrapper, Section, Wrapper,  } from '../../../../styles/service.style'
 import { useRouter } from 'next/router'
 import Slider from 'react-slick'
