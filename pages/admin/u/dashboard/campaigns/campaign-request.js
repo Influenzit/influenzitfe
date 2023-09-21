@@ -7,6 +7,7 @@ import { CampaignList, Container, Heading, RequestCard } from '../../../../../st
 import { useRouter } from 'next/router'
 import { getCampaignRequests } from 'api/campaigns'
 import { useQuery } from '@tanstack/react-query'
+import { getAdminCampaignRequests } from '../../../../../api/admin'
 
 const Requests = () => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const Requests = () => {
     data: [],
   });
   const { data, refetch } = useQuery(["get-campaigin-requests"], async () => {
-    return await getCampaignRequests(`${getUrl}?status=${status}`);
+    return await getAdminCampaignRequests(`${getUrl}?status=${status}`);
     }, {
         enabled: false,
         staleTime: Infinity,
@@ -40,11 +41,10 @@ const Requests = () => {
                 <Image src="/filter-lines.svg" alt="" height={20} width={20}/>
                 <select val={status} onChange={(e) => setStatus(e.target.value)}>
                     <option value="">All</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Pause">Pause</option>
-                    <option value="Open">Open</option>
-                    <option value="Ongoing">Ongoing</option>
+                    <option value="approve">Approve</option>
+                    <option value="pending">Pending</option>
+                    <option value="decline">Decline</option>
+                    <option value="draft">Draft</option>
                 </select>
             </button>
         </Heading>
@@ -61,6 +61,7 @@ const Requests = () => {
                         followers={`${getRequirement(req, "followers")[0] ?? ""} - ${getRequirement(req, "followers")[1] ?? ""}`}
                         engagements={`${getRequirement(req, "engagement_rate")[0] ?? ""}% - ${getRequirement(req, "engagement_rate")[1] ?? ""}%`}
                         key={i}
+                        isAdmin={true}
                         reqPlatform={JSON.parse(req.requirements.filter((val) => val.name === "platforms")[0]?.value ?? "[]")}
                     />
                 ))
