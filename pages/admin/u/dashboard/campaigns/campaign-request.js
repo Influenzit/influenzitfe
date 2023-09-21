@@ -41,11 +41,10 @@ const Requests = () => {
                 <Image src="/filter-lines.svg" alt="" height={20} width={20}/>
                 <select val={status} onChange={(e) => setStatus(e.target.value)}>
                     <option value="">All</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Pause">Pause</option>
-                    <option value="Open">Open</option>
-                    <option value="Ongoing">Ongoing</option>
+                    <option value="approve">Approve</option>
+                    <option value="pending">Pending</option>
+                    <option value="decline">Decline</option>
+                    <option value="draft">Draft</option>
                 </select>
             </button>
         </Heading>
