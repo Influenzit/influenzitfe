@@ -149,23 +149,92 @@ setIndustrySelected((prev) => {
       <div className="">
         <div className="flex items-center justify-between py-5 border-b">
           <div>
-            <h1 className="text-lg">
-              {
-                ((currentAcctType === "Influencer")) && ("Influencer Information")
-              }
-              {
-                ((currentAcctType === "Creator")) && ("Creator Information")
-              }
-            </h1>
-            <p className="text-xs text-[#667085]">
-              Update your  {
-                ((currentAcctType === "Influencer")) && ("influencer")
-              }
-              {
-                ((currentAcctType === "Creator")) && ("creator")
-              } {" "}
-               information here
-            </p>
+            <h1 className="text-lg">Business Information</h1>
+            <p className="text-xs text-[#667085]">Update your business information here</p>
+          </div>
+        </div>
+
+        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
+          <div className="col-span-3 py-5">
+            <h1 className="text-[#344054]">Business Name</h1>
+          </div>
+          <div className="col-span-6">
+            <input
+              type="text"
+              className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
+              placeholder="Enter business name"
+              value={headline}
+              onChange={(e) => {
+                setHeadline(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
+          <div className="col-span-3 py-5">
+            <h1 className="text-[#344054]">Website</h1>
+          </div>
+          <div className="col-span-6">
+            <input
+              type="text"
+              className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
+              placeholder="Business Website"
+              value={headline}
+              onChange={(e) => {
+                setHeadline(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
+          <div className="col-span-3 py-5">
+            <h1 className="text-[#344054]">TIN Number</h1>
+          </div>
+          <div className="col-span-6">
+            <input
+              type="text"
+              className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
+              placeholder="Enter TIN Number"
+              value={headline}
+              onChange={(e) => {
+                setHeadline(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
+          <div className="col-span-3 py-5">
+            <h1 className="text-[#344054]">Phone Number</h1>
+          </div>
+          <div className="col-span-6">
+            <input
+              type="text"
+              className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
+              placeholder="Enter Phone Number"
+              value={headline}
+              onChange={(e) => {
+                setHeadline(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
+          <div className="col-span-3 py-5">
+            <h1 className="text-[#344054]">RC Number</h1>
+          </div>
+          <div className="col-span-6">
+            <input
+              type="text"
+              className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
+              placeholder="Enter RC Number"
+              value={headline}
+              onChange={(e) => {
+                setHeadline(e.target.value);
+              }}
+            />
           </div>
         </div>
 
@@ -199,127 +268,9 @@ setIndustrySelected((prev) => {
           </div>
         </div>
 
-        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
-          <div className="col-span-3 py-5">
-            <h1 className="text-[#344054]">Country</h1>
-          </div>
-          <div className="col-span-6">
-            <div className="col-span-6">
-              <div className=" flex space-x-3 px-3 py-2 rounded-lg border  bg-transparent outline-none w-full">
-                <select
-                  name=""
-                  id=""
-                  onChange={(e) => {
-                    setCountry(e.target.value);
-                  }}
-                  Selected="Nigeria"
-                  className="w-full bg-transparent outline-none"
-                >
-                  {countries.map((item, idx) => {
-                    return (
-                      <option
-                        key={idx}
-                        value={item.name}
-                        selected={item.name === "Nigeria"}
-                      >
-                        {item.flag} {item.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
-          <div className="col-span-3 py-5">
-            <h1 className="text-[#344054]">Gender</h1>
-          </div>
-          <div className="col-span-6">
-            <div className="col-span-6">
-              <div className="grid grid-cols-12 gap-4">
-                <div
-                  className={`${
-                    gender == "female" && "bg-[#FCEDEF] border border-[#DF475C]"
-                  }  col-span-5 px-3 py-2  flex justify-between items-center rounded-lg border  outline-none w-full`}
-                >
-                  <label
-                    htmlFor="female"
-                    onClick={() => {
-                      setGender("female");
-                    }}
-                  >
-                    {" "}
-                    Female{" "}
-                  </label>
-
-                  <div
-                    className={`${
-                      gender == "female" && " border-[#DF475C]"
-                    } border rounded-full w-5 h-5 grid place-content-center`}
-                    onClick={() => {
-                      setGender("female");
-                    }}
-                  >
-                    {gender === "female" && (
-                      <div className="border rounded-full bg-primary-100 w-3 h-3"></div>
-                    )}
-                  </div>
-                </div>
-                <div
-                  className={`${
-                    gender == "male" && "bg-[#FCEDEF] border border-[#DF475C]"
-                  }  col-span-5 px-3 py-2  flex justify-between rounded-lg border  outline-none w-full`}
-                >
-                  {" "}
-                  <label
-                    htmlFor="male"
-                    onClick={() => {
-                      setGender("male");
-                    }}
-                  >
-                    {" "}
-                    Male{" "}
-                  </label>
-                  <div
-                    className={`${
-                      gender == "male" && " border-[#DF475C]"
-                    } border rounded-full w-5 h-5 grid place-content-center`}
-                    onClick={() => {
-                      setGender("male");
-                    }}
-                  >
-                    {gender === "male" && (
-                      <div className="border rounded-full bg-primary-100 w-3 h-3"></div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
-          <div className="col-span-3 py-5">
-            <h1 className="text-[#344054]">Influencer summary</h1>
-          </div>
-          <div className="col-span-6">
-            <input
-              type="text"
-              className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
-              placeholder="Lifestyle Creator and Food Enthusiast"
-              value={headline}
-              onChange={(e) => {
-                setHeadline(e.target.value);
-              }}
-            />
-          </div>
-        </div>
-
         <div className="py-5 border-b grid md:grid-cols-12 gap-4">
           <div className="col-span-3 py-5">
-            <h1 className="text-[#344054]">Influencer Description </h1>
+            <h1 className="text-[#344054]">Business Description </h1>
           </div>
           <div className="col-span-6">
             <textarea

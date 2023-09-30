@@ -13,6 +13,7 @@ import Stage3 from "../../../components/profile/stage3";
 import Stage4 from "../../../components/profile/stage4";
 import Stage5 from "../../../components/profile/stage5";
 import Stage6 from "../../../components/profile/stage6";
+import Stage7 from "../../../components/profile/stage7";
 import LandingLayout from "../../../layouts/landing.layout";
 
 import cancel from "./../../../assets/close.svg";
@@ -68,6 +69,7 @@ const Profile = () => {
           >
             Profile details
           </button>
+          { ((currentAcctType === "Influencer") && (currentAcctType === "Creator")) &&
           <button
             onClick={() => {
               setactivetab("influencer_details");
@@ -78,16 +80,28 @@ const Profile = () => {
             } pb-4 text-sm md:text-base`}
           >
             {
-              ((currentAcctType === "Influencer")) && ("Influencer Details")
-            }
-             {
-              ((currentAcctType === "Business Owner")) && ("Business Owner Details")
+              (currentAcctType === "Influencer") && ("Influencer Details")
             }
             {
-              ((currentAcctType === "Creator")) && ("Creator Details")
+              (currentAcctType === "Creator") && ("Creator Details")
             }
 
           </button>
+          }
+          {
+            ((currentAcctType === "Business Owner")) &&
+            <button
+              onClick={() => {
+                setactivetab("business_details");
+              }}
+              className={`${
+                activetab == "business_details" &&
+                "text-primary-100 border-b border-primary-100"
+              } pb-4 text-sm md:text-base`}
+            >
+             Business Details
+            </button>
+          }
           <button
             onClick={() => {
               setactivetab("images");
@@ -137,6 +151,7 @@ const Profile = () => {
 
       {activetab === "profile_details" && <Stage1 user={user} />}
       {activetab === "influencer_details" && <Stage2 user={user} />}
+      {activetab === "business_details" && <Stage7 user={user} />}
       {activetab === "images" && <Stage3 user={user} />}
       {activetab === "change_password" && <Stage4 user={user} />}
       {activetab === "social" && <Stage5 user={user} />}

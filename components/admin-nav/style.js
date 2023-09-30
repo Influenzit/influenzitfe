@@ -225,17 +225,16 @@ export const ConnectDropdown = styled.div`
 `;
 export const ConnectDropdownCont = styled.div`
     position: absolute;
-    right: 0;
+    left: 0;
     width: 100%;
     min-width: 160px;
-    top: 40px;
+    top: 45px;
     background: #fff;
     display: flex;
     flex-direction: column;
     color: #111;
-    box-shadow: 0px 4px 12px 0px #0000001A;
-    border: 1px solid #D2D2D2;
-    border-radius: 2px;
+    box-shadow: 0px 3px 8px 0px #2A29391A;
+    border-radius: 8px;
     button {
         background: transparent;
         border: none;
@@ -251,6 +250,7 @@ export const ConnectDropdownCont = styled.div`
         }
         :hover {
             color: ${colors.primaryColor};
+            background: #2A29390D;
         }
         ${breakpoints.sm} {
             font-size: 12px;
@@ -268,23 +268,14 @@ export const ConnectDropdownCont = styled.div`
         }
         :hover {
             color: ${colors.primaryColor};
+            background: #2A29390D;
         }
         ${breakpoints.sm} {
             font-size: 12px;
         }
     }
-    ::after {
-        content: "";
-        display: block;
-        height: 10px;
-        width: 10px;
-        transform: rotate(-45deg);
-        position: absolute;
-        top: -6px;
-        right: 10px;
-        background: #fff;
-        border-top: 1px solid #D2D2D2;
-        border-right: 1px solid #D2D2D2;
+    ${breakpoints.sm} {
+        min-width: 130px;
     }
 `;
 export const ControlsA = styled.div`
