@@ -40,6 +40,7 @@ import {
 import Link from "next/link";
 import { ShareContainer, UpdateModal } from "styles/view.style";
 import { getBusiness } from "../../api/business";
+import { RightSection, Social, SocialWrapper } from "../../styles/creator-profile.style";
 
 function NextArrow(props) {
   const { className, style, onClick } = props;
@@ -66,6 +67,9 @@ const ServiceView = () => {
   const { id } = router.query;
   const [linkCopied, setLinkCopied] = useState(false);
   const [showShare, setShowShare] = useState(false);
+  const getSocialMedia = (name) => {
+    return JSON.parse(inData?.social_handles ?? "[]")?.filter((val) => val.name === name)[0]?.value;
+  }
   const { data: businessData, refetch: refetchBusinessData } = useQuery(
     ["get-business"],
     async () => {
@@ -238,6 +242,60 @@ const ServiceView = () => {
                     </div>
                 </div>
                 </RCard>
+                <RightSection>
+                    <h3>Social Media Handles</h3>
+                    <SocialWrapper>
+                        <Social>
+                            <div>
+                                <Image src="/instagram.png" alt="" height={32} width={32} />
+                            </div>
+                            <div>
+                                <h4>INSTAGRAM</h4>
+                                <p title={getSocialMedia("instagram")}>@{getSocialMedia("instagram")}</p>
+                            </div>
+                        </Social>
+                        <Social>
+                            <div>
+                                <Image src="/youtube.svg" alt="" height={32} width={32} />
+                            </div>
+                            <div>
+                                <h4>YOUTUBE</h4>
+                                <p title={getSocialMedia("youtube")}>@{getSocialMedia("youtube")}</p>
+                            </div>
+                        </Social>
+                    </SocialWrapper>
+                    <SocialWrapper>
+                        <Social>
+                            <div>
+                                <Image src="/tiktok.png" alt="" height={32} width={32} />
+                            </div>
+                            <div>
+                                <h4>TIKTOK</h4>
+                                <p title={getSocialMedia("tiktok")}>@{getSocialMedia("tiktok")}</p>
+                            </div>
+                        </Social>
+                        <Social>
+                            <div>
+                                <Image src="/twitter.png" alt="" height={32} width={32} />
+                            </div>
+                            <div>
+                                <h4>TWITTER</h4>
+                                <p title={getSocialMedia("twitter")}>@{getSocialMedia("twitter")}</p>
+                            </div>
+                        </Social>
+                    </SocialWrapper>
+                    <SocialWrapper>
+                        <Social style={{ minWidth: "100%" }}>
+                            <div>
+                                <Image src="/facebook.png" alt="" height={32} width={32} />
+                            </div>
+                            <div>
+                                <h4>FACEBOOK</h4>
+                                <p title={getSocialMedia("facebook")}>@{getSocialMedia("facebook")}</p>
+                            </div>
+                        </Social>
+                    </SocialWrapper>
+                </RightSection>
               </RWrapper>
           </Right>
         </ContainerB>

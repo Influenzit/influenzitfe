@@ -458,10 +458,14 @@ export const Deliverables = styled.div`
     div {
         display: flex;
         column-gap: 10px;
-        align-items: center;
+        align-items: flex-start;
+        margin-top: 4px;
         span {
             height: 6px;
             width: 6px;
+            min-width: 6px;
+            min-height: 6px;
+            margin-top: 12px;
             border-radius: 50%;
             background: ${colors.primaryColor};
         }

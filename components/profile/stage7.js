@@ -8,12 +8,13 @@ import at from "../../assets/profile/at.svg";
 import { Country } from "country-state-city";
 
 import { getAccount, getUserAccount, updateAccount } from "../../api/auth";
+import { getBusinesses, updateBusiness } from '../../api/business'
 import { getUser, updateUser } from "../../app/reducers/user";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Loader from "../UI/Loader";
 import { getIndustries } from "api/influencer";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getUserType } from "app/reducers/status";
 import { Capsule, CapsuleWrapper, InputContainer } from "styles/auth.style";
 
@@ -22,10 +23,13 @@ function Stage1() {
 
   const [countries] = useState(Country.getAllCountries());
   const [getSelectedCountry, setcountry] = useState("");
-  const [gender, setGender] = useState("");
-  const [country, setCountry] = useState("");
-  const [headline, setHeadline] = useState("");
-  const [biography, setBiography] = useState("");
+  const [name, setName] = useState("");
+  const [rc, setRc] = useState("");
+  const [tin, setTin] = useState("");
+  const [website, setWebsite] = useState("");
+  const [description, setDescription] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [industry, setIndustry] = useState("");
   const [instagram, setInstagram] = useState("");
   const [tiktok, setTiktok] = useState("");
@@ -35,8 +39,7 @@ function Stage1() {
   const [loading, setLoading] = useState(false);
   const [industryList, setIndustryList] = useState([]);
   const currentAcctType = useSelector(getUserType);
-  const [industrySelected, setIndustrySelected] = useState([]);
-  const [user, setUser] = useState(null)
+  const [business, setBusiness] = useState(null);
 
   const { data: industryData, refetch: refetchIndustryData } = useQuery(["get-industries"], async () => {
       return await getIndustries();
@@ -48,97 +51,97 @@ function Stage1() {
           setIndustryList(data.data.data);
       }
   });
-  const { data, refetch } = useQuery(["get-account"], async () => {
-    return await getAccount();
+  const { data, refetch } = useQuery(["get-business"], async () => {
+    return await getBusinesses();
 }, {
     staleTime: false,
     enabled: false,
     retry: false,
     onSuccess(res) {
-        setUser(res.data.data);
+        setBusiness(res.data.data[0]);
     }
-});
-const handleAddIndustry = (val) => {
-  setIndustrySelected((prev) => {
-    const copy = [...prev];
-    if(copy.indexOf(val) === -1) {
-        copy.push(val);
-    }
-    return copy;
-  })
-}
-const handleRemoveIndustry = (val) => {
-setIndustrySelected((prev) => {
-      let copy = [...prev];
-      copy = copy.filter((curr) => curr !== val);
-      return copy;
-  })
-}
-  const handleAccountUpdate = () => {
-    setLoading(true);
-    const payload = {
-      gender,
-      country,
-      headline,
-      biography,
-      instagram,
-      tiktok,
-      facebook,
-      twitter,
-      youtube,
-      niches: industrySelected,
-    };
-
-    for (let i in payload) {
-      if (payload[i] === "") {
-        delete payload[i];
-      }
-    }
-    console.log(payload);
-    updateAccount(user.id, payload)
-      .then((res) => {
-        toast.success("Account updated successfully", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-
-        getUserAccount()
-            .then((userRes) => {
-              if (userRes.data.data) {
-                dispatch(updateUser(userRes.data.data));
-                setLoading(false);
-              }
-            })
-            .catch((err) => {
-              setLoading(false);
+  });
+  const getSocialMedia = (name) => {
+    return JSON.parse(business?.social_handles ?? "[]")?.filter((val) => val.name === name)[0]?.value;
+  }
+  const updateBusinessMutation = useMutation((data) => {
+    return updateBusiness(data, business?.id);
+    }, {
+        onSuccess(successRes) {
+            const res = successRes.data;
+            setLoading(false);
+            refetch();
+            toast.success("Business updated successfully", {
+              position: toast.POSITION.TOP_RIGHT,
             });
-       })
-      .catch((err) => {
-        toast.error("An error occured", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        console.log(err);
-        setLoading(false);
-      });
+        },
+        onError(error) {
+            const res = error.response.data;
+            setLoading(false);
+            toast.error("An error occured", {
+              position: toast.POSITION.TOP_RIGHT,
+            });
+        }
+    });
+  const handleBusinessUpdate = () => {
+    if(loading) return;
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("rc", rc);
+    formData.append("tin", tin);
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("website", website);
+    formData.append("phone", phone);
+    formData.append("industry", industry);
+    formData.append("social_handles", JSON.stringify([
+      {
+          name: "facebook",
+          value: facebook,
+          valuetype: "string",
+      },
+      {
+        name: "twitter",
+        value: twitter,
+        valuetype: "string",
+      },
+      {
+        name: "instagram",
+        value: instagram,
+        valuetype: "string",
+      },
+      {
+        name: "tiktok",
+        value: tiktok,
+        valuetype: "string",
+      },
+      {
+        name: "youtube",
+        value: youtube,
+        valuetype: "string",
+      },
+    ]))
+    updateBusinessMutation.mutate(formData);
   };
 
   useEffect(() => {
-    if (user) {
-      let list = [];
-      setGender(user.gender ?? "");
-      setCountry(user.country ?? "");
-      setHeadline(user.headline ?? "");
-      setBiography(user.biography ?? "");
-      setFacebook(user.facebook ?? "");
-      setInstagram(user.instagram ?? "");
-      setTwitter(user.twitter ?? "");
-      setTiktok(user.tiktok ?? "");
-      setYoutube(user.youtube ?? "");
-      user.niches.forEach((val) => {
-        list.push(val.name);
-      })
-        setIndustrySelected(list);
-      }
-  }, [user]);
+    if (business) {
+      setName(business.name ?? "");
+      setDescription(business.description ?? "");
+      setTin(business.tin ?? "");
+      setRc(business.rc ?? "");
+      setWebsite(business.website ?? "");
+      setIndustry(business.industry ?? "");
+      setPhone(business.phone ?? "");
+      setEmail(business.email ?? "");
+      setFacebook(getSocialMedia("facebook"));
+      setInstagram(getSocialMedia("instagram"));
+      setTiktok(getSocialMedia("tiktok"));
+      setTwitter(getSocialMedia("twitter"));
+      setYoutube(getSocialMedia("youtube"));
+    }
+  }, [business]);
   useEffect(() => {
     refetchIndustryData();
     refetch();
@@ -163,13 +166,14 @@ setIndustrySelected((prev) => {
               type="text"
               className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
               placeholder="Enter business name"
-              value={headline}
+              value={name}
               onChange={(e) => {
-                setHeadline(e.target.value);
+                setName(e.target.value);
               }}
             />
           </div>
         </div>
+
         <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
           <div className="col-span-3 py-5">
             <h1 className="text-[#344054]">Website</h1>
@@ -179,9 +183,26 @@ setIndustrySelected((prev) => {
               type="text"
               className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
               placeholder="Business Website"
-              value={headline}
+              value={website}
               onChange={(e) => {
-                setHeadline(e.target.value);
+                setWebsite(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="py-5 border-b grid md:grid-cols-12 gap-4 items-center">
+          <div className="col-span-3 py-5">
+            <h1 className="text-[#344054]">Business Email</h1>
+          </div>
+          <div className="col-span-6">
+            <input
+              type="text"
+              className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
+              placeholder="Enter business name"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
               }}
             />
           </div>
@@ -196,9 +217,9 @@ setIndustrySelected((prev) => {
               type="text"
               className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
               placeholder="Enter TIN Number"
-              value={headline}
+              value={tin}
               onChange={(e) => {
-                setHeadline(e.target.value);
+                setTin(e.target.value);
               }}
             />
           </div>
@@ -213,9 +234,9 @@ setIndustrySelected((prev) => {
               type="text"
               className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
               placeholder="Enter Phone Number"
-              value={headline}
+              value={phone}
               onChange={(e) => {
-                setHeadline(e.target.value);
+                setPhone(e.target.value);
               }}
             />
           </div>
@@ -230,9 +251,9 @@ setIndustrySelected((prev) => {
               type="text"
               className="px-3 py-2 rounded-lg border  bg-transparent outline-none w-full"
               placeholder="Enter RC Number"
-              value={headline}
+              value={rc}
               onChange={(e) => {
-                setHeadline(e.target.value);
+                setRc(e.target.value);
               }}
             />
           </div>
@@ -244,10 +265,10 @@ setIndustrySelected((prev) => {
           </div>
           <div className="col-span-6">
             <InputContainer style={{ marginTop: "20px" }}>
-                <label>Niche/Interest</label>
+                <label>Industry</label>
                 
-                <select style={{ fontSize: "14px" }} value={industry} onChange={(e) => handleAddIndustry(e.target.value)}>
-                    <option value="">Select Niche/Interest</option>
+                <select style={{ fontSize: "14px" }} value={industry} onChange={(e) => setIndustry(e.target.value)}>
+                    <option value="">Select Industry</option>
                     {
                         industryList.map((val, i) => (
                             <option key={i} value={val}>{val}</option>
@@ -255,16 +276,6 @@ setIndustrySelected((prev) => {
                     }
                 </select>
             </InputContainer>
-            <CapsuleWrapper>
-                {
-                  industrySelected.map((ind, i) => (
-                    <Capsule key={i}>
-                        {ind}
-                        <button onClick={() => handleRemoveIndustry(ind)}><Image src="/delete.svg" alt="del" height={18} width={18} /></button>
-                    </Capsule>
-                  ))  
-                }
-            </CapsuleWrapper>
           </div>
         </div>
 
@@ -277,9 +288,9 @@ setIndustrySelected((prev) => {
               name=""
               id=""
               rows="5"
-              value={biography}
+              value={description}
               onChange={(e) => {
-                setBiography(e.target.value);
+                setDescription(e.target.value);
               }}
               className="px-3 py-2 resize-none rounded-lg border  bg-transparent outline-none w-full"
               placeholder="I'm a Product Designer based in Melbourne, Australia. I specialise in UX/UI design, brand strategy, and Webflow development.
@@ -390,7 +401,7 @@ setIndustrySelected((prev) => {
               Cancel
             </button>
             <button
-              onClick={() => handleAccountUpdate()}
+              onClick={() => handleBusinessUpdate()}
               className="px-3 py-2 rounded-lg bg-primary-100 text-white text-sm"
             >
               {loading ? <Loader /> : "Save"}
