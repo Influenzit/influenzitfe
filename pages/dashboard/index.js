@@ -162,10 +162,10 @@ const Dashboard = () => {
                 )
             }
             {
-                (currentAcctType === "Business Owner") && (
+                (currentAcctType === "Business Owner") && (business?.[0]?.is_business_verified === "no") && (
                     <BizCard>
                         <h3>Complete your Business Profile</h3>
-                        <p>Before you create your first campaign or project, you&apos;ll need to complete your business information.</p>
+                        <p>Before your business is verified, you&apos;ll need to complete your business information.</p>
                         <Link href="/dashboard/profile/">Complete profile</Link>
                     </BizCard>
                 )

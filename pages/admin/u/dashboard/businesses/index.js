@@ -64,8 +64,8 @@ useEffect(() => {
                                 <Th cellWidth="250px">Name</Th>
                                 <Th cellWidth="150px">Phone</Th>
                                 <Th cellWidth="250px">Email</Th>
-                                <Th cellWidth="120px">Website</Th>
-                                <Th cellWidth="120px">Action</Th>
+                                <Th cellWidth="140px">Website</Th>
+                                <Th cellWidth="80px">Action</Th>
                             </TrH>
                         </THead>
                         <TBody>
@@ -79,9 +79,9 @@ useEffect(() => {
                                         <Td cellWidth="250px">{val.name}</Td>
                                         <Td cellWidth="150px">{val.phone}</Td>
                                         <Td cellWidth="250px">{val.email}</Td>
-                                        <Td cellWidth="120px">{val.website}</Td>
-                                        <Td cellWidth="120px">
-                                            <ActionBtn>View</ActionBtn>
+                                        <Td cellWidth="140px">{val.website}</Td>
+                                        <Td cellWidth="80px">
+                                            <ActionBtn onClick={() => router.push(`/admin/u/dashboard/businesses/${val.id}`)}>View</ActionBtn>
                                         </Td>
                                     </Tr>
                                 ))

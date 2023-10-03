@@ -96,21 +96,6 @@ const Login = () => {
               </InputContainer>
               <SubmitButton type="submit">Login</SubmitButton>
             </FormFields>
-            <HelpSection>
-              <RememberMe>
-                <button onClick={() => setRemember(!remember)}>
-                  <FrameContainer>
-                    <Image src="/check-frame.svg" alt="" height={18} width={18} />
-                  </FrameContainer>
-                  {
-                    remember && <CheckContainer>
-                      <Image src="/check-b.svg" alt="" height={10} width={13} />
-                    </CheckContainer>
-                  }
-                </button>
-                <span>Remember Me</span>
-              </RememberMe>
-            </HelpSection>
           </Center>
         </FormWrapper>
       </Wrapper>

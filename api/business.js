@@ -12,8 +12,7 @@ export const getBusinesses = (token) => {
         });
     } else {
         return axiosInstance().get(`/businesses`);
-    }
-    
+    }  
 }
 export const updateBusiness = (data, businessId) => {
     return axiosInstance().post(`/businesses/${businessId}`, data)

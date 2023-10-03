@@ -103,8 +103,22 @@ export const deleteAdminCampaignRequests = (id) => {
     return axiosInstance().delete(`/admin/campaign/requests/${id}/delete`);
 }
 export const updateAdminCampaignRequestStatus = (body) => {
-    return axiosInstance().post("admin/campaign/requests/update/status", body)
+    return axiosInstance().post("/admin/campaign/requests/update/status", body)
 }
 export const getAdminSingleCampaignRequest = (id) => {
     return axiosInstance().get(`/admin/campaign/requests/show/${id}`);
+}
+
+// Businesses
+export const getSingleBusinessAdmin = (id) => {
+    return axiosInstance().get(`/admin/businesses/${id}`)
+}
+export const verifyBusinessAdmin = (data) => {
+    return axiosInstance().post("/admin/businesses/verify", data);
+}
+export const deleteBusinessAdmin = (id) => {
+    return axiosInstance().delete(`/admin/businesses/${id}`)
+}
+export const updateAdminBusinessStatus = (body) => {
+    return axiosInstance().post("/admin/businesses/verify", body);
 }

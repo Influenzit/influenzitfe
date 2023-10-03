@@ -128,7 +128,6 @@ const handleCreateProposal = () => {
   });
   const getRequirement = (name) => {
     return JSON.parse(request?.requirements.filter((val) => val.name === name)[0]?.value ?? "[]");
-
   }
   useEffect(() => {
     if (id) {
