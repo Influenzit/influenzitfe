@@ -269,7 +269,7 @@ const Requests = () => {
                     </ContinueBtn>}
                     {
                       request?.business_id && (
-                      <ContinueBtn style={{ marginTop: "10px" }} onClick={() => router.push(`/business/${request?.business_id}`)}>
+                      <ContinueBtn style={{ marginTop: "10px" }} onClick={() => router.push(`/admin/u/dashboard/businesses/${request?.business_id}`)}>
                         <span>View Business</span>{" "}
                       </ContinueBtn>)
                     }
