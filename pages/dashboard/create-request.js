@@ -20,6 +20,7 @@ import Link from 'next/link';
 import { createCampaignRequest, updateCampaignRequest, getUserStatus, getSingleCampaignRequest } from 'api/campaigns';
 import { formatDate } from 'helpers/helper';
 import { Editor } from '@tinymce/tinymce-react';
+import { getBusinessesFromState } from '../../app/reducers/business';
 
 const CreateRequest = () => {
   const [step, setStep] = useState(1);
@@ -60,6 +61,7 @@ const CreateRequest = () => {
   const [deliverables, setDeliverables] = useState([""]);
   const [showEditor, setShowEditor] = useState(false);
   const editorRef = useRef(null);
+  const businesses = useSelector(getBusinessesFromState);
 
   const createRequestMutation = useMutation((data) => {
     return createCampaignRequest(data);
@@ -293,6 +295,7 @@ const CreateRequest = () => {
         formData.append("status", "Pending");
         formData.append("industry", industry);
         formData.append("deliverables", deliverables.filter((val) => val !== "").join("|"));
+        formData.append("business_id", Number(businesses[0].id));
         formData.append("requirements", JSON.stringify([
             {
                 name: "platforms",

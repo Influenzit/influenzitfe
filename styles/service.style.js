@@ -465,7 +465,7 @@ export const Deliverables = styled.div`
             width: 6px;
             min-width: 6px;
             min-height: 6px;
-            margin-top: 12px;
+            margin-top: 9px;
             border-radius: 50%;
             background: ${colors.primaryColor};
         }

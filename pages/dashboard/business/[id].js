@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React, { useState } from "react";
+import AdminLayout from "../../../layouts/admin.layout";
 import {
   Container,
   Wrapper,
@@ -23,9 +24,9 @@ import {
   ContinueBtn,
   RCard,
   RWrapper,
-} from "../../styles/service.style";
-import chevLeftIcon from "../../assets/chev-left.svg";
-import chevRightIcon from "../../assets/chev-right.svg";
+} from "../../../styles/service.style";
+import chevLeftIcon from "../../../assets/chev-left.svg";
+import chevRightIcon from "../../../assets/chev-right.svg";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -34,13 +35,13 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    getUserType,
   setLoading,
-} from "../../app/reducers/status";
+} from "../../../app/reducers/status";
 import Link from "next/link";
 import { ShareContainer, UpdateModal } from "styles/view.style";
-import { getBusiness, getPublicBusiness } from "../../api/business";
-import { RightSection, Social, SocialWrapper } from "../../styles/creator-profile.style";
-import LandingLayout from "../../layouts/landing.layout";
+import { getBusiness } from "../../../api/business";
+import { RightSection, Social, SocialWrapper } from "../../../styles/creator-profile.style";
 
 function NextArrow(props) {
   const { className, style, onClick } = props;
@@ -67,13 +68,14 @@ const ServiceView = () => {
   const { id } = router.query;
   const [linkCopied, setLinkCopied] = useState(false);
   const [showShare, setShowShare] = useState(false);
+  const currentAccountType = useSelector(getUserType);
   const getSocialMedia = (name) => {
     return JSON.parse(inData?.social_handles ?? "[]")?.filter((val) => val.name === name)[0]?.value;
   }
   const { data: businessData, refetch: refetchBusinessData } = useQuery(
-    ["get-public-business"],
+    ["get-business"],
     async () => {
-      return await getPublicBusiness(id);
+      return await getBusiness(id);
     },
     {
       enabled: false,
@@ -97,6 +99,13 @@ const ServiceView = () => {
       setInData(businessData?.data?.data);
     }
   }, [businessData]);
+  useEffect(() => {
+    if(currentAccountType) {
+        if (currentAccountType !== "Business Owner") {
+            router.push("/dashboard");
+        }
+    }
+  }, [currentAccountType])
   // handles copying of business
   const handleLinkCopy = () => {
     navigator.clipboard.writeText(location.href);
@@ -195,7 +204,7 @@ const ServiceView = () => {
                     <Link href={`/influencers/${inData?.user?.id}`}>
                       View profile
                     </Link>
-                    <QAction>
+                    {/* <QAction>
                       <button onClick={() => setShowShare(true)}>
                         <Image src="/share.svg" alt="" width={18} height={15} />{" "}
                         <span>Share</span>
@@ -209,7 +218,7 @@ const ServiceView = () => {
                         />{" "}
                         <span>Save</span>
                       </button>
-                    </QAction>
+                    </QAction> */}
                   </WAction>
                 </ProfileCard>
               </AboutWrapper>
@@ -345,6 +354,6 @@ const ServiceView = () => {
     </Container>
   );
 };
-ServiceView.getLayout = (page) => <LandingLayout>{page}</LandingLayout>;
+ServiceView.getLayout = (page) => <AdminLayout>{page}</AdminLayout>;
 
 export default ServiceView;
