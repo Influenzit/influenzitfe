@@ -239,9 +239,15 @@ const handleCreateProposal = () => {
                             })}</p>
                         </div>
                     </div>
-                    <ContinueBtn onClick={handleSubmitRequest}>
-                    <span>Apply</span>{" "}
-                    <Image src="/arrow-w.svg" alt="" width={12} height={11} />
+                    {
+                      request?.business_id && (
+                      <ContinueBtn onClick={() => router.push(`/business/${request?.business_id}`)}>
+                        <span>View Business</span>{" "}
+                      </ContinueBtn>)
+                    }
+                    <ContinueBtn onClick={handleSubmitRequest} style={{ marginTop: "10px" }}>
+                      <span>Apply</span>{" "}
+                      <Image src="/arrow-w.svg" alt="" width={12} height={11} />
                     </ContinueBtn>
                 </RCard>
                 <RCard>

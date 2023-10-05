@@ -259,10 +259,20 @@ const Requests = () => {
                               return `${val}, `
                             })}</p>
                         </div>
+                        <div>
+                            <p>Business Name</p>
+                            <p>{request?.business?.name}</p>
+                        </div>
                     </div>
                     {request?.status !== "approve" && <ContinueBtn onClick={handleApprove}>
                       <span>Approve</span>
                     </ContinueBtn>}
+                    {
+                      request?.business_id && (
+                      <ContinueBtn style={{ marginTop: "10px" }} onClick={() => router.push(`/business/${request?.business_id}`)}>
+                        <span>View Business</span>{" "}
+                      </ContinueBtn>)
+                    }
                     <ContinueBtn style={{ marginTop: "10px" }} onClick={() => setShowPrompt(true)}>
                       <span>Mail User</span>
                     </ContinueBtn>

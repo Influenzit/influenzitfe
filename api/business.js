@@ -20,6 +20,9 @@ export const updateBusiness = (data, businessId) => {
 export const getBusiness = (businessId) => {
     return axiosInstance().get(`/businesses/${businessId}`);
 }
+export const getPublicBusiness = (businessId) => {
+    return axiosInstance().get(`/businesses/public/${businessId}`);
+}
 export const getTopCampaigns = () => {
     return axiosInstance().get(`/campaigns/get/top/four/requests`);
 }

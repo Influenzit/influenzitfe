@@ -17,6 +17,7 @@ import { getIndustries } from "api/influencer";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getUserType } from "app/reducers/status";
 import { Capsule, CapsuleWrapper, InputContainer } from "styles/auth.style";
+import { useRouter } from 'next/router';
 
 function Stage1() {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ function Stage1() {
   const [industryList, setIndustryList] = useState([]);
   const currentAcctType = useSelector(getUserType);
   const [business, setBusiness] = useState(null);
+  const router = useRouter()
 
   const { data: industryData, refetch: refetchIndustryData } = useQuery(["get-industries"], async () => {
       return await getIndustries();
@@ -154,6 +156,18 @@ function Stage1() {
           <div>
             <h1 className="text-lg">Business Information</h1>
             <p className="text-xs text-[#667085]">Update your business information here</p>
+          </div>
+          <div className="flex justify-between items-center space-x-3">
+            {
+              business?.id && (
+                <button
+                  onClick={() => router.push(`/dashboard/business/${business?.id}`)}
+                  className="px-3 py-2 rounded-lg bg-primary-100 text-white text-sm"
+                >
+                  Preview Business
+                </button>
+              )
+            }
           </div>
         </div>
 
