@@ -16,6 +16,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from 'app/reducers/status';
 import Loader from 'components/UI/Loader';
 import CampaignCard from '../../components/campaign-req-card/campaign-req-card';
+import { FilterIcon } from '../../assets/svgIcons';
+import AdvanceFilter from '../../components/advance-filter/advance-filter';
 
 const Search = () => {
     const [getUrl, setGetUrl] = useState("");
@@ -29,8 +31,16 @@ const Search = () => {
     const [requestList, setRequestList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [firstLoad, setFirstLoad] = useState(true);
+    const [amountStart, setAmountStart] = useState("");
+    const [amountEnd, setAmountEnd] = useState("");
+    const [currency, setCurrency] = useState("");
+    const [apply, setApply] = useState(false);
+    const [country, setCountry] = useState("");
+    const [age, setAge] = useState("");
+    const [showFilter, setShowFilter] = useState(false);
     const { data: servicesData, refetch: refetchServicesData } = useQuery(["get-services"], async () => {
-        return await exploreCampaignRequests(getQueryString(`${getUrl ? getUrl : firstLoad ? router.asPath : ""}${getQueryString(getUrl ? getUrl : router.asPath) && firstLoad ? `&industry=${currentIndustry}&platform=${nicheVal}` : `?industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}` }`));
+        return await exploreCampaignRequests(getQueryString(`${getUrl ? getUrl : firstLoad ? router.asPath : ""}${getQueryString(getUrl ? getUrl : router.asPath) && firstLoad ? `&industry=${currentIndustry}&platform=${nicheVal}` 
+        : `?industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}&amount_start=${amountStart}&amount_end=${amountEnd}&currency=${currency}&country=${country}&age=${age}` }`));
     }, {
         enabled: false,
         staleTime: Infinity,
@@ -72,12 +82,12 @@ const Search = () => {
         refetchIndustryData();
         refetch();
     }, [router.asPath]);
-    useEffect(() => {
+    useEffect(() => {  
         refetchServicesData();
         if (search) {
             setSearchString(search);
         }
-    }, [router.asPath, currentIndustry, nicheVal, search])
+    }, [router.asPath, currentIndustry, nicheVal, search, apply])
     const handleScroll = (e) => {
         const scrollHeight = document.documentElement.scrollHeight - window.innerHeight - 300;
         if(window.scrollY >= scrollHeight) {
@@ -141,6 +151,7 @@ const Search = () => {
                     <Bottom>
                         <Filter>
                             <p id='explore_pagenumber'>{((servicesData?.data?.data?.current_page - 1) * servicesData?.data?.data?.per_page) + servicesData?.data?.data?.data.length} of {servicesData?.data?.data?.total}</p>
+                            <button onClick={() => setShowFilter(true)}><FilterIcon /><span>Filter</span></button>
                         </Filter>
                         <ListWrapper>
                             {
@@ -194,6 +205,30 @@ const Search = () => {
                     </Bottom>
                 </Content>
             </Wrapper>
+            {
+                showFilter && (
+                   <AdvanceFilter 
+                    filters={["amount", "currency", "country", "age", "platform", "industry"]}
+                    amountEnd={amountEnd}
+                    amountStart={amountStart}
+                    setAmountEnd={setAmountEnd}
+                    setAmountStart={setAmountStart}
+                    currency={currency}
+                    setCurrency={setCurrency}
+                    apply={apply}
+                    setApply={setApply}
+                    setShow={setShowFilter}
+                    country={country}
+                    setCountry={setCountry}
+                    age={age}
+                    setAge={setAge}
+                    platform={nicheVal}
+                    setPlatform={setNicheVal}
+                    industry={currentIndustry}
+                    setIndustry={setCurrentIndustry}
+                   />
+                )
+            }
         </Container>
     )
 }

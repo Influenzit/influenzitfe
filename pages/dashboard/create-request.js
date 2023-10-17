@@ -566,8 +566,7 @@ const CreateRequest = () => {
                             <div style={{ display: "flex", flexDirection: "column", minWidth: "calc(50% - 10px)" }}>
                                 <h4>Category</h4>
                                 <p>Select the category of your campaign</p>
-                                <InputContainer style={{ marginTop: "20px" }}>
-                                    
+                                <InputContainer style={{ marginTop: "20px" }}>   
                                     <select style={{ fontSize: "14px" }} value={industry} onChange={(e) => setIndustry(e.target.value)}>
                                         <option value="">Select Category</option>
                                         {
@@ -675,7 +674,7 @@ const CreateRequest = () => {
                             }
                         </CapsuleWrapper>
                         <InputWrap>
-                            <div style={{ display: "flex", flexDirection: "column", minWidth: "calc(50% - 10px)" }}>
+                            <div style={{ display: "flex", flexDirection: "column" }}>
                                 <h4>Followers</h4>
                                 <div style={{ display: "flex", columnGap: "10px", alignItems: "center" }}>
                                     <InputContainer style={{ marginTop: "20px" }}>

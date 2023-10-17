@@ -240,6 +240,10 @@ export const Filter = styled.div`
         span {
             padding-left: 10px;
         }
+        :hover {
+            color: ${colors.primaryColor};
+            border: 2px solid ${colors.primaryColor};
+        }
     }
 `;
 export const ListWrapper = styled.div`
