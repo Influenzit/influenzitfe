@@ -13,6 +13,8 @@ import { getUser } from 'app/reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from 'app/reducers/status';
 import Loader from 'components/UI/Loader';
+import AdvanceFilter from '../../components/advance-filter/advance-filter';
+import { FilterIcon } from '../../assets/svgIcons';
 
 const Search = () => {
     const [getUrl, setGetUrl] = useState("");
@@ -26,8 +28,32 @@ const Search = () => {
     const user = useSelector(getUser);
     const [firstLoad, setFirstLoad] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const [apply, setApply] = useState(false);
+    const [showFilter, setShowFilter] = useState(false);
+    const [followersStart, setFollowersStart] = useState("");
+    const [followersEnd, setFollowersEnd] = useState("");
+    const [pageLikesStart, setPageLikesStart] = useState("");
+    const [pageLikesEnd, setPageLikesEnd] = useState("");
+    const [pageViewsStart, setPageViewsStart] = useState("");
+    const [pageViewsEnd, setPageViewsEnd] = useState("");
+    const [impressionStart, setImpressionStart] = useState("");
+    const [impressionEnd, setImpressionEnd] = useState("");
+    const [followingStart, setFollowingStart] = useState("");
+    const [followingEnd, setFollowingEnd] = useState("");
+    const [dislikesStart, setDislikesStart] = useState("");
+    const [dislikesEnd, setDislikesEnd] = useState("");
+    const [commentStart, setCommentStart] = useState("");
+    const [commentEnd, setCommentEnd] = useState("");
+    const [engagementRateStart, setEngagementRateStart] = useState("");
+    const [engagementRateEnd, setEngagementRateEnd] = useState("");
+    const [platform, setPlatform] = useState("");
+    const [reachStart, setReachStart] = useState("");
+    const [reachEnd, setReachEnd] = useState("");
+    const [shareStart, setShareStart] = useState("");
+    const [shareEnd, setShareEnd] = useState("");
     const { data: creatorsData, refetch: refetchCreatorData } = useQuery(["get-creators"], async () => {
-        return await getCreators(getQueryString(`${getUrl ? getUrl : firstLoad ? router.asPath : ""}${getQueryString(getUrl ? getUrl : router.asPath) && firstLoad ? `&industry=${currentIndustry}&platform=${nicheVal}` : `?industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}` }`));
+        return await getCreators(getQueryString(`${getUrl ? getUrl : firstLoad ? router.asPath : ""}${getQueryString(getUrl ? getUrl : router.asPath) && firstLoad ? `&industry=${currentIndustry}&platform=${nicheVal}` 
+        :`?industry=${currentIndustry}&platform=${nicheVal}&social_platforms=${platform}&search=${searchString}&following_count=${followingStart},${followingEnd}&likes_count=${pageLikesStart},${pageLikesEnd}&likes=${pageLikesStart},${pageLikesEnd}&follower_count=${followersStart},${followersEnd}&views=${pageViewsStart},${pageViewsEnd}&dislikes=${dislikesStart},${dislikesEnd}&shares=${shareStart},${shareEnd}&comments=${commentStart},${commentEnd}&reach=${reachStart},${reachEnd}&impressions=${impressionStart},${impressionEnd}&profile_views=${pageViewsStart},${pageViewsEnd}&follower_count=${followersStart},${followersEnd}&follows_count=${followingStart},${followingEnd}&page_fans=${followersStart},${followersEnd}&page_impressions${impressionStart},${impressionEnd}=&page_actions_post_reactions_like_total=${pageLikesStart},${pageLikesEnd}&page_views_total=${pageViewsStart},${pageViewsEnd}` }`));
     }, {
         enabled: false,
         staleTime: Infinity,
@@ -137,8 +163,8 @@ const Search = () => {
                         <Filter>
                             {/* <p id='explore_pagenumber'>{((creatorsData?.data?.data?.current_page - 1) * creatorsData?.data?.data?.per_page) + creatorsData?.data?.data?.data.length} of {creatorsData?.data?.data?.total}</p> */}
                             <p id='explore_pagenumber'>{creatorsData?.data?.data?.total} creators available</p>
-                            <button>
-                                <Image src="/filter.svg" height={16} width={16}/>
+                            <button onClick={() => setShowFilter(true)}>
+                                <FilterIcon />
                                 <span>Filter</span>
                             </button>
                         </Filter>
@@ -202,6 +228,58 @@ const Search = () => {
                     </Bottom>
                 </Content>
             </Wrapper>
+            {
+                showFilter && (
+                   <AdvanceFilter 
+                    filters={["social"]}
+                    apply={apply}
+                    setApply={setApply}
+                    setShow={setShowFilter}
+                    pageViewsStart={pageViewsStart}
+                    pageViewsEnd={pageViewsEnd}
+                    followersStart={followersStart}
+                    followersEnd={followersEnd}
+                    pageLikesStart={pageLikesStart}
+                    pageLikesEnd={pageLikesEnd}
+                    impressionStart={impressionStart}
+                    impressionEnd={impressionEnd}
+                    setPageViewsStart={setPageViewsStart}
+                    setPageViewsEnd={setPageViewsEnd}
+                    setFollowersStart={setFollowersStart}
+                    setFollowersEnd={setFollowersEnd}
+                    setPageLikesStart={setPageLikesStart}
+                    setPageLikesEnd={setPageLikesEnd}
+                    setImpressionStart={setImpressionStart}
+                    setImpressionEnd={setImpressionEnd}
+                    platform={platform}
+                    setPlatform={setPlatform}
+                    followingStart={followingStart}
+                    followingEnd={followingEnd}
+                    setFollowingStart={setFollowingStart}
+                    setFollowingEnd={setFollowingEnd}
+                    reachStart={reachStart}
+                    reachEnd={reachEnd}
+                    setReachStart={setReachStart}
+                    setReachEnd={setReachEnd}
+                    commentStart={commentStart}
+                    commentEnd={commentEnd}
+                    setCommentStart={setCommentStart}
+                    setCommentEnd={setCommentEnd}
+                    dislikesStart={dislikesStart}
+                    dislikesEnd={dislikesEnd}
+                    setDislikesStart={setDislikesStart}
+                    setDislikesEnd={setDislikesEnd}
+                    engagementRateStart={engagementRateStart}
+                    engagementRateEnd={engagementRateEnd}
+                    setEngagementRateStart={setEngagementRateStart}
+                    setEngagementRateEnd={setEngagementRateEnd}
+                    shareStart={shareStart}
+                    shareEnd={shareEnd}
+                    setShareStart={setShareStart}
+                    setShareEnd={setShareEnd} 
+                   />
+                )
+            }
         </Container>
     )
 }
