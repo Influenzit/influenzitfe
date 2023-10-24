@@ -39,8 +39,8 @@ const Search = () => {
     const [age, setAge] = useState("");
     const [showFilter, setShowFilter] = useState(false);
     const { data: servicesData, refetch: refetchServicesData } = useQuery(["get-services"], async () => {
-        return await exploreCampaignRequests(getQueryString(`${getUrl ? getUrl : firstLoad ? router.asPath : ""}${getQueryString(getUrl ? getUrl : router.asPath) && firstLoad ? `&industry=${currentIndustry}&platform=${nicheVal}` 
-        : `?industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}&amount_start=${amountStart}&amount_end=${amountEnd}&currency=${currency}&country=${country}&age=${age}` }`));
+        return await exploreCampaignRequests(getQueryString(`${getUrl ? getUrl : firstLoad ? router.asPath : ""}${getQueryString(getUrl ? getUrl : router.asPath) && firstLoad ? `&industry=${currentIndustry}&social_platforms=${nicheVal}` 
+        : `?industry=${currentIndustry}&social_platforms=${nicheVal}&search=${searchString}&amount_start=${amountStart}&amount_end=${amountEnd}&currency=${currency}&country=${country}&age=${age}` }`));
     }, {
         enabled: false,
         staleTime: Infinity,

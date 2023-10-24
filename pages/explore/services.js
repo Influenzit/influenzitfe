@@ -15,6 +15,8 @@ import { getUser } from '../../app/reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from 'app/reducers/status';
 import Loader from 'components/UI/Loader';
+import AdvanceFilter from '../../components/advance-filter/advance-filter';
+import { FilterIcon } from '../../assets/svgIcons';
 
 const Search = () => {
     const [getUrl, setGetUrl] = useState("");
@@ -28,8 +30,15 @@ const Search = () => {
     const [serviceList, setServiceList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [firstLoad, setFirstLoad] = useState(true);
+    const [amountStart, setAmountStart] = useState("");
+    const [amountEnd, setAmountEnd] = useState("");
+    const [currency, setCurrency] = useState("");
+    const [apply, setApply] = useState(false);
+    const [showFilter, setShowFilter] = useState(false);
+    const [negotiable, setNegotiable] = useState("");
     const { data: servicesData, refetch: refetchServicesData } = useQuery(["get-services"], async () => {
-        return await exploreServices(getQueryString(`${getUrl ? getUrl : firstLoad ? router.asPath : ""}${getQueryString(getUrl ? getUrl : router.asPath) && firstLoad ? `&industry=${currentIndustry}&platform=${nicheVal}` : `?industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}` }`));
+        return await exploreServices(getQueryString(`${getUrl ? getUrl : firstLoad ? router.asPath : ""}${getQueryString(getUrl ? getUrl : router.asPath) && firstLoad ? `&industry=${currentIndustry}&platform=${nicheVal}` 
+        : `?industry=${currentIndustry}&platform=${nicheVal}&search=${searchString}&price=${amountStart},${amountEnd}&currency=${currency}&isNegotiable=${negotiable}` }`));
     }, {
         enabled: false,
         staleTime: Infinity,
@@ -76,7 +85,7 @@ const Search = () => {
         if (search) {
             setSearchString(search);
         }
-    }, [router.asPath, currentIndustry, nicheVal, search])
+    }, [router.asPath, currentIndustry, nicheVal, search, apply])
     const handleScroll = (e) => {
         const scrollHeight = document.documentElement.scrollHeight - window.innerHeight - 300;
         if(window.scrollY >= scrollHeight) {
@@ -137,6 +146,10 @@ const Search = () => {
                     <Bottom>
                         <Filter>
                             <p id='explore_pagenumber'>{((servicesData?.data?.data?.current_page - 1) * servicesData?.data?.data?.per_page) + servicesData?.data?.data?.data.length} of {servicesData?.data?.data?.total}</p>
+                            <button onClick={() => setShowFilter(true)}>
+                                <FilterIcon />
+                                <span>Filter</span>
+                            </button>
                         </Filter>
                         <ListWrapper>
                             {
@@ -187,6 +200,24 @@ const Search = () => {
                     </Bottom>
                 </Content>
             </Wrapper>
+            {
+                showFilter && (
+                   <AdvanceFilter 
+                    filters={["amount", "currency", "negotiable"]}
+                    amountEnd={amountEnd}
+                    amountStart={amountStart}
+                    setAmountEnd={setAmountEnd}
+                    setAmountStart={setAmountStart}
+                    currency={currency}
+                    setCurrency={setCurrency}
+                    apply={apply}
+                    setApply={setApply}
+                    setShow={setShowFilter}
+                    negotiable={negotiable}
+                    setNegotiable={setNegotiable}
+                   />
+                )
+            }
         </Container>
     )
 }
