@@ -85,7 +85,29 @@ const AdvanceFilter = ({
   });
   const handleClear = () => {
     if(filters.includes("social")) {
-
+        setPageViewsStart("");
+        setPageViewsEnd("");
+        setFollowersStart("");
+        setFollowersEnd("");
+        setPageLikesStart("");
+        setPageLikesEnd("");
+        setImpressionStart("");
+        setImpressionEnd("");
+        setPlatform("");
+        setFollowingStart("");
+        setFollowingEnd("");
+        setReachStart("");
+        setReachEnd("");
+        setCommentStart("");
+        setCommentEnd("");
+        setDislikesStart("");
+        setDislikesEnd("");
+        setEngagementRateStart("");
+        setEngagementRateEnd("");
+        setShareStart("");
+        setShareEnd("");
+        setCurrency && setCurrency("");
+        setNegotiable && setNegotiable("");
     } else {
       setAmountStart("");
       setAmountEnd("");
@@ -95,6 +117,8 @@ const AdvanceFilter = ({
       setCountry("");
       setIndustry("");
     }
+    setApply(!apply);
+    setShow(false);
   }
   useEffect(() => {
     refetchIndustryData();
