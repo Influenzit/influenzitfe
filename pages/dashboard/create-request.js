@@ -21,6 +21,7 @@ import { createCampaignRequest, updateCampaignRequest, getUserStatus, getSingleC
 import { formatDate } from 'helpers/helper';
 import { Editor } from '@tinymce/tinymce-react';
 import { getBusinessesFromState } from '../../app/reducers/business';
+import { fetchCountryOptions, fetchStateOptions } from '../../api/option';
 
 const CreateRequest = () => {
   const [step, setStep] = useState(1);
@@ -53,6 +54,10 @@ const CreateRequest = () => {
   const [selectedPlatform, setSelectedPlatform] = useState([]);
   const [selectedAge, setSelectedAge] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState([]);
+  const [selectedState, setSelectedState] = useState([]);
+  const [countryId, setCountryId] = useState([]);
+  const [currentCountryId, setCurrentCountryId] = useState("");
+  const [states, setStates] = useState([]);
   const [requestId, setRequestId] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [uploadImage, setUploadImage] = useState(true);
@@ -158,6 +163,26 @@ const CreateRequest = () => {
             setIndustryList(res.data.data);
         }
     });
+    const { data: countryIdData, refetch: refetchCountryIdData } = useQuery(["get-country-id"], async () => {
+        return await fetchCountryOptions();
+    }, {
+        enabled: false,
+        staleTime: Infinity,
+        retry: false,
+        onSuccess(res) {
+            setCountryId(res.data.data);
+        }
+    });
+    const { data: statesData, refetch: refetchStatesData } = useQuery(["get-states"], async () => {
+        return await fetchStateOptions(currentCountryId);
+    }, {
+        enabled: false,
+        staleTime: Infinity,
+        retry: false,
+        onSuccess(res) {
+            setStates(res.data.data);
+        }
+    });
     const getRequirement = (requirements, name) => {
         return JSON.parse(requirements.filter((val) => val.name === name)[0]?.value ?? "[]");
     }
@@ -201,6 +226,7 @@ const CreateRequest = () => {
             setLowEngagement(getRequirement(requestResponse.requirements, "engagement_rate")[0]);
             setSelectedPlatform(getRequirement(requestResponse.requirements, "platforms"));
             setSelectedAge(getRequirement(requestResponse.requirements, "age"));
+            setSelectedState(getRequirement(requestResponse.requirements, "state"));
             setSelectedCountry(getRequirement(requestResponse.requirements, "country"));
             setHighFollow(getRequirement(requestResponse.requirements, "followers")[1]);
             setLowFollow(getRequirement(requestResponse.requirements, "followers")[0]);
@@ -272,12 +298,31 @@ const CreateRequest = () => {
             return copy;
         })
     }
+    const handleAddState = (val) => {
+        setSelectedState((prev) => {
+            const copy = [...prev];
+            if(copy.indexOf(val) === -1) {
+                copy.push(val);
+            }
+            return copy;
+        })
+    }
     const handleRemoveCountry = (val) => {
         setSelectedCountry((prev) => {
             let copy = [...prev];
             copy = copy.filter((curr) => curr !== val);
             return copy;
         })
+    }
+    const handleRemoveState = (val) => {
+        setSelectedState((prev) => {
+            let copy = [...prev];
+            copy = copy.filter((curr) => curr !== val);
+            return copy;
+        })
+    }
+    const handleSelectCountry = (counId) => {
+        setCurrentCountryId(counId);
     }
     const handleCreateRequest = () => {
         if(isSaving) return;
@@ -315,6 +360,11 @@ const CreateRequest = () => {
             {
                 name: "age",
                 value: selectedAge,
+                valuetype: "list"
+            },
+            {
+                name: "country",
+                value: selectedCountry,
                 valuetype: "list"
             },
             {
@@ -368,6 +418,11 @@ const CreateRequest = () => {
             {
                 name: "country",
                 value: selectedCountry,
+                valuetype: "list"
+            },
+            {
+                name: "state",
+                value: selectedState,
                 valuetype: "list"
             }
         ]))
@@ -459,8 +514,14 @@ const CreateRequest = () => {
   useEffect(() => {
     setShowEditor(true);
     refetchIndustryData();
+    refetchCountryIdData();
     refetch();
   }, [])
+  useEffect(() => {
+    if(currentCountryId) {
+        refetchStatesData();
+    }
+  }, [currentCountryId])
   useEffect(() => {
     if(id && preview) {
         setRequestId(id);
@@ -771,6 +832,41 @@ const CreateRequest = () => {
                                 </CapsuleWrapper>
                             </div>
                         </InputWrap>
+                        <h4>States</h4>
+                        <p>Pick the states of the audience you want to target</p>
+                        <div style={{ display: "flex", columnGap: "10px", alignItems: "center" }}>
+                            <InputContainer style={{ marginTop: "20px" }}>
+                            <select style={{ fontSize: "14px" }} value={currentCountryId} onChange={(e) => handleSelectCountry(e.target.value)}>
+                                <option value={""}>Select Country</option>
+                                {
+                                    countryId.map((country, i) => {
+                                        return (<option value={country.id} key={i}>{country.name}</option>)
+                                    })
+                                }
+                            </select>
+                            </InputContainer>
+                            <span>-</span>
+                            <InputContainer style={{ marginTop: "20px" }}>
+                                <select onChange={(e) => handleAddState(e.target.value)}>
+                                    <option value={""}>--</option>
+                                    {
+                                        states.map((state, i) => {
+                                            return (<option value={state.state_name} key={i}>{state.state_name}</option>)
+                                        })
+                                    }
+                                </select>
+                            </InputContainer>
+                        </div>
+                        <CapsuleWrapper style={{ marginBottom: "20px" }}>
+                            {
+                                selectedState.map((val, i) => (
+                                    <Capsule key={i}>
+                                        {val}
+                                        <button onClick={() => handleRemoveState(val)}><Image src="/delete.svg" alt="del" height={18} width={18} /></button>
+                                    </Capsule>
+                                ))  
+                            }
+                        </CapsuleWrapper>
                         <StepControl>
                             <button id="left" onClick={() => setStep(2)}><Image src="/arrow-left.svg" alt="" height={15} width={15} /> <span>Back</span></button>
                             <button id="right" onClick={() => setStep(4)}><span>Continue</span><Image src="/arrow-w.svg" alt="" height={12} width={12} /> </button>
