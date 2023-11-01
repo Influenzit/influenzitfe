@@ -233,6 +233,12 @@ const handleCreateProposal = () => {
                             })}</p>
                         </div>
                         <div>
+                            <p>Audience State</p>
+                            <p>{getRequirement("state").map((val) => {
+                              return `${val}, `
+                            })}</p>
+                        </div>
+                        <div>
                             <p>Age Range</p>
                             <p>{getRequirement("age").map((val) => {
                               return `${val}, `
