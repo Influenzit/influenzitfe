@@ -190,7 +190,7 @@ const LandingLayout = ({children, title, description}) => {
           {/* <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" /> */}
           {/* <meta http-equiv="Content-Security-Policy" content="image-src phplaravel-870335-3074787.cloudwaysapps.com api.influenzit.com ui-avatars.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' www.google-analytics.com connect.facebook.net accounts.google.com js.paystack.co; font-src 'self' fonts.googleapis.com fonts.gstatic.com;" /> */}
           <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-          <meta http-equiv="Permissions-Policy" content="camera=(); battery=(self); geolocation=(); microphone=(self)" />
+          {/* <meta http-equiv="Permissions-Policy" content="camera=(); battery=(self); geolocation=(); microphone=(self)" /> */}
           {/* <meta http-equiv="Referrer-Policy" content="origin-when-cross-origin" /> */}
         </Head>
           {(!!user && user?.is_admin) ? (

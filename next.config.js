@@ -37,10 +37,6 @@ const nextConfig = {
               value: 'nosniff',
             },
             {
-              key: 'Permissions-Policy',
-              value: "camera=(); battery=(self); geolocation=(); microphone=(self)",
-            },
-            {
               key: 'Referrer-Policy',
               value: 'origin-when-cross-origin',
             },
