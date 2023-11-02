@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
+import Script from 'next/script'
 import Nav from '../components/nav'
 import Footer from '../components/footer'
 import Loader from '../components/loading'
@@ -163,7 +164,7 @@ const LandingLayout = ({children, title, description}) => {
             height="0" width="0" style="display:none;visibility:hidden"></iframe>
           </noscript>
          <Head>
-          <script>
+          <Script>
             {
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -171,7 +172,7 @@ const LandingLayout = ({children, title, description}) => {
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','GTM-K5F8M5ZL')
             }
-          </script>
+          </Script>
           <title>{title ? title : "INFLUENZIT  - The Number One Influencer Marketing Platform In Nigeria."}</title>
           <meta name="description" content={description} />
           <meta name="facebook-domain-verification" content="yaoox27tyrn1d5eslbbvp1d9w4lwnj" />

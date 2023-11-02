@@ -51,18 +51,18 @@ const CampaignCard = ({ imgSrc, price, content, status, reqId, reqPlatform, refe
                 <div style={{ display: "flex", alignItems: "center" }}>
                     <p style={{ paddingTop: "0" }}>Platforms: </p>
                     {
-                        reqPlatform.map((val) => {
+                        reqPlatform.map((val, i) => {
                             switch (val) {
                             case "Facebook":
-                                return <Image src="/facebook-icon.svg" alt="" height={12} width={12}/>
+                                return <Image src="/facebook-icon.svg" alt="" height={12} width={12} key={i}/>
                             case "Instagram":
-                                return <Image src="/instagram-icon.svg" alt="" height={12} width={12}/>
+                                return <Image src="/instagram-icon.svg" alt="" height={12} width={12} key={i}/>
                             case "Twitter":
-                                return <Image src="/twitter-icon.svg" alt="" height={12} width={12}/>
+                                return <Image src="/twitter-icon.svg" alt="" height={12} width={12} key={i}/>
                             case "TikTok":
-                                return <Image src="/tiktok-icon.svg" alt="" height={12} width={12}/>
+                                return <Image src="/tiktok-icon.svg" alt="" height={12} width={12} key={i}/>
                             case "Youtube":
-                                return <Image src="/youtube-icon.svg" alt="" height={12} width={12}/>
+                                return <Image src="/youtube-icon.svg" alt="" height={12} width={12} key={i}/>
                             default:
                                 break;
                             }
