@@ -92,7 +92,7 @@ const LandingLayout = ({children, title, description}) => {
   const checkActivity = () => {
     if(localStorage.getItem("last-activity")) {
       const lastTime = Number(localStorage.getItem("last-activity") ?? "0");
-      const allowedTime = Number(process.env.NEXT_PUBLIC_ALLOWED_INACTIVITY_TIME ?? "5000");
+      const allowedTime = Number(process.env.NEXT_PUBLIC_ALLOWED_INACTIVITY_TIME ?? "180000");
       if((Date.now() - lastTime) > allowedTime) {
        if(localStorage.getItem("token") && user) {
         dispatch(setLogoutModal(true));
