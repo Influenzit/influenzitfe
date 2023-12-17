@@ -59,7 +59,7 @@ export const TopBanner = styled.div`
             outline: none;
             width: auto;
             height: 100%;
-            padding: 0 15px;
+            padding: 7px 15px;
             font-size: 14px;
             color: ${colors.textColor}B2;
         }
@@ -69,7 +69,7 @@ export const TopBanner = styled.div`
             height: 100%;
             background: transparent;
             width: calc(100% - 30px);
-            padding: 0 15px;
+            padding: 7px 15px;
             font-size: 14px;
             color: ${colors.textColor}B2;
         }
@@ -126,7 +126,6 @@ export const TopBanner = styled.div`
                 height: 40px;
                 border-radius: 4px;
                 padding: 5px !important;
-                border: 1px solid grey;
                 font-size: 12px;
                 background: #FFF;
             }
@@ -135,7 +134,6 @@ export const TopBanner = styled.div`
                 height: 40px;
                 border-radius: 4px;
                 padding: 5px;
-                border: 1px solid grey !important;
                 font-size: 12px;
                 background: #FFF;
             }
@@ -144,7 +142,7 @@ export const TopBanner = styled.div`
             }
             button {
                 width: 98%;
-                border-radius: 5px;
+                border-radius: 99px;
                 margin: 10px 5px;
                 box-sizing: border-box;
                 border: none;

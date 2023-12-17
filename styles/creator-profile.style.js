@@ -67,6 +67,7 @@ export const UserDetails = styled.div`
     div {
         flex-direction: column;
         align-items: flex-start;
+        padding-left: 10px;
     }
    }
 `;
@@ -389,6 +390,12 @@ export const ImageContainer = styled.div`
         height: 100%;
         width: 100%;
     }
+    ${breakpoints.md} {
+        height: 380px;
+    }
+    ${breakpoints.sm} {
+        height: 250px;
+    }
 `;
 export const ImageContainerTwo = styled.div`
     height: 450px;
@@ -424,6 +431,12 @@ export const ImageContainerTwo = styled.div`
             max-width: 50%;
             min-width: 50%;
         }
+    }
+    ${breakpoints.md} {
+        height: 380px;
+    }
+    ${breakpoints.sm} {
+        height: 250px;
     }
 `;
 export const BottomSection = styled.div`

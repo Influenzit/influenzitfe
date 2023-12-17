@@ -330,6 +330,7 @@ export const AnalyticCard = styled.div`
     border: 1px solid rgba(42, 41, 57, 0.1);
     border-radius: 16px;
     padding: 24px;
+    overflow: hidden;
     h2 {
         font-weight: 600;
         font-size: 20px;
