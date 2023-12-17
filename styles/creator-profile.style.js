@@ -59,6 +59,15 @@ export const UserDetails = styled.div`
         font-weight: 700;
         color: #2A2939;
     }
+    div {
+        margin-top: 0;
+    }
+   }
+   ${breakpoints.sm} {
+    div {
+        flex-direction: column;
+        align-items: flex-start;
+    }
    }
 `;
 export const ProfileStats = styled.div`

@@ -381,6 +381,10 @@ export const PerformanceCont = styled.div`
 export const Flex = styled.div`
     display: flex;
     column-gap: 24px;
+    ${breakpoints.md} {
+        flex-direction: column;
+        row-gap: 18px;
+    }
 `;
 export const EngagementCard = styled.div`
     background: #FFFFFF;

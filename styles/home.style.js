@@ -123,8 +123,6 @@ export const WrapperOne = styled.div`
                 width: 100%;
                 height: 40px;
                 border-radius: 4px;
-                padding: 5px !important;
-                border: 1px solid grey;
                 font-size: 12px;
                 background: #FFF;
             }
@@ -133,7 +131,6 @@ export const WrapperOne = styled.div`
                 height: 40px;
                 border-radius: 4px;
                 padding: 5px;
-                border: 1px solid grey !important;
                 font-size: 12px;
                 background: #FFF;
             }
@@ -142,7 +139,7 @@ export const WrapperOne = styled.div`
             }
             button {
                 width: 98%;
-                border-radius: 5px;
+                border-radius: 99px;
                 margin: 10px 5px;
                 box-sizing: border-box;
                 border: none;
@@ -193,6 +190,14 @@ export const CustomSelect = styled.div`
         }
         select{
             margin-left: 0px;
+            padding: 0 10px !important;
+            border-radius: 99px !important;
+            border: 1px solid #2A293933 !important;
+        }
+        input {
+            padding: 0 10px !important;
+            border-radius: 99px !important;
+            border: 1px solid #2A293933 !important;
         }
     }
 `;
