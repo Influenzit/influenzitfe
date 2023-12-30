@@ -23,6 +23,13 @@ a {
 button {
   outline: none;
 }
+input,
+textarea,
+button,
+select,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
 
 .input {
   background: #ffffff;
