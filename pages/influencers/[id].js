@@ -1356,6 +1356,7 @@ const CreatorProfile = () => {
                               src={"/youtube-full.png"}
                               height={35}
                               width={156.1}
+                              alt="youtube image"
                             />
                           </div>
                         </PerformanceCont>
