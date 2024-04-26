@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getCampaigns } from "../../../../../api/campaigns";
-import { setLoading } from "../../../../../app/reducers/status";
+import status, { setLoading } from "../../../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../../../assets/svgIcons";
 import LandingLayout from "../../../../../layouts/admin.layout";
 import {
@@ -38,22 +38,15 @@ import { getQueryString } from "helpers/helper";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import styled from "styled-components";
-const StyledLink = styled(Link)`
-  outline: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.75rem;
-  padding: 6px 2px;
-  color: white;
-  background-color: #2a2939;
-  font-weight: bold;
-  border-radius: 0.25rem;
-`;
 const Campaigns = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [getUrl, setGetUrl] = useState("");
+  const [showStatus, setShowStatus] = useState(false);
+  const [search, setSearch] = useState("");
+  const [verified, setVerified] = useState(); // [true, false]
+  const showStatusHandler = () => setShowStatus(!showStatus);
+
   const [userList, setUserList] = useState({
     data: [],
   });
@@ -69,6 +62,7 @@ const Campaigns = () => {
       onSuccess(res) {
         dispatch(setLoading(false));
         setUserList(res.data.data);
+        console.log(res.data.data);
       },
       onError(res) {
         dispatch(setLoading(false));
@@ -107,6 +101,27 @@ const Campaigns = () => {
     refetchUsersData();
     console.log;
   }, [getUrl]);
+  const statusHandler = (status) => {
+    setVerified(status);
+    setShowStatus(false);
+  };
+  const searchHandler = () => {
+    return userList.data.filter((val) => {
+      return (
+        val.user.firstname.toLowerCase().includes(search.toLowerCase()) ||
+        val.user.lastname.toLowerCase().includes(search.toLowerCase()) ||
+        val.user.email.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+  };
+  let filterUserList =
+    verified === true
+      ? searchHandler().filter((val) => val.influenzit_verified)
+      : verified === false
+      ? searchHandler().filter((val) => !val.influenzit_verified)
+      : searchHandler();
+
+  //console.log(filter);
 
   return (
     <Container>
@@ -114,6 +129,48 @@ const Campaigns = () => {
         <TableWrapped>
           <TableHeader>
             <h2>Validate Users</h2>
+            <div className="flex gap-4">
+              <form>
+                {" "}
+                <input
+                  type="search"
+                  name="search"
+                  id="search"
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                  value={search}
+                  placeholder="Search for influencers"
+                  className="border-[#E1E8F1] border text-[#667085] rounded-md py-2 text-sm w-[300px] px-4 outline-none focus:ring-1 focus:ring-[#2A2939]"
+                />{" "}
+              </form>
+              <div className="relative">
+                <button
+                  onClick={showStatusHandler}
+                  className="text-[#667085;] border rounded-md py-2 text-sm w-fit px-4 flex items-center justify-center bg-[#F9FAFB]"
+                >
+                  Status
+                </button>
+                {showStatus && (
+                  <div className="absolute shadow-lg rounded-md py-2 text-sm w-[110px] text-[#667085]  px-4 flex flex-col bg-white right-0 z-10">
+                    <button
+                      onClick={() => {
+                        statusHandler(true);
+                      }}
+                    >
+                      Verified
+                    </button>
+                    <button
+                      onClick={() => {
+                        statusHandler(false);
+                      }}
+                    >
+                      Not Verified
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
           </TableHeader>
           <TableWrapper style={{ marginBottom: "15px" }}>
             <TableContent>
@@ -127,7 +184,7 @@ const Campaigns = () => {
                   </TrH>
                 </THead>
                 <TBody>
-                  {userList.data.map((val, i) => (
+                  {filterUserList.map((val, i) => (
                     <Tr key={i}>
                       <Td cellWidth="370px">
                         {val.user.firstname} {val.user.lastname}
@@ -161,6 +218,11 @@ const Campaigns = () => {
                       </Td>
                     </Tr>
                   ))}
+                  {filterUserList.length === 0 && (
+                    <div className="text-center p-3 text-xl text-[#667085;]">
+                      No influencers for this category
+                    </div>
+                  )}
                 </TBody>
               </Table>
             </TableContent>
