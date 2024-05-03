@@ -38,15 +38,26 @@ import { getQueryString } from "helpers/helper";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import styled from "styled-components";
+import { axiosInstance } from "../../../../../api/axios";
 const Campaigns = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [getUrl, setGetUrl] = useState("");
   const [showStatus, setShowStatus] = useState(false);
   const [search, setSearch] = useState("");
-  const [verified, setVerified] = useState(); // [true, false]
+  const [status, setStatus] = useState(""); // [true, false]
+  const [accountType, setAccountType] = useState(""); // [is_influencer, is_creator, is_businessowner]
+  const [showAccount, setShowAccount] = useState(false);
   const showStatusHandler = () => setShowStatus(!showStatus);
-
+  const showAccountHandler = () => setShowAccount(!showAccount);
+  const accountTypeHandler = (type) => {
+    setAccountType(type);
+    setGetUrl(
+      `?account_type=${accountType}&status=${status}&fullname=${search}`
+    );
+    console.log(getUrl);
+    setShowAccount(false);
+  };
   const [userList, setUserList] = useState({
     data: [],
   });
@@ -61,6 +72,7 @@ const Campaigns = () => {
       retry: false,
       onSuccess(res) {
         dispatch(setLoading(false));
+        console.log(res.data.data);
         setUserList(res.data.data);
         console.log(res.data.data);
       },
@@ -101,34 +113,27 @@ const Campaigns = () => {
     refetchUsersData();
     console.log;
   }, [getUrl]);
-  const statusHandler = (status) => {
-    setVerified(status);
+  const statusHandler = (status_) => {
+    setStatus(status_);
+    setGetUrl(
+      `?account_type=${accountType}&status=${status}&fullname=${search}`
+    );
     setShowStatus(false);
   };
-  const searchHandler = () => {
-    return userList.data.filter((val) => {
-      return (
-        val.user.firstname.toLowerCase().includes(search.toLowerCase()) ||
-        val.user.lastname.toLowerCase().includes(search.toLowerCase()) ||
-        val.user.email.toLowerCase().includes(search.toLowerCase())
-      );
-    });
+
+  const searchHandler = (e) => {
+    setSearch(e.target.value);
+    setGetUrl(
+      `?account_type=${accountType}&status=${status}&fullname=${search}`
+    );
   };
-  let filterUserList =
-    verified === true
-      ? searchHandler().filter((val) => val.influenzit_verified)
-      : verified === false
-      ? searchHandler().filter((val) => !val.influenzit_verified)
-      : searchHandler();
-
-  //console.log(filter);
-
   return (
     <Container>
       <Wrapper>
         <TableWrapped>
           <TableHeader>
             <h2>Validate Users</h2>
+
             <div className="flex gap-4">
               <form>
                 {" "}
@@ -137,7 +142,7 @@ const Campaigns = () => {
                   name="search"
                   id="search"
                   onChange={(e) => {
-                    setSearch(e.target.value);
+                    searchHandler(e);
                   }}
                   value={search}
                   placeholder="Search for influencers"
@@ -147,27 +152,94 @@ const Campaigns = () => {
               <div className="relative">
                 <button
                   onClick={showStatusHandler}
-                  className="text-[#667085;] border rounded-md py-2 text-sm w-fit px-4 flex items-center justify-center bg-[#F9FAFB]"
+                  className="text-[#667085;] border capitalize rounded-md py-2 text-sm w-fit px-4 flex items-center justify-center bg-[#F9FAFB]"
                 >
-                  Status
+                  {status === "" ? "Status" : status.split("_").join(" ")}
                 </button>
                 {showStatus && (
-                  <div className="absolute shadow-lg rounded-md py-2 text-sm w-[110px] text-[#667085]  px-4 flex flex-col bg-white right-0 z-10">
-                    <button
-                      onClick={() => {
-                        statusHandler(true);
-                      }}
-                    >
-                      Verified
-                    </button>
-                    <button
-                      onClick={() => {
-                        statusHandler(false);
-                      }}
-                    >
-                      Not Verified
-                    </button>
-                  </div>
+                  <>
+                    <div className="absolute shadow-lg rounded-md py-2 text-sm w-[150px] text-[#667085]  px-2 flex flex-col bg-white right-0 z-10">
+                      <button
+                        onClick={() => {
+                          statusHandler("verified");
+                        }}
+                        className={`${
+                          status === "verified" &&
+                          "bg-[#F9FAFB] border rounded-md p-[2px] font-semibold text-[#667085;] "
+                        }`}
+                      >
+                        Verified
+                      </button>
+                      <button
+                        onClick={() => {
+                          statusHandler("not_verified");
+                        }}
+                        className={`${
+                          status === "not_verified" &&
+                          "bg-[#F9FAFB] border rounded-md p-[2px] font-semibold text-[#667085;] "
+                        }`}
+                      >
+                        Not Verified
+                      </button>
+                    </div>
+                    <div
+                      onClick={showStatusHandler}
+                      className="fixed top-0 left-0 w-full h-screen transparent z-5"
+                    ></div>
+                  </>
+                )}
+              </div>
+              <div className="relative">
+                <button
+                  onClick={showAccountHandler}
+                  className="text-[#667085;] capitalize border rounded-md py-2 text-sm w-fit px-4 flex items-center justify-center bg-[#F9FAFB]"
+                >
+                  {accountType === ""
+                    ? "Account Type"
+                    : accountType.split("_")[1]}
+                </button>
+                {showAccount && (
+                  <>
+                    <div className="absolute shadow-lg rounded-md py-2 text-sm w-[150px] text-[#667085]  px-2 flex flex-col gap-[2px] bg-white right-0 z-10">
+                      <button
+                        onClick={() => {
+                          accountTypeHandler("is_influencer");
+                        }}
+                        className={`${
+                          accountType === "is_influencer" &&
+                          "bg-[#F9FAFB] border rounded-md p-[2px] font-semibold text-[#667085;] "
+                        }`}
+                      >
+                        Influencer
+                      </button>
+                      <button
+                        onClick={() => {
+                          accountTypeHandler("is_creator");
+                        }}
+                        className={`${
+                          accountType === "is_creator" &&
+                          "bg-[#F9FAFB] border rounded-md p-[2px] font-semibold text-[#667085;] "
+                        }`}
+                      >
+                        Creator
+                      </button>
+                      <button
+                        onClick={() => {
+                          accountTypeHandler("is_businessowner");
+                        }}
+                        className={`${
+                          accountType === "is_businessowner" &&
+                          "bg-[#F9FAFB] border rounded-md p-[2px] font-semibold text-[#667085;] "
+                        }`}
+                      >
+                        Business owner
+                      </button>
+                    </div>
+                    <div
+                      onClick={showAccountHandler}
+                      className="fixed top-0 left-0 w-full h-screen transparent z-5"
+                    ></div>
+                  </>
                 )}
               </div>
             </div>
@@ -184,7 +256,7 @@ const Campaigns = () => {
                   </TrH>
                 </THead>
                 <TBody>
-                  {filterUserList.map((val, i) => (
+                  {userList.data.map((val, i) => (
                     <Tr key={i}>
                       <Td cellWidth="370px">
                         {val.user.firstname} {val.user.lastname}
@@ -218,7 +290,7 @@ const Campaigns = () => {
                       </Td>
                     </Tr>
                   ))}
-                  {filterUserList.length === 0 && (
+                  {userList.data.length === 0 && (
                     <div className="text-center p-3 text-xl text-[#667085;]">
                       No influencers for this category
                     </div>
@@ -236,6 +308,8 @@ const Campaigns = () => {
             </p>
             <Pagination>
               <NavBtn
+                disabled={userList.prev_page_url === null}
+                className="disabled:cursor-not-allowed"
                 onClick={() =>
                   userList.prev_page_url &&
                   setGetUrl(
@@ -248,10 +322,54 @@ const Campaigns = () => {
               >
                 <ChevronLeft />
               </NavBtn>
+              {userList.current_page != 1 && userList.current_page - 1 >= 4 && (
+                <NavBtn className="hidden text-sm font-medium sm:flex items-center justify-center rounded px-3 py-2 text-red-400 ring-[1px] ring-red-400">
+                  1
+                </NavBtn>
+              )}
+              {userList.current_page != 1 && userList.current_page - 1 >= 4 && (
+                <NavBtn className="hidden text-sm font-medium sm:flex items-center justify-center rounded px-3 py-2 text-red-400 ring-[1px] ring-red-400">
+                  ...
+                </NavBtn>
+              )}
+              {/* prev_page_url :
+              "https://api.influenzit.com/api/v1/admin/accounts?page=1" to : 40
+              total : 375 */}
+              {/* {Array} */}
+              {/* {[...(userList.current_page - 1)].map((a, i) => (
+                <NavBtn
+                  key={i}
+                  className={`${
+                    userList.current_page === i
+                      ? "bg-red-500 text-white ring-red-500"
+                      : "text-red-400 ring-red-400"
+                  } text-sm font-medium flex items-center justify-center rounded px-3 py-2 ring-[1px]`}
+                >
+                  {i + 1}
+                </NavBtn>
+              ))}
+              {userList.last_page - userList.current_page >= 3 && (
+                <div class="hidden text-sm font-medium sm:flex items-center justify-center rounded px-3 py-2 text-red-400 ring-[1px] ring-red-400">
+                  ...
+                </div>
+              )}
+              {userList.last_page - userList.current_page >= 3 && (
+                <NavBtn
+                  className={`${
+                    userList.current_page === userList.last_page
+                      ? "bg-red-500 text-white ring-red-500"
+                      : "text-red-400 ring-red-400"
+                  } hidden text-sm font-medium sm:flex items-center justify-center rounded px-3 py-2 ring-[1px]`}
+                >
+                  {userList.last_page}
+                </NavBtn>
+              )}
               <Pages>
                 <PageBtn activePage={true}>{userList.current_page}</PageBtn>
-              </Pages>
+              </Pages> */}
               <NavBtn
+                className="disabled:cursor-not-allowed "
+                disabled={userList.next_page_url === null}
                 onClick={() =>
                   userList.next_page_url &&
                   setGetUrl(
