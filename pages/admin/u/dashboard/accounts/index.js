@@ -52,9 +52,6 @@ const Campaigns = () => {
   const showAccountHandler = () => setShowAccount(!showAccount);
   const accountTypeHandler = (type) => {
     setAccountType(type);
-    setGetUrl(
-      `?account_type=${accountType}&status=${status}&fullname=${search}`
-    );
     console.log(getUrl);
     setShowAccount(false);
   };
@@ -111,13 +108,12 @@ const Campaigns = () => {
   };
   useEffect(() => {
     refetchUsersData();
-    console.log;
-  }, [getUrl]);
+  }, [getUrl, refetchUsersData]);
   const statusHandler = (status_) => {
     setStatus(status_);
-    setGetUrl(
-      `?account_type=${accountType}&status=${status}&fullname=${search}`
-    );
+    // setGetUrl(
+    //   `?account_type=${accountType}&status=${status}&fullname=${search}`
+    // );
     setShowStatus(false);
   };
 
@@ -161,6 +157,9 @@ const Campaigns = () => {
                     <div className="absolute shadow-lg rounded-md py-2 text-sm w-[150px] text-[#667085]  px-2 flex flex-col bg-white right-0 z-10">
                       <button
                         onClick={() => {
+                          setGetUrl(
+                            `?status=verified&account_type=${accountType}&fullname=${search}`
+                          );
                           statusHandler("verified");
                         }}
                         className={`${
@@ -172,6 +171,9 @@ const Campaigns = () => {
                       </button>
                       <button
                         onClick={() => {
+                          setGetUrl(
+                            `?status=not_verified&account_type=${accountType}&fullname=${search}`
+                          );
                           statusHandler("not_verified");
                         }}
                         className={`${
@@ -203,6 +205,9 @@ const Campaigns = () => {
                     <div className="absolute shadow-lg rounded-md py-2 text-sm w-[150px] text-[#667085]  px-2 flex flex-col gap-[2px] bg-white right-0 z-10">
                       <button
                         onClick={() => {
+                          setGetUrl(
+                            `?account_type=is_influencer&status=${status}&fullname=${search}`
+                          );
                           accountTypeHandler("is_influencer");
                         }}
                         className={`${
@@ -214,6 +219,9 @@ const Campaigns = () => {
                       </button>
                       <button
                         onClick={() => {
+                          setGetUrl(
+                            `?account_type=is_creator&status=${status}&fullname=${search}`
+                          );
                           accountTypeHandler("is_creator");
                         }}
                         className={`${
@@ -225,6 +233,9 @@ const Campaigns = () => {
                       </button>
                       <button
                         onClick={() => {
+                          setGetUrl(
+                            `?account_type=is_businessowner&status=${status}&fullname=${search}`
+                          );
                           accountTypeHandler("is_businessowner");
                         }}
                         className={`${
@@ -364,9 +375,10 @@ const Campaigns = () => {
                   {userList.last_page}
                 </NavBtn>
               )}
+              */}
               <Pages>
                 <PageBtn activePage={true}>{userList.current_page}</PageBtn>
-              </Pages> */}
+              </Pages>
               <NavBtn
                 className="disabled:cursor-not-allowed "
                 disabled={userList.next_page_url === null}
