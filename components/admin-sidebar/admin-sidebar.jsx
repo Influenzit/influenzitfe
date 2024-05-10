@@ -2,11 +2,16 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getShowSidebar, getUserType, setShowSidebar } from "../../app/reducers/status";
+import {
+  getShowSidebar,
+  getUserType,
+  setShowSidebar,
+} from "../../app/reducers/status";
 import { getUser } from "../../app/reducers/user";
 import {
   BagIcon,
   BoxIcon,
+  BulkMessageIcon,
   DashboardIcon,
   HashTagIcon,
   LockIcon,
@@ -43,7 +48,7 @@ const Sidebar = () => {
     dispatch(setShowSidebar(false));
     setShowCampaignDropdown(false);
     router.push(link);
-  }
+  };
   return (
     <Container showSidebar={showSidebar}>
       <NavButton
@@ -67,13 +72,13 @@ const Sidebar = () => {
         <ProjectIcon />
         <span>Projects</span>
       </NavButton>
-       <NavButton
-          onClick={() => handleRouting("/admin/u/dashboard/businesses")}
-          isActive={router.pathname === "/admin/u/dashboard/businesses"}
-        >
-          <BagIcon />
-          <span>Businesses</span>
-        </NavButton>
+      <NavButton
+        onClick={() => handleRouting("/admin/u/dashboard/businesses")}
+        isActive={router.pathname === "/admin/u/dashboard/businesses"}
+      >
+        <BagIcon />
+        <span>Businesses</span>
+      </NavButton>
       <NavButton
         onClick={() => handleRouting("/admin/u/dashboard/wallet")}
         isActive={router.pathname.includes("/admin/u/dashboard/wallet")}
@@ -82,32 +87,30 @@ const Sidebar = () => {
         <span>Wallets</span>
       </NavButton>
       <NavButton
-         onClick={() => setShowCampaignDropdown(!showCampaignDropdown)}
-         isActive={router.pathname === "/admin/u/dashboard/campaigns"}
-        >
-          <HashTagIcon />
-          <span>Campaigns</span>
+        onClick={() => setShowCampaignDropdown(!showCampaignDropdown)}
+        isActive={router.pathname === "/admin/u/dashboard/campaigns"}
+      >
+        <HashTagIcon />
+        <span>Campaigns</span>
       </NavButton>
-      {
-        showCampaignDropdown ? <>
+      {showCampaignDropdown ? (
+        <>
           <NavButtonD
-          onClick={() =>
-            handleRouting("/admin/u/dashboard/campaigns")
-          }
-          isActive={router.pathname === "/admin/u/dashboard/campaigns"}
-        >
-          <span>Campaigns</span>
-        </NavButtonD>
-        <NavButtonD
-          onClick={() =>
-            handleRouting("/admin/u/dashboard/campaigns/campaign-request")
-          }
-          isActive={router.pathname.includes("campaigns")}
-        >
-          <span>Campaign Requests</span>
-        </NavButtonD>
-        </> : null
-      }
+            onClick={() => handleRouting("/admin/u/dashboard/campaigns")}
+            isActive={router.pathname === "/admin/u/dashboard/campaigns"}
+          >
+            <span>Campaigns</span>
+          </NavButtonD>
+          <NavButtonD
+            onClick={() =>
+              handleRouting("/admin/u/dashboard/campaigns/campaign-request")
+            }
+            isActive={router.pathname.includes("campaigns")}
+          >
+            <span>Campaign Requests</span>
+          </NavButtonD>
+        </>
+      ) : null}
       <NavButton
         onClick={() => handleRouting("/admin/u/dashboard/support")}
         isActive={router.pathname.includes("/admin/u/dashboard/support")}
@@ -121,6 +124,13 @@ const Sidebar = () => {
       >
         <UserIcon />
         <span>Activities</span>
+      </NavButton>
+      <NavButton
+        onClick={() => handleRouting("/admin/u/dashboard/bulk-messages")}
+        isActive={router.pathname.includes("/admin/u/dashboard/bulk-messages")}
+      >
+        <BulkMessageIcon />
+        <span>Bulk message</span>
       </NavButton>
     </Container>
   );

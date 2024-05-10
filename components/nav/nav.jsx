@@ -267,26 +267,45 @@ const Nav = () => {
     }
   }, [user, router.pathname, showLogoutModal]);
   const handleClosing = (e) => {
-    if (connectRef.current && !connectRef.current.innerHTML.includes(e.target.innerHTML)) {
+    if (
+      connectRef.current &&
+      !connectRef.current.innerHTML.includes(e.target.innerHTML)
+    ) {
       setShowConnect(false);
     }
-    if (connectMRef.current && !connectMRef.current.innerHTML.includes(e.target.innerHTML)) {
+    if (
+      connectMRef.current &&
+      !connectMRef.current.innerHTML.includes(e.target.innerHTML)
+    ) {
       setShowMConnect(false);
     }
-    if (connectM2Ref.current && !connectM2Ref.current.innerHTML.includes(e.target.innerHTML)) {
+    if (
+      connectM2Ref.current &&
+      !connectM2Ref.current.innerHTML.includes(e.target.innerHTML)
+    ) {
       setShowM2Connect(false);
     }
-    if (profileRef.current && !profileRef.current.innerHTML.includes(e.target.innerHTML)) {
+    if (
+      profileRef.current &&
+      !profileRef.current.innerHTML.includes(e.target.innerHTML)
+    ) {
       setShowDropdown(false);
     }
-    if (switchRef.current && !switchRef.current.innerHTML.includes(e.target.innerHTML)
+    if (
+      switchRef.current &&
+      !switchRef.current.innerHTML.includes(e.target.innerHTML)
     ) {
       setShowSwitchAccount(false);
     }
     // if(sidebarRef.current && sidebarBtn.current && !sidebarRef.current.innerHTML.includes(e.target.innerHTML) && !sidebarBtn.current.innerHTML.includes(e.target.innerHTML)) {
     //     setShowSidebar(false);
     // }
-    if (notifyRef.current && notifyBtn.current && !notifyRef.current.innerHTML.includes(e.target.innerHTML) && !notifyBtn.current.innerHTML.includes(e.target.innerHTML)) {
+    if (
+      notifyRef.current &&
+      notifyBtn.current &&
+      !notifyRef.current.innerHTML.includes(e.target.innerHTML) &&
+      !notifyBtn.current.innerHTML.includes(e.target.innerHTML)
+    ) {
       setShowNotification(false);
     }
   };
@@ -320,7 +339,7 @@ const Nav = () => {
     };
   }, [userDetails]);
 
-  const bizInfo = JSON.parse(localStorage.getItem('businesses'))
+  const bizInfo = JSON.parse(localStorage.getItem("businesses"));
 
   return (
     <Container showBg={router.pathname.includes("/dashboard") ? true : showBg}>
@@ -332,9 +351,14 @@ const Nav = () => {
             </SidebarBtn>
           )}
           <Logo href="/">
-          
-
-          <Image src="/influenzit_logo.png" alt="logo" height={30} width={120} className="object-contain" style={{cursor: "pointer"}}/>
+            <Image
+              src="/influenzit_logo.png"
+              alt="logo"
+              height={30}
+              width={120}
+              className="object-contain"
+              style={{ cursor: "pointer" }}
+            />
           </Logo>
         </div>
         {isLoggedIn ? (
@@ -393,7 +417,7 @@ const Nav = () => {
               </Link>
             </Qlinks>
             <ControlsA showNotify={notificationAvailable} showMessage={false}>
-              <ConnectDropdown 
+              <ConnectDropdown
                 className="explore"
                 onClick={() => handleConnectOpen()}
                 ref={connectM2Ref}
@@ -458,6 +482,18 @@ const Nav = () => {
                         </div>
                       ))}
                     </div>
+                    {/*TODO: To modify the UI*/}
+                    {data?.data?.data?.length === 0 && (
+                      <>
+                        <Image
+                          src="/i-empty.svg"
+                          alt=""
+                          height={100}
+                          width={100}
+                        />
+                        <h1> No notification</h1>
+                      </>
+                    )}
                   </NotificationCont>
                 )}
               </div>
@@ -477,8 +513,11 @@ const Nav = () => {
                   <div id="user-d" onClick={() => router.push("/dashboard")}>
                     <h4>{user.name}</h4>
                     <p>{currentAcctType}</p>
-                    {currentAcctType === "Business Owner" &&  <div className='text-gray-500 text-xs'>Business ID: {bizInfo[0].reference} </div>}
-
+                    {currentAcctType === "Business Owner" && (
+                      <div className="text-gray-500 text-xs">
+                        Business ID: {bizInfo[0].reference}{" "}
+                      </div>
+                    )}
                   </div>
                   <div id="switch">
                     <p>Switch Account</p>
@@ -501,19 +540,25 @@ const Nav = () => {
                     )}
                   </div>
                   {currentAcctType === "Influencer" && (
-                      <button className="logout"
-                        onClick={() => router.push(`/influencers/${user.account.slug}`)}
-                      >
-                        <span>View Public Profile</span>
-                      </button>
-                    )}
-                    {currentAcctType === "Creator" && (
-                      <button className="logout"
-                        onClick={() => router.push(`/creators/${user.account.slug}`)}
-                      >
-                        <span>View Public Profile</span>
-                      </button>
-                    )}
+                    <button
+                      className="logout"
+                      onClick={() =>
+                        router.push(`/influencers/${user.account.slug}`)
+                      }
+                    >
+                      <span>View Public Profile</span>
+                    </button>
+                  )}
+                  {currentAcctType === "Creator" && (
+                    <button
+                      className="logout"
+                      onClick={() =>
+                        router.push(`/creators/${user.account.slug}`)
+                      }
+                    >
+                      <span>View Public Profile</span>
+                    </button>
+                  )}
                   <button onClick={logout} className="logout">
                     <span>Logout</span>
                   </button>
@@ -585,7 +630,7 @@ const Nav = () => {
               </NavLinks> */}
             </Center>
             <Controls>
-            <ConnectDropdown 
+              <ConnectDropdown
                 className="explore"
                 onClick={() => handleConnectOpen()}
                 ref={connectMRef}

@@ -58,6 +58,7 @@ const Campaigns = () => {
   const [userList, setUserList] = useState({
     data: [],
   });
+
   const { data: usersData, refetch: refetchUsersData } = useQuery(
     ["get-users"],
     async () => {
@@ -260,8 +261,11 @@ const Campaigns = () => {
               <Table>
                 <THead>
                   <TrH>
-                    <Th cellWidth="370px">Fullname</Th>
+                    <Th cellWidth="320px" className="border">
+                      Fullname
+                    </Th>
                     <Th cellWidth="250px">Email</Th>
+                    <Th cellWidth="150px">Phone Number</Th>
                     <Th cellWidth="120px">Status</Th>
                     <Th cellWidth="200px">Action</Th>
                   </TrH>
@@ -269,10 +273,11 @@ const Campaigns = () => {
                 <TBody>
                   {userList.data.map((val, i) => (
                     <Tr key={i}>
-                      <Td cellWidth="370px">
+                      <Td cellWidth="320px" className="border">
                         {val.user.firstname} {val.user.lastname}
                       </Td>
                       <Td cellWidth="250px">{val.user.email}</Td>
+                      <Td cellWidth="150px">{val.phone1}</Td>
                       <Td cellWidth="120px">
                         {val.influenzit_verified ? "Verified" : "Not Verified"}
                       </Td>

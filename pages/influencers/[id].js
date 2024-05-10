@@ -340,9 +340,10 @@ const CreatorProfile = () => {
     if (id) {
       refetchInfluencerData();
     }
-  }, [router.pathname, id]);
+  }, [router.pathname, id, refetchInfluencerData, refetchInfluencersData]);
   useEffect(() => {
     if (influencerData?.data?.data) {
+      console.log(influencerData?.data?.data);
       setInData(influencerData?.data?.data);
     }
   }, [influencerData]);
@@ -356,6 +357,7 @@ const CreatorProfile = () => {
       return "excellent";
     }
   };
+  console.log(influencerData?.data?.data);
   return (
     <Container>
       {inData ? (

@@ -622,6 +622,96 @@ const CreatorProfile = () => {
                             </ActionBtn>
                           </Td>
                         </Tr>
+                        <Tr>
+                          <Td cellWidth="370px">Youtube</Td>
+                          <Td cellWidth="250px">@{inData?.youtube}</Td>
+                          <Td cellWidth="120px">
+                            {inData?.youtube_verified
+                              ? "Verified"
+                              : "Not Verified"}
+                          </Td>
+                          <Td
+                            cellWidth="200px"
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              paddingRight: "20px",
+                            }}
+                          >
+                            <ActionBtn
+                              onClick={() =>
+                                handleSocialToggle(
+                                  "youtube_verified",
+                                  !inData?.youtube_verified
+                                )
+                              }
+                            >
+                              {inData?.youtube_verified
+                                ? "Disapprove"
+                                : "Approve"}
+                            </ActionBtn>
+                          </Td>
+                        </Tr>
+                        <Tr>
+                          <Td cellWidth="370px">Tiktok</Td>
+                          <Td cellWidth="250px">@{inData?.tiktok}</Td>
+                          <Td cellWidth="120px">
+                            {inData?.tiktok_verified
+                              ? "Verified"
+                              : "Not Verified"}
+                          </Td>
+                          <Td
+                            cellWidth="200px"
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              paddingRight: "20px",
+                            }}
+                          >
+                            <ActionBtn
+                              onClick={() =>
+                                handleSocialToggle(
+                                  "tiktok_verified",
+                                  !inData?.tiktok_verified
+                                )
+                              }
+                            >
+                              {inData?.tiktok_verified
+                                ? "Disapprove"
+                                : "Approve"}
+                            </ActionBtn>
+                          </Td>
+                        </Tr>
+                        <Tr>
+                          <Td cellWidth="370px">Twitter</Td>
+                          <Td cellWidth="250px">@{inData?.twitter}</Td>
+                          <Td cellWidth="120px">
+                            {inData?.twitter_verified
+                              ? "Verified"
+                              : "Not Verified"}
+                          </Td>
+                          <Td
+                            cellWidth="200px"
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              paddingRight: "20px",
+                            }}
+                          >
+                            <ActionBtn
+                              onClick={() =>
+                                handleSocialToggle(
+                                  "twitter_verified",
+                                  !inData?.twitter_verified
+                                )
+                              }
+                            >
+                              {inData?.twitter_verified
+                                ? "Disapprove"
+                                : "Approve"}
+                            </ActionBtn>
+                          </Td>
+                        </Tr>
                       </TBody>
                     </Table>
                   </TableContent>
