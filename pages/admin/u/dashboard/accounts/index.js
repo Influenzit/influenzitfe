@@ -261,9 +261,7 @@ const Campaigns = () => {
               <Table>
                 <THead>
                   <TrH>
-                    <Th cellWidth="320px" className="border">
-                      Fullname
-                    </Th>
+                    <Th cellWidth="320px">Fullname</Th>
                     <Th cellWidth="250px">Email</Th>
                     <Th cellWidth="150px">Phone Number</Th>
                     <Th cellWidth="120px">Status</Th>
@@ -273,11 +271,13 @@ const Campaigns = () => {
                 <TBody>
                   {userList.data.map((val, i) => (
                     <Tr key={i}>
-                      <Td cellWidth="320px" className="border">
+                      <Td cellWidth="320px">
                         {val.user.firstname} {val.user.lastname}
                       </Td>
                       <Td cellWidth="250px">{val.user.email}</Td>
-                      <Td cellWidth="150px">{val.phone1}</Td>
+                      <Td cellWidth="150px">
+                        {val.phone1 === null ? "Not Available" : val.phone1}
+                      </Td>
                       <Td cellWidth="120px">
                         {val.influenzit_verified ? "Verified" : "Not Verified"}
                       </Td>
