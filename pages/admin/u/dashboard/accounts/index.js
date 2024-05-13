@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getCampaigns } from "../../../../../api/campaigns";
 import status, { setLoading } from "../../../../../app/reducers/status";
@@ -39,6 +39,7 @@ import { toast } from "react-toastify";
 import Link from "next/link";
 import styled from "styled-components";
 import { axiosInstance } from "../../../../../api/axios";
+const DOTS = "...";
 const Campaigns = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ const Campaigns = () => {
   const [status, setStatus] = useState(""); // [true, false]
   const [accountType, setAccountType] = useState(""); // [is_influencer, is_creator, is_businessowner]
   const [showAccount, setShowAccount] = useState(false);
+
   const showStatusHandler = () => setShowStatus(!showStatus);
   const showAccountHandler = () => setShowAccount(!showAccount);
   const accountTypeHandler = (type) => {
@@ -124,6 +126,65 @@ const Campaigns = () => {
       `?account_type=${accountType}&status=${status}&fullname=${search}`
     );
   };
+  const range = (start, end) => {
+    let length = end - start + 1;
+    return Array.from({ length }, (_, idx) => idx + start);
+  };
+  const paginationRange = useMemo(() => {
+    let siblingCount = 1;
+    const totalPageCount = Math.ceil(userList.total / userList.per_page);
+
+    // Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS
+    const totalPageNumbers = siblingCount + 5;
+
+    /*
+      If the number of pages is less than the page numbers we want to show in our
+      paginationComponent, we return the range [1..totalPageCount]
+    */
+    if (totalPageNumbers >= totalPageCount) {
+      return range(1, totalPageCount);
+    }
+
+    const leftSiblingIndex = Math.max(userList.current_page - siblingCount, 1);
+    const rightSiblingIndex = Math.min(
+      userList.current_page + siblingCount,
+      totalPageCount
+    );
+
+    /*
+      We do not want to show dots if there is only one position left 
+      after/before the left/right page count as that would lead to a change if our Pagination
+      component size which we do not want
+    */
+    const shouldShowLeftDots = leftSiblingIndex > 2;
+    const shouldShowRightDots = rightSiblingIndex < totalPageCount - 2;
+
+    const firstPageIndex = 1;
+    const lastPageIndex = totalPageCount;
+
+    if (!shouldShowLeftDots && shouldShowRightDots) {
+      let leftItemCount = 3 + 2 * siblingCount;
+      let leftRange = range(1, leftItemCount);
+
+      return [...leftRange, DOTS, totalPageCount];
+    }
+
+    if (shouldShowLeftDots && !shouldShowRightDots) {
+      let rightItemCount = 3 + 2 * siblingCount;
+      let rightRange = range(
+        totalPageCount - rightItemCount + 1,
+        totalPageCount
+      );
+      return [firstPageIndex, DOTS, ...rightRange];
+    }
+
+    if (shouldShowLeftDots && shouldShowRightDots) {
+      let middleRange = range(leftSiblingIndex, rightSiblingIndex);
+      return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
+    }
+  }, [userList.current_page, userList.per_page, userList.total]);
+
+  console.log(userList);
   return (
     <Container>
       <Wrapper>
@@ -316,13 +377,13 @@ const Campaigns = () => {
             </TableContent>
           </TableWrapper>
           <TableFooter>
-            <p>
+            <p className="w-fit mr-2 ">
               Showing{" "}
               {(userList.current_page - 1) * userList.per_page +
                 userList.data.length}{" "}
               of {userList.total}
             </p>
-            <Pagination>
+            <Pagination className="w-full flex justify-between">
               <NavBtn
                 disabled={userList.prev_page_url === null}
                 className="disabled:cursor-not-allowed"
@@ -338,52 +399,25 @@ const Campaigns = () => {
               >
                 <ChevronLeft />
               </NavBtn>
-              {userList.current_page != 1 && userList.current_page - 1 >= 4 && (
-                <NavBtn className="hidden text-sm font-medium sm:flex items-center justify-center rounded px-3 py-2 text-red-400 ring-[1px] ring-red-400">
-                  1
-                </NavBtn>
-              )}
-              {userList.current_page != 1 && userList.current_page - 1 >= 4 && (
-                <NavBtn className="hidden text-sm font-medium sm:flex items-center justify-center rounded px-3 py-2 text-red-400 ring-[1px] ring-red-400">
-                  ...
-                </NavBtn>
-              )}
-              {/* prev_page_url :
-              "https://api.influenzit.com/api/v1/admin/accounts?page=1" to : 40
-              total : 375 */}
-              {/* {Array} */}
-              {/* {[...(userList.current_page - 1)].map((a, i) => (
-                <NavBtn
-                  key={i}
-                  className={`${
-                    userList.current_page === i
-                      ? "bg-red-500 text-white ring-red-500"
-                      : "text-red-400 ring-red-400"
-                  } text-sm font-medium flex items-center justify-center rounded px-3 py-2 ring-[1px]`}
-                >
-                  {i + 1}
-                </NavBtn>
-              ))}
-              {userList.last_page - userList.current_page >= 3 && (
-                <div class="hidden text-sm font-medium sm:flex items-center justify-center rounded px-3 py-2 text-red-400 ring-[1px] ring-red-400">
-                  ...
-                </div>
-              )}
-              {userList.last_page - userList.current_page >= 3 && (
-                <NavBtn
-                  className={`${
-                    userList.current_page === userList.last_page
-                      ? "bg-red-500 text-white ring-red-500"
-                      : "text-red-400 ring-red-400"
-                  } hidden text-sm font-medium sm:flex items-center justify-center rounded px-3 py-2 ring-[1px]`}
-                >
-                  {userList.last_page}
-                </NavBtn>
-              )}
-              */}
-              <Pages>
-                <PageBtn activePage={true}>{userList.current_page}</PageBtn>
-              </Pages>
+              <div className="flex gap-1">
+                {paginationRange?.map((pageNumber) => {
+                  if (pageNumber === "DOTS") {
+                    return <Pages key={pageNumber}>...</Pages>;
+                  }
+                  return (
+                    <Pages key={pageNumber}>
+                      <PageBtn
+                        className={"w-10 h-10"}
+                        activePage={userList.current_page === pageNumber}
+                        onClick={() => setGetUrl(`?page=${pageNumber}`)}
+                      >
+                        {pageNumber}
+                      </PageBtn>
+                    </Pages>
+                  );
+                })}
+              </div>
+
               <NavBtn
                 className="disabled:cursor-not-allowed "
                 disabled={userList.next_page_url === null}
