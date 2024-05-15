@@ -176,9 +176,9 @@ export const UsersList = ({ handleClose }) => {
                   type="checkbox"
                   name={user.user.id}
                   id={user.user.id}
-                  checked={
-                    selectedUsers.includes(user.user.id) || allPagesSelected
-                  }
+                  // checked={
+                  //   selectedUsers.includes(user.user.id) || allPagesSelected
+                  // }
                   // checked={selectedUsers?.includes(user.user.id)}
                   onChange={(e) => {
                     handleSelectedUsers(e);
