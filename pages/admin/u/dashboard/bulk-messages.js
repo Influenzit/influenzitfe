@@ -125,10 +125,13 @@ const BulkMessage = () => {
             >
               Next
             </button>
-            <button type="button" onClick={handleClose}>
-              Select Bulk message recipients
+            <button
+              type="button"
+              className="text-lg font-semibold"
+              onClick={handleClose}
+            >
+              Select recipients
             </button>
-            t
           </FormFields>
         </FormWrapper>
       </Container>
