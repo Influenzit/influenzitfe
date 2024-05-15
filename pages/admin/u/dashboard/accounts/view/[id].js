@@ -233,7 +233,7 @@ const CreatorProfile = () => {
         if (res.data.data) {
           setInData(res.data.data);
         }
-        console.log(res.data.data);
+        // console.log(inData);
       },
       onError() {
         dispatch(setLoading(false));
@@ -385,6 +385,26 @@ const CreatorProfile = () => {
       setInData(userData?.data?.data);
     }
   }, [userData]);
+  useEffect(() => {
+    setCurrentTab((prev) => {
+      if (inData?.analytics?.instagram) {
+        return "instagram";
+      } else if (inData?.youtube) {
+        return "youtube";
+      } else if (inData?.analytics?.facebook) {
+        return "facebook";
+      } else if (inData?.twitter) {
+        return "twitter";
+      } else if (inData?.tiktok) {
+        return "tiktok";
+      } else if (inData?.services.length !== 0) {
+        return "services";
+      } else if (inData?.businesses.length !== 0) {
+        return "businesses";
+      }
+    });
+    console.log(currentTab);
+  }, [currentTab, inData]);
   const generateRatingText = (num) => {
     console.log(num);
     if (num < 2) {
@@ -745,48 +765,62 @@ const CreatorProfile = () => {
               </Info>
               <DataSection>
                 <Tabs>
-                  <TabBtn
-                    isActive={currentTab === "instagram"}
-                    onClick={() => setCurrentTab("instagram")}
-                  >
-                    Instagram
-                  </TabBtn>
-                  <TabBtn
-                    isActive={currentTab === "youtube"}
-                    onClick={() => setCurrentTab("youtube")}
-                  >
-                    Youtube
-                  </TabBtn>
-                  <TabBtn
-                    isActive={currentTab === "facebook"}
-                    onClick={() => setCurrentTab("facebook")}
-                  >
-                    Facebook
-                  </TabBtn>
-                  <TabBtn
-                    isActive={currentTab === "twitter"}
-                    onClick={() => setCurrentTab("twitter")}
-                  >
-                    Twitter
-                  </TabBtn>
-                  <TabBtn
-                    isActive={currentTab === "tiktok"}
-                    onClick={() => setCurrentTab("tiktok")}
-                  >
-                    TikTok
-                  </TabBtn>
-                  <TabBtn
-                    isActive={currentTab === "services"}
-                    onClick={() => setCurrentTab("services")}
-                  >
-                    Services
-                  </TabBtn>
-                  <TabBtn
-                    isActive={currentTab === "businesses"}
-                    onClick={() => setCurrentTab("businesses")}
-                  >
-                    Businesses
-                  </TabBtn>
+                  {inData?.analytics?.instagram && (
+                    <TabBtn
+                      isActive={currentTab === "instagram"}
+                      onClick={() => setCurrentTab("instagram")}
+                    >
+                      Instagram
+                    </TabBtn>
+                  )}
+                  {inData?.youtube && (
+                    <TabBtn
+                      isActive={currentTab === "youtube"}
+                      onClick={() => setCurrentTab("youtube")}
+                    >
+                      Youtube
+                    </TabBtn>
+                  )}
+                  {inData?.analytics?.facebook && (
+                    <TabBtn
+                      isActive={currentTab === "facebook"}
+                      onClick={() => setCurrentTab("facebook")}
+                    >
+                      Facebook
+                    </TabBtn>
+                  )}
+                  {inData?.twitter && (
+                    <TabBtn
+                      isActive={currentTab === "twitter"}
+                      onClick={() => setCurrentTab("twitter")}
+                    >
+                      Twitter
+                    </TabBtn>
+                  )}
+                  {inData?.tiktok && (
+                    <TabBtn
+                      isActive={currentTab === "tiktok"}
+                      onClick={() => setCurrentTab("tiktok")}
+                    >
+                      TikTok
+                    </TabBtn>
+                  )}
+                  {inData?.services.length !== 0 && (
+                    <TabBtn
+                      isActive={currentTab === "services"}
+                      onClick={() => setCurrentTab("services")}
+                    >
+                      Services
+                    </TabBtn>
+                  )}
+                  {inData?.businesses.length !== 0 && (
+                    <TabBtn
+                      isActive={currentTab === "businesses"}
+                      onClick={() => setCurrentTab("businesses")}
+                    >
+                      Businesses
+                    </TabBtn>
+                  )}
                 </Tabs>
                 {currentTab === "instagram" &&
                 inData?.analytics?.instagram &
