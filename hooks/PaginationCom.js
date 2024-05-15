@@ -1,11 +1,12 @@
 import React from "react";
 import classnames from "classnames";
 import { usePagination, DOTS } from "./usePagination";
+import { Pages, PageBtn } from "../styles/connect-pages.style";
 import "./pagination.scss";
-const Pagination = (props) => {
+const PaginationComponent = (props) => {
   const {
     onPageChange,
-    totalCount,
+    total,
     siblingCount = 1,
     currentPage,
     pageSize,
@@ -14,7 +15,7 @@ const Pagination = (props) => {
 
   const paginationRange = usePagination({
     currentPage,
-    totalCount,
+    total,
     siblingCount,
     pageSize,
   });
@@ -44,27 +45,25 @@ const Pagination = (props) => {
       >
         <div className="arrow left" />
       </li>
-      {paginationRange.map((pageNumber) => {
-        if (pageNumber === DOTS) {
-          return (
-            <li key={pageNumber} className="pagination-item dots">
-              &#8230;
-            </li>
-          );
-        }
 
-        return (
-          <li
-            key={pageNumber}
-            className={classnames("pagination-item", {
-              selected: pageNumber === currentPage,
-            })}
-            onClick={() => onPageChange(pageNumber)}
-          >
-            {pageNumber}
-          </li>
-        );
-      })}
+      <div className="flex gap-1">
+        {paginationRange?.map((pageNumber) => {
+          if (pageNumber === "DOTS") {
+            return <Pages key={pageNumber}>...</Pages>;
+          }
+          return (
+            <Pages key={pageNumber}>
+              <PageBtn
+                className={"w-10 h-10"}
+                activePage={userList.current_page === pageNumber}
+                onClick={() => setGetUrl(`?page=${pageNumber}`)}
+              >
+                {pageNumber}
+              </PageBtn>
+            </Pages>
+          );
+        })}
+      </div>
       <li
         className={classnames("pagination-item", {
           disabled: currentPage === lastPage,
@@ -77,4 +76,4 @@ const Pagination = (props) => {
   );
 };
 
-export default Pagination;
+export default PaginationComponent;
