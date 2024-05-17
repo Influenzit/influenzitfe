@@ -12,6 +12,8 @@ import {
 import Image from "next/image";
 import { useState } from "react";
 import { UsersList } from "../../../../components/bulk-message/UsersList";
+import { useMutation } from "@tanstack/react-query";
+import { sendBulkMessages } from "../../../../api/admin";
 const BulkMessage = () => {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
@@ -23,6 +25,11 @@ const BulkMessage = () => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [users, setUsers] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const { mutate, isLoading, isSuccess, isError, error } = useMutation(
+    (data) => {
+      sendBulkMessages(data);
+    }
+  );
   const handleSelectedUsers = (e) => {
     const { id, checked } = e.target;
     if (checked) {
@@ -75,6 +82,20 @@ const BulkMessage = () => {
       return newList;
     });
   };
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    if (subject && message && selectedUsers.length > 0) {
+      const _message = { subject, message, selectedUsers };
+      console.log(_message);
+      mutate({
+        subject,
+        message,
+        emails: selectedUsers,
+      });
+    }
+    setModal(!modal);
+  };
   return (
     <>
       {modal && (
@@ -86,6 +107,11 @@ const BulkMessage = () => {
           selectAll={selectAll}
           selectAllHandler={handleSelectAll}
           selectedUsers={selectedUsers}
+          submitHandler={submitHandler}
+          loading={isLoading}
+          success={isSuccess}
+          err={isError}
+          errorMessage={error}
         />
       )}
 
@@ -93,7 +119,7 @@ const BulkMessage = () => {
         <Center className="flex justify-center items-center w-full">
           <FormWrapper>
             <h2 className="text-2xl font-bold">Send Bulk Messages</h2>
-            <FormFields>
+            <FormFields onSubmit={submitHandler}>
               <InputContainer hasContent={subject}>
                 <label>Subject</label>
                 <Input
@@ -154,19 +180,20 @@ const BulkMessage = () => {
                   </div>
                 </div>
               </InputContainer>
-              <button
-                type="submit"
-                className="float-right bg-primary-100 rounded-lg px-4 py-2 text-white font-semibold"
+              <div
+                role="button"
+                onClick={handleClose}
+                className="float-right bg-primary-100 cursor-pointer rounded-lg px-4 py-2 text-white font-semibold"
               >
-                Next
-              </button>
-              <button
+                Select recipients
+              </div>
+              {/* <button
                 type="button"
                 className="text-lg font-semibold"
                 onClick={handleClose}
               >
                 Select recipients
-              </button>
+              </button> */}
             </FormFields>
           </FormWrapper>
         </Center>{" "}

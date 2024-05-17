@@ -146,3 +146,10 @@ export const deleteBusinessAdmin = (id) => {
 export const updateAdminBusinessStatus = (body) => {
   return axiosInstance().post("/admin/businesses/verify", body);
 };
+export const sendBulkMessages = ({ subject, message, emails }) => {
+  return axiosInstance().post("/send/bulk/messages", {
+    subject,
+    message,
+    emails,
+  });
+};

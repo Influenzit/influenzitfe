@@ -12,14 +12,14 @@ export const UsersList = ({
   selectAllHandler,
   selectAll,
   selectedUsers,
+  submitHandler,
+  isLoading,
+  isSuccess,
+  isError,
+  errorMessage,
 }) => {
   const [getUrl, setGetUrl] = useState("");
-  // const [users, setUsers] = useState([]);
-
-  //const [selectedUsers, setSelectedUsers] = useState([]);
   const [status, setStatus] = useState("");
-  // const [loading, setLoading] = useState(false);
-  //const [selectAll, setSelectAll] = useState(false);
   const [error, setError] = useState(null);
   const [dropdown, setDropdown] = useState(false);
   const dropdownHandler = () => setDropdown(!dropdown);
@@ -38,14 +38,12 @@ export const UsersList = ({
       staleTime: Infinity,
       retry: false,
       onSuccess(res) {
-        // setLoading(false);
         console.log(res.data.data);
         handleUsers(res.data.data);
 
         console.log(res.data.data);
       },
       onError(res) {
-        // setLoading(false);
         setError(res);
       },
     }
@@ -63,12 +61,6 @@ export const UsersList = ({
   };
   const handleSelectAll = (e) => {
     selectAllHandler(e);
-    // setSelectAll(e.target.checked);
-    // if (e.target.checked) {
-    //   setSelectedUsers(users.map((user) => user.user.email));
-    // } else {
-    //   setSelectedUsers([]);
-    // }
   };
 
   return (
@@ -200,77 +192,18 @@ export const UsersList = ({
               ))}
             </ul>
           )}
-          {/* <div className="w-full flex justify-between">
-            {users && (
-              <p className="text-xs">
-                {" "}
-                Showing{" "}
-                {(users.current_page - 1) * users.per_page +
-                  users?.data?.length}{" "}
-                of {users.total}
-              </p>
-            )} */}
-          {/* <div className="w-full flex justify-between">
-              <NavBtn
-                disabled={users.prev_page_url === null}
-                className="disabled:cursor-not-allowed"
-                onClick={() =>
-                  users.prev_page_url &&
-                  setGetUrl(
-                    users.prev_page_url.replace(
-                      process.env.NEXT_PUBLIC_API_URI + "/api/v1",
-                      ""
-                    )
-                  )
-                }
-              >
-                <ChevronLeft />
-              </NavBtn>
-              <div className="flex gap-1">
-                {paginationRange?.map((pageNumber) => {
-                  if (pageNumber === "DOTS") {
-                    return <Pages key={pageNumber}>...</Pages>;
-                  }
-                  return (
-                    <Pages key={pageNumber}>
-                      <PageBtn
-                        className={"w-10 h-10"}
-                        activePage={users.current_page === pageNumber}
-                        onClick={() => setGetUrl(`?page=${pageNumber}`)}
-                      >
-                        {pageNumber}
-                      </PageBtn>
-                    </Pages>
-                  );
-                })}
-              </div>
-
-              <NavBtn
-                className="disabled:cursor-not-allowed "
-                disabled={users.next_page_url === null}
-                onClick={() =>
-                  users.next_page_url &&
-                  setGetUrl(
-                    users.next_page_url.replace(
-                      process.env.NEXT_PUBLIC_API_URI + "/api/v1",
-                      ""
-                    )
-                  )
-                }
-              >
-                <ChevronRight />
-              </NavBtn>
-            </div> */}
-          {/* </div> */}
+          {isSuccess && <div>Successfully send bulk messages</div>}
+          {isError && <div>{errorMessage}</div>}
           <div className="flex justify-between w-full text-lg font-semibold ">
             <button type="button" className="text-[#2A2939]">
               Close Modal
             </button>
             <button
+              onClick={submitHandler}
               type="submit"
               className=" bg-primary-100 rounded-lg px-4 py-2 text-white "
             >
-              Send Message
+              {isLoading ? "Sending bulk message...." : "Send Bulk Message"}
             </button>
           </div>
         </div>
