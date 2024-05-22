@@ -95,7 +95,7 @@ const BulkMessage = () => {
     mutate({
       subject,
       message: editor.getHTML(),
-      selectedUsers,
+      emails: selectedUsers,
     });
     // if (subject && message && selectedUsers.length > 0) {
     //   const _message = { subject, message, selectedUsers };
