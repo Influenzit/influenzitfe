@@ -147,12 +147,12 @@ exports[`renders correctly 1`] = `
           </li>
           <li>
             <a
-              href="tel:+2349098765432"
+              href="tel:+2348028723803"
               onClick={[Function]}
               onMouseEnter={[Function]}
               onTouchStart={[Function]}
             >
-              +2349098765432
+              +2348028723803
             </a>
           </li>
         </ul>

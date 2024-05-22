@@ -73,8 +73,8 @@ const Contact = () => {
   };
 
   return (
-    <div >
-    <div className="bg-[#FDFAF5] ">
+    <div>
+      <div className="bg-[#FDFAF5] ">
         <div className=" md:py-40 py-24 md:px-20 px-4 container mx-auto">
           <div className="grid md:grid-cols-2 items-center gap-[64px] w-full">
             <div>
@@ -86,7 +86,7 @@ const Contact = () => {
               <p>
                 {" "}
                 Call us at{" "}
-                <span className="text-primary-100"> +2349098765432</span>
+                <span className="text-primary-100"> +2348028723803</span>
               </p>
 
               <div className="mt-12">
@@ -196,12 +196,11 @@ const Contact = () => {
             </div>
           </div>
         </div>
-      </div> 
-
+      </div>
 
       {/* Responsive Version */}
 
-    {/* <div className="">
+      {/* <div className="">
       <Container>
         <ContactFlex>
           <FormContainer>
@@ -215,7 +214,7 @@ const Contact = () => {
               <p>
                 {" "}
                 Call us at{" "}
-                <span className="text-primary-100"> +2349098765432</span>
+                <span className="text-primary-100"> +2348028723803</span>
               </p>
               </FormTop>
               <div className="mt-12">

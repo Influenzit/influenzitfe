@@ -14,7 +14,12 @@ import { useState } from "react";
 import { UsersList } from "../../../../components/bulk-message/UsersList";
 import { useMutation } from "@tanstack/react-query";
 import { sendBulkMessages } from "../../../../api/admin";
+import CustomTextEditor from "../../../../components/bulk-message/Editor";
+// import { Editor } from "react-draft-wysiwyg";
+// import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import useCustomEditor from "../../../../hooks/custom-editor";
 const BulkMessage = () => {
+  const editor = useCustomEditor();
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [fileSelected, setFileSelected] = useState(null);
@@ -180,6 +185,15 @@ const BulkMessage = () => {
                   </div>
                 </div>
               </InputContainer>
+              <CustomTextEditor editor={editor} />
+              {/* <Editor
+                editorState={editorState}
+                toolbarClassName="toolbarClassName"
+                wrapperClassName="wrapperClassName"
+                editorClassName="editorClassName"
+                onEditorStateChange={this.onEditorStateChange}
+              /> */}
+              ;
               <div
                 role="button"
                 onClick={handleClose}
