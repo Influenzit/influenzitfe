@@ -92,17 +92,21 @@ const BulkMessage = () => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
-
-    if (subject && message && selectedUsers.length > 0) {
-      const _message = { subject, message, selectedUsers };
-      console.log(_message);
-      mutate({
-        subject,
-        message,
-        emails: selectedUsers,
-      });
-    }
-    setModal(!modal);
+    mutate({
+      subject,
+      message: editor.getHTML(),
+      selectedUsers,
+    });
+    // if (subject && message && selectedUsers.length > 0) {
+    //   const _message = { subject, message, selectedUsers };
+    //   console.log(_message);
+    //   mutate({
+    //     subject,
+    //     message,
+    //     emails: selectedUsers,
+    //   });
+    // }
+    // setModal(!modal);
   };
   return (
     <>

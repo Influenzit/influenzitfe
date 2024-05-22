@@ -7,6 +7,7 @@ import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
+import Image from "@tiptap/extension-image";
 const useCustomEditor = (initialContent = "") => {
   const editor = useEditor({
     extensions: [
@@ -18,6 +19,7 @@ const useCustomEditor = (initialContent = "") => {
       Highlight,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Placeholder.configure({ placeholder: "Enter your message here" }),
+      // Image.configure({})
     ],
     content: initialContent,
   });
