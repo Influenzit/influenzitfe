@@ -7,6 +7,7 @@ import ReactStars from "react-rating-stars-component";
 
 const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink, skills, rating, platforms}) => {
     const router = useRouter();
+    console.log(platforms)
     return (
     <Container>
         <button onClick={(e) => e.preventDefault()}>
@@ -18,11 +19,11 @@ const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink, skills, r
         <CreatorDetails onClick={() => router.push(profileLink)}>
             <Stats>
                 <div>
-                    { platforms.facebook_verified && <Image src="/facebook-icon.svg" alt="" height={12} width={12}/> }
-                    { platforms.instagram_verified && <Image src="/instagram-icon.svg" alt="" height={12} width={12}/> }
-                    { platforms.twitter_verified && <Image src="/twitter-icon.svg" alt="" height={12} width={12}/> }
-                    { platforms.tiktok_verified && <Image src="/tiktok-icon.svg" alt="" height={12} width={12}/> }
-                    { platforms.youtube_verified && <Image src="/youtube-icon.svg" alt="" height={12} width={12}/> }
+                    { platforms?.analytics?.facebook && <Image src="/facebook-icon.svg" alt="" height={12} width={12}/> }
+                    { platforms?.analytics?.instagram && <Image src="/instagram-icon.svg" alt="" height={12} width={12}/> }
+                    { platforms?.twitter && <Image src="/twitter-icon.svg" alt="" height={12} width={12}/> }
+                    { platforms?.tiktok && <Image src="/tiktok-icon.svg" alt="" height={12} width={12}/> }
+                    { platforms?.youtube && <Image src="/youtube-icon.svg" alt="" height={12} width={12}/> }
                 </div>
                 <div>
                     <ReactStars
