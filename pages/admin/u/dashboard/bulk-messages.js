@@ -30,10 +30,19 @@ const BulkMessage = () => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [users, setUsers] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const { mutate, isLoading, isSuccess, isError, error } = useMutation(
+  const [messageStatus,setMessageStatus]=useState("");
+  const [statusModal,setStatusModal]=useState(false);
+  const statusModalHandler=()=>setStatusModal(!statusModal);
+  const { mutate, isLoading, isSuccess, isError, error,status } = useMutation(
     (data) => {
       sendBulkMessages(data);
-    }
+    },
+      {
+onSuccess(e){
+  setMessageStatus(e)
+}
+      }
+
   );
   const handleSelectedUsers = (e) => {
     const { id, checked } = e.target;
@@ -44,9 +53,6 @@ const BulkMessage = () => {
         return prev.filter((item) => item !== id);
       });
     }
-  };
-  const handleTest = () => {
-    console.log(editor.getHTML());
   };
   const handleUsers = (users) => {
     setUsers(users);
@@ -64,9 +70,6 @@ const BulkMessage = () => {
   };
   const handleSubject = (e) => {
     setSubject(e.target.value);
-  };
-  const handleSend = () => {
-    console.log(subject, message);
   };
   const handleSetFiles = (file) => {
     if (file.size < 5000000) {
@@ -92,20 +95,23 @@ const BulkMessage = () => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
-    mutate({
-      subject,
-      message: editor.getHTML(),
-      emails: selectedUsers,
-    });
-    // if (subject && message && selectedUsers.length > 0) {
-    //   const _message = { subject, message, selectedUsers };
-    //   console.log(_message);
-    //   mutate({
-    //     subject,
-    //     message,
-    //     emails: selectedUsers,
-    //   });
-    // }
+    if (subject && editor && selectedUsers.length > 0) {
+
+      mutate({
+        subject,
+        message: editor.getHTML(),
+        emails: selectedUsers,
+      },{
+        onSuccess(e){
+          console.log(e)
+          setMessageStatus("Email sent successfully");
+          console.log('successfully fired')
+        }
+      });
+      console.log(messageStatus)
+      console.log(status);
+      statusModalHandler();
+    }
     // setModal(!modal);
   };
   return (
@@ -124,6 +130,9 @@ const BulkMessage = () => {
           success={isSuccess}
           err={isError}
           errorMessage={error}
+          messageStatus={messageStatus}
+          statusModal={statusModal}
+          handleModalStatus={statusModalHandler}
         />
       )}
 
@@ -164,9 +173,7 @@ const BulkMessage = () => {
               </InputContainer> */}
               <label className="mb-4 font-semibold">Message</label>
               <CustomTextEditor editor={editor} />
-              <div onClick={handleTest} className="cursor-pointer">
-                click me
-              </div>
+
               <div
                 role="button"
                 onClick={handleClose}
