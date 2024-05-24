@@ -1592,7 +1592,9 @@ const CreatorProfile = () => {
               <Listing>
                 {inData?.similar.length ? <h3>Similar influencers</h3> : null}
                 <Bottom>
-                  {inData?.similar.map((val, i) => {
+                  {inData?.similar.filter((influencer)=>influencer.
+                      influenzit_verified===true
+                  ).map((val, i) => {
                     let genSkills = "";
                     val?.skills?.forEach((val, i) => {
                       if (i < 5) {

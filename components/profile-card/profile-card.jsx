@@ -19,10 +19,10 @@ const ProfileCard = ({imgSrc, name, sex, address, handle, profileLink, skills, r
             <CreatorDetails onClick={() => router.push(profileLink)}>
                 <Stats>
                     <div>
-                        {platforms?.analytics?.facebook &&
+                        {platforms?.facebook &&
                             <a href={`https://facebook.com/${platforms.facebook}`} rel="noreferrer"
                                target="_blank"><Image src="/facebook-icon.svg" alt="" height={12} width={12}/></a>}
-                        {platforms?.analytics?.instagram &&
+                        {platforms?.instagram &&
                             <a href={`https://twitter.com/${platforms.instagram}`} rel="noreferrer" target='_blank'><Image src="/instagram-icon.svg" alt=""
                                                                                         height={12} width={12}/></a>}
                         {platforms?.twitter && <a href={`https://twitter.com/${platforms.twitter}`} rel="noreferrer" target='_blank'><Image
