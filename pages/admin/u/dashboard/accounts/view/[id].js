@@ -117,7 +117,16 @@ const CreatorProfile = () => {
   const user = useSelector(getUser);
   const [inData, setInData] = useState(null);
   const dispatch = useDispatch();
-  const [currentTab, setCurrentTab] = useState("instagram");
+  const [currentTab, setCurrentTab] = useState(() => {
+    if (inData?.analytics?.instagram) return "instagram";
+    if (inData?.youtube) return "youtube";
+    if (inData?.analytics?.facebook) return "facebook";
+    if (inData?.twitter) return "twitter";
+    if (inData?.tiktok) return "tiktok";
+    if (inData?.services?.length > 0) return "services";
+    if (inData?.businesses?.length > 0) return "businesses";
+    return "";
+  });
   const [showEngagePopup, setShowEngagePopup] = useState(false);
   const [showDispute, setShowDispute] = useState(false);
   const [disputeSubject, setDisputeSubject] = useState("");
@@ -385,26 +394,8 @@ const CreatorProfile = () => {
       setInData(userData?.data?.data);
     }
   }, [userData]);
-  useEffect(() => {
-    setCurrentTab((prev) => {
-      if (inData?.analytics?.instagram) {
-        return "instagram";
-      } else if (inData?.youtube) {
-        return "youtube";
-      } else if (inData?.analytics?.facebook) {
-        return "facebook";
-      } else if (inData?.twitter) {
-        return "twitter";
-      } else if (inData?.tiktok) {
-        return "tiktok";
-      } else if (inData?.services.length !== 0) {
-        return "services";
-      } else if (inData?.businesses.length !== 0) {
-        return "businesses";
-      }
-    });
-    console.log(currentTab);
-  }, [currentTab, inData]);
+  console.log("Hello");
+
   const generateRatingText = (num) => {
     console.log(num);
     if (num < 2) {
@@ -823,9 +814,8 @@ const CreatorProfile = () => {
                   )}
                 </Tabs>
                 {currentTab === "instagram" &&
-                inData?.analytics?.instagram &
-                  (inData?.analytics?.options?.instagram_source ===
-                    "facebook") ? (
+                inData?.analytics?.instagram &&
+                inData?.analytics?.options?.instagram_source === "facebook" ? (
                   <Content>
                     <h3>Influencer Summary</h3>
                     <AnalyticStats>
@@ -1463,7 +1453,7 @@ const CreatorProfile = () => {
                               <ProjectDetails style={{ borderRight: "0" }}>
                                 <div id="img">
                                   <Image
-                                    src={val.media[0].url}
+                                    src={val?.media[0]?.url}
                                     layout="fill"
                                     objectFit="cover"
                                     objectPosition="center"

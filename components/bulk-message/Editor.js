@@ -42,6 +42,7 @@ export default function CustomRichTextEditor({ editor }) {
           <RichTextEditor.AlignJustify />
           <RichTextEditor.AlignRight />
         </RichTextEditor.ControlsGroup>
+        <RichTextEditor.ControlsGroup></RichTextEditor.ControlsGroup>
       </RichTextEditor.Toolbar>
 
       <RichTextEditor.Content />

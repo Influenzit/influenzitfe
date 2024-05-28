@@ -3,15 +3,20 @@ import classnames from "classnames";
 import { usePagination, DOTS } from "./usePagination";
 import { Pages, PageBtn } from "../styles/connect-pages.style";
 import "./pagination.scss";
-const PaginationComponent = (props) => {
-  const {
-    onPageChange,
-    total,
-    siblingCount = 1,
-    currentPage,
-    pageSize,
-    className,
-  } = props;
+const PaginationComponent = ({
+  onPageChange,
+  total,
+  siblingCount,
+  currentPage,
+}) => {
+  // const {
+  //   onPageChange,
+  //   total,
+  //   siblingCount = 1,
+  //   currentPage,
+  //   pageSize,
+  //   className,
+  // } = props;
 
   const paginationRange = usePagination({
     currentPage,

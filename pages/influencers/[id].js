@@ -357,7 +357,22 @@ const CreatorProfile = () => {
       return "excellent";
     }
   };
-  console.log(influencerData?.data?.data);
+  useEffect(() => {
+    setCurrentTab((prev) => {
+      if (inData?.analytics?.instagram) {
+        return "instagram";
+      } else if (inData?.youtube) {
+        return "youtube";
+      } else if (inData?.analytics?.facebook) {
+        return "facebook";
+      } else if (inData?.twitter) {
+        return "twitter";
+      } else if (inData?.tiktok) {
+        return "tiktok";
+      }
+    });
+    console.log(currentTab);
+  }, [currentTab, inData]);
   return (
     <Container>
       {inData ? (
@@ -605,31 +620,39 @@ const CreatorProfile = () => {
                   </Info>
                   <DataSection>
                     <Tabs>
-                      <TabBtn
-                        isActive={currentTab === "instagram"}
-                        onClick={() => setCurrentTab("instagram")}
-                      >
-                        Instagram
-                      </TabBtn>
-                      <TabBtn
-                        isActive={currentTab === "youtube"}
-                        onClick={() => setCurrentTab("youtube")}
-                      >
-                        Youtube
-                      </TabBtn>
-                      <TabBtn
-                        isActive={currentTab === "facebook"}
-                        onClick={() => setCurrentTab("facebook")}
-                      >
-                        Facebook
-                      </TabBtn>
+                      {inData?.analytics?.instagram && (
+                        <TabBtn
+                          isActive={currentTab === "instagram"}
+                          onClick={() => setCurrentTab("instagram")}
+                        >
+                          Instagram
+                        </TabBtn>
+                      )}
+                      {inData?.youtube && (
+                        <TabBtn
+                          isActive={currentTab === "youtube"}
+                          onClick={() => setCurrentTab("youtube")}
+                        >
+                          Youtube
+                        </TabBtn>
+                      )}
+                      {inData?.analytics?.facebook && (
+                        <TabBtn
+                          isActive={currentTab === "facebook"}
+                          onClick={() => setCurrentTab("facebook")}
+                        >
+                          Facebook
+                        </TabBtn>
+                      )}
                       {/* <TabBtn isActive={currentTab === "twitter"} onClick={() => setCurrentTab("twitter")}>Twitter</TabBtn> */}
-                      <TabBtn
-                        isActive={currentTab === "tiktok"}
-                        onClick={() => setCurrentTab("tiktok")}
-                      >
-                        TikTok
-                      </TabBtn>
+                      {inData?.tiktok && (
+                        <TabBtn
+                          isActive={currentTab === "tiktok"}
+                          onClick={() => setCurrentTab("tiktok")}
+                        >
+                          TikTok
+                        </TabBtn>
+                      )}
                     </Tabs>
                     {currentTab === "instagram" &&
                     inData?.analytics?.instagram &&
@@ -1592,33 +1615,35 @@ const CreatorProfile = () => {
               <Listing>
                 {inData?.similar.length ? <h3>Similar influencers</h3> : null}
                 <Bottom>
-                  {inData?.similar.filter((influencer)=>influencer.
-                      influenzit_verified===true
-                  ).map((val, i) => {
-                    let genSkills = "";
-                    val?.skills?.forEach((val, i) => {
-                      if (i < 5) {
-                        if (i !== 0) {
-                          genSkills += `| ${val.name} `;
-                        } else {
-                          genSkills += `${val.name} `;
+                  {inData?.similar
+                    .filter(
+                      (influencer) => influencer.influenzit_verified === true
+                    )
+                    .map((val, i) => {
+                      let genSkills = "";
+                      val?.skills?.forEach((val, i) => {
+                        if (i < 5) {
+                          if (i !== 0) {
+                            genSkills += `| ${val.name} `;
+                          } else {
+                            genSkills += `${val.name} `;
+                          }
                         }
-                      }
-                    });
-                    return (
-                      <ProfileCard
-                        key={i}
-                        profileLink={`/influencers/${val.id}`}
-                        imgSrc={val?.user?.profile_pic}
-                        handle={val.twitter}
-                        name={`${val.user.firstname} ${val.user.lastname}`}
-                        sex={val.gender}
-                        skills={genSkills}
-                        address={val.address}
-                        platforms={val}
-                      />
-                    );
-                  })}
+                      });
+                      return (
+                        <ProfileCard
+                          key={i}
+                          profileLink={`/influencers/${val.id}`}
+                          imgSrc={val?.user?.profile_pic}
+                          handle={val.twitter}
+                          name={`${val.user.firstname} ${val.user.lastname}`}
+                          sex={val.gender}
+                          skills={genSkills}
+                          address={val.address}
+                          platforms={val}
+                        />
+                      );
+                    })}
                 </Bottom>
               </Listing>
             </Wrapper>
