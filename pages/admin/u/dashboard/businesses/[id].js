@@ -34,14 +34,19 @@ import { useEffect } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setLoading,
-} from "../../../../../app/reducers/status";
+import { setLoading } from "../../../../../app/reducers/status";
 import Link from "next/link";
 import { ShareContainer, UpdateModal } from "styles/view.style";
-import { getSingleBusinessAdmin, updateAdminBusinessStatus } from "../../../../../api/admin";
+import {
+  getSingleBusinessAdmin,
+  updateAdminBusinessStatus,
+} from "../../../../../api/admin";
 import { toast } from "react-toastify";
-import { RightSection, Social, SocialWrapper } from "../../../../../styles/creator-profile.style";
+import {
+  RightSection,
+  Social,
+  SocialWrapper,
+} from "../../../../../styles/creator-profile.style";
 
 function NextArrow(props) {
   const { className, style, onClick } = props;
@@ -69,8 +74,10 @@ const ServiceView = () => {
   const [linkCopied, setLinkCopied] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const getSocialMedia = (name) => {
-    return JSON.parse(inData?.social_handles ?? "[]")?.filter((val) => val.name === name)[0]?.value;
-  }
+    return JSON.parse(inData?.social_handles ?? "[]")?.filter(
+      (val) => val.name === name
+    )[0]?.value;
+  };
   const { data: businessData, refetch: refetchBusinessData } = useQuery(
     ["get-admin-business"],
     async () => {
@@ -88,22 +95,25 @@ const ServiceView = () => {
       },
     }
   );
-  const approveMutation = useMutation(data => {
+  const approveMutation = useMutation(
+    (data) => {
       return updateAdminBusinessStatus(data);
-  }, {
+    },
+    {
       onSuccess(successRes) {
         toast.success("Business approved.", {
-          position: toast.POSITION.TOP_RIGHT
+          position: toast.POSITION.TOP_RIGHT,
         });
         refetchBusinessData();
       },
-  });
+    }
+  );
   const handleApprove = () => {
-      approveMutation.mutate({
-          status: "yes",
-          business_id: id
-      });
-  }
+    approveMutation.mutate({
+      status: "yes",
+      business_id: id,
+    });
+  };
   useEffect(() => {
     if (id) {
       refetchBusinessData();
@@ -112,6 +122,7 @@ const ServiceView = () => {
   useEffect(() => {
     if (businessData?.data?.data) {
       setInData(businessData?.data?.data);
+      console.log(businessData?.data?.data);
     }
   }, [businessData]);
   // handles copying of business
@@ -122,7 +133,7 @@ const ServiceView = () => {
 
   return (
     <Container style={{ background: "#fff" }}>
-      <Wrapper style={{ padding: "20px", marginTop: "90px"}}>
+      <Wrapper style={{ padding: "20px", marginTop: "90px" }}>
         <ContainerB>
           <Left>
             <ImageSlides>
@@ -173,9 +184,7 @@ const ServiceView = () => {
                   <div id="right">
                     <ImageWrapper>
                       <Image
-                        src={
-                          inData?.user?.profile_pic
-                        }
+                        src={inData?.user?.profile_pic}
                         layout="fill"
                         objectFit="cover"
                         objectPosition="center"
@@ -234,96 +243,122 @@ const ServiceView = () => {
           </Left>
           <Right>
             <RWrapper>
-            <RCard>
+              <RCard>
                 <h3>Business Details</h3>
                 <div id="requirements">
-                    <div>
-                        <p>Website</p>
-                        <p>{inData?.website ?? "No website"}</p>
-                    </div>
-                    <div>
-                        <p>Phone</p>
-                        <p>{inData?.phone ?? ""}</p>
-                    </div>
-                    <div>
-                        <p>Email</p>
-                        <p style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}>{inData?.email ?? ""}</p>
-                    </div>
-                    <div>
-                        <p>RC Number</p>
-                        <p>{inData?.rc ?? ""}</p>
-                    </div>
-                    <div>
-                        <p>TIN Number</p>
-                        <p>{inData?.tin ?? ""}</p>
-                    </div>
+                  <div>
+                    <p>Website</p>
+                    <p>{inData?.website ?? "No website"}</p>
+                  </div>
+                  <div>
+                    <p>Phone</p>
+                    <p>{inData?.phone ?? ""}</p>
+                  </div>
+                  <div>
+                    <p>Email</p>
+                    <p
+                      style={{
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {inData?.email ?? ""}
+                    </p>
+                  </div>
+                  <div>
+                    <p>RC Number</p>
+                    <p>{inData?.rc ?? ""}</p>
+                  </div>
+                  <div>
+                    <p>TIN Number</p>
+                    <p>{inData?.tin ?? ""}</p>
+                  </div>
                 </div>
-                  {
-                    (inData?.is_business_verified === "no") && (
-                      <ContinueBtn onClick={handleApprove}>
-                        <span>Approve Business</span>
-                      </ContinueBtn>
-                    )
-                  }
-                  <ContinueBtn style={{ marginTop: "10px" }} onClick={() => {}}>
-                    <span>Delete Business</span>
+                {inData?.is_business_verified === "no" && (
+                  <ContinueBtn onClick={handleApprove}>
+                    <span>Approve Business</span>
                   </ContinueBtn>
-                </RCard>
-                <RightSection>
-                    <h3>Social Media Handles</h3>
-                    <SocialWrapper>
-                        <Social>
-                            <div>
-                                <Image src="/instagram.png" alt="" height={32} width={32} />
-                            </div>
-                            <div>
-                                <h4>INSTAGRAM</h4>
-                                <p title={getSocialMedia("instagram")}>@{getSocialMedia("instagram")}</p>
-                            </div>
-                        </Social>
-                        <Social>
-                            <div>
-                                <Image src="/youtube.svg" alt="" height={32} width={32} />
-                            </div>
-                            <div>
-                                <h4>YOUTUBE</h4>
-                                <p title={getSocialMedia("youtube")}>@{getSocialMedia("youtube")}</p>
-                            </div>
-                        </Social>
-                    </SocialWrapper>
-                    <SocialWrapper>
-                        <Social>
-                            <div>
-                                <Image src="/tiktok.png" alt="" height={32} width={32} />
-                            </div>
-                            <div>
-                                <h4>TIKTOK</h4>
-                                <p title={getSocialMedia("tiktok")}>@{getSocialMedia("tiktok")}</p>
-                            </div>
-                        </Social>
-                        <Social>
-                            <div>
-                                <Image src="/twitter.png" alt="" height={32} width={32} />
-                            </div>
-                            <div>
-                                <h4>TWITTER</h4>
-                                <p title={getSocialMedia("twitter")}>@{getSocialMedia("twitter")}</p>
-                            </div>
-                        </Social>
-                    </SocialWrapper>
-                    <SocialWrapper>
-                        <Social style={{ minWidth: "100%" }}>
-                            <div>
-                                <Image src="/facebook.png" alt="" height={32} width={32} />
-                            </div>
-                            <div>
-                                <h4>FACEBOOK</h4>
-                                <p title={getSocialMedia("facebook")}>@{getSocialMedia("facebook")}</p>
-                            </div>
-                        </Social>
-                    </SocialWrapper>
-                </RightSection>
-              </RWrapper>
+                )}
+                <ContinueBtn style={{ marginTop: "10px" }} onClick={() => {}}>
+                  <span>Delete Business</span>
+                </ContinueBtn>
+              </RCard>
+              <RightSection>
+                <h3>Social Media Handles</h3>
+                <SocialWrapper>
+                  <Social>
+                    <div>
+                      <Image
+                        src="/instagram.png"
+                        alt=""
+                        height={32}
+                        width={32}
+                      />
+                    </div>
+                    <div>
+                      <h4>INSTAGRAM</h4>
+                      <p title={getSocialMedia("instagram")}>
+                        @{getSocialMedia("instagram")}
+                      </p>
+                    </div>
+                  </Social>
+                  <Social>
+                    <div>
+                      <Image src="/youtube.svg" alt="" height={32} width={32} />
+                    </div>
+                    <div>
+                      <h4>YOUTUBE</h4>
+                      <p title={getSocialMedia("youtube")}>
+                        @{getSocialMedia("youtube")}
+                      </p>
+                    </div>
+                  </Social>
+                </SocialWrapper>
+                <SocialWrapper>
+                  <Social>
+                    <div>
+                      <Image src="/tiktok.png" alt="" height={32} width={32} />
+                    </div>
+                    <div>
+                      <h4>TIKTOK</h4>
+                      <p title={getSocialMedia("tiktok")}>
+                        @{getSocialMedia("tiktok")}
+                      </p>
+                    </div>
+                  </Social>
+                  <Social>
+                    <div>
+                      <Image src="/twitter.png" alt="" height={32} width={32} />
+                    </div>
+                    <div>
+                      <h4>TWITTER</h4>
+                      <p title={getSocialMedia("twitter")}>
+                        @{getSocialMedia("twitter")}
+                      </p>
+                    </div>
+                  </Social>
+                </SocialWrapper>
+                <SocialWrapper>
+                  <Social style={{ minWidth: "100%" }}>
+                    <div>
+                      <Image
+                        src="/facebook.png"
+                        alt=""
+                        height={32}
+                        width={32}
+                      />
+                    </div>
+                    <div>
+                      <h4>FACEBOOK</h4>
+                      <p title={getSocialMedia("facebook")}>
+                        @{getSocialMedia("facebook")}
+                      </p>
+                    </div>
+                  </Social>
+                </SocialWrapper>
+              </RightSection>
+            </RWrapper>
           </Right>
         </ContainerB>
         {/* <Listing>
