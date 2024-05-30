@@ -117,16 +117,7 @@ const CreatorProfile = () => {
   const user = useSelector(getUser);
   const [inData, setInData] = useState(null);
   const dispatch = useDispatch();
-  const [currentTab, setCurrentTab] = useState(() => {
-    if (inData?.analytics?.instagram) return "instagram";
-    if (inData?.youtube) return "youtube";
-    if (inData?.analytics?.facebook) return "facebook";
-    if (inData?.twitter) return "twitter";
-    if (inData?.tiktok) return "tiktok";
-    if (inData?.services?.length > 0) return "services";
-    if (inData?.businesses?.length > 0) return "businesses";
-    return "";
-  });
+  const [currentTab, setCurrentTab] = useState("instagram");
   const [showEngagePopup, setShowEngagePopup] = useState(false);
   const [showDispute, setShowDispute] = useState(false);
   const [disputeSubject, setDisputeSubject] = useState("");

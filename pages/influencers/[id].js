@@ -357,22 +357,22 @@ const CreatorProfile = () => {
       return "excellent";
     }
   };
-  useEffect(() => {
-    setCurrentTab((prev) => {
-      if (inData?.analytics?.instagram) {
-        return "instagram";
-      } else if (inData?.youtube) {
-        return "youtube";
-      } else if (inData?.analytics?.facebook) {
-        return "facebook";
-      } else if (inData?.twitter) {
-        return "twitter";
-      } else if (inData?.tiktok) {
-        return "tiktok";
-      }
-    });
-    console.log(currentTab);
-  }, [currentTab, inData]);
+  // useEffect(() => {
+  //   setCurrentTab((prev) => {
+  //     if (inData?.analytics?.instagram) {
+  //       return "instagram";
+  //     } else if (inData?.youtube) {
+  //       return "youtube";
+  //     } else if (inData?.analytics?.facebook) {
+  //       return "facebook";
+  //     } else if (inData?.twitter) {
+  //       return "twitter";
+  //     } else if (inData?.tiktok) {
+  //       return "tiktok";
+  //     }
+  //   });
+  //   console.log(currentTab);
+  // }, [currentTab, inData]);
   return (
     <Container>
       {inData ? (
