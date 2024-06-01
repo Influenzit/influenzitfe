@@ -628,7 +628,7 @@ const CreatorProfile = () => {
                           Instagram
                         </TabBtn>
                       )}
-                      {inData?.youtube && (
+                      {inData?.analytics?.youtube && (
                         <TabBtn
                           isActive={currentTab === "youtube"}
                           onClick={() => setCurrentTab("youtube")}
@@ -644,8 +644,15 @@ const CreatorProfile = () => {
                           Facebook
                         </TabBtn>
                       )}
-                      {/* <TabBtn isActive={currentTab === "twitter"} onClick={() => setCurrentTab("twitter")}>Twitter</TabBtn> */}
-                      {inData?.tiktok && (
+                      {inData?.analytics?.twitter && (
+                        <TabBtn
+                          isActive={currentTab === "twitter"}
+                          onClick={() => setCurrentTab("twitter")}
+                        >
+                          Twitter
+                        </TabBtn>
+                      )}
+                      {inData?.analytics?.tiktok && (
                         <TabBtn
                           isActive={currentTab === "tiktok"}
                           onClick={() => setCurrentTab("tiktok")}
@@ -859,7 +866,7 @@ const CreatorProfile = () => {
                           <Stat isCenter>
                             <h1>
                               {numberFormatter(
-                                inData?.analytics?.facebook?.count
+                                inData?.analytics?.facebook?.page_impressions
                               )}
                             </h1>
                             <p>Reach</p>
