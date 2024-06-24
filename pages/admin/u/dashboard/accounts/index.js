@@ -333,14 +333,14 @@ const Campaigns = () => {
                   {userList.data.map((val, i) => (
                     <Tr key={i}>
                       <Td cellWidth="320px">
-                        {val.user.firstname} {val.user.lastname}
+                        {val.?user?.firstname} {val?.user?.lastname}
                       </Td>
                       <Td cellWidth="250px">{val.user.email}</Td>
                       <Td cellWidth="150px">
                         {val.phone1 === null ? "Not Available" : val.phone1}
                       </Td>
                       <Td cellWidth="120px">
-                        {val.influenzit_verified ? "Verified" : "Not Verified"}
+                        {val?.influenzit_verified ? "Verified" : "Not Verified"}
                       </Td>
                       <Td
                         cellWidth="200px"
@@ -351,7 +351,7 @@ const Campaigns = () => {
                         }}
                       >
                         <ActionBtn onClick={() => verifyAcc(val.id)}>
-                          {val.influenzit_verified
+                          {val?.influenzit_verified
                             ? "Disapprove User"
                             : "Approve User"}
                         </ActionBtn>
