@@ -54,7 +54,6 @@ const Campaigns = () => {
   const showAccountHandler = () => setShowAccount(!showAccount);
   const accountTypeHandler = (type) => {
     setAccountType(type);
-    console.log(getUrl);
     setShowAccount(false);
   };
   const [userList, setUserList] = useState({
@@ -72,9 +71,7 @@ const Campaigns = () => {
       retry: false,
       onSuccess(res) {
         dispatch(setLoading(false));
-        console.log(res.data.data);
         setUserList(res.data.data);
-        console.log(res.data.data);
       },
       onError(res) {
         dispatch(setLoading(false));
@@ -184,7 +181,6 @@ const Campaigns = () => {
     }
   }, [userList.current_page, userList.per_page, userList.total]);
 
-  console.log(userList);
   return (
     <Container>
       <Wrapper>
