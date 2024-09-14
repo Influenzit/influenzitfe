@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 const EmailVerify = () => {
   const router = useRouter();
   const { id, token, email } = router.query; // Updated to use token instead of hash
+  console.log('Router Query:', router.query);
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
 
