@@ -44,7 +44,8 @@ const EmailVerify = () => {
   useEffect(() => {
     console.log('ID:', id);
   console.log('Token:', token);
-  console.log('Email:', email);
+  console.log('Email:', email);    
+  console.log('Constructed URL:', `/${id}?token=${token}&email=${email}`);
     if (id && token) {
       verifyEmailReq();
     } else if (email) {
