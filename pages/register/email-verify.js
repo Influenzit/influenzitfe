@@ -22,6 +22,7 @@ const EmailVerify = () => {
       staleTime: Infinity,
       retry: false,
       onSuccess() {
+  console.log('API Success:', data);
         setLoading(false);
         setSuccess(true);
         toast.success('Email verified successfully!', {
@@ -29,6 +30,7 @@ const EmailVerify = () => {
         });
       },
       onError(res) {
+  console.log('API Error:', error);
         setLoading(false);
         setSuccess(false);
         toast.error(`An error occurred: ${res.response?.data?.message || 'Unknown error'}`, {
@@ -40,6 +42,9 @@ const EmailVerify = () => {
 
   // Verify email when id and token are present
   useEffect(() => {
+    console.log('ID:', id);
+  console.log('Token:', token);
+  console.log('Email:', email);
     if (id && token) {
       verifyEmailReq();
     } else if (email) {
