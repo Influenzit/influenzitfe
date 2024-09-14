@@ -51,7 +51,7 @@ const EmailVerify = () => {
     } else if (email) {
       router.push(`/register/email-expired?email=${email}`); // Fallback for expired/invalid tokens
     }
-  }, [id, token, email, router]);
+  }, [id, token, email]);
 
   return (
     <Container>
