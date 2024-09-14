@@ -329,7 +329,8 @@ const Campaigns = () => {
                   {userList.data.map((val, i) => (
                     <Tr key={i}>
                       <Td cellWidth="320px">
-                        {val.?user?.firstname} {val?.user?.lastname}
+                        {/* {val.?user?.firstname} {val?.user?.lastname} */}
+                        {val?.user?.firstname} {val?.user?.lastname}
                       </Td>
                       <Td cellWidth="250px">{val.user.email}</Td>
                       <Td cellWidth="150px">
