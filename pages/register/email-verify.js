@@ -31,7 +31,7 @@ const EmailVerify = () => {
       onError(res) {
         setLoading(false);
         setSuccess(false);
-        toast.error(`An error occurred'}`, {
+        toast.error(`An error occurred`, {
           position: toast.POSITION.TOP_RIGHT,
         });
       },
