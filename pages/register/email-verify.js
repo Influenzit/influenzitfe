@@ -4,73 +4,53 @@ import LandingLayout from "../../layouts/landing.layout";
 import { Container, Wrapper } from "../../styles/notify.style";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
-import { verifyEmail } from "api/auth"; // Ensure this path is correct in production
+import { verifyEmail } from "api/auth";
 import { toast } from "react-toastify";
 
 const EmailVerify = () => {
   const router = useRouter();
-  const { id, token, email } = router.query; 
-  const [loading, setLoading] = useState(true); 
+  const { id, token, email } = router.query; // Updated to use token instead of hash
+  const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
 
-  console.log("ID:", id);
-  console.log("Token:", token);
-  console.log("Email:", email);
-
-  // Query to verify email when API is triggered
+  // Query to verify the email with the new URL parameters
   const { refetch: verifyEmailReq } = useQuery(
     ['verify-email'],
-    async () => {
-      console.log(`Verifying email with URL: /${id}?token=${token}&email=${email}`);
-      return verifyEmail(`/${id}?token=${token}&email=${email}`);
-    },
+    async () => verifyEmail(`/${id}?token=${token}&email=${email}`), // Updated URL structure
     {
       enabled: false,
       staleTime: Infinity,
       retry: false,
-      onSuccess(data) {
-        console.log('API Success:', data);
+      onSuccess() {
         setLoading(false);
         setSuccess(true);
         toast.success('Email verified successfully!', {
           position: toast.POSITION.TOP_RIGHT,
         });
       },
-      onError(error) {
-        console.error('API Error:', error);
+      onError(res) {
         setLoading(false);
         setSuccess(false);
-        toast.error(
-          `An error occurred: ${error?.response?.data?.message || 'Verification failed, try again.'}`,
-          { position: toast.POSITION.TOP_RIGHT }
-        );
+        toast.error(`An error occurred: ${res.response?.data?.message || 'Unknown error'}`, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       },
     }
   );
 
-  // Wait for router to be ready and params to be available
+  // Verify email when id and token are present
   useEffect(() => {
-    if (router.isReady) {
-      if (id && token) {
-        console.log("Running email verification");
-        verifyEmailReq();
-      } else if (email) {
-        console.log("Invalid token or ID, redirecting...");
-        router.push(`/register/email-expired?email=${email}`);
-      }
+    if (id && token) {
+      verifyEmailReq();
+    } else if (email) {
+      router.push(`/register/email-expired?email=${email}`); // Fallback for expired/invalid tokens
     }
-  }, [router.query]);
-
-  function ClickMe(){
-    console.log(router.isReady);
-    console.log(router.query);
-    alert(token);
-  }
+  }, [id, token, email, verifyEmailReq, router]);
 
   return (
     <Container>
       <Wrapper>
-        {loading && <p>Verifying Email...</p> <><p>Verifying Email...</p><button onClick=(ClickMe)>Click Me</button></>}
+        {loading && <p>Verifying Email...</p>}
         {!loading && success && (
           <NotifyCard
             imgSrc="/message-verify.svg"
