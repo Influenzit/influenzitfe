@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  target: 'serverless',
+
   reactStrictMode: false,
   compiler: {
     styledComponents: true,
@@ -46,4 +48,5 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+
+module.exports = nextConfig;

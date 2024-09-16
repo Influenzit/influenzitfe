@@ -34,7 +34,7 @@ const EmailVerify = () => {
   console.log('API Error:', error);
         setLoading(false);
         setSuccess(false);
-        toast.error(`An error occurred: ${res.response?.data?.message || 'Unknown error'}`, {
+        toast.error(`An error occurred'}`, {
           position: toast.POSITION.TOP_RIGHT,
         });
       },
@@ -80,7 +80,7 @@ const EmailVerify = () => {
             linkDisplay="Try to Login Again"
             body={
               <p>
-                We couldn't verify your email. The token may have expired or is invalid.
+                We couldn&apos;t verify your email. The token may have expired or is invalid.
                 Please try registering again or contact support.
               </p>
             }

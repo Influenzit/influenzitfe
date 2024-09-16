@@ -150,7 +150,7 @@ const SingleWallet = () => {
       refetchWalletTx();
       refetchWalletRq();
     }
-  }, [id]);
+  }, [id, dispatch, refetchUserData, refetchWallet, refetchWalletTx, refetchWalletRq]);
   const updateAccountMutation = useMutation(
     (data) => {
       return verifyUserAccount(data);
