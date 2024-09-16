@@ -211,7 +211,7 @@ const Campaigns = () => {
                     </p>
 
                     <div className="bg-primary-100 w-max py-2 px-4 rounded-lg text-white mt-8 flex items-center">
-                      <Link href="#">Find Influencers</Link>
+                      <Link href="/explore/influencers">Find Influencers</Link>
                       <div className="mt-2 ml-2">
                         <Image src={rightarrow} alt="leftarrow" />
                       </div>
