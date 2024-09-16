@@ -61,10 +61,16 @@ const EmailVerify = () => {
     }
   }, [router.query]);
 
+  function ClickMe(){
+    console.log(router.isReady);
+    console.log(router.query);
+    alert(token);
+  }
+
   return (
     <Container>
       <Wrapper>
-        {loading && <p>Verifying Email...</p>}
+        {loading && <p>Verifying Email...</p> <><p>Verifying Email...</p><button onClick=(ClickMe)>Click Me</button></>}
         {!loading && success && (
           <NotifyCard
             imgSrc="/message-verify.svg"
