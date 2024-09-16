@@ -59,7 +59,7 @@ const EmailVerify = () => {
         router.push(`/register/email-expired?email=${email}`);
       }
     }
-  }, [router.isReady, id, token, email, verifyEmailReq, router]);
+  }, [router.query]);
 
   return (
     <Container>
