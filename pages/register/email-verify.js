@@ -4,7 +4,7 @@ import LandingLayout from "../../layouts/landing.layout";
 import { Container, Wrapper } from "../../styles/notify.style";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
-import { verifyEmail } from "api/auth";
+import { verifyEmail } from "api/auth"; // Make sure this path is correct in production
 import { toast } from "react-toastify";
 
 const EmailVerify = () => {
@@ -13,25 +13,34 @@ const EmailVerify = () => {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
 
+  console.log("ID:", id);
+  console.log("Token:", token);
+  console.log("Email:", email);
+
   // Query to verify the email with the new URL parameters
   const { refetch: verifyEmailReq } = useQuery(
     ['verify-email'],
-    async () => verifyEmail(`/${id}?token=${token}&email=${email}`), // Updated URL structure
+    async () => {
+      console.log(`Verifying email with URL: /${id}?token=${token}&email=${email}`);
+      return verifyEmail(`/${id}?token=${token}&email=${email}`); // Updated URL structure
+    },
     {
       enabled: false,
       staleTime: Infinity,
       retry: false,
-      onSuccess() {
+      onSuccess(data) {
+        console.log('API Success:', data);
         setLoading(false);
         setSuccess(true);
         toast.success('Email verified successfully!', {
           position: toast.POSITION.TOP_RIGHT,
         });
       },
-      onError(res) {
+      onError(error) {
+        console.log('API Error:', error);
         setLoading(false);
         setSuccess(false);
-        toast.error(`An error occurred: ${res.response?.data?.message || 'Unknown error'}`, {
+        toast.error(`An error occurred: ${error?.response?.data?.message || 'Unknown error'}`, {
           position: toast.POSITION.TOP_RIGHT,
         });
       },
@@ -41,9 +50,11 @@ const EmailVerify = () => {
   // Verify email when id and token are present
   useEffect(() => {
     if (id && token) {
+      console.log("Running verification");
       verifyEmailReq();
     } else if (email) {
-      router.push(`/register/email-expired?email=${email}`); // Fallback for expired/invalid tokens
+      console.log("Invalid token or ID, redirecting...");
+      router.push(`/register/email-expired?email=${email}`);
     }
   }, [id, token, email, verifyEmailReq, router]);
 
