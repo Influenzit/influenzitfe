@@ -235,38 +235,6 @@ const Home = () => {
               />
             </ImgContainer>
           </InfoCardM>
-          <WrapperFourD $top>
-            <h1>
-              <span>Featured Campaign Requests</span>
-            </h1>
-            <ListWrapper className="justify-center">
-              {requestList.length > 0 &&
-                requestList.map((req, i) => {
-                  return (
-                    <CampaignCard
-                      content={req.title}
-                      price={`${req?.amount_start} - ${req?.amount_end}`}
-                      status={req.status}
-                      imgSrc={req.media[0]?.url ?? "/camp.png"}
-                      reqId={req.id}
-                      refetch={refetch}
-                      followers={`${
-                        getRequirement(req, "followers")[0] ?? ""
-                      } - ${getRequirement(req, "followers")[1] ?? ""}`}
-                      engagements={`${
-                        getRequirement(req, "engagement_rate")[0] ?? ""
-                      }% - ${getRequirement(req, "engagement_rate")[1] ?? ""}%`}
-                      key={i}
-                      reqPlatform={JSON.parse(
-                        req.requirements.filter(
-                          (val) => val.name === "platforms"
-                        )[0]?.value ?? "[]"
-                      )}
-                    />
-                  );
-                })}
-            </ListWrapper>
-          </WrapperFourD>
           <InfoCardM>
             <ImageWrapper>
               <Image
