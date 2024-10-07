@@ -18,6 +18,29 @@ const Stage5 = ({user}) => {
   const [bvn, setBvn] = useState("");
   const [bvnLoad, setBvnLoad] = useState(false);
 
+  // const {data, refetch} =  useQuery(["get-bank-details"], async () => {
+  //   return await getBankDetails()
+  //   }, {
+  //       enabled: false,
+  //       staleTime: Infinity,
+  //       retry: false,
+  //       onSuccess(res) {
+  //           console.log(res.data.data);
+  //           const bankDet = res.data.data;
+  //           if(bankDet.account_name) {
+  //               setDetailsAvailable(true);
+  //               setAccountNumber(bankDet.account_number);
+  //               setBankCode(bankDet.account_bank_code);
+  //               setAccountName(bankDet.account_name);
+  //           }
+  //           if(bankDet.bvn) {
+  //               setBvn(bankDet.bvn);
+  //               setBvnAvail(true);
+  //           }
+  //       },
+  //       onError(res) {
+  //       }
+  //   });
   const {data, refetch} =  useQuery(["get-bank-details"], async () => {
     return await getBankDetails()
     }, {
@@ -25,19 +48,21 @@ const Stage5 = ({user}) => {
         staleTime: Infinity,
         retry: false,
         onSuccess(res) {
-            console.log(res.data.data);
-            const bankDet = res.data.data;
-            if(bankDet.account_name) {
-                setDetailsAvailable(true);
-                setAccountNumber(bankDet.account_number);
-                setBankCode(bankDet.account_bank_code);
-                setAccountName(bankDet.account_name);
-            }
-            if(bankDet.bvn) {
-                setBvn(bankDet.bvn);
-                setBvnAvail(true);
-            }
-        },
+          console.log(res.data.data);
+          const bankDet = res.data.data;
+      
+          if(bankDet.account_name) {
+              setDetailsAvailable(true);
+              setAccountNumber(bankDet.account_number);
+              setBankCode(bankDet.account_bank_code);
+              setAccountName(bankDet.account_name);
+          }
+      
+          if(bankDet.bvn && bankDet.bvn.bvn) { // Check if `bvn` and `bvn.bvn` exist
+              setBvn(bankDet.bvn.bvn); // Set only the BVN number, not the whole object
+              setBvnAvail(true);
+          }
+      },
         onError(res) {
         }
     });
