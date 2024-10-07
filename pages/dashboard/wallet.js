@@ -152,7 +152,7 @@ const Campaigns = () => {
           reference: paymentReference,
           email: user.email,
           amount: calculateTotalPrice(Number(amount * 100)), //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
-          publicKey: "pk_test_9d97cf0be86b0758ece444694d57a8db41a4be59",
+          publicKey: "pk_live_c7f6b5fb6f96205ccae427d88bc6fcab83644ad3",
         });
         setLoading(false);
 
