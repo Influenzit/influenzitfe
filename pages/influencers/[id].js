@@ -1645,7 +1645,8 @@ const CreatorProfile = () => {
                           handle={val.twitter}
                           name={`${val.user.firstname} ${val.user.lastname}`}
                           sex={val.gender}
-                          skills={genSkills}
+                          // skills={genSkills}                         
+                          skills={val.niche}
                           address={val.address}
                           platforms={val}
                         />
