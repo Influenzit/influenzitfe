@@ -135,7 +135,7 @@ const Stage5 = ({ user }) => {
                     ): <p>No Twitter account connected</p>
                     }
                 </SocialCardList> }
-          // <p>Connection of Twitter is coming soon</p>
+              {/*<p>Connection of Twitter is coming soon</p>*/}
           <Link
             href={`${process.env.NEXT_PUBLIC_API_URI}/connect?provider=twitter&user=${user?.id}`}
           >
