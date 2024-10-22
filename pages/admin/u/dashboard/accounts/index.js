@@ -330,9 +330,9 @@ const Campaigns = () => {
                     <Tr key={i}>
                       <Td cellWidth="320px">
                         {/* {val.?user?.firstname} {val?.user?.lastname} */}
-                        {val?.user?.firstname} {val?.user?.lastname}
+                        {val?.firstname} {val?.lastname}
                       </Td>
-                      <Td cellWidth="250px">{val.user.email}</Td>
+                      <Td cellWidth="250px">{val?.email}</Td>
                       <Td cellWidth="150px">
                         {val.phone1 === null ? "Not Available" : val.phone1}
                       </Td>
