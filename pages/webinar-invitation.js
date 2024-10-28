@@ -100,7 +100,7 @@ const InfluencerWaitlist = () => {
         <Wrapper>
             <h1 id="h1">Unlock the Power of Influencer Collaborations to Boost Your Business</h1>
             <p id="p">Are you a business owner aiming to amplify your brand's reach and connect authentically with your target audience? Join our exclusive weekly webinar to discover how Influenzit.com can revolutionize your marketing strategy through seamless influencer collaborations.</p>
-            <p>
+            <p id="p">
                 <strong>Date:</strong> Every Friday
                 <br />
                 <strong>Time:</strong> 7 PM - 8:00 PM (GMT + 1)
