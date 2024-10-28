@@ -149,7 +149,7 @@ const Search = () => {
                         }}><Image src="/search.svg" height={15} width={15}/></button>
                     </form>
                     <CategoryWrapper>
-                        <Category isSelected={"" === currentIndustry} onClick={() => setCurrentIndustry("")}>All</Category>
+                        <Category isSelected={"" == currentIndustry} onClick={() => setCurrentIndustry("")}>All</Category>
                         {(seeAll ? category : JSON.parse(JSON.stringify(category)).splice(0, 8)).map((val, i) => (
                             <Category key={i} isSelected={val === currentIndustry} onClick={() => setCurrentIndustry(val)}>{val}</Category>
                         ))}
@@ -219,11 +219,11 @@ const Search = () => {
                                 </div>
                             </ViewMore>)
                         }
-                        {/* <Pages>
+                        {<Pages>
                             <PageBtn onClick={() => influencersData?.data?.data?.current_page.prev_page_url && setGetUrl(influencersData?.data?.data?.current_page.prev_page_url.replace(process.env.NEXT_PUBLIC_API_URI + "/api/v1", ""))}>&lt;&lt;</PageBtn>
                             <PageBtn>{influencersData?.data?.data?.current_page}</PageBtn>
                             <PageBtn onClick={() => influencersData?.data?.data?.current_page.next_page_url && setGetUrl(influencersData?.data?.data?.current_page.next_page_url.replace(process.env.NEXT_PUBLIC_API_URI + "/api/v1", ""))}>&gt;&gt;</PageBtn>
-                        </Pages> */}
+                        </Pages>}
                     </Bottom>
                 </Content>
             </Wrapper>
