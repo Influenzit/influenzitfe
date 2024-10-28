@@ -95,7 +95,8 @@ const CreatorProfile = () => {
   const user = useSelector(getUser);
   const [inData, setInData] = useState(null);
   const dispatch = useDispatch();
-  const [currentTab, setCurrentTab] = useState("instagram");
+  // const [currentTab, setCurrentTab] = useState("instagram");
+  const [currentTab, setCurrentTab] = useState(null);
   const [showEngagePopup, setShowEngagePopup] = useState(false);
   const [showDispute, setShowDispute] = useState(false);
   const [disputeSubject, setDisputeSubject] = useState("");
@@ -342,6 +343,15 @@ const CreatorProfile = () => {
     }
   }, [router.pathname, id, refetchInfluencerData, refetchInfluencersData]);
   useEffect(() => {
+    if (!currentTab && inData?.analytics) {
+      if (inData.analytics.instagram) setCurrentTab("instagram");
+      else if (inData.analytics.youtube) setCurrentTab("youtube");
+      else if (inData.analytics.facebook) setCurrentTab("facebook");
+      else if (inData.analytics.twitter) setCurrentTab("twitter");
+      else if (inData.analytics.tiktok) setCurrentTab("tiktok");
+    }
+  }, [inData, currentTab]);
+  useEffect(() => {
     if (influencerData?.data?.data) {
       console.log(influencerData?.data?.data);
       setInData(influencerData?.data?.data);
@@ -356,8 +366,8 @@ const CreatorProfile = () => {
     } else {
       return "excellent";
     }
-  };
-  // useEffect(() => {
+  };  
+  // const [currentTab, setCurrentTab] = useEffect(() => {
   //   setCurrentTab((prev) => {
   //     if (inData?.analytics?.instagram) {
   //       return "instagram";
@@ -1623,9 +1633,9 @@ const CreatorProfile = () => {
                 {inData?.similar.length ? <h3>Similar influencers</h3> : null}
                 <Bottom>
                   {inData?.similar
-                    .filter(
-                      (influencer) => influencer.influenzit_verified === true
-                    )
+                    // .filter(
+                    //   (influencer) => influencer.influenzit_verified === true
+                    // )
                     .map((val, i) => {
                       let genSkills = "";
                       val?.skills?.forEach((val, i) => {
@@ -1645,7 +1655,7 @@ const CreatorProfile = () => {
                           handle={val.twitter}
                           name={`${val.user.firstname} ${val.user.lastname}`}
                           sex={val.gender}
-                          // skills={genSkills}                         
+                          // skills={genSkills}                          
                           skills={val.niche}
                           address={val.address}
                           platforms={val}
