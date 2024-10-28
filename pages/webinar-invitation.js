@@ -45,36 +45,6 @@ const InfluencerWaitlist = () => {
         setEmail("");
       }
   });
-  const handleFaqToggle = (index) => {
-    console.log(index)
-    setFaq((prev) => {
-      let copyOfPrev = {...prev};
-      if(!!copyOfPrev?.[index]) {
-        copyOfPrev = {...copyOfPrev, [index]: false}
-      } else {
-        copyOfPrev = {...copyOfPrev, [index]: true}
-      }
-      console.log(copyOfPrev);
-      return copyOfPrev;
-    })
-  }
-  const faqs = [
-    {
-        question: "How do I sign up for early access to Influenzit?",
-        answer: "You can sign up for early access by providing your email address on our pre-launch landing page.",
-    },
-    {
-        question: "What kind of collaborations are available on Influenzit?",
-        answer: "Influenzit offers collaborations with a diverse range of business owners across a variety of industries. You can easily find and collaborate with brands that align with your interests and audience. Brands can also find and reach out to you from your profile."},
-    {
-        question: "How does Influenzit help me grow my following?",
-        answer: "Influenzit offers a range of resources and support for new influencers to help them grow their following and succeed in the industry. Our platform also connects you with complementary businesses and creatives to cross-pollinate your audiences. "},
-
- {
-        question: "How do I measure the success of my campaigns on Influenzit?",
-        answer: "Influenzit offers data reporting that allows you to measure the success of your campaigns and make informed decisions about future collaborations. You can track metrics such as engagement, reach, and conversions.",
-}
-  ]
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(setLoading(true));
@@ -91,15 +61,11 @@ const InfluencerWaitlist = () => {
             <h1>Webinar Invitation: 
             <br />
             Transform Your Marketing with Influenzit</h1>
-            <p>Find the right brands and collaborations to grow your<br /> following and increase your earnings</p>
-            {/* <div>
-                <Link href="#register">Sign Up</Link>
-                <Link href="/business-waitlist">Business Owner Waitlist</Link>
-            </div> */}           
+            <p>Find the right brands and collaborations to grow your<br /> following and increase your earnings</p>          
         </Banner>
         <Wrapper>
             <h1 id="h1">Unlock the Power of Influencer Collaborations to Boost Your Business</h1>
-            <p id="p">Are you a business owner aiming to amplify your brand's reach and connect authentically with your target audience? Join our exclusive weekly webinar to discover how Influenzit.com can revolutionize your marketing strategy through seamless influencer collaborations.</p>
+            <p id="p">Are you a business owner aiming to amplify your brand&apos;s reach and connect authentically with your target audience? Join our exclusive weekly webinar to discover how Influenzit.com can revolutionize your marketing strategy through seamless influencer collaborations.</p>
             <p id="p">
                 <strong>Date:</strong> Every Friday
                 <br />
@@ -111,7 +77,7 @@ const InfluencerWaitlist = () => {
                 <Details>
                     <h1><strong>In this free webinar, you'll learn how to: </strong></h1>
                     <ul>
-                        <li><strong>Understand Your Audience:</strong> Leverage Influenzit's robust analytics to dive deep into your audience's demographics, behaviours, and interests.</li>
+                        <li><strong>Understand Your Audience:</strong> Leverage Influenzit's robust analytics to dive deep into your audience&apos;s demographics, behaviours, and interests.</li>
                         <li><strong>Find the Perfect Influencers:</strong> Utilize our AI-driven matchmaking tool to connect with influencers who align with your brand and campaign goals.</li>
                         <li><strong>Collaborate Effectively:</strong> Learn the step-by-step process of sending collaboration requests, negotiating campaign details, and setting clear goals and budgets.</li>
                         <li><strong>Manage Campaigns with Ease:</strong> Monitor progress, approve deliverables, and communicate securely with influencers through our platform.</li>
@@ -152,7 +118,7 @@ const InfluencerWaitlist = () => {
             <AccessCard id="register">
                 <div>
                     <h2>Limited Seats Available!</h2>
-                    <p>Don't miss out on this opportunity to elevate your marketing strategy. Secure your spot now and take the first step towards impactful influencer collaborations.</p>
+                    <p>Don&apos;t miss out on this opportunity to elevate your marketing strategy. Secure your spot now and take the first step towards impactful influencer collaborations.</p>
                     <h2>Register Now!</h2>
                 </div>
                 <IframeWrapper>
