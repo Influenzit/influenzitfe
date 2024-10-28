@@ -75,9 +75,9 @@ const InfluencerWaitlist = () => {
             </p>
             <Info>
                 <Details>
-                    <h1><strong>In this free webinar, you'll learn how to: </strong></h1>
+                    <h1><strong>In this free webinar, you&apos;ll learn how to: </strong></h1>
                     <ul>
-                        <li><strong>Understand Your Audience:</strong> Leverage Influenzit's robust analytics to dive deep into your audience&apos;s demographics, behaviours, and interests.</li>
+                        <li><strong>Understand Your Audience:</strong> Leverage Influenzit&apos;s robust analytics to dive deep into your audience&apos;s demographics, behaviours, and interests.</li>
                         <li><strong>Find the Perfect Influencers:</strong> Utilize our AI-driven matchmaking tool to connect with influencers who align with your brand and campaign goals.</li>
                         <li><strong>Collaborate Effectively:</strong> Learn the step-by-step process of sending collaboration requests, negotiating campaign details, and setting clear goals and budgets.</li>
                         <li><strong>Manage Campaigns with Ease:</strong> Monitor progress, approve deliverables, and communicate securely with influencers through our platform.</li>
