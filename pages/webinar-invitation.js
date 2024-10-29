@@ -115,21 +115,40 @@ const InfluencerWaitlist = () => {
                     <Image src="/w-banner-4.png" alt="banner" layout='fill' loading="lazy" objectFit="cover" objectPosition="center" />
                 </ImgContainer>
             </Info>
-            <AccessCard id="register">
-                <div>
+            <AccessCard id="register" style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
+                <div style={{ flex: '1' }}>
                     <h2>Limited Seats Available!</h2>
                     <p>Don&apos;t miss out on this opportunity to elevate your marketing strategy. Secure your spot now and take the first step towards impactful influencer collaborations.</p>
                     <h2>Register Now!</h2>
                 </div>
-                <IframeWrapper>
-                    {/* <iframe src='https://cdn.forms-content.sg-form.com/6cee0834-c26a-11ed-90af-f2e097933c84'>
-
-                    </iframe> */}
-                    <form>
-                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" />
-                        <button onClick={handleSubmit}>Sign up</button>
-                    </form>
-                </IframeWrapper>
+                
+                <form method="post" action="https://systeme.io/embedded/23320948/subscription" 
+                    style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '100%', flex: '1' }}>
+                    <input 
+                        type="text" 
+                        name="first_name" 
+                        placeholder="First Name" 
+                        style={{ padding: '10px', fontSize: '16px', width: '100%', borderRadius: '24px', border: '1px solid #ccc' }}
+                    />
+                    <input 
+                        type="text" 
+                        name="surname" 
+                        placeholder="Last Name" 
+                        style={{ padding: '10px', fontSize: '16px', width: '100%', borderRadius: '24px', border: '1px solid #ccc' }}
+                    />
+                    <input 
+                        type="email" 
+                        name="email" 
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)} 
+                        placeholder="Email Address" 
+                        style={{ padding: '10px', fontSize: '16px', width: '100%', borderRadius: '24px', border: '1px solid #ccc' }}
+                    />
+                    <button type="submit" className="btn" 
+                            style={{ padding: '12px', fontSize: '16px', color: '#fff', backgroundColor: '#007BFF', border: 'none', borderRadius: '24px', cursor: 'pointer' }}>
+                        Register Now
+                    </button>
+                </form>
             </AccessCard>
         </Wrapper>
         <Footer />
