@@ -59,7 +59,7 @@ const ThankYouPage = () => {
         <Banner>
             <Image src="/influenzit_logo.png" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
             <h1>Thank you for registering for this webinar.</h1>
-            <p>We look forward to your presence on Friday for the webinar. Please set a reminder so you don't miss it.</p>
+            <p>We look forward to your presence on Friday for the webinar. Please set a reminder so you don&apos;t miss it.</p>
             <p>In the meantime, please go ahead and create an account on 
                 <a href="https://influenzit.com/register" target="_blank" rel="noopener noreferrer" 
                    >
