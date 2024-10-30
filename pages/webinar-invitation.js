@@ -124,18 +124,40 @@ const InfluencerWaitlist = () => {
                 
                 <form method="post" action="https://systeme.io/embedded/23320948/subscription" 
                     style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '100%', flex: '1' }}>
+                    
                     <input 
                         type="text" 
                         name="first_name" 
                         placeholder="First Name" 
                         style={{ padding: '10px', fontSize: '16px', width: '100%', borderRadius: '24px', border: '1px solid #ccc' }}
+                        required
                     />
+                    
                     <input 
                         type="text" 
                         name="surname" 
                         placeholder="Last Name" 
                         style={{ padding: '10px', fontSize: '16px', width: '100%', borderRadius: '24px', border: '1px solid #ccc' }}
+                        required
                     />
+
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                        <input 
+                            type="tel" 
+                            name="country_code" 
+                            placeholder="+1" 
+                            style={{ padding: '10px', fontSize: '16px', width: '80px', borderRadius: '24px', border: '1px solid #ccc' }}
+                            required
+                        />
+                        <input 
+                            type="tel" 
+                            name="phone_number" 
+                            placeholder="Phone Number" 
+                            style={{ padding: '10px', fontSize: '16px', width: 'calc(100% - 90px)', borderRadius: '24px', border: '1px solid #ccc' }}
+                            required
+                        />
+                    </div>
+                    
                     <input 
                         type="email" 
                         name="email" 
@@ -143,7 +165,9 @@ const InfluencerWaitlist = () => {
                         onChange={(e) => setEmail(e.target.value)} 
                         placeholder="Email Address" 
                         style={{ padding: '10px', fontSize: '16px', width: '100%', borderRadius: '24px', border: '1px solid #ccc' }}
+                        required
                     />
+                    
                     <button type="submit" className="btn" 
                             style={{ padding: '12px', fontSize: '16px', color: '#fff', backgroundColor: '#007BFF', border: 'none', borderRadius: '24px', cursor: 'pointer' }}>
                         Register Now
