@@ -190,8 +190,8 @@ export const UsersList = ({
                     <input
                       type="checkbox"
                       name={user.id}
-                      id={user.user.email}
-                      checked={selectedUsers?.includes(user.user.email)}
+                      id={user.email}
+                      checked={selectedUsers?.includes(user.email)}
                       onChange={(e) => {
                         handleSelectedUsers(e);
                       }}
@@ -199,10 +199,10 @@ export const UsersList = ({
                   border appearance-none rounded-[50%] `}
                     />
                     <div className="w-[38px] h-[38px] rounded-[50%] bg-[#e5e7eb] ">
-                      {user.user.profile_pic && (
+                      {user.profile_pic && (
                         <Image
-                          src={user.user.profile_pic}
-                          alt={user.user.display_name}
+                          src={user.profile_pic}
+                          alt={user.display_name}
                           width={38}
                           height={38}
                           className="rounded-[50%]"
@@ -211,9 +211,9 @@ export const UsersList = ({
                     </div>
                     <div className="flex flex-col">
                       <h1 className="text-base font-medium">
-                        {user.user.firstname} {user.user.lastname}
+                        {user.firstname} {user.lastname}
                       </h1>
-                      <p className="text-xs text-gray-500">{user.user.email}</p>
+                      <p className="text-xs text-gray-500">{user.email}</p>
                     </div>
                   </li>
                 ))}
