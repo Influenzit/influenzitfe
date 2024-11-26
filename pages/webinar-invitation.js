@@ -60,16 +60,20 @@ const InfluencerWaitlist = () => {
             <Image src="/influenzit_logo.png" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
             <h1>Webinar Invitation: 
             <br />
-            Transform Your Marketing with Influenzit</h1>
-            <p>Find the right brands and collaborations to grow your<br /> following and increase your earnings</p>          
+            The Secret of Influencer Marketing
+            <br />
+            that Drives Results without Breaking 
+            <br />
+            the Bank</h1>
+            <p>Discover affordable strategies to boost your brand with influencer marketing</p>          
         </Banner>
         <Wrapper>
             <h1 id="h1">Unlock the Power of Influencer Collaborations to Boost Your Business</h1>
             <p id="p">Are you a business owner aiming to amplify your brand&apos;s reach and connect authentically with your target audience? Join our exclusive weekly webinar to discover how Influenzit.com can revolutionize your marketing strategy through seamless influencer collaborations.</p>
             <p id="p">
-                <strong>Date:</strong> Every Friday
+                <strong>Date:</strong> Tuesday, 3rd of December, 2024
                 <br />
-                <strong>Time:</strong> 7 PM - 8:00 PM (GMT + 1)
+                <strong>Time:</strong> 12:00 PM (GMT + 1)
                 <br />
                 <strong>Platform:</strong> Live Webinar (Link will be provided upon registration)
             </p>
