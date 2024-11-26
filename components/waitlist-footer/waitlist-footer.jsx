@@ -8,7 +8,7 @@ const Footer = () => {
     <Container>
         <Wrapper>
             <Bottom>
-                <p>&copy; 2023. Influenzit. All rights reserved.</p>
+                <p>&copy; 2024. Influenzit. All rights reserved.</p>
                 <BottomLinks>
                     <Link href="/">
                         <a>
