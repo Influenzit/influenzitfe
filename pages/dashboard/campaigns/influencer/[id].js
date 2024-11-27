@@ -13,7 +13,9 @@ import {
   updateCampaign,
   updateCampaignMilestone,
   updateCampaignReview,
+  getCampaignPosts,
 } from "../../../../api/campaigns";
+import { axiosInstance } from "../../../../api/axios";
 import { setLoading } from "../../../../app/reducers/status";
 import bold from "../../../../assets/campaign/bold.svg";
 import italics from "../../../../assets/campaign/italics.svg";
@@ -61,6 +63,83 @@ const Campaigns = () => {
     console.log(newRating);
   };
 
+  const [existingPosts, setExistingPosts] = useState([]);
+  const [newPosts, setNewPosts] = useState([{ platform: "", link: "" }]);
+
+  useEffect(() => {
+    if (activetab === "posts" && id) {
+      // Ensure id is available
+      getCampaignPosts(id)
+        .then((response) => {
+          // Use id from router.query
+          setExistingPosts(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching campaign posts:", error);
+        });
+    }
+  }, [activetab, id]); // Add id as a dependency
+
+  const handlePlatformChange = (index, value) => {
+    const updatedPosts = [...newPosts];
+    updatedPosts[index].platform = value;
+    setNewPosts(updatedPosts);
+  };
+
+  const handleLinkChange = (index, value) => {
+    const updatedPosts = [...newPosts];
+    updatedPosts[index].link = value;
+    setNewPosts(updatedPosts);
+  };
+
+  const addNewPost = () => {
+    setNewPosts([...newPosts, { platform: "", link: "" }]);
+  };
+
+  const removePost = (index) => {
+    const updatedPosts = newPosts.filter((_, i) => i !== index);
+    setNewPosts(updatedPosts);
+  };
+
+  // const handleAddPost = () => {
+  //   e.preventDefault();
+  //   // Submit new posts to the backend
+  //   axiosInstance()
+  //     .post(`/campaigns/${ id }/posts`, { posts: newPosts })
+  //     .then(() => {
+  //       alert("Posts submitted successfully!");
+  //       setNewPosts([{ platform: "", link: "" }]); // Reset form
+  //     });
+  // }; 
+  const handleAddPost = async (e) => {
+    e.preventDefault(); // Prevent page reload
+  
+    try {
+      // Send each post individually
+      for (const post of newPosts) {
+        await axiosInstance().post(`/campaigns/${id}/posts`, post);
+      }
+  
+      // Success feedback
+      toast.success("Posts submitted successfully!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+  
+      // Reset form after success
+      setNewPosts([{ platform: "", link: "" }]);
+    } catch (error) {
+      console.error("Error submitting posts:", error);
+  
+      // Error feedback
+      toast.error(
+        `Error: ${error.response?.data?.message || "Failed to submit posts."}`,
+        {
+          position: toast.POSITION.TOP_RIGHT,
+        }
+      );
+    }
+  }; 
+
   const handleClose = () => {
     setisRejected(false);
   };
@@ -96,51 +175,53 @@ const Campaigns = () => {
       status: "Completed",
       end_date: singlecampaign.end_date,
       start_date: singlecampaign.start_date,
-    }).then((res) => {
-      toast.success("Campaign submitted", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      setisAccepted(true);
-      handleGetSingleCampaign();
-      dispatch(setLoading(false));
     })
-    .catch((err) => {
-      dispatch(setLoading(false));
-      console.log(err.response);
-      toast.error(err.response.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
+      .then((res) => {
+        toast.success("Campaign submitted", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setisAccepted(true);
+        handleGetSingleCampaign();
+        dispatch(setLoading(false));
+      })
+      .catch((err) => {
+        dispatch(setLoading(false));
+        console.log(err.response);
+        toast.error(err.response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       });
-    });
-  }
+  };
   const handleStartCampaign = () => {
     dispatch(setLoading(true));
     updateCampaign(id, {
       status: "Ongoing",
       end_date: singlecampaign.end_date,
       start_date: singlecampaign.start_date,
-    }).then((res) => {
-      toast.success("Campaign started", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      setisAccepted(true);
-      handleGetSingleCampaign();
-      dispatch(setLoading(false));
     })
-    .catch((err) => {
-      dispatch(setLoading(false));
-      console.log(err.response);
-      toast.error(err.response.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
+      .then((res) => {
+        toast.success("Campaign started", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setisAccepted(true);
+        handleGetSingleCampaign();
+        dispatch(setLoading(false));
+      })
+      .catch((err) => {
+        dispatch(setLoading(false));
+        console.log(err.response);
+        toast.error(err.response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
       });
-    });
-  }
+  };
   const handleGetCampaignReview = () => {
     getCampaignReview(id)
       .then((res) => {
-        if(res.data.data.length) {
-          setReview(res.data.data[0])
-          setcomment(res.data.data[0].comment)
-          setrating(res.data.data[0].rating)
+        if (res.data.data.length) {
+          setReview(res.data.data[0]);
+          setcomment(res.data.data[0].comment);
+          setrating(res.data.data[0].rating);
         }
         console.log(res.data.data);
       })
@@ -173,7 +254,7 @@ const Campaigns = () => {
       })
       .catch((err) => {
         setloading(false);
-        if(err) {
+        if (err) {
           console.log(err.response);
           toast.error(err.response.data.message, {
             position: toast.POSITION.TOP_RIGHT,
@@ -183,12 +264,12 @@ const Campaigns = () => {
   };
 
   const updateCampaignMilsestone = (status, campaignId) => {
-    if(singlecampaign.status === "Pending") {
+    if (singlecampaign.status === "Pending") {
       toast.success("Start campaign before updating the milestone", {
         position: toast.POSITION.TOP_RIGHT,
       });
-      return
-    };
+      return;
+    }
     setclickedkMileStone(campaignId);
     const payload = {
       status: status,
@@ -205,7 +286,7 @@ const Campaigns = () => {
       })
       .catch((err) => {
         setIsUpdating(false);
-        if(err) {
+        if (err) {
           console.log(err.response);
         }
       });
@@ -284,12 +365,31 @@ const Campaigns = () => {
                   </div>
                 </div>
                 <div className="mb-4">{singlecampaign.description}</div>
-                {
-                  (singlecampaign?.status === "Pending") ? (<SubmitButton style={{ width: "150px", fontSize: "14px", margin: "10px 0" }} onClick={handleStartCampaign}>Start Campaign</SubmitButton>): null
-                }
-                {
-                  (singlecampaign?.status !== "Completed") && (singlecampaign?.status !== "Pending") ? (<SubmitButton style={{ width: "150px", fontSize: "14px", margin: "10px 0" }} onClick={handleCompleteCampaign}>Complete Campaign</SubmitButton>): null
-                }
+                {singlecampaign?.status === "Pending" ? (
+                  <SubmitButton
+                    style={{
+                      width: "150px",
+                      fontSize: "14px",
+                      margin: "10px 0",
+                    }}
+                    onClick={handleStartCampaign}
+                  >
+                    Start Campaign
+                  </SubmitButton>
+                ) : null}
+                {singlecampaign?.status !== "Completed" &&
+                singlecampaign?.status !== "Pending" ? (
+                  <SubmitButton
+                    style={{
+                      width: "150px",
+                      fontSize: "14px",
+                      margin: "10px 0",
+                    }}
+                    onClick={handleCompleteCampaign}
+                  >
+                    Complete Campaign
+                  </SubmitButton>
+                ) : null}
                 <div className="flex space-x-4 w-full border-b mb-4">
                   <button
                     onClick={() => {
@@ -323,6 +423,17 @@ const Campaigns = () => {
                     } pb-4`}
                   >
                     Review
+                  </button>
+                  <button
+                    onClick={() => {
+                      setactivetab("posts");
+                    }}
+                    className={`${
+                      activetab == "posts" &&
+                      "text-primary-100 border-b border-primary-100"
+                    } pb-4`}
+                  >
+                    Posts
                   </button>
                 </div>
                 {activetab == "milestone" && (
@@ -400,33 +511,203 @@ const Campaigns = () => {
                     </div>
                   </div>
                 )}
-                 {
-                  activetab === "review" && (
-                    <div>
-                      {review ? (
-                        <ReviewCard>
-                          <h2 style={{ display: "flex", columnGap: "7px" }}>
+                {activetab === "review" && (
+                  <div>
+                    {review ? (
+                      <ReviewCard>
+                        <h2 style={{ display: "flex", columnGap: "7px" }}>
                           <ReactStars
-                                isHalf={true}
-                                count={5}
-                                value={Number(review.rating) ?? 0}
-                                size={20}
-                                edit={false}
-                                activeColor="#DF475C"
-                            />
-                          </h2>
-                          <p>{review.comment}</p>
-                        </ReviewCard>
-                      ): (
-                        <ReviewCard>
-                          <h2>No review</h2>
-                        </ReviewCard>
-                      )}
-                    </div>
-                  )
-                }
-                  {activetab == "requirement" && (
+                            isHalf={true}
+                            count={5}
+                            value={Number(review.rating) ?? 0}
+                            size={20}
+                            edit={false}
+                            activeColor="#DF475C"
+                          />
+                        </h2>
+                        <p>{review.comment}</p>
+                      </ReviewCard>
+                    ) : (
+                      <ReviewCard>
+                        <h2>No review</h2>
+                      </ReviewCard>
+                    )}
+                  </div>
+                )}
+                {activetab == "requirement" && (
                   <div className="">Requirement </div>
+                )}
+                {activetab === "posts" && (
+                  <div>
+                    {/* Style block */}
+                    <style jsx>{`
+                      .tab-container {
+                        background-color: #fff;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 8px;
+                        padding: 16px;
+                        margin-top: 16px;
+                      }
+
+                      .tab-header {
+                        font-size: 1.5rem;
+                        font-weight: 600;
+                        color: #192cd1;
+                        margin-bottom: 1rem;
+                      }
+
+                      .existing-post {
+                        margin-bottom: 1rem;
+                        padding: 10px;
+                        border: 1px solid #d1d5db;
+                        border-radius: 8px;
+                        background-color: #f9fafb;
+                      }
+
+                      .existing-post strong {
+                        color: #4b5563;
+                      }
+
+                      .existing-post p a {
+                        color: #2563eb;
+                        text-decoration: underline;
+                      }
+
+                      .post-entry {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        margin-bottom: 1rem;
+                      }
+
+                      .post-entry select,
+                      .post-entry input {
+                        padding: 8px;
+                        border: 1px solid #d1d5db;
+                        border-radius: 4px;
+                        font-size: 0.9rem;
+                      }
+
+                      .post-entry button {
+                        padding: 6px 12px;
+                        background-color: #dc2626;
+                        color: #fff;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                      }
+
+                      .post-entry button:hover {
+                        background-color: #b91c1c;
+                      }
+
+                      .button-group {
+                        display: flex;
+                        justify-content: flex-end;
+                        gap: 10px;
+                      }
+
+                      .button-group button {
+                        padding: 8px 16px;
+                        border: none;
+                        border-radius: 4px;
+                        font-size: 0.9rem;
+                        cursor: pointer;
+                      }
+
+                      .button-group button:first-child {
+                        background-color: #2563eb;
+                        color: #fff;
+                      }
+
+                      .button-group button:first-child:hover {
+                        background-color: #1d4ed8;
+                      }
+
+                      .button-group button:last-child {
+                        background-color: #10b981;
+                        color: #fff;
+                      }
+
+                      .button-group button:last-child:hover {
+                        background-color: #059669;
+                      }
+                    `}</style>
+
+                    {/* Main content */}
+                    <div className="tab-container">
+                      <h3 className="tab-header">Social Media Posts</h3>
+                      
+                      <h2 className="tab-header">Already Existing Social Media Post Links</h2>
+
+                      {/* Display Existing Submissions */}
+                      {existingPosts?.map((post, index) => (
+                        <div key={index} className="existing-post">
+                          <strong>{post.platform}:</strong>
+                          {Array.isArray(post.links) ? (
+                            post.links.map((link, i) => (
+                              <p key={i}>
+                                <a href={link} target="_blank" rel="noopener noreferrer">
+                                  {link}
+                                </a>
+                              </p>
+                            ))
+                          ) : (
+                            <p>
+                              <a href={post.link} target="_blank" rel="noopener noreferrer">
+                                {post.link}
+                              </a>
+                            </p>
+                          )}
+                      </div>                      
+                      ))}
+
+                      
+                      <h2 className="tab-header">Add New Social Media Post Links</h2>
+
+                      {/* Form to Add New Links */}
+                      <form onSubmit={handleAddPost}>
+                        {newPosts.map((post, index) => (
+                          <div key={index} className="post-entry">
+                            <select
+                              value={post.platform}
+                              onChange={(e) =>
+                                handlePlatformChange(index, e.target.value)
+                              }
+                            >
+                              <option value="">Select Platform</option>
+                              <option value="Instagram">Instagram</option>
+                              <option value="Facebook">Facebook</option>
+                              <option value="Twitter">Twitter</option>
+                              <option value="TikTok">TikTok</option>
+                              <option value="Youtube">Youtube</option>
+                            </select>
+                            <input
+                              type="url"
+                              placeholder="Enter Link"
+                              value={post.link}
+                              onChange={(e) =>
+                                handleLinkChange(index, e.target.value)
+                              }
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removePost(index)}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ))}
+
+                        <div className="button-group">
+                          <button type="button" onClick={addNewPost}>
+                            Add Another Link
+                          </button>
+                          <button type="submit">Submit</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
                 )}
 
                 {/*    <div className="flex justify-end my-12">
