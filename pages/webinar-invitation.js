@@ -60,7 +60,7 @@ const InfluencerWaitlist = () => {
             <Image src="/influenzit_logo.png" alt="logo" height={30} width={120} style={{cursor: "pointer"}}/>
             <h1>Webinar Invitation: 
             <br />
-            The Secret of Influencer Marketing
+            The Secret of Influencer Marketing&nbsp;
             <br />
             that Drives Results without Breaking 
             <br />
