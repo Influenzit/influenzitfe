@@ -72,7 +72,7 @@ const Campaigns = () => {
       getCampaignPosts(id)
         .then((response) => {
           // Use id from router.query
-          setExistingPosts(response.data);
+          setExistingPosts(response.data.posts);
         })
         .catch((error) => {
           console.error("Error fetching campaign posts:", error);
