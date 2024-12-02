@@ -13,7 +13,11 @@ import {
   updateCampaignReview,
   updateCampaign,
   getCampaignReview,
+  getCampaignPosts,
+  getCampaignPostsMetrics,
 } from "../../../../api/campaigns";
+import axios from "axios";
+import { axiosInstance } from "../../../../api/axios";
 import { setLoading } from "../../../../app/reducers/status";
 import { ChevronLeft, ChevronRight } from "../../../../assets/svgIcons";
 import bold from "../../../../assets/campaign/bold.svg";
@@ -46,6 +50,7 @@ import { SubmitButton } from "styles/auth.style";
 import { UpdateModal } from "styles/view.style";
 import { WelcomeModal } from "styles/connect-pages.style";
 import { ReviewCard } from "styles/dashboard";
+import { getAccessToken } from "./utils"; // Import your utility function
 
 const Campaigns = () => {
   const router = useRouter();
@@ -82,7 +87,105 @@ const Campaigns = () => {
 
   const { id } = router.query;
   const user = useSelector(getUser);
-  console.log(user);
+  // console.log(user);
+
+  const [existingPosts, setExistingPosts] = useState([]);
+
+// Fetch campaign posts with metrics
+useEffect(() => {
+  if (activetab === "posts" && id) {
+    // Ensure id is available
+    getCampaignPostsMetrics(id)
+      .then((response) => {
+        // Use id from router.query
+        setExistingPosts(response.data.posts);
+      })
+      .catch((error) => {
+        console.error("Error fetching campaign posts:", error);
+      });
+  }
+}, [activetab, id]);
+
+// Dynamically load the Twitter embed script
+useEffect(() => {
+  const script = document.createElement('script');
+  script.src = "https://platform.twitter.com/widgets.js";
+  script.async = true;
+  script.charset = "utf-8";
+  document.body.appendChild(script);
+
+  // Cleanup script when component unmounts
+  return () => {
+    document.body.removeChild(script);
+  };
+}, []); // Empty dependency array ensures this runs only once when the component is mounted
+
+// Helper function to render embed based on platform
+const renderEmbed = (platform, link) => {
+  if (platform === 'Facebook') {
+    // Extract the post ID and embed it
+    const postId = link.split('/')[5]; // Assuming link is like https://www.facebook.com/{username}/posts/{post-id}
+    return (
+      <iframe 
+        src={`https://www.facebook.com/plugins/post.php?href=${link}&show_text=true&width=500`} 
+        width="500" 
+        height="300" 
+        style={{ border: 'none', overflow: 'hidden' }} 
+        scrolling="no" 
+        frameBorder="0" 
+        allowFullScreen="true" 
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+      </iframe>
+    );
+  } else if (platform === 'Instagram') {
+    const postId = link.split('/')[4]; // Instagram post ID comes from the URL
+    return (
+      <iframe 
+        src={`https://www.instagram.com/p/${postId}/embed`} 
+        width="500" 
+        height="600" 
+        style={{ border: 'none', overflow: 'hidden' }} 
+        scrolling="no" 
+        frameBorder="0" 
+        allowFullScreen="true">
+      </iframe>
+    );
+  } else if (platform === 'Twitter') {
+    return (
+      <blockquote className="twitter-tweet">
+        <a href={link}></a>
+      </blockquote>
+    );
+  } else if (platform === 'TikTok') {
+    const videoId = link.split('/')[5]; // Extract video ID
+    return (
+      <iframe 
+        src={`https://www.tiktok.com/embed/${videoId}`} 
+        width="500" 
+        height="600" 
+        style={{ border: 'none', overflow: 'hidden' }} 
+        frameBorder="0" 
+        allowFullScreen>
+      </iframe>
+    );
+  } else if (platform === 'YouTube') {
+    const videoId = link.split('v=')[1].split('&')[0]; // Extract YouTube video ID
+    return (
+      <iframe 
+        width="500" 
+        height="300" 
+        src={`https://www.youtube.com/embed/${videoId}`} 
+        frameBorder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowFullScreen>
+      </iframe>
+    );
+  } else {
+    return <p>Platform not supported for embed.</p>;
+  }
+};
+
+
 
   const handleMilestoneStatus = (status) => {
     if (
@@ -448,6 +551,17 @@ const Campaigns = () => {
                 >
                   Review
                 </button>
+                <button
+                  onClick={() => {
+                    setactivetab("posts");
+                  }}
+                  className={`${
+                    activetab == "posts" &&
+                    "text-primary-100 border-b border-primary-100"
+                  } pb-4`}
+                >
+                  Posts
+                </button>
               </div>
               {activetab == "milestone" && (
                 <div className="">
@@ -589,6 +703,97 @@ const Campaigns = () => {
                   </div>
                 )
               }
+              {activetab === "posts" && (
+    <div className="tab-container">
+      <style jsx>{`
+        .tab-container {
+          background-color: #fff;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          padding: 20px;
+          margin-top: 20px;
+        }
+        .tab-header {
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: #192cd1;
+          margin-bottom: 1.5rem;
+        }
+        .post-card {
+          margin-bottom: 1.5rem;
+          padding: 15px;
+          border: 1px solid #d1d5db;
+          border-radius: 8px;
+          background-color: #f9fafb;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .post-card h4 {
+          font-size: 1.25rem;
+          color: #333;
+        }
+        .metrics {
+          margin-top: 10px;
+          font-size: 0.9rem;
+          color: #4b5563;
+          display: flex;
+          gap: 10px;
+        }
+        .metrics div {
+          padding: 5px 10px;
+          background-color: #e5e7eb;
+          border-radius: 5px;
+        }
+        .metrics strong {
+          color: #192cd1;
+        }
+        .embed-container {
+          margin-top: 10px;
+          display: flex;
+          justify-content: center;
+        }
+      `}</style>
+      <h3 className="tab-header">Social Media Posts</h3>
+      {existingPosts.length > 0 ? (
+        existingPosts.map((post) => (
+          <div key={post.id} className="post-card">
+            <h4>{post.platform}</h4>
+            <div className="embed-container">{renderEmbed(post.platform, post.link)}</div>
+            <div className="metrics">
+              <div>
+                <strong>Likes:</strong> {post.metrics.likes}
+              </div>
+              {post.metrics.shares && (
+                <div>
+                  <strong>Shares:</strong> {post.metrics.shares}
+                </div>
+              )}
+              {post.metrics.comments && (
+                <div>
+                  <strong>Comments:</strong> {post.metrics.comments}
+                </div>
+              )}
+              {post.metrics.retweets && (
+                <div>
+                  <strong>Retweets:</strong> {post.metrics.retweets}
+                </div>
+              )}
+              {post.metrics.replies && (
+                <div>
+                  <strong>Replies:</strong> {post.metrics.replies}
+                </div>
+              )}
+            </div>
+          </div>
+        ))
+      ) : (
+        <p>No posts available for this campaign.</p>
+      )}
+    </div>
+  )}
+
+
 
               {/*    <div className="flex justify-end my-12">
             <button className="text-primary-100">Cancel Campaign</button>
