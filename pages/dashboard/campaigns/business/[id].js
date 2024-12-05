@@ -50,7 +50,7 @@ import { SubmitButton } from "styles/auth.style";
 import { UpdateModal } from "styles/view.style";
 import { WelcomeModal } from "styles/connect-pages.style";
 import { ReviewCard } from "styles/dashboard";
-import { getAccessToken } from "./utils"; // Import your utility function
+// import { getAccessToken } from "./utils"; // Import your utility function
 
 const Campaigns = () => {
   const router = useRouter();
