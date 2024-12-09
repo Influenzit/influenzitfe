@@ -107,6 +107,19 @@ useEffect(() => {
 }, [activetab, id]);
 
 // Dynamically load the Twitter embed script
+// useEffect(() => {
+//   const script = document.createElement('script');
+//   script.src = "https://platform.twitter.com/widgets.js";
+//   script.async = true;
+//   script.charset = "utf-8";
+//   document.body.appendChild(script);
+
+//   // Cleanup script when component unmounts
+//   return () => {
+//     document.body.removeChild(script);
+//   };
+// }, []); // Empty dependency array ensures this runs only once when the component is mounted
+  // Dynamically load the Twitter embed script and process embeds
 useEffect(() => {
   const script = document.createElement('script');
   script.src = "https://platform.twitter.com/widgets.js";
@@ -114,11 +127,16 @@ useEffect(() => {
   script.charset = "utf-8";
   document.body.appendChild(script);
 
+  // Reprocess Twitter embeds when posts change
+  if (window.twttr && window.twttr.widgets) {
+    window.twttr.widgets.load();
+  }
+
   // Cleanup script when component unmounts
   return () => {
     document.body.removeChild(script);
   };
-}, []); // Empty dependency array ensures this runs only once when the component is mounted
+}, [existingPosts]); // Re-run this effect whenever existingPosts changes
 
 // Helper function to render embed based on platform
 const renderEmbed = (platform, link) => {
