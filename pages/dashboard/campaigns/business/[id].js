@@ -704,95 +704,108 @@ const renderEmbed = (platform, link) => {
                 )
               }
               {activetab === "posts" && (
-    <div className="tab-container">
-      <style jsx>{`
-        .tab-container {
-          background-color: #fff;
-          border: 1px solid #e2e8f0;
-          border-radius: 8px;
-          padding: 20px;
-          margin-top: 20px;
-        }
-        .tab-header {
-          font-size: 1.5rem;
-          font-weight: 600;
-          color: #192cd1;
-          margin-bottom: 1.5rem;
-        }
-        .post-card {
-          margin-bottom: 1.5rem;
-          padding: 15px;
-          border: 1px solid #d1d5db;
-          border-radius: 8px;
-          background-color: #f9fafb;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-        .post-card h4 {
-          font-size: 1.25rem;
-          color: #333;
-        }
-        .metrics {
-          margin-top: 10px;
-          font-size: 0.9rem;
-          color: #4b5563;
-          display: flex;
-          gap: 10px;
-        }
-        .metrics div {
-          padding: 5px 10px;
-          background-color: #e5e7eb;
-          border-radius: 5px;
-        }
-        .metrics strong {
-          color: #192cd1;
-        }
-        .embed-container {
-          margin-top: 10px;
-          display: flex;
-          justify-content: center;
-        }
-      `}</style>
-      <h3 className="tab-header">Social Media Posts</h3>
-      {existingPosts.length > 0 ? (
-        existingPosts.map((post) => (
-          <div key={post.id} className="post-card">
-            <h4>{post.platform}</h4>
-            <div className="embed-container">{renderEmbed(post.platform, post.link)}</div>
-            <div className="metrics">
-              <div>
-                <strong>Likes:</strong> {post.metrics.likes}
-              </div>
-              {post.metrics.shares && (
-                <div>
-                  <strong>Shares:</strong> {post.metrics.shares}
+                <div className="tab-container">
+                  <style jsx>{`
+                    .tab-container {
+                      background-color: #fff;
+                      border: 1px solid #e2e8f0;
+                      border-radius: 8px;
+                      padding: 20px;
+                      margin-top: 20px;
+                    }
+                    .tab-header {
+                      font-size: 1.5rem;
+                      font-weight: 600;
+                      color: #192cd1;
+                      margin-bottom: 1.5rem;
+                    }
+                    .post-grid {
+                      display: grid;
+                      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                      gap: 20px;
+                    }
+                    .post-card {
+                      padding: 15px;
+                      border: 1px solid #d1d5db;
+                      border-radius: 8px;
+                      background-color: #f9fafb;
+                      display: flex;
+                      flex-direction: column;
+                      gap: 10px;
+                      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                      transition: transform 0.2s ease, box-shadow 0.2s ease;
+                    }
+                    .post-card:hover {
+                      transform: translateY(-3px);
+                      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                    }
+                    .post-card h4 {
+                      font-size: 1.25rem;
+                      color: #333;
+                    }
+                    .metrics {
+                      margin-top: 10px;
+                      font-size: 0.9rem;
+                      color: #4b5563;
+                      display: flex;
+                      flex-wrap: wrap;
+                      gap: 10px;
+                    }
+                    .metrics div {
+                      padding: 5px 10px;
+                      background-color: #e5e7eb;
+                      border-radius: 5px;
+                      flex: 1 1 auto;
+                    }
+                    .metrics strong {
+                      color: #192cd1;
+                    }
+                    .embed-container {
+                      margin-top: 10px;
+                      display: flex;
+                      justify-content: center;
+                    }
+                  `}</style>
+                  <h3 className="tab-header">Social Media Posts</h3>
+                  {existingPosts.length > 0 ? (
+                    <div className="post-grid">
+                      {existingPosts.map((post) => (
+                        <div key={post.id} className="post-card">
+                          <h4>{post.platform}</h4>
+                          <div className="embed-container">{renderEmbed(post.platform, post.link)}</div>
+                          <div className="metrics">
+                            <div>
+                              <strong>Likes:</strong> {post.metrics.likes}
+                            </div>
+                            {post.metrics.shares && (
+                              <div>
+                                <strong>Shares:</strong> {post.metrics.shares}
+                              </div>
+                            )}
+                            {post.metrics.comments && (
+                              <div>
+                                <strong>Comments:</strong> {post.metrics.comments}
+                              </div>
+                            )}
+                            {post.metrics.retweets && (
+                              <div>
+                                <strong>Retweets:</strong> {post.metrics.retweets}
+                              </div>
+                            )}
+                            {post.metrics.replies && (
+                              <div>
+                                <strong>Replies:</strong> {post.metrics.replies}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p>No posts available for this campaign.</p>
+                  )}
                 </div>
               )}
-              {post.metrics.comments && (
-                <div>
-                  <strong>Comments:</strong> {post.metrics.comments}
-                </div>
-              )}
-              {post.metrics.retweets && (
-                <div>
-                  <strong>Retweets:</strong> {post.metrics.retweets}
-                </div>
-              )}
-              {post.metrics.replies && (
-                <div>
-                  <strong>Replies:</strong> {post.metrics.replies}
-                </div>
-              )}
-            </div>
-          </div>
-        ))
-      ) : (
-        <p>No posts available for this campaign.</p>
-      )}
-    </div>
-  )}
-
 
 
               {/*    <div className="flex justify-end my-12">
